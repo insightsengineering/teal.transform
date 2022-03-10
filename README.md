@@ -1,25 +1,18 @@
-# nesttemplate
+# teal.transform
 
-## Overview
+This package contains functions and shiny modules for extracting and merging data within the `teal` framework.
 
-`nesttemplate` provides a custom [`pkgdown`](https://pkgdown.r-lib.org) template for NEST packages.
-Please don’t use it for your own package.
+## Installation
 
-In order to take full advantage of that template you would need to use `pkgdown` >= 2.0.0.
+This repository requires a personal access token to install see here [creating and using PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). Once this is set up, to install the latest released version of the package run:
 
-## Templates
+```r
+Sys.setenv(GITHUB_PAT = "your_access_token_here")
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("insightsengineering/teal.transform@*release", dependencies = FALSE)
+```
 
-Please ensure that the `_pkgdown.yml` file contains:
+You might need to manually install all of the package dependencies before installing this package as without
+the `dependencies = FALSE` argument to `install_github` it may produce an error.
 
-    template:
-        package: nesttemplate
-
-## Example sites
-
-- [`tern`](https://insightsengineering.github.io/tern/)
-
-- [`teal`](https://insightsengineering.github.io/teal/)
-
-- [`teal.modules.general`](https://insightsengineering.github.io/teal.modules.general/)
-
-- [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/)
+See package vignettes `browseVignettes(package = "teal.transform")` for usage of this package.

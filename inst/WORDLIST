@@ -1,9 +1,13 @@
+dataname
+dropdown
+funder
 github
 https
 pre
 Pre
 RStudio
 README
+reproducibility
 BiocCheck
 CMD
 gitleaks
@@ -13,3 +17,5 @@ Roxygen
 SuperLinter
 Github's
 pkgdown
+UI
+srv

@@ -1,5 +1,47 @@
 ---
-url: https://insightsengineering.github.io/nesttemplate/
+url: https://insightsengineering.github.io/teal.transform
 
 template:
-  package: nesttemplate
+  params:
+    bootswatch: cerulean
+
+navbar:
+  right:
+    - icon: fa-github
+      href: https://github.com/insightsengineering/teal.transform
+
+reference:
+  - title: Data extract constructors
+    desc: >-
+      Functions used to create transform instructions for teal applications.
+    contents:
+      - add_no_selected_choices
+      - all_choices
+      - check_no_multiple_selection
+      - choices_labeled
+      - choices_selected
+      - data_extract_spec
+      - filter_spec
+      - get_extract_datanames
+      - no_selected_as_NULL
+      - select_spec
+      - split_by_sep
+      - value_choices
+      - variable_choices
+      - resolve_delayed
+  - title: Data extract modules
+    desc: teal modules to generate transform expressions
+    contents:
+      - data_extract_multiple_srv
+      - data_extract_ui
+      - data_extract_srv
+      - data_merge_srv
+      - data_merge_module
+      - datanames_input
+      - get_dataset_prefixed_col_names
+      - get_anl_relabel_call
+      - get_merge_call
+      - get_relabel_call
+      - is_single_dataset
+      - list_extract_spec
+      - merge_datasets
