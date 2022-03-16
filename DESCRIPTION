@@ -1,6 +1,6 @@
 Package: teal.transform
 Title: Functions for extracting and merging data in the teal framework
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Date: 2022-02-24
 Authors@R: c(
     person("NEST", , , "basel.nestcicd@roche.com", role = c("aut", "cre")),
@@ -14,11 +14,12 @@ Authors@R: c(
     person("Tadeusz", "Lewandowski", , "tadeusz.lewandowski@roche.com", role = "ctb"),
     person("Roche", role = c("cph", "fnd"))
   )
-Description: Functions for extracting and merging data in the teal framework.
+Description: Functions for extracting and merging data in the teal
+    framework.
 License: Apache License 2.0 | file LICENSE
 Depends:
     magrittr,
-    R (>= 3.6)    
+    R (>= 3.6)
 Imports:
     checkmate,
     dplyr,
@@ -29,13 +30,13 @@ Imports:
     shiny,
     shinyjs,
     stats,
-    tidyr,
-    tidyselect,
     teal.code,
     teal.data,
     teal.logger,
     teal.slice,
-    teal.widgets
+    teal.widgets,
+    tidyr,
+    tidyselect
 Suggests:
     knitr,
     rmarkdown,
