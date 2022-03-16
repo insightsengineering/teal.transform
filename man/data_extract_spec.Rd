@@ -36,7 +36,7 @@ Note that no checks based on columns can be done because the data is only referr
 \section{Module Development}{
 
 \describe{
-\code{teal.devel} uses this object to construct a UI element in a module.
+\code{teal.transform} uses this object to construct a UI element in a module.
 }
 }
 

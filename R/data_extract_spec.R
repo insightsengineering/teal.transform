@@ -13,7 +13,7 @@
 #'
 #' @section Module Development:
 #' \describe{
-#' `teal.devel` uses this object to construct a UI element in a module.
+#' `teal.transform` uses this object to construct a UI element in a module.
 #' }
 #'
 #' @param dataname (`character`)\cr
