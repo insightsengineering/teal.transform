@@ -708,7 +708,7 @@ testthat::test_that("get_relabel_call", {
     as.call(
       parse(
         text =
-          'teal.data::var_relabel(
+          'formatable::var_relabel(
           AGE = "Age",
           SEX = "Sex",
           AVAL = "Continuous Variable",

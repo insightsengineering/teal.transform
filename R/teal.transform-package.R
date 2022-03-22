@@ -4,4 +4,5 @@
 
 #' @import shiny
 #' @importFrom magrittr %>%
+#' @importFrom formatable var_relabel var_labels
 NULL

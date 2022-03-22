@@ -432,7 +432,7 @@ get_relabel_call <- function(labels) {
   return(
     as.call(
       append(
-        quote(teal.data::var_relabel),
+        quote(formatable::var_relabel),
         labels
       )
     )
