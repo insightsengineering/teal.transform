@@ -18,13 +18,13 @@ test_that("Can create variable_choices with datasets with no or missing labels",
 
   # one missing label
   missing_one_label_data <- example_data
-  formatable::var_labels(missing_one_label_data) <- c(as.character(NA), "Label")
+  formatters::var_labels(missing_one_label_data) <- c(as.character(NA), "Label")
   choice_2 <- variable_choices(missing_one_label_data)
   expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label"))
 
   # all missing label
   missing_two_label_data <- example_data
-  formatable::var_labels(missing_two_label_data) <- c(as.character(NA), as.character(NA))
+  formatters::var_labels(missing_two_label_data) <- c(as.character(NA), as.character(NA))
   choice_2 <- variable_choices(missing_two_label_data)
   expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label Missing"))
 })

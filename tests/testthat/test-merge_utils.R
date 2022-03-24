@@ -708,7 +708,7 @@ testthat::test_that("get_relabel_call", {
     as.call(
       parse(
         text =
-          'formatable::var_relabel(
+          'formatters::var_relabel(
           AGE = "Age",
           SEX = "Sex",
           AVAL = "Continuous Variable",

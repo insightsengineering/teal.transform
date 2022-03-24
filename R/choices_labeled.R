@@ -25,12 +25,12 @@
 #'
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' ADTTE <- synthetic_cdisc_data("latest")$adtte
-#' choices1 <- choices_labeled(names(ADSL), formatable::var_labels(ADSL, fill = FALSE))
+#' choices1 <- choices_labeled(names(ADSL), formatters::var_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 #' # if only a subset of variables are needed, use subset argument
 #' choices3 <- choices_labeled(
 #'   names(ADSL),
-#'   formatable::var_labels(ADSL, fill = FALSE),
+#'   formatters::var_labels(ADSL, fill = FALSE),
 #'   subset = c("ARMCD", "ARM")
 #' )
 #' \dontrun{
@@ -228,14 +228,14 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = FALSE, key =
   res <- if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
-      labels = c("", unname(formatable::var_labels(data, fill = fill))),
+      labels = c("", unname(formatters::var_labels(data, fill = fill))),
       subset = subset,
       types = c("", var_types)
     )
   } else {
     choices_labeled(
       choices = names(data),
-      labels = unname(formatable::var_labels(data, fill = fill)),
+      labels = unname(formatters::var_labels(data, fill = fill)),
       subset = subset,
       types = var_types
     )

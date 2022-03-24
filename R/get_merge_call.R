@@ -432,7 +432,7 @@ get_relabel_call <- function(labels) {
   return(
     as.call(
       append(
-        quote(formatable::var_relabel),
+        quote(formatters::var_relabel),
         labels
       )
     )
