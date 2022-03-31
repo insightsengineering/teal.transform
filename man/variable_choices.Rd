@@ -12,7 +12,7 @@ variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
 
 \method{variable_choices}{character}(data, subset = NULL, fill = FALSE, key = NULL)
 
-\method{variable_choices}{data.frame}(data, subset = NULL, fill = FALSE, key = NULL)
+\method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
 
 \method{variable_choices}{TealDataset}(
   data,
