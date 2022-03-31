@@ -199,7 +199,7 @@ variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = 
 
 #' @rdname variable_choices
 #' @export
-variable_choices.data.frame <- function(data, subset = NULL, fill = FALSE, key = NULL) { # nolint
+variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) { # nolint
 
   if (is.function(subset)) {
     subset <- resolve_delayed_expr(subset, ds = data, is_value_choices = FALSE)
