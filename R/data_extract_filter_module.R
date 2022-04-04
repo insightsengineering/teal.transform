@@ -104,7 +104,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             selected = selected
           )
         },
-        ignoreInit = TRUE,
+        ignoreInit = FALSE,
         ignoreNULL = FALSE
       )
     }
