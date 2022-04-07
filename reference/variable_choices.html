@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">teal.transform</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
@@ -32,21 +32,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/teal.transform.html">Transforming teal modules data</a>
+      <a href="../articles/transforming-teal-data.html">Transforming teal modules data</a>
     </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/teal.transform" class="external-link">
     <span class="fa fa-github"></span>
@@ -78,7 +69,7 @@ Other releases
 <span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="co"># S3 method for data.frame</span>
-<span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">TRUE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="co"># S3 method for TealDataset</span>
 <span class="fu">variable_choices</span><span class="op">(</span>
@@ -300,7 +291,7 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx &lt;- vapply(data, is.factor, logical(1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   return(names(data)[idx])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56201160d428&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ade0614b90&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>

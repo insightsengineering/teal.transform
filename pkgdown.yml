@@ -2,8 +2,8 @@ pandoc: 2.17.1.1
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
-  teal.transform: teal.transform.html
-last_built: 2022-03-24T18:19Z
+  transforming-teal-data: transforming-teal-data.html
+last_built: 2022-04-07T16:20Z
 urls:
   reference: https://insightsengineering.github.io/teal.transform/reference
   article: https://insightsengineering.github.io/teal.transform/articles
