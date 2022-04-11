@@ -1,4 +1,9 @@
-# teal.transform 0.0.1.9000
+# teal.transform 0.1.0.9000
+
+### Miscellaneous
+* Added a template to the `pkgdown` site.
+
+# teal.transform 0.1.0
 
 ## Changes (from behavior when functionality was part of `teal`)
 
