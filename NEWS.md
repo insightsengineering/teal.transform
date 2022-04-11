@@ -1,6 +1,6 @@
 # teal.transform 0.1.0.9000
 
-* No updates since last relase.
+* No updates since last release.
 
 # teal.transform 0.1.0
 
