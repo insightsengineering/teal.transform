@@ -22,7 +22,7 @@ The usage of named list as input can replace \code{input_id} argument.}
 
 \item{input_id}{(\code{character})\cr
 vector of input IDs to read from.
-\code{input_id} is optional as a named list in \code{data_extract} can replace it.}
+\code{input_id} is optional as a named list in \code{data_extract} can replace it. See example below.}
 
 \item{merge_function}{(\code{character(1)})\cr
 A character string of a function that

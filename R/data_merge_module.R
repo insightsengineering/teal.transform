@@ -12,7 +12,7 @@
 #'  The usage of named list as input can replace `input_id` argument.
 #' @param input_id (`character`)\cr
 #'  vector of input IDs to read from.
-#' `input_id` is optional as a named list in `data_extract` can replace it.
+#'  `input_id` is optional as a named list in `data_extract` can replace it. See example below.
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
 #'  accepts the arguments `x`, `y` and `by` to perform the merging of datasets.
