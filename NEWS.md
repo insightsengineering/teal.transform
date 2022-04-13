@@ -1,6 +1,7 @@
 # teal.transform 0.1.0.9002
 
-* No updates since last release.
+### Miscellaneous
+* Added a template to the `pkgdown` site.
 
 # teal.transform 0.1.0
 
