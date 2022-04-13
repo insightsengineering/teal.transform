@@ -36,6 +36,11 @@ reactive expression with output from \link{merge_datasets}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
+\details{
+When additional processing of the \code{data_extract} list input is required, \code{data_merge_srv()} can be combined
+with \code{data_extract_multiple_srv()} or \code{data_extract_srv()} to influence the \code{selector_list} input.
+Compare the example below with that found in \code{\link[=data_merge_module]{data_merge_module()}}.
+}
 \examples{
 library(shiny)
 
@@ -111,10 +116,8 @@ app <- shinyApp(
     output$data <- renderDataTable(merged_data()$data())
   }
 )
-#'
 \dontrun{
-#' runApp(app)
-#'
+runApp(app)
 }
 }
 \seealso{

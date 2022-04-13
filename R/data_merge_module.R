@@ -1,8 +1,9 @@
 #' Data merge module
+#'
 #' @description `r lifecycle::badge("experimental")`
-#' @details This function is a convenient wrapper to combine `data_extract_multiple_srv` and
+#' @details This function is a convenient wrapper to combine `data_extract_multiple_srv()` and
 #' `data_merge_srv()` when no additional processing is required.
-#' Compare example below with that found in [data_extract_srv].
+#' Compare the example below with that found in [data_merge_srv()].
 #'
 #' @inheritParams shiny::moduleServer
 #' @param datasets (`FilteredData`)\cr
@@ -10,8 +11,8 @@
 #' @param data_extract (`list` of `data_extract_spec`)\cr
 #'  The usage of named list as input can replace `input_id` argument.
 #' @param input_id (`character`)\cr
-#'  vector of input IDs to read from. `input_id` is optional as a named
-#'  list in `data_extract` can replace it.
+#'  vector of input IDs to read from.
+#'  `input_id` is optional as a named list in `data_extract` can replace it. See example below.
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
 #'  accepts the arguments `x`, `y` and `by` to perform the merging of datasets.
@@ -23,7 +24,7 @@
 #' @seealso [data_merge_srv()]
 #'
 #' @note `input_id` argument is deprecated and will be removed in future releases.
-#' Please consider using a named list for `data_extract` argument as an alternative.
+#' Please consider using a named list for the `data_extract` argument as an alternative.
 #'
 #' @export
 #'
@@ -145,6 +146,10 @@ data_merge_module <- function(datasets,
 #' Data merge module server
 #'
 #' @description `r lifecycle::badge("experimental")`
+#' @details When additional processing of the `data_extract` list input is required, `data_merge_srv()` can be combined
+#'   with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
+#'   Compare the example below with that found in [data_merge_module()].
+#'
 #' @inheritParams shiny::moduleServer
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
@@ -238,10 +243,8 @@ data_merge_module <- function(datasets,
 #'     output$data <- renderDataTable(merged_data()$data())
 #'   }
 #' )
-#' #'
 #' \dontrun{
-#' #' runApp(app)
-#' #'
+#' runApp(app)
 #' }
 data_merge_srv <- function(id = "merge_id",
                            selector_list,
