@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">teal.transform</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9001</span>
       </span>
     </div>
 
@@ -38,15 +38,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/teal.transform" class="external-link">
     <span class="fa fa-github"></span>
@@ -92,8 +83,8 @@ object containing data, see <a href="https://rdrr.io/pkg/teal.slice/man/Filtered
 The usage of named list as input can replace <code>input_id</code> argument.</p></dd>
 <dt>input_id</dt>
 <dd><p>(<code>character</code>)<br>
-vector of input IDs to read from. <code>input_id</code> is optional as a named
-list in <code>data_extract</code> can replace it.</p></dd>
+vector of input IDs to read from.
+<code>input_id</code> is optional as a named list in <code>data_extract</code> can replace it. See example below.</p></dd>
 <dt>merge_function</dt>
 <dd><p>(<code>character(1)</code>)<br>
 A character string of a function that
@@ -111,14 +102,14 @@ UI function.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>This function is a convenient wrapper to combine <code>data_extract_multiple_srv</code> and
+    <p>This function is a convenient wrapper to combine <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> and
 <code><a href="data_merge_srv.html">data_merge_srv()</a></code> when no additional processing is required.
-Compare example below with that found in <a href="data_extract_srv.html">data_extract_srv</a>.</p>
+Compare the example below with that found in <code><a href="data_merge_srv.html">data_merge_srv()</a></code>.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
     <p><code>input_id</code> argument is deprecated and will be removed in future releases.
-Please consider using a named list for <code>data_extract</code> argument as an alternative.</p>
+Please consider using a named list for the <code>data_extract</code> argument as an alternative.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

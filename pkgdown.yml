@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   transforming-teal-data: transforming-teal-data.html
-last_built: 2022-04-11T13:42Z
+last_built: 2022-04-13T07:30Z
 urls:
   reference: https://insightsengineering.github.io/teal.transform/reference
   article: https://insightsengineering.github.io/teal.transform/articles

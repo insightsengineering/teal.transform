@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">teal.transform</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9001</span>
       </span>
     </div>
 
@@ -38,15 +38,6 @@
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/insightsengineering/teal.transform" class="external-link">
     <span class="fa fa-github"></span>
@@ -104,6 +95,12 @@ Name of the analysis dataset.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p>reactive expression with output from <a href="merge_datasets.html">merge_datasets</a>.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>When additional processing of the <code>data_extract</code> list input is required, <code>data_merge_srv()</code> can be combined
+with <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> or <code><a href="data_extract_srv.html">data_extract_srv()</a></code> to influence the <code>selector_list</code> input.
+Compare the example below with that found in <code><a href="data_merge_module.html">data_merge_module()</a></code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -186,10 +183,8 @@ Name of the analysis dataset.</p></dd>
 <span class="r-in">    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">}</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co">#'</span></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co">#' runApp(app)</span></span>
-<span class="r-in"><span class="co">#'</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
