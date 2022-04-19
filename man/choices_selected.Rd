@@ -62,7 +62,7 @@ choices_selected(choices = letters, selected = letters)
 
 choices_selected(
   choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-  selected = "X"
+  selected = "C"
 )
 
 library(scda)

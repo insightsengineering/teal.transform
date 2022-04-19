@@ -1,7 +1,11 @@
 # teal.transform 0.1.0.9003
 
+### Breaking changes
+* All `selected` values must be valid `choices` when calling `choices_selected`. When using delayed resolving the invalid selected are removed and a warning is thrown to the logs, in other cases an error is thrown.
+
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
+
 
 # teal.transform 0.1.0
 
