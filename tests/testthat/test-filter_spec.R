@@ -174,15 +174,6 @@ test_that("filter_spec with choices_selected where all selected in choices does 
 })
 
 
-test_that("filter_spec with choices_selected where not all selected in choices throws an error", {
-  invalid_cs <- choices_selected(
-    choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-    selected = c("A", "X")
-  )
-  expect_error(filter_spec(vars = invalid_cs), "all(vars_selected %in% vars_choices) is not TRUE", fixed = TRUE)
-})
-
-
 test_that("filter_spec_internal", {
   expect_silent(
     filter_spec_internal(
