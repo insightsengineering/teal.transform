@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">data_merge_module</span><span class="op">(</span>
   <span class="va">datasets</span>,
   <span class="va">data_extract</span>,
-  <span class="va">input_id</span>,
   merge_function <span class="op">=</span> <span class="st">"dplyr::full_join"</span>,
   anl_name <span class="op">=</span> <span class="st">"ANL"</span>,
   id <span class="op">=</span> <span class="st">"merge_id"</span>
@@ -73,12 +72,7 @@
 <dd><p>(<code>FilteredData</code>)<br>
 object containing data, see <a href="https://rdrr.io/pkg/teal.slice/man/FilteredData.html" class="external-link">teal.slice::FilteredData</a> for more.</p></dd>
 <dt>data_extract</dt>
-<dd><p>(<code>list</code> of <code>data_extract_spec</code>)<br>
-The usage of named list as input can replace <code>input_id</code> argument.</p></dd>
-<dt>input_id</dt>
-<dd><p>(<code>character</code>)<br>
-vector of input IDs to read from.
-<code>input_id</code> is optional as a named list in <code>data_extract</code> can replace it. See example below.</p></dd>
+<dd><p>(named <code>list</code> of <code>data_extract_spec</code>)<br></p></dd>
 <dt>merge_function</dt>
 <dd><p>(<code>character(1)</code>)<br>
 A character string of a function that
@@ -99,11 +93,6 @@ UI function.</p></dd>
     <p>This function is a convenient wrapper to combine <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> and
 <code><a href="data_merge_srv.html">data_merge_srv()</a></code> when no additional processing is required.
 Compare the example below with that found in <code><a href="data_merge_srv.html">data_merge_srv()</a></code>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p><code>input_id</code> argument is deprecated and will be removed in future releases.
-Please consider using a named list for the <code>data_extract</code> argument as an alternative.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

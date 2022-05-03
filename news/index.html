@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,35 +51,28 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0.9003" id="tealtransform-0109003">teal.transform 0.1.0.9003<a class="anchor" aria-label="anchor" href="#tealtransform-0109003"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0.9004" id="tealtransform-0109004">teal.transform 0.1.0.9004<a class="anchor" aria-label="anchor" href="#tealtransform-0109004"></a></h2>
 <div class="section level4">
-<h4 id="breaking-changes-0-1-0-9003">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0-9003"></a></h4>
-<ul><li>All <code>selected</code> values must be valid <code>choices</code>
-when calling <code>choices_selected</code>. When using delayed resolving
-the invalid selected are removed and a warning is thrown to the logs, in
-other cases an error is thrown.</li>
+<h4 id="breaking-changes-0-1-0-9004">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0-9004"></a></h4>
+<ul><li>Removed the (previously deprecated) <code>input_id</code> argument to <code>data_merge_module</code>.</li>
+<li>All <code>selected</code> values must be valid <code>choices</code> when calling <code>choices_selected</code>. When using delayed resolving the invalid selected are removed and a warning is thrown to the logs, in other cases an error is thrown.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-1-0-9003">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-0-9003"></a></h4>
+<h4 id="miscellaneous-0-1-0-9004">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-0-9004"></a></h4>
 <ul><li>Added a template to the <code>pkgdown</code> site.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="tealtransform-010">teal.transform 0.1.0<a class="anchor" aria-label="anchor" href="#tealtransform-010"></a></h2>
 <div class="section level3">
-<h3 id="changes-from-behavior-when-functionality-was-part-of-teal-0-1-0">Changes (from behavior when functionality was part of
-<code>teal</code>)<a class="anchor" aria-label="anchor" href="#changes-from-behavior-when-functionality-was-part-of-teal-0-1-0"></a></h3>
+<h3 id="changes-from-behavior-when-functionality-was-part-of-teal-0-1-0">Changes (from behavior when functionality was part of <code>teal</code>)<a class="anchor" aria-label="anchor" href="#changes-from-behavior-when-functionality-was-part-of-teal-0-1-0"></a></h3>
 <div class="section level4">
 <h4 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h4>
-<ul><li>Added new argument <code>ordered</code> for
-<code><a href="../reference/select_spec.html">select_spec()</a></code> to flag whether order of the selection should
-be tracked.</li>
+<ul><li>Added new argument <code>ordered</code> for <code><a href="../reference/select_spec.html">select_spec()</a></code> to flag whether order of the selection should be tracked.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="misc-0-1-0">Misc<a class="anchor" aria-label="anchor" href="#misc-0-1-0"></a></h4>
-<ul><li>The <code>get_relabel_call</code> function now returns
-<code><a href="https://rdrr.io/pkg/formatters/man/var_relabel.html" class="external-link">formatters::var_relabel</a></code> instead of
-<code>teal.data::var_relabel</code>.</li>
+<ul><li>The <code>get_relabel_call</code> function now returns <code><a href="https://rdrr.io/pkg/formatters/man/var_relabel.html" class="external-link">formatters::var_relabel</a></code> instead of <code>teal.data::var_relabel</code>.</li>
 </ul></div>
 </div>
 </div>
