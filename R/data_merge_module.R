@@ -8,7 +8,7 @@
 #' @inheritParams shiny::moduleServer
 #' @param datasets (`FilteredData`)\cr
 #'  object containing data, see [teal.slice::FilteredData] for more.
-#' @param data_extract (`list` of `data_extract_spec`)\cr
+#' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
 #'  accepts the arguments `x`, `y` and `by` to perform the merging of datasets.

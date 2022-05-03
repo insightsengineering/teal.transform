@@ -16,7 +16,7 @@ data_merge_module(
 \item{datasets}{(\code{FilteredData})\cr
 object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
 
-\item{data_extract}{(\code{list} of \code{data_extract_spec})\cr}
+\item{data_extract}{(named \code{list} of \code{data_extract_spec})\cr}
 
 \item{merge_function}{(\code{character(1)})\cr
 A character string of a function that
