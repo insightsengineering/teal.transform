@@ -40,10 +40,6 @@ This function is a convenient wrapper to combine \code{data_extract_multiple_srv
 \code{data_merge_srv()} when no additional processing is required.
 Compare the example below with that found in \code{\link[=data_merge_srv]{data_merge_srv()}}.
 }
-\note{
-\code{input_id} argument is deprecated and will be removed in future releases.
-Please consider using a named list for the \code{data_extract} argument as an alternative.
-}
 \examples{
 library(shiny)
 

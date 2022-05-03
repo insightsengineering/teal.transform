@@ -20,9 +20,6 @@
 #'
 #' @seealso [data_merge_srv()]
 #'
-#' @note `input_id` argument is deprecated and will be removed in future releases.
-#' Please consider using a named list for the `data_extract` argument as an alternative.
-#'
 #' @export
 #'
 #' @examples
