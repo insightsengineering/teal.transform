@@ -7,7 +7,6 @@
 data_merge_module(
   datasets,
   data_extract,
-  input_id,
   merge_function = "dplyr::full_join",
   anl_name = "ANL",
   id = "merge_id"
@@ -19,10 +18,6 @@ object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredD
 
 \item{data_extract}{(\code{list} of \code{data_extract_spec})\cr
 The usage of named list as input can replace \code{input_id} argument.}
-
-\item{input_id}{(\code{character})\cr
-vector of input IDs to read from.
-\code{input_id} is optional as a named list in \code{data_extract} can replace it. See example below.}
 
 \item{merge_function}{(\code{character(1)})\cr
 A character string of a function that
