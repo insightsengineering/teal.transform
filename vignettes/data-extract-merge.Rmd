@@ -112,7 +112,7 @@ the transformation - see more in `data_merge_srv` documentation.
 
 #### Example data
 
-`teal.transform` functions depend on a `FilteredData` object from `teal.slice` package. For example purposes we define a 
+`teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. For example purposes we define a 
 wrapper function to initialize the necessary object:
 
 ```{r}
@@ -134,7 +134,7 @@ datasets <- sample_filtered_data()
 #### Shiny app
 
 Finally, we pass `merge_ui` and `merge_srv` to the `ui` and `server` functions of the `shinyApp`
-using the `data_extracts` defined in the first code block and the `datasets` object:
+using the `data_extract`s defined in the first code block and the `datasets` object:
 
 ```{r eval=FALSE}
 shinyApp(
