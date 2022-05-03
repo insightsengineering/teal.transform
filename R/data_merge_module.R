@@ -103,22 +103,10 @@
 #' }
 data_merge_module <- function(datasets,
                               data_extract,
-                              input_id,
                               merge_function = "dplyr::full_join",
                               anl_name = "ANL",
                               id = "merge_id") {
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
-
-  if (!missing(input_id)) {
-    names(data_extract) <- input_id
-    lifecycle::deprecate_soft(
-      when = "0.2.13",
-      what = "data_merge_module(input_id = )",
-      details =
-        "Please consider passing a named data_extract list to `data_merge_module` to replace input_id
-      argument in the future."
-    )
-  }
 
   checkmate::assert_list(data_extract)
   stopifnot(
