@@ -8,11 +8,7 @@
 #' @inheritParams shiny::moduleServer
 #' @param datasets (`FilteredData`)\cr
 #'  object containing data, see [teal.slice::FilteredData] for more.
-#' @param data_extract (`list` of `data_extract_spec`)\cr
-#'  The usage of named list as input can replace `input_id` argument.
-#' @param input_id (`character`)\cr
-#'  vector of input IDs to read from.
-#'  `input_id` is optional as a named list in `data_extract` can replace it. See example below.
+#' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
 #'  accepts the arguments `x`, `y` and `by` to perform the merging of datasets.
@@ -22,9 +18,6 @@
 #' @return reactive expression with output from [data_merge_srv()].
 #'
 #' @seealso [data_merge_srv()]
-#'
-#' @note `input_id` argument is deprecated and will be removed in future releases.
-#' Please consider using a named list for the `data_extract` argument as an alternative.
 #'
 #' @export
 #'
@@ -103,22 +96,10 @@
 #' }
 data_merge_module <- function(datasets,
                               data_extract,
-                              input_id,
                               merge_function = "dplyr::full_join",
                               anl_name = "ANL",
                               id = "merge_id") {
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
-
-  if (!missing(input_id)) {
-    names(data_extract) <- input_id
-    lifecycle::deprecate_soft(
-      when = "0.2.13",
-      what = "data_merge_module(input_id = )",
-      details =
-        "Please consider passing a named data_extract list to `data_merge_module` to replace input_id
-      argument in the future."
-    )
-  }
 
   checkmate::assert_list(data_extract)
   stopifnot(
