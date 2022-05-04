@@ -107,7 +107,7 @@ merge_srv <- function(id, datasets, data_extracts) {
 ```
 
 Output from `data_extract_srv` (`reactive`) should be passed to `data_merge_srv` together with `datasets`
-(`FilteredData`). `data_merge_srv` returns reactive list containing merged data and information needed to perform
+(`FilteredData`). `data_merge_srv` returns a reactive list containing merged data and information needed to perform
 the transformation - see more in `data_merge_srv` documentation. 
 
 #### Example data
