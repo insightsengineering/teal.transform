@@ -100,7 +100,7 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
       datasets = datasets
     )
     anl_i_call <- call("<-", as.name(paste0(anl_name, "_", idx)), dplyr_call)
-    chunks_stack$push(anl_i_call)
+    chunks_stack$push(anl_i_call, id = "ANL_dplyr_call")
   }
 
   anl_merge_calls <- get_merge_call(
@@ -110,7 +110,7 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
     anl_name = anl_name
   )
   for (i in anl_merge_calls) {
-    chunks_stack$push(i)
+    chunks_stack$push(i, id = "get_merge_call")
   }
 
   anl_relabel_call <- get_anl_relabel_call(
@@ -120,7 +120,7 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
   )
 
   if (!is.null(anl_relabel_call)) {
-    chunks_stack$push(anl_relabel_call)
+    chunks_stack$push(anl_relabel_call, id = "ANL_relabel_call")
   }
 
   all_call_string <- paste0(chunks_stack$get_rcode(), collapse = "\n")
