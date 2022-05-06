@@ -2,8 +2,9 @@ pandoc: 2.17.1.1
 pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
-  transforming-teal-data: transforming-teal-data.html
-last_built: 2022-05-03T14:22Z
+  data-extract-merge: data-extract-merge.html
+  data-extract: data-extract.html
+last_built: 2022-05-06T12:59Z
 urls:
   reference: https://insightsengineering.github.io/teal.transform/reference
   article: https://insightsengineering.github.io/teal.transform/articles
