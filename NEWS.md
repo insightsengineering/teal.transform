@@ -6,6 +6,7 @@
 
 ### Miscellaneous
 * Added a template to the `pkgdown` site.
+* Added names to the `id` parameter of `chunks$push`.
 
 
 # teal.transform 0.1.0
