@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 `teal.transform` is a package in the `teal` framework which provides:
 
-- `teal` module developers a way to standardise the UI for selecting columns from datasets and to merge datasets
+- `teal` module developers a way to standardize the UI for selecting columns from datasets and to merge datasets
 to create an analysis dataset to be used inside their module
 - `teal` application developers a way to specify which columns of their datasets can be used in the UI for selecting
 columns in their applications

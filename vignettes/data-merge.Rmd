@@ -82,7 +82,6 @@ merge_ui <- function(id, data_extracts) {
 
 merge_module <- function(id, datasets, data_extracts) {
   moduleServer(id, function(input, output, session) {
-    # selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets)
     merged_data <- teal.transform::data_merge_module(
       data_extract = data_extracts,
       datasets = datasets,
@@ -117,13 +116,12 @@ shinyApp(
 
 ### `data_extract_multiple_srv` + `data_merge_srv`
 
-In the scenario above, if the user de-selects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still take place even though `ADTTE` is not used or needed here. Here, the developer might update the `selector_list` input reactively so that it gets updated based on conditions set by the developer. Below, we reuse the input from above and we update the `app` server so that the `adtte_extract` is removed from the `selector_list` input when no `ADTTE` variable is selected and the `reactive_selector_list` is passed to `data_merge_srv`:
+In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still take place even though `ADTTE` is not used or needed here. Here, the developer might update the `selector_list` input in a reactive manner so that it gets updated based on conditions set by the developer. Below, we reuse the input from above and we update the `app` server so that the `adtte_extract` is removed from the `selector_list` input when no `ADTTE` variable is selected and the `reactive_selector_list` is passed to `data_merge_srv`:
 
 ```{r eval=FALSE}
 merge_module <- function(id, datasets, data_extracts) {
   moduleServer(id, function(input, output, session) {
     selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets)
-    
     reactive_selector_list <- reactive({
       if (is.null(selector_list()$adtte_extract) || length(selector_list()$adtte_extract()$select) == 0) {
         selector_list()[names(selector_list()) != "adtte_extract"]
@@ -172,8 +170,8 @@ Both merge functions, `data_merge_srv` and `data_merge_module`, return a reactiv
 
 These elements can be further used inside the server to retrieve and use information about the selections, data, filters ...
 
-## Merging of non-CDISC datasets
+## Merging of non `CDISC` datasets
 
-General datasets do not share the same relationships as CDISC datasets thus these relationships shall be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/join-keys).
+General datasets do not share the same relationships as `CDISC` datasets thus these relationships shall be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/join-keys).
 
 The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `data_merge_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please contact the NEST team to discuss your use case.
