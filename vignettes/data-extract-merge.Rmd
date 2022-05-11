@@ -61,7 +61,7 @@ adtte_extract <- teal.transform::data_extract_spec(
   )
 )
 
-data_extracts <- list(adsl_extract = adsl_extract, addte_extract = adtte_extract)
+data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
 ```
 
 #### Example module
@@ -84,7 +84,7 @@ merge_ui <- function(id, data_extracts) {
         data_extracts[[1]]
       ),
       teal.transform::data_extract_ui(
-        ns("addte_extract"), # must correspond with data_extracts list names
+        ns("adtte_extract"), # must correspond with data_extracts list names
         label = "ADTTE extract",
         data_extracts[[2]]
       )

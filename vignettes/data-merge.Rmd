@@ -1,0 +1,179 @@
+---
+title: "Data merge"
+author: "NEST coreDev"
+date: "2022-05-11"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data merge}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Combining datasets is a crucial step when using modules with more than one dataset. In the context of `teal`, we use 
+the term "merge" to combine datasets where two functions are offered `data_merge_module` and `data_merge_srv`. Depending on the case scenario, one or the other shall be used. 
+
+When no pre-processing of the `data_extract` list is required, `data_merge_module` function is used as a wrapper that combines `data_extract_multiple_srv()` and `data_merge_srv()` to read the data and the `data_extract_spec`'s list and apply the merging.
+With additional processing of the `data_extract` list input, `data_merge_srv()` can be combined with `data_extract_multiple_srv()` or `data_extract_srv()` to shape the `selector_list` input. 
+
+In the coming sections, we will show examples of both case scenarios.
+
+### `data_merge_module`
+
+`data_merge_module` solely replaces passing `data_extract_multiple_srv` output to `data_merge_srv` so all you would need is 
+a list of `data_extract_spec` objects for the `data_extract` argument and a `FilteredData` object for the `datasets` argument.
+
+```{r eval=FALSE}
+library(teal.transform)
+library(shiny)
+
+adsl_extract <- teal.transform::data_extract_spec(
+  dataname = "ADSL",
+  select = select_spec(
+    label = "Select variable:",
+    choices = c("AGE", "BMRKR1"),
+    selected = "AGE",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+adtte_extract <- teal.transform::data_extract_spec(
+  dataname = "ADTTE",
+  select = select_spec(
+    choices = c("AVAL", "ASEQ"),
+    selected = "AVAL",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
+
+merge_ui <- function(id, data_extracts) {
+  ns <- NS(id)
+  teal.widgets::standard_layout(
+    output = teal.widgets::white_small_well(
+      verbatimTextOutput(ns("expr")),
+      dataTableOutput(ns("data"))
+    ),
+    encoding = div(
+      teal.transform::data_extract_ui(
+        ns("adsl_extract"), # must correspond with data_extracts list names
+        label = "ADSL extract",
+        data_extracts[[1]]
+      ),
+      teal.transform::data_extract_ui(
+        ns("adtte_extract"), # must correspond with data_extracts list names
+        label = "ADTTE extract",
+        data_extracts[[2]]
+      )
+    )
+  )
+}
+
+merge_module <- function(id, datasets, data_extracts) {
+  moduleServer(id, function(input, output, session) {
+    # selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets)
+    merged_data <- teal.transform::data_merge_module(
+      data_extract = data_extracts,
+      datasets = datasets,
+      merge_function = "dplyr::left_join"
+    )
+    output$expr <- renderText(merged_data()$expr)
+    output$data <- renderDataTable(merged_data()$data())
+  })
+}
+
+sample_filtered_data <- function() {
+  # create TealData
+  adsl <- teal.data::cdisc_dataset("ADSL", scda::synthetic_cdisc_data("latest")$adsl)
+  adtte <- teal.data::cdisc_dataset("ADTTE", scda::synthetic_cdisc_data("latest")$adtte)
+  data <- teal.data::cdisc_data(adsl, adtte)
+
+  # covert TealData to FilteredData
+  datasets <- teal.slice:::filtered_data_new(data)
+  teal.slice:::filtered_data_set(data, datasets)
+  datasets
+}
+
+datasets <- sample_filtered_data()
+
+shinyApp(
+  ui = fluidPage(merge_ui("data_merge", data_extracts)),
+  server = function(input, output, session) {
+    merge_module("data_merge", datasets, data_extracts)
+  }
+)
+```
+
+### `data_extract_multiple_srv` + `data_merge_srv`
+
+In the scenario above, if the user de-selects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still take place even though `ADTTE` is not used or needed here. Here, the developer might update the `selector_list` input reactively so that it gets updated based on conditions set by the developer. Below, we reuse the input from above and we update the `app` server so that the `adtte_extract` is removed from the `selector_list` input when no `ADTTE` variable is selected and the `reactive_selector_list` is passed to `data_merge_srv`:
+
+```{r eval=FALSE}
+merge_module <- function(id, datasets, data_extracts) {
+  moduleServer(id, function(input, output, session) {
+    selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets)
+    
+    reactive_selector_list <- reactive({
+      if (is.null(selector_list()$adtte_extract) || length(selector_list()$adtte_extract()$select) == 0) {
+        selector_list()[names(selector_list()) != "adtte_extract"]
+      } else {
+        selector_list()
+      }
+    })
+
+    merged_data <- teal.transform::data_merge_srv(
+      selector_list = reactive_selector_list,
+      datasets = datasets,
+      merge_function = "dplyr::left_join"
+    )
+    output$expr <- renderText(merged_data()$expr)
+    output$data <- renderDataTable(merged_data()$data())
+  })
+}
+
+shinyApp(
+  ui = fluidPage(merge_ui("data_merge", data_extracts)),
+  server = function(input, output, session) {
+    merge_module("data_merge", datasets, data_extracts)
+  }
+)
+```
+
+`data_merge_module` is replaced here with three parts:
+
+1) `selector_list`: output of `data_extract_multiple_srv`
+2) `reactive_selector_list`: intermediate reactive list updating `selector_list` content
+3) `merged_data`: output of `data_merge_srv` using `reactive_selector_list` as input
+
+Both merge functions, `data_merge_srv` and `data_merge_module`, return a reactive object which contains a list of the following elements:
+
+-`data`: the merged dataset after filtering and reshaping containing selected columns
+
+-`expr`: code needed to replicate merged dataset
+
+-`chunks`: chunks R6 object
+
+-`columns_source`: list of columns selected per selector
+
+-`keys`: the keys of the merged dataset
+
+-`filter_info`: filters that are applied on the data
+
+These elements can be further used inside the server to retrieve and use information about the selections, data, filters ...
+
+## Merging of non-CDISC datasets
+
+General datasets do not share the same relationships as CDISC datasets thus these relationships shall be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/join-keys).
+
+The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `data_merge_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please contact the NEST team to discuss your use case.
