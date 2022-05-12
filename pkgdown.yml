@@ -4,7 +4,9 @@ pkgdown_sha: ~
 articles:
   data-extract-merge: data-extract-merge.html
   data-extract: data-extract.html
-last_built: 2022-05-06T12:59Z
+  data-merge: data-merge.html
+  teal-transform: teal-transform.html
+last_built: 2022-05-12T12:26Z
 urls:
   reference: https://insightsengineering.github.io/teal.transform/reference
   article: https://insightsengineering.github.io/teal.transform/articles
