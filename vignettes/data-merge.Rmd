@@ -28,8 +28,9 @@ In the coming sections, we will show examples of both scenarios.
 
 ### `data_merge_module`
 
-`data_merge_module` solely replaces passing `data_extract_multiple_srv` output to `data_merge_srv` so all you would need is 
-a list of `data_extract_spec` objects for the `data_extract` argument and a `FilteredData` object for the `datasets` argument.
+With `data_merge_module` solely, all you would need is a list of `data_extract_spec` objects for the `data_extract` argument and a `FilteredData` object for the `datasets` argument.
+
+#### App code
 
 ```{r eval=FALSE}
 library(teal.transform)
@@ -105,7 +106,11 @@ sample_filtered_data <- function() {
 }
 
 datasets <- sample_filtered_data()
+```
 
+#### Shiny app
+
+```{r eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -139,7 +144,11 @@ merge_module <- function(id, datasets, data_extracts) {
     output$data <- renderDataTable(merged_data()$data())
   })
 }
+```
 
+#### Shiny app
+
+```{r eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -150,7 +159,7 @@ shinyApp(
 
 `data_merge_module` is replaced here with three parts:
 
-1) `selector_list`: output of `data_extract_multiple_srv`
+1) `selector_list`: output of `data_extract_multiple_srv` which loops over the list of data_extract given and runs `data_extract_srv` for each one returning a list of reactive objects.
 2) `reactive_selector_list`: intermediate reactive list updating `selector_list` content
 3) `merged_data`: output of `data_merge_srv` using `reactive_selector_list` as input
 
@@ -174,4 +183,4 @@ These elements can be further used inside the server to retrieve and use informa
 
 General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/join-keys).
 
-The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `data_merge_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please contact the NEST team to discuss your use case.
+The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `data_merge_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.
