@@ -1,6 +1,5 @@
-#' @title format_data_extract
-#' @description
-#' Returns a human-readable string representation of an extracted `data_extract_spec` object.
+#' @title Formatting data extracts
+#' @description Returns a human-readable string representation of an extracted `data_extract_spec` object.
 #'
 #' @details
 #' This function formats the output of [`data_extract_srv`]. See the example for more information.
