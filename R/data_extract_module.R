@@ -358,7 +358,6 @@ data_extract_srv <- function(id, datasets, data_extract_spec) {
         return(reactive(NULL))
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
-
       res <- tryCatch(
         check_data_extract_spec_react(datasets, data_extract_spec),
         error = function(e) shiny::reactive(shiny::validate(e$message))
