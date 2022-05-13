@@ -1,12 +1,13 @@
+#' @title format_data_extract
 #' @description
 #' Returns a human-readable string representation of an extracted `data_extract_spec` object.
 #'
 #' @details
 #' This function formats the output of [`data_extract_srv`]. See the example for more information.
 #'
-#' @param `list` the list output of `data_extract_srv`
+#' @param data_extract `list` the list output of `data_extract_srv`
 #' @return `character(1)` the string representation
-#' @example
+#' @examples
 #' simple_des <- data_extract_spec(
 #'   dataname = "iris",
 #'   filter = filter_spec(vars = "Petal.Length", choices = c("1.4", "1.5")),
