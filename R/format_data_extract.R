@@ -49,6 +49,10 @@
 #' @export
 #'
 format_data_extract <- function(data_extract) {
+  if (is.null(data_extract)) {
+    return(NULL)
+  }
+
   checkmate::assert_list(data_extract)
   required_names <- c("select", "filters", "dataname")
   if (!checkmate::test_subset(required_names, choices = names(data_extract))) {
