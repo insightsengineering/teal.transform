@@ -16,8 +16,10 @@ ui <- shiny::fluidPage(
   shiny::verbatimTextOutput(outputId = "formatted_des"),
 )
 srv <- function(input, output, session) {
-    extracted_des <- teal.transform::data_extract_srv(id = "des", datasets = sample_filtered_data, data_extract_spec = simple_des)
-    output$formatted_des <- shiny::renderPrint(cat(teal.transform::format_data_extract(extracted_des())))
+  extracted_des <- teal.transform::data_extract_srv(
+    id = "des", datasets = sample_filtered_data, data_extract_spec = simple_des
+  )
+  output$formatted_des <- shiny::renderPrint(cat(teal.transform::format_data_extract(extracted_des())))
 }
 
 shiny::shinyApp(ui, srv)

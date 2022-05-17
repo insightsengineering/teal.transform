@@ -5,12 +5,12 @@ template:
   package: nesttemplate
 
 articles:
-- title: Articles
-  navbar: ~
-  contents:
-  - data-extract
-  - data-extract-merge
-  - data-merge
+  - title: Articles
+    navbar: ~
+    contents:
+      - data-extract
+      - data-extract-merge
+      - data-merge
 
 navbar:
   right:
