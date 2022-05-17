@@ -53,7 +53,7 @@ if (interactive()) {
         data_extract_spec = simple_des
       )
       output$formatted_extract <- shiny::renderPrint({
-        format_data_extract(extracted_input())
+        cat(format_data_extract(extracted_input()))
       })
     }
   )
