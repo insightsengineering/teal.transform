@@ -55,11 +55,10 @@ extract_srv <- function(id, datasets, data_extract) {
   moduleServer(id, function(input, output, session) {
     reactive_extract_input <- data_extract_srv("data_extract", datasets, data_extract)
     s <- reactive({
-      str(reactive_extract_input())
-      reactive_extract_input()
+      format_data_extract(reactive_extract_input())
     })
     output$output <- renderPrint({
-      s()
+      cat(s())
     })
   })
 }
