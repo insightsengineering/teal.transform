@@ -5,4 +5,5 @@
 #' @import shiny
 #' @importFrom magrittr %>%
 #' @importFrom formatters var_relabel var_labels
+#' @importFrom lifecycle badge
 NULL
