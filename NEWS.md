@@ -1,4 +1,7 @@
-# teal.transform 0.1.0.9008
+# teal.transform 0.1.0.9009
+
+### New features
+* Added a formatting function for the output of `data_extract_srv` - `format_data_extract`.
 
 ### Breaking changes
 * Removed the (previously deprecated) `input_id` argument to `data_merge_module`.
