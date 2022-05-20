@@ -20,12 +20,13 @@ A list of data filter and select information constructed by \link{data_extract_s
 A reactive \code{list} containing following fields:
 
 \itemize{
-\item{\code{keys}: }{The name of the columns that can be used to merge the \code{data.frame}.}
-\item{\code{internal_id}: }{The \code{inputId} of the corresponding shiny input element.}
-\item{\code{dataname}: }{The name of the dataset handed over.}
-\item{\code{filter_and_select}: }{The information given by the teal app user. This information
-defines the filters that are applied to the data. Additionally, it defines
-the variables that are selected from the dataset.}
+\item{\code{filters}: }{A list with the information on the filters that are applied to the data set.}
+\item{\code{select}: }{The variables that are selected from the dataset.}
+\item{\code{always_selected}: }{The column names from the data set that should always be selected.}
+\item{\code{reshape}: }{Whether reshape long to wide should be applied or not.}
+\item{\code{dataname}: }{The name of the data set.}
+\item{\code{internal_id}: }{The \code{id} of the corresponding shiny input element.}
+\item{\code{keys}: }{The names of the columns that can be used to merge the data set.}
 }
 }
 \description{
