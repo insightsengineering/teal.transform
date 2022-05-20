@@ -12,7 +12,7 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9010</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -91,12 +82,13 @@ A list of data filter and select information constructed by <a href="data_extrac
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A reactive <code>list</code> containing following fields:</p><ul><li><p><code>keys</code>: The name of the columns that can be used to merge the <code>data.frame</code>.</p></li>
-<li><p><code>internal_id</code>: The <code>inputId</code> of the corresponding shiny input element.</p></li>
-<li><p><code>dataname</code>: The name of the dataset handed over.</p></li>
-<li><p><code>filter_and_select</code>: The information given by the teal app user. This information
-defines the filters that are applied to the data. Additionally, it defines
-the variables that are selected from the dataset.</p></li>
+    <p>A reactive <code>list</code> containing following fields:</p><ul><li><p><code>filters</code>: A list with the information on the filters that are applied to the data set.</p></li>
+<li><p><code>select</code>: The variables that are selected from the dataset.</p></li>
+<li><p><code>always_selected</code>: The column names from the data set that should always be selected.</p></li>
+<li><p><code>reshape</code>: Whether reshape long to wide should be applied or not.</p></li>
+<li><p><code>dataname</code>: The name of the data set.</p></li>
+<li><p><code>internal_id</code>: The <code>id</code> of the corresponding shiny input element.</p></li>
+<li><p><code>keys</code>: The names of the columns that can be used to merge the data set.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
