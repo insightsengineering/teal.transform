@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9012</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,15 +35,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -65,20 +56,22 @@ Other releases
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0.9011" id="tealtransform-0109011">teal.transform 0.1.0.9011<a class="anchor" aria-label="anchor" href="#tealtransform-0109011"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0.9012" id="tealtransform-0109012">teal.transform 0.1.0.9012<a class="anchor" aria-label="anchor" href="#tealtransform-0109012"></a></h2>
 <div class="section level4">
-<h4 id="new-features-0-1-0-9011">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0-9011"></a></h4>
-<ul><li>Added a formatting function for the output of <code>data_extract_srv</code> - <code>format_data_extract</code>.</li>
+<h4 id="new-features-0-1-0-9012">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0-9012"></a></h4>
+<ul><li>Added a formatting function <code>format_data_extract</code> for the output of <code>data_extract_srv</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="breaking-changes-0-1-0-9011">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0-9011"></a></h4>
+<h4 id="breaking-changes-0-1-0-9012">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0-9012"></a></h4>
 <ul><li>Removed the (previously deprecated) <code>input_id</code> argument to <code>data_merge_module</code>.</li>
-<li>All <code>selected</code> values must be valid <code>choices</code> when calling <code>choices_selected</code>. When using delayed resolving the invalid selected are removed and a warning is thrown to the logs, in other cases an error is thrown.</li>
+<li>Updated <code>choices_selected</code> so that all <code>selected</code> values must be valid <code>choices</code>. When using delayed resolving the invalid selected are removed and a warning is thrown to the logs, in other cases an error is thrown.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-1-0-9011">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-0-9011"></a></h4>
+<h4 id="miscellaneous-0-1-0-9012">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-0-9012"></a></h4>
 <ul><li>Added a template to the <code>pkgdown</code> site.</li>
-<li>Added names to the <code>id</code> parameter of <code>chunks$push</code>.</li>
+<li>Added names to the <code>id</code> parameter of <code>chunks$push</code> calls.</li>
+<li>Updated package authors.</li>
+<li>Added vignettes for extracting and merging data.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -90,7 +83,7 @@ Other releases
 <ul><li>Added new argument <code>ordered</code> for <code><a href="../reference/select_spec.html">select_spec()</a></code> to flag whether order of the selection should be tracked.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="misc-0-1-0">Misc<a class="anchor" aria-label="anchor" href="#misc-0-1-0"></a></h4>
+<h4 id="miscellaneous-0-1-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-1-0"></a></h4>
 <ul><li>The <code>get_relabel_call</code> function now returns <code><a href="https://rdrr.io/pkg/formatters/man/var_relabel.html" class="external-link">formatters::var_relabel</a></code> instead of <code>teal.data::var_relabel</code>.</li>
 </ul></div>
 </div>

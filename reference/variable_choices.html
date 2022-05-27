@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9012</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 30px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,15 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start_releases -->
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-Other releases
-<span class="caret"></span></a><ul class="dropdown-menu" role="menu">
-   <li><a href="../index.html">latest</a></li>
-   <li><a href="..//index.html"></a></li>
-</ul></li>
-<!-- end_releases -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -129,13 +120,14 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-in"><span class="va">ADRS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adrs</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 51 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 54 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> USUBJID: Unique Subject Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SUBJID: Subject Identifier for the Study</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SITEID: Study Site Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AGE: Age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
@@ -147,6 +139,8 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
@@ -217,13 +211,14 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-in"><span class="co"># also works with [teal.data::TealDataset] and [teal.data::TealDatasetConnector]</span></span>
 <span class="r-in"><span class="va">ADRS_dataset</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.data/man/dataset.html" class="external-link">dataset</a></span><span class="op">(</span><span class="st">"ADRS"</span>, <span class="va">ADRS</span>, key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.data/man/get_cdisc_keys.html" class="external-link">get_cdisc_keys</a></span><span class="op">(</span><span class="st">"ADRS"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS_dataset</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 51 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 54 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> USUBJID: Unique Subject Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SUBJID: Subject Identifier for the Study</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SITEID: Study Site Identifier</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AGE: Age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
@@ -235,6 +230,8 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
@@ -299,7 +296,7 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx &lt;- vapply(data, is.factor, logical(1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   return(names(data)[idx])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x557e3310ccd0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c5fad0a5c0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
