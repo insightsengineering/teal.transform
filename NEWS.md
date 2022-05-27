@@ -2,7 +2,6 @@
 
 ### New features
 * Added a formatting function `format_data_extract` for the output of `data_extract_srv`.
-* Added vignettes for extracting and merging data.
 
 ### Breaking changes
 * Removed the (previously deprecated) `input_id` argument to `data_merge_module`.
@@ -12,6 +11,7 @@
 * Added a template to the `pkgdown` site.
 * Added names to the `id` parameter of `chunks$push` calls.
 * Updated package authors.
+* Added vignettes for extracting and merging data.
 
 # teal.transform 0.1.0
 
