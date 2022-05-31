@@ -1,0 +1,146 @@
+---
+title: "Combining data-extract with data-merge"
+author: "NEST coreDev"
+date: "2022-05-03"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Combining data-extract with data-merge}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+#### Combining data-extract with data-merge
+
+`teal.transform` provides `data_merge_srv` which converts `data_extract_srv` into R expression to transform data 
+for analytical purposes. For example, we may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE` filtered 
+for rows where `PARAMCD` is `OS` and merge the results (using the primary keys) to create an analysis dataset 
+`ANL` to be used in the module, as this diagram shows:
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics("./images/data_extract_spec/basic_concept.png")
+```
+
+In the following code block we create a `data_extract_spec` object per dataset as illustrated above. 
+
+```{r}
+library(teal.transform)
+library(shiny)
+
+adsl_extract <- teal.transform::data_extract_spec(
+  dataname = "ADSL",
+  select = select_spec(
+    label = "Select variable:",
+    choices = c("AGE", "BMRKR1"),
+    selected = "AGE",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+adtte_extract <- teal.transform::data_extract_spec(
+  dataname = "ADTTE",
+  select = select_spec(
+    choices = c("AVAL", "ASEQ"),
+    selected = "AVAL",
+    multiple = TRUE,
+    fixed = FALSE
+  ),
+  filter = filter_spec(
+    vars = "PARAMCD",
+    choices = c("CRSD", "EFS", "OS", "PFS"),
+    selected = "OS"
+  )
+)
+
+data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
+```
+
+#### Example module
+
+Here, we create the `merge_ui` and the `merge_srv` functions which will be used to create the `ui` and the `srv`
+components of the shiny app, respectively. 
+
+```{r}
+merge_ui <- function(id, data_extracts) {
+  ns <- NS(id)
+  teal.widgets::standard_layout(
+    output = teal.widgets::white_small_well(
+      verbatimTextOutput(ns("expr")),
+      dataTableOutput(ns("data"))
+    ),
+    encoding = div(
+      teal.transform::data_extract_ui(
+        ns("adsl_extract"), # must correspond with data_extracts list names
+        label = "ADSL extract",
+        data_extracts[[1]]
+      ),
+      teal.transform::data_extract_ui(
+        ns("adtte_extract"), # must correspond with data_extracts list names
+        label = "ADTTE extract",
+        data_extracts[[2]]
+      )
+    )
+  )
+}
+
+merge_srv <- function(id, datasets, data_extracts) {
+  moduleServer(id, function(input, output, session) {
+    selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets)
+    merged_data <- teal.transform::data_merge_srv(
+      selector_list = selector_list,
+      datasets = datasets,
+      merge_function = "dplyr::left_join"
+    )
+    output$expr <- renderText(merged_data()$expr)
+    output$data <- renderDataTable(merged_data()$data())
+  })
+}
+```
+
+Output from `data_extract_srv` (`reactive`) should be passed to `data_merge_srv` together with `datasets`
+(`FilteredData`). `data_merge_srv` returns a reactive list containing merged data and information needed to perform
+the transformation - see more in `data_merge_srv` documentation. 
+
+#### Example data
+
+`teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. For example purposes we define a 
+wrapper function to initialize the necessary object:
+
+```{r}
+sample_filtered_data <- function() {
+  # create TealData
+  adsl <- teal.data::cdisc_dataset("ADSL", scda::synthetic_cdisc_data("latest")$adsl)
+  adtte <- teal.data::cdisc_dataset("ADTTE", scda::synthetic_cdisc_data("latest")$adtte)
+  data <- teal.data::cdisc_data(adsl, adtte)
+
+  # covert TealData to FilteredData
+  datasets <- teal.slice:::filtered_data_new(data)
+  teal.slice:::filtered_data_set(data, datasets)
+  datasets
+}
+
+datasets <- sample_filtered_data()
+```
+
+#### Shiny app
+
+Finally, we pass `merge_ui` and `merge_srv` to the `ui` and `server` functions of the `shinyApp`
+using the `data_extract`s defined in the first code block and the `datasets` object:
+
+```{r eval=FALSE}
+shinyApp(
+  ui = fluidPage(merge_ui("data_merge", data_extracts)),
+  server = function(input, output, session) {
+    merge_srv("data_merge", datasets, data_extracts)
+  }
+)
+```

@@ -61,9 +61,16 @@ testthat::test_that("delayed version of choices_selected", {
   testthat::expect_equal(res_obj, exp_obj)
 })
 
-testthat::test_that("choices_selected does not add selected to choices when selected is not found in choices", {
-  test <- choices_selected(choices = c("a"), selected = "b")
-  testthat::expect_equal(test$choices, "a")
+testthat::test_that("choices_selected throws error when selected is not found in choices", {
+  testthat::expect_error(choices_selected(choices = c("a"), selected = "b"), "b 'selected' but not in 'choices'")
+  testthat::expect_error(
+    choices_selected(choices = c("a"), selected = c("a", "b")),
+    "b 'selected' but not in 'choices'"
+  )
+  testthat::expect_error(
+    choices_selected(choices = c("a"), selected = c("c", "b")),
+    "c, b 'selected' but not in 'choices'"
+  )
 })
 
 testthat::test_that("all_choices is the same as selecting all choices", {

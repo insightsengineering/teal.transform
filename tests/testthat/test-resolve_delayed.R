@@ -84,3 +84,26 @@ testthat::test_that("resolve_delayed.list works correctly", {
   ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, ds))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
+
+
+testthat::test_that("resolving delayed choices removes selected not in choices and give a log output", {
+  iris_dataset <- teal.data::dataset("IRIS", head(iris))
+
+  c_s <- choices_selected(
+    choices = variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
+    selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
+  )
+
+  ds <- teal.slice:::FilteredData$new()
+  output <- testthat::capture_output({
+    shiny::isolate({
+      teal.slice:::filtered_data_set(teal.data::teal_data(iris_dataset), ds)
+      resolved_cs <- resolve_delayed(c_s, ds)
+    })
+  })
+
+  testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))
+  testthat::expect_true(
+    grepl("Removing Petal.Length from 'selected' as not in 'choices' when resolving delayed choices_selected", output)
+  )
+})

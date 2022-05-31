@@ -264,12 +264,13 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' A reactive `list` containing following fields:
 #'
 #' \itemize{
-#'   \item{`keys`: }{The name of the columns that can be used to merge the `data.frame`.}
-#'   \item{`internal_id`: }{The `inputId` of the corresponding shiny input element.}
-#'   \item{`dataname`: }{The name of the dataset handed over.}
-#'   \item{`filter_and_select`: }{The information given by the teal app user. This information
-#'    defines the filters that are applied to the data. Additionally, it defines
-#'    the variables that are selected from the dataset.}
+#'   \item{`filters`: }{A list with the information on the filters that are applied to the data set.}
+#'   \item{`select`: }{The variables that are selected from the dataset.}
+#'   \item{`always_selected`: }{The column names from the data set that should always be selected.}
+#'   \item{`reshape`: }{Whether reshape long to wide should be applied or not.}
+#'   \item{`dataname`: }{The name of the data set.}
+#'   \item{`internal_id`: }{The `id` of the corresponding shiny input element.}
+#'   \item{`keys`: }{The names of the columns that can be used to merge the data set.}
 #' }
 #'
 #' @references [data_extract_srv]
@@ -358,7 +359,6 @@ data_extract_srv <- function(id, datasets, data_extract_spec) {
         return(reactive(NULL))
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
-
       res <- tryCatch(
         check_data_extract_spec_react(datasets, data_extract_spec),
         error = function(e) shiny::reactive(shiny::validate(e$message))

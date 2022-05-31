@@ -98,6 +98,16 @@ resolve_delayed.delayed_choices_selected <- function(x, datasets) { # nolint
     x$selected <- resolve_delayed(x$selected, datasets = datasets)
   }
   x$choices <- resolve_delayed(x$choices, datasets = datasets)
+
+  if (!all(x$selected %in% x$choices)) {
+    logger::log_warn(paste(
+      "Removing",
+      paste(x$selected[which(!x$selected %in% x$choices)]),
+      "from 'selected' as not in 'choices' when resolving delayed choices_selected"
+    ))
+    x$selected <- x$selected[which(x$selected %in% x$choices)]
+  }
+
   return(do.call("choices_selected", x))
 }
 

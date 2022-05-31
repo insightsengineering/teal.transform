@@ -2,8 +2,15 @@
 url: https://insightsengineering.github.io/teal.transform
 
 template:
-  params:
-    bootswatch: cerulean
+  package: nesttemplate
+
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+      - data-extract
+      - data-extract-merge
+      - data-merge
 
 navbar:
   right:
@@ -45,3 +52,6 @@ reference:
       - is_single_dataset
       - list_extract_spec
       - merge_datasets
+  - title: Human-readable formatting of a data extract object
+    contents:
+      - format_data_extract

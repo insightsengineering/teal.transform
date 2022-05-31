@@ -7,7 +7,6 @@
 data_merge_module(
   datasets,
   data_extract,
-  input_id,
   merge_function = "dplyr::full_join",
   anl_name = "ANL",
   id = "merge_id"
@@ -17,12 +16,7 @@ data_merge_module(
 \item{datasets}{(\code{FilteredData})\cr
 object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
 
-\item{data_extract}{(\code{list} of \code{data_extract_spec})\cr
-The usage of named list as input can replace \code{input_id} argument.}
-
-\item{input_id}{(\code{character})\cr
-vector of input IDs to read from. \code{input_id} is optional as a named
-list in \code{data_extract} can replace it.}
+\item{data_extract}{(named \code{list} of \code{data_extract_spec})\cr}
 
 \item{merge_function}{(\code{character(1)})\cr
 A character string of a function that
@@ -41,13 +35,9 @@ reactive expression with output from \code{\link[=data_merge_srv]{data_merge_srv
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-This function is a convenient wrapper to combine \code{data_extract_multiple_srv} and
+This function is a convenient wrapper to combine \code{data_extract_multiple_srv()} and
 \code{data_merge_srv()} when no additional processing is required.
-Compare example below with that found in \link{data_extract_srv}.
-}
-\note{
-\code{input_id} argument is deprecated and will be removed in future releases.
-Please consider using a named list for \code{data_extract} argument as an alternative.
+Compare the example below with that found in \code{\link[=data_merge_srv]{data_merge_srv()}}.
 }
 \examples{
 library(shiny)
