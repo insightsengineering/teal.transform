@@ -68,7 +68,7 @@ extract_srv <- function(id, datasets, data_extract) {
 #### Example data
 
 `teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. Normally, `FilteredData` is created
-automatically by [`teal::init`](https://insightsengineering.github.io/teal/reference/init), but for example purposes we define a wrapper function to #no initialize the necessary object. #nolint
+automatically by [`teal::init`](https://insightsengineering.github.io/teal/reference/init), but for example purposes we define a wrapper function to #no initialize the necessary object.
 
 ```{r}
 sample_filtered_data <- function() {
