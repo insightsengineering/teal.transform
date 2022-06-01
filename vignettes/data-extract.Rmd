@@ -36,7 +36,7 @@ e.g. `teal.modules.general` and `teal.modules.clinical`.
 
 In order to showcase different initialization options of `data_extract_spec`, first we define a `shiny` module which
 uses `data_extract_ui` and `data_extract_srv` designed to handle `data_extract_spec` objects. The module creates a UI
-component for single `data_extract_spec` and prints list of values returned from `data_extract_srv` module. Please see
+component for single `data_extract_spec` and prints a list of values returned from `data_extract_srv` module. Please see
 package documentation for more information about `data_extract_ui` and `data_extract_srv`.
 
 ```{r}
@@ -68,7 +68,7 @@ extract_srv <- function(id, datasets, data_extract) {
 #### Example data
 
 `teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. Normally, `FilteredData` is created
-automatically by `teal::init`, but for example purposes we define a wrapper function to initialize the necessary object.
+automatically by [teal::init](https://insightsengineering.github.io/teal/reference/init), but for example purposes we define a wrapper function to initialize the necessary object.
 
 ```{r}
 sample_filtered_data <- function() {

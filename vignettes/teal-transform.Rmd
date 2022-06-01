@@ -30,5 +30,7 @@ columns in their applications
 ## Data Extract and Data Merge
 
 For information about selecting columns of data see the [data extract](data-extract.html) vignette.
+
 For more information about merging data see the [data merge](data-merge.html) vignette.
-For more information about using the extraction and merge together see the [data merge](data-extract-merge.html) vignette.
+
+For more information about using the extraction and merge together see the [Combining data-extract with data-merge](data-extract-merge.html) vignette.

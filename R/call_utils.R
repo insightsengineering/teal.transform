@@ -407,7 +407,7 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #'
 #' # does not work because argument is evaluated and the
 #' # non-dplyr filter does not look inside mtcars
-#' # cannot eval becausee it does not pass checks because of non-standard evaluation
+#' # cannot eval because it does not pass checks because of non-standard evaluation
 #' call("filter", as.name("mtcars"), quote(cyl == 6))
 #' # works, but non-dplyr filter is taken
 #' call("filter", as.name("mtcars"), mtcars$cyl == 6)
