@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for extracting and merging data in the teal framework
-Version: 0.1.0.9013
-Date: 2022-04-07
+Version: 0.1.1
+Date: 2022-06-09
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -21,7 +21,7 @@ Depends:
 Imports:
     checkmate,
     dplyr,
-    formatters,
+    formatters (>= 0.3.1),
     lifecycle,
     logger (>= 0.2.0),
     methods,
@@ -29,18 +29,18 @@ Imports:
     shiny,
     shinyjs,
     stats,
-    teal.code,
-    teal.data,
-    teal.logger,
-    teal.slice,
-    teal.widgets,
+    teal.code (>= 0.1.1),
+    teal.data (>= 0.1.1),
+    teal.logger (>= 0.1.0),
+    teal.slice (>= 0.1.1),
+    teal.widgets (>= 0.1.1),
     tidyr,
     tidyselect
 Suggests:
     knitr,
     rmarkdown,
-    scda.2021(>= 0.1.3),
-    scda(>= 0.1.3),
+    scda.2021 (>= 0.1.3),
+    scda (>= 0.1.3),
     shinytest,
     testthat (>= 2.0)
 VignetteBuilder:
