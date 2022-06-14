@@ -1,0 +1,15 @@
+library(shinytest2)
+
+test_that("{shinytest2} recording: format_data_extract", {
+  app <- AppDriver$new(name = "format_data_extract", height = 919, width = 1619)
+  app$expect_values(output = "formatted_des")
+  app$set_inputs(`des-dataset_iris_singleextract-filter1-col` = character(0))
+  app$expect_values(output = "formatted_des")
+  app$set_inputs(`des-dataset_iris_singleextract-filter1-col` = "Petal.Length")
+  app$set_inputs(`des-dataset_iris_singleextract-filter1-vals` = "1.2")
+  app$expect_values(output = "formatted_des")
+  app$set_inputs(`des-dataset_iris_singleextract-select` = character(0))
+  app$expect_values(output = "formatted_des")
+  app$set_inputs(`des-dataset_iris_singleextract-select` = "Species")
+  app$expect_values(output = "formatted_des")
+})

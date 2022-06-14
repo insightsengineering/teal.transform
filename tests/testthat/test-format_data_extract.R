@@ -56,9 +56,7 @@ testthat::test_that("format_data_extract integrates with data_extract_srv", {
   )
 })
 
-testthat::test_that("format_data_extract integrates with data_extract_srv and the filtered data object", {
-  skip_if_too_deep(4)
-  shinytest::expect_pass(
-    shinytest::testApp(testthat::test_path("shinytest/format_data_extract"), compareImages = FALSE)
-  )
+testthat::test_that("format_data_extract shinytest tests", {
+  skip_if_too_deep(3)
+  shinytest2::test_app(testthat::test_path("shinytest/format_data_extract/"))
 })
