@@ -29,7 +29,7 @@ for rows where `PARAMCD` is `OS` and merge the results (using the primary keys) 
 knitr::include_graphics("./images/data_extract_spec/basic_concept.png")
 ```
 
-In the following code block we create a `data_extract_spec` object per dataset as illustrated above. 
+In the following code block we create a `data_extract_spec` object per dataset as illustrated above.
 
 ```{r}
 library(teal.transform)
