@@ -1,5 +1,5 @@
-adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
 adsl_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
+adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
 
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0))),

@@ -86,8 +86,6 @@ testthat::test_that("resolve_delayed.list works correctly", {
 
 
 testthat::test_that("resolving delayed choices removes selected not in choices and give a log output", {
-  iris_dataset <- teal.data::dataset("IRIS", utils::head(iris))
-
   c_s <- choices_selected(
     choices = variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
     selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
@@ -95,7 +93,7 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
 
   output <- testthat::capture_output({
     shiny::isolate({
-      ds <- teal.slice::init_filtered_data(list(iris = list(dataset = iris)))
+      ds <- teal.slice::init_filtered_data(list(IRIS = list(dataset = head(iris))))
       resolved_cs <- resolve_delayed(c_s, ds)
     })
   })
