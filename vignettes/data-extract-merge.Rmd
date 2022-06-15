@@ -124,7 +124,6 @@ sample_filtered_data <- function() {
 
   # covert TealData to FilteredData
   teal.slice::init_filtered_data(data)
-
 }
 
 datasets <- sample_filtered_data()
