@@ -158,8 +158,10 @@ test_that("delayed filter_spec", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL)))
+  ds <- teal.slice::init_filtered_data(
+    list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
+    cdisc = TRUE
+  )
   result_spec <- isolate(resolve_delayed(delayed, ds))
   expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
@@ -243,8 +245,11 @@ test_that("delayed filter_spec works", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  ds <- teal.slice:::FilteredData$new()
-  isolate(ds$set_dataset(teal.data::dataset("ADSL", ADSL)))
+  ds <- teal.slice::init_filtered_data(
+    list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
+    cdisc = TRUE
+  )
+
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
   expect_identical(
@@ -280,8 +285,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADTTE", adtte)
 )
 
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(

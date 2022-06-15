@@ -12,11 +12,13 @@
 #' @examples
 #' library(scda)
 #'
-#' ds <- teal.slice:::FilteredData$new()
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
-#' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 #' shiny::isolate({
-#'   ds$set_dataset(teal.data::dataset("ADSL", ADSL))
+#'
+#'   ds <- teal.slice::init_filtered_data(
+#'     list(ADSL = list(dataset = ADSL, keys = teal.data::get_cdisc_keys("ADSL")), parent = character(0)),
+#'     cdisc = TRUE
+#'   )
 #'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")

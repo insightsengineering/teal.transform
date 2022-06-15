@@ -1,9 +1,7 @@
 adsl <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
 adtte <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADTTE"))))
 data <- teal.data::cdisc_data(teal.data::cdisc_dataset("ADSL", adsl), teal.data::cdisc_dataset("ADTTE", adtte))
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(

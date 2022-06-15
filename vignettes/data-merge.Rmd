@@ -99,10 +99,8 @@ sample_filtered_data <- function() {
   adtte <- teal.data::cdisc_dataset("ADTTE", scda::synthetic_cdisc_data("latest")$adtte)
   data <- teal.data::cdisc_data(adsl, adtte)
 
-  # convert TealData to FilteredData
-  datasets <- teal.slice:::filtered_data_new(data)
-  teal.slice:::filtered_data_set(data, datasets)
-  datasets
+  # covert TealData to FilteredData
+  teal.slice::init_filtered_data(data)
 }
 
 datasets <- sample_filtered_data()

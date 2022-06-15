@@ -7,8 +7,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADTTE", adtte)
 )
 
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
@@ -87,17 +86,16 @@ testthat::test_that("resolve_delayed.list works correctly", {
 
 
 testthat::test_that("resolving delayed choices removes selected not in choices and give a log output", {
-  iris_dataset <- teal.data::dataset("IRIS", head(iris))
+  iris_dataset <- teal.data::dataset("IRIS", utils::head(iris))
 
   c_s <- choices_selected(
     choices = variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
     selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
   )
 
-  ds <- teal.slice:::FilteredData$new()
   output <- testthat::capture_output({
     shiny::isolate({
-      teal.slice:::filtered_data_set(teal.data::teal_data(iris_dataset), ds)
+      ds <- teal.slice::init_filtered_data(list(iris = list(dataset = iris)))
       resolved_cs <- resolve_delayed(c_s, ds)
     })
   })
