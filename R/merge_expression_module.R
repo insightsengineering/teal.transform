@@ -1,13 +1,13 @@
-#' Data merge module
+#' Merge expression module
 #'
 #' @description `r lifecycle::badge("experimental")`
 #' @details This function is a convenient wrapper to combine `data_extract_multiple_srv()` and
-#' `data_merge_srv()` when no additional processing is required.
-#' Compare the example below with that found in [data_merge_srv()].
+#' `merge_expression_srv()` when no additional processing is required.
+#' Compare the example below with that found in [merge_expression_srv()].
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (`FilteredData`)\cr
-#'  object containing data, see [teal.slice::FilteredData] for more.
+#' @param data (named `list`)\cr of datasets.
+#' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
@@ -15,15 +15,14 @@
 #' @param anl_name (`character(1)`)\cr
 #'  Name of the analysis dataset.
 #'
-#' @return reactive expression with output from [data_merge_srv()].
+#' @return reactive expression with output from [merge_expression_srv()].
 #'
-#' @seealso [data_merge_srv()]
+#' @seealso [merge_expression_srv()]
 #'
 #' @export
 #'
 #' @examples
 #' library(shiny)
-#'
 #' ADSL <- data.frame(
 #'   STUDYID = "A",
 #'   USUBJID = LETTERS[1:10],
@@ -46,6 +45,11 @@
 #' )
 #' datasets <- teal.slice:::filtered_data_new(data)
 #' teal.slice:::filtered_data_set(data, datasets)
+#'
+#' data_list <- list(
+#'   ADSL = ADSL,
+#'   ADLB = ADLB
+#' )
 #'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
@@ -82,24 +86,59 @@
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     merged_data <- data_merge_module(
+#'     chunks_h <- teal.code::chunks_new()
+#'
+#'     teal.code::chunks_push(
+#'       str2lang("ADSL <- data.frame(
+#'       STUDYID = 'A',
+#'       USUBJID = LETTERS[1:10],
+#'       SEX = rep(c('F', 'M'), 5),
+#'       AGE = rpois(10, 30),
+#'       BMRKR1 = rlnorm(10))"),
+#'       chunks = chunks_h
+#'     )
+#'
+#'     teal.code::chunks_push(
+#'       str2lang("ADLB <- expand.grid(
+#'       STUDYID = 'A',
+#'       USUBJID = LETTERS[1:10],
+#'       PARAMCD = c('ALT', 'CRP', 'IGA'),
+#'       AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),
+#'       AVAL = rlnorm(120),
+#'       CHG = rlnorm(120))"),
+#'       chunks = chunks_h
+#'     )
+#'
+#'     merged_data <- merge_expression_module(
 #'       data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
+#'       data = data_list,
 #'       datasets = datasets,
+#'       join_keys = dd,
 #'       merge_function = "dplyr::left_join"
 #'     )
+#'
+#'     ch_merge <- reactive({
+#'       ch <- teal.code::chunks_deep_clone(chunks_h)
+#'       for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
+#'       ch$eval()
+#'       ch
+#'     })
+#'
 #'     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-#'     output$data <- renderDataTable(merged_data()$data())
+#'     output$data <- renderDataTable(ch_merge()$get("ANL"))
 #'   }
 #' )
 #' \dontrun{
 #' runApp(app)
 #' }
-data_merge_module <- function(datasets,
-                              data_extract,
-                              merge_function = "dplyr::full_join",
-                              anl_name = "ANL",
-                              id = "merge_id") {
-  logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
+merge_expression_module <- function(data,
+                                    datasets,
+                                    join_keys = NULL,
+                                    data_extract,
+                                    merge_function = "dplyr::full_join",
+                                    anl_name = "ANL",
+                                    id = "merge_id") {
+  logger::log_trace("merge_expression_module called with: { paste(names(data), collapse = ', ') } datasets.")
 
   checkmate::assert_list(data_extract)
   stopifnot(
@@ -114,10 +153,11 @@ data_merge_module <- function(datasets,
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets)
 
-  data_merge_srv(
+  merge_expression_srv(
     id = id,
     selector_list = selector_list,
-    datasets = datasets,
+    data = data,
+    join_keys = join_keys,
     merge_function = merge_function,
     anl_name = anl_name
   )
@@ -127,25 +167,25 @@ data_merge_module <- function(datasets,
 #' Data merge module server
 #'
 #' @description `r lifecycle::badge("experimental")`
-#' @details When additional processing of the `data_extract` list input is required, `data_merge_srv()` can be combined
+#' @details When additional processing of the `data_extract` list input is required, `merge_expression_srv()` can be combined
 #'   with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
-#'   Compare the example below with that found in [data_merge_module()].
+#'   Compare the example below with that found in [merge_expression_module()].
 #'
 #' @inheritParams shiny::moduleServer
+#' @param data (named `list`)\cr of datasets.
+#' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
 #'   When using a reactive named list, the names must be identical to the shiny ids of the respective [data_extract_ui()].
-#' @param datasets (`FilteredData`)\cr
-#'  object containing data (see `teal.slice::FilteredData`).
 #' @param merge_function (`character(1)` or `reactive`)\cr
 #'  A character string of a function that accepts the arguments
 #'  `x`, `y` and `by` to perform the merging of datasets.
 #' @param anl_name (`character(1)`)\cr
 #'  Name of the analysis dataset.
 #'
-#' @return reactive expression with output from [merge_datasets].
+#' @return reactive expression with output from [merge_datasets()].
 #'
-#' @seealso [data_extract_srv()]
+#' @seealso [merge_expression_srv()]
 #'
 #' @export
 #'
@@ -159,6 +199,7 @@ data_merge_module <- function(datasets,
 #'   AGE = rpois(10, 30),
 #'   BMRKR1 = rlnorm(10)
 #' )
+#'
 #' ADLB <- expand.grid(
 #'   STUDYID = "A",
 #'   USUBJID = LETTERS[1:10],
@@ -166,7 +207,7 @@ data_merge_module <- function(datasets,
 #'   AVISIT = c("SCREENING", "BASELINE", "WEEK 1 DAY 8", "WEEK 2 DAY 15")
 #' )
 #' ADLB$AVAL <- rlnorm(120)
-#' ADLB$CHG <- rnorm(120)
+#' ADLB$CHG <- rlnorm(120)
 #'
 #' data <- teal.data::cdisc_data(
 #'   teal.data::cdisc_dataset("ADSL", ADSL),
@@ -174,6 +215,11 @@ data_merge_module <- function(datasets,
 #' )
 #' datasets <- teal.slice:::filtered_data_new(data)
 #' teal.slice:::filtered_data_set(data, datasets)
+#'
+#' data_list <- list(
+#'   ADSL = ADSL,
+#'   ADLB = ADLB
+#' )
 #'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
@@ -211,62 +257,86 @@ data_merge_module <- function(datasets,
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
+#'     chunks_h <- teal.code::chunks_new()
+#'
+#'     teal.code::chunks_push(
+#'       str2lang("ADSL <- data.frame(
+#'       STUDYID = 'A',
+#'       USUBJID = LETTERS[1:10],
+#'       SEX = rep(c('F', 'M'), 5),
+#'       AGE = rpois(10, 30),
+#'       BMRKR1 = rlnorm(10))"),
+#'       chunks = chunks_h
+#'     )
+#'
+#'     teal.code::chunks_push(
+#'       str2lang("ADLB <- expand.grid(
+#'       STUDYID = 'A',
+#'       USUBJID = LETTERS[1:10],
+#'       PARAMCD = c('ALT', 'CRP', 'IGA'),
+#'       AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),
+#'       AVAL = rlnorm(120),
+#'       CHG = rlnorm(120))"),
+#'       chunks = chunks_h
+#'     )
+#'
 #'     selector_list <- data_extract_multiple_srv(
 #'       list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-#'       datasets
+#'       datasets = datasets
 #'     )
-#'     merged_data <- data_merge_srv(
+#'     merged_data <- merge_expression_srv(
 #'       selector_list = selector_list,
-#'       datasets = datasets,
+#'       data = data_list,
+#'       join_keys = dd,
 #'       merge_function = "dplyr::left_join"
 #'     )
-#'     output$expr <- renderText(merged_data()$expr)
-#'     output$data <- renderDataTable(merged_data()$data())
+#'
+#'     ch_merge <- reactive({
+#'       ch <- teal.code::chunks_deep_clone(chunks_h)
+#'       teal.code::chunks_push(chunks = ch, expression = merged_data()$expr)
+#'       ch$eval()
+#'       ch
+#'     })
+#'
+#'     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
+#'     output$data <- renderDataTable(ch_merge()$get("ANL"))
 #'   }
 #' )
 #' \dontrun{
 #' runApp(app)
 #' }
-data_merge_srv <- function(id = "merge_id",
-                           selector_list,
-                           datasets,
-                           merge_function = "dplyr::full_join",
-                           anl_name = "ANL") {
+
+merge_expression_srv <- function(id = "merge_id",
+                                 selector_list,
+                                 data,
+                                 join_keys = NULL,
+                                 merge_function = "dplyr::full_join",
+                                 anl_name = "ANL") {
   checkmate::assert_string(anl_name)
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
-  checkmate::assert_class(datasets, "FilteredData")
+  checkmate::assert_list(data, names = "named")
+  checkmate::assert_list(join_keys, names = "named")
   moduleServer(
     id,
     function(input, output, session) {
       logger::log_trace(
-        "data_merge_srv initialized with: { paste(datasets$datanames(), collapse = ', ') } datasets."
+        "merge_expression_srv initialized with: { paste(names(data), collapse = ', ') } datasets."
       )
       reactive({
         checkmate::assert_list(selector_list(), names = "named", types = "reactive")
         merge_fun_name <- if (inherits(merge_function, "reactive")) merge_function() else merge_function
-        data <- lapply(datasets$datanames(), function(x) datasets$get_data(x, filtered = TRUE))
-        names(data) <- datasets$datanames()
-        join_keys <- datasets$get_join_keys()
         check_merge_function(merge_fun_name)
 
         ds <- Filter(Negate(is.null), lapply(selector_list(), function(x) x()))
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
-        merged_data <- merge_datasets(
+        merge_datasets(
           selector_list = ds,
           data = data,
           join_keys = join_keys,
           merge_function = merge_fun_name,
           anl_name = anl_name
         )
-        ch <- teal.code::chunks_new()
-        teal.code::chunks_reset(envir = list2env(data), chunks = ch)
-        for (chunk in merged_data$expr) teal.code::chunks_push(expression = chunk, chunks = ch)
-        teal.code::chunks_safe_eval(chunks = ch)
-
-        merged_data$data <- reactive({ch$get("ANL")})
-        merged_data$chunks <- ch
-        merged_data
       })
     }
   )

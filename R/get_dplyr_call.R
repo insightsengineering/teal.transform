@@ -123,7 +123,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = list()) {
 #' @param idx optional (\code{integer}) current selector index in all selectors list
 #' @param dplyr_call_data (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
-#' @param datasets (\code{NULL} or \code{FilteredData}).
+#' @param data (\code{NULL} or \code{named `list`}).
 #'
 #' @return (\code{call}) filter, select, rename and reshape call
 #' @keywords internal
@@ -202,11 +202,11 @@ get_dplyr_call <- function(selector_list,
                            idx = 1L,
                            join_keys = list(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
-                           datasets = NULL) {
+                           data = NULL) {
   logger::log_trace(
     paste(
       "get_dplyr_call called with:",
-      "{ paste(datasets$datanames(), collapse = ', ') } datasets;",
+      "{ paste(names(data), collapse = ', ') } datasets;",
       "{ paste(names(selector_list), collapse = ', ') } selectors."
     )
   )
@@ -218,7 +218,7 @@ get_dplyr_call <- function(selector_list,
 
   dataname_filtered <- as.name(paste0(selector_list[[idx]]$dataname, "_FILTERED"))
 
-  filter_call <- get_filter_call(selector_list[[idx]]$filters, selector_list[[idx]]$dataname, datasets)
+  filter_call <- get_filter_call(selector_list[[idx]]$filters, selector_list[[idx]]$dataname, data)
 
   select_call <- get_select_call(dplyr_call_data[[idx]]$init_select_cols_with_keys)
 
@@ -266,7 +266,7 @@ get_select_call <- function(select) {
 #'
 #' @param filter (\code{list}) Either list of lists or list with \code{select} and \code{selected} items.
 #' @param dataname (\code{NULL} or \code{character}) name of dataset.
-#' @param datasets (\code{NULL} or \code{FilteredData}).
+#' @param data (\code{NULL} or \code{named `list`}).
 #' @return (\code{call}) \code{dplyr} filter call
 #' @keywords internal
 #'
@@ -278,7 +278,7 @@ get_select_call <- function(select) {
 #'   list(columns = "SEX", selected = list(NA, "F", "M")),
 #'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
 #' ))
-get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
+get_filter_call <- function(filter, dataname = NULL, data = NULL) {
   logger::log_trace(
     paste(
       "get_filter_call called with:",
@@ -290,17 +290,16 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
     return(NULL)
   }
 
-  stopifnot((!is.null(dataname) && is.null(datasets)) ||
-    (is.null(dataname) && is.null(datasets)) ||
-    (!is.null(datasets) && isTRUE(dataname %in% datasets$datanames())))
-
-  get_filter_call_internal <- function(filter, dataname, datasets) {
+  stopifnot((!is.null(dataname) && is.null(data)) ||
+    (is.null(dataname) && is.null(data)) ||
+    (!is.null(data) && isTRUE(dataname %in% names(data))))
+  get_filter_call_internal <- function(filter, dataname, data) {
     if (rlang::is_empty(filter$selected)) {
       return(FALSE)
     }
 
     keys <- filter$columns
-    datas_vars <- if (!is.null(datasets)) datasets$get_data(dataname, filtered = TRUE) else NULL
+    datas_vars <- if (!is.null(data)) data[[dataname]] else NULL
 
     if (!is.null(datas_vars)) {
       u_variables <- unique(apply(datas_vars[, keys, drop = FALSE], 1, function(x) paste(x, collapse = "-")))
@@ -370,9 +369,9 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
   }
 
   internal <- if (length(filter) == 1) {
-    get_filter_call_internal(filter[[1]], dataname, datasets)
+    get_filter_call_internal(filter[[1]], dataname, data)
   } else {
-    res <- Filter(Negate(is.null), Map(function(x) get_filter_call_internal(x, dataname, datasets), filter))
+    res <- Filter(Negate(is.null), Map(function(x) get_filter_call_internal(x, dataname, data), filter))
     calls_combine_by("&", res)
   }
 

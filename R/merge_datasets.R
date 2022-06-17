@@ -1,16 +1,15 @@
 #' Merge the datasets on the keys
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("exploratory")`
 #' It combines/merges multiple datasets with specified keys attribute.
 #'
 #'
 #' @details Internally this function uses calls to allow reproducibility.
 #'
-#' @inheritParams data_merge_srv
+#' @inheritParams merge_expression_srv
 #' @return merged_dataset (`list`) containing:
 #' \itemize{
-#'  \item data (`data.frame`) after filtering and reshaping containing selected columns.
-#'  \item `expr` (`character`) code needed to replicate merged dataset.
+#'  \item `expr` (`list` of `call`) code needed to replicate merged dataset.
 #'  \item columns_source (`list`) of column selected for particular selector.
 #'  \item keys (`list`) the keys of the merged dataset.
 #'  \item filter_info (`list`) The information given by the user. This information
@@ -34,17 +33,19 @@
 #' )
 #' merged_data <- merge_datasets(list(regressor(), response()))
 #' }
-merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::full_join", anl_name = "ANL") {
+merge_datasets <- function(selector_list, data, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
   logger::log_trace(
     paste(
       "merge_datasets called with:",
-      "{ paste(datasets$datanames(), collapse = ', ') } datasets;",
+      "{ paste(names(data), collapse = ', ') } datasets;",
       "{ paste(names(selector_list), collapse = ', ') } selectors;",
       "{ merge_function } merge function."
     )
   )
   checkmate::assert_list(selector_list, min.len = 1)
   checkmate::assert_string(anl_name)
+  checkmate::assert_list(data, names = "named")
+  checkmate::assert_list(join_keys, names = "named")
   stopifnot(attr(regexec("[A-Za-z0-9\\_]*", anl_name)[[1]], "match.length") == nchar(anl_name))
   lapply(selector_list, check_selector)
   merge_selectors_out <- merge_selectors(selector_list)
@@ -52,7 +53,6 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
   merged_selector_map_id <- merge_selectors_out[[2]]
   check_data_merge_selectors(merged_selector_list)
 
-  join_keys <- datasets$get_join_keys()
   dplyr_call_data <- get_dplyr_call_data(merged_selector_list, join_keys)
 
   validate_keys_sufficient(join_keys, merged_selector_list)
@@ -77,31 +77,27 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
     SIMPLIFY = FALSE
   )
 
-  chunks_stack <- teal.code::chunks$new()
-
-  new_env <- new.env()
-
   selector_datanames <- unique(vapply(merged_selector_list, `[[`, character(1), "dataname"))
-  for (i in selector_datanames) {
-    logger::log_trace("merge_datasets { paste0(i, \"_FILTERED\") } assigned in chunks environment.")
-    assign(
-      paste0(i, "_FILTERED"),
-      datasets$get_data(i, filtered = TRUE),
-      envir = new_env
-    )
-  }
-  chunks_stack$reset(envir = new_env)
 
-  for (idx in seq_along(merged_selector_list)) {
+  filtered_data_call <- lapply(selector_datanames, function(i) {
+    logger::log_trace("merge_datasets { paste0(i, \"_FILTERED\") } assigned.")
+    call(
+      "<-",
+      as.name(paste0(i, "_FILTERED")),
+      as.name(i)
+    )
+  })
+
+  dplyr_calls <- lapply(seq_along(merged_selector_list), function(idx) {
     dplyr_call <- get_dplyr_call(
       selector_list = merged_selector_list,
       idx = idx,
       dplyr_call_data = dplyr_call_data,
-      datasets = datasets
+      data = data
     )
     anl_i_call <- call("<-", as.name(paste0(anl_name, "_", idx)), dplyr_call)
-    chunks_stack$push(anl_i_call, id = paste0("ANL_dplyr_call_", idx))
-  }
+    anl_i_call
+  })
 
   anl_merge_calls <- get_merge_call(
     selector_list = merged_selector_list,
@@ -109,42 +105,23 @@ merge_datasets <- function(selector_list, datasets, merge_function = "dplyr::ful
     merge_function = merge_function,
     anl_name = anl_name
   )
-  for (idx in seq_along(anl_merge_calls)) {
-    chunks_stack$push(anl_merge_calls[[idx]], id = paste0("get_merge_call_", idx))
-  }
 
   anl_relabel_call <- get_anl_relabel_call(
     columns_source = get_relabel_cols(columns_source, dplyr_call_data), # don't relabel reshaped cols
-    datasets = datasets,
+    data = data,
     anl_name = anl_name
   )
 
-  if (!is.null(anl_relabel_call)) {
-    chunks_stack$push(anl_relabel_call, id = "ANL_relabel_call")
-  }
+  all_calls_expression <- c(filtered_data_call, dplyr_calls, anl_merge_calls, anl_relabel_call)
 
-  all_call_string <- paste0(chunks_stack$get_rcode(), collapse = "\n")
-
-  # keys in each merged_selector_list element shoul be identical
+  # keys in each merged_selector_list element should be identical
   # so take first one
   keys <- merged_selector_list[[1]]$keys
 
   filter_info <- lapply(merged_selector_list, "[[", "filters")
 
-  # Merge the datasets, ignore errors and warnings (kept in chunks)
-  suppressWarnings(chunks_stack$eval())
-
   res <- list(
-    # put data into function to delay chunk code validation
-    # This allows the code from chunks to be accessible in "Show R Code"
-    # by either "expr" or "chunks" part of the returned list
-    data = function() {
-      logger::log_trace("merge_datasets { anl_name } dataset returned from chunks.")
-      chunks_stack$validate_is_ok()
-      chunks_stack$get(anl_name)
-    },
-    expr = all_call_string,
-    chunks = chunks_stack,
+    expr = all_calls_expression,
     columns_source = columns_source,
     keys = keys,
     filter_info = filter_info
