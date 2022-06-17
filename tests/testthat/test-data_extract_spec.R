@@ -191,11 +191,14 @@ test_that("delayed data_extract_spec works", {
   ds <- teal.slice:::CDISCFilteredData$new()
   isolate({
     ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL))
-    expect_identical(expected_spec, resolve_delayed(delayed_spec, ds))
-    expect_identical(expected_spec, resolve_delayed(mix1, ds))
-    expect_identical(expected_spec, resolve_delayed(mix2, ds))
+    data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+      ds$get_data(dataname = x, filtered = FALSE)
+    })
+    expect_identical(expected_spec, resolve_delayed(delayed_spec, data_list))
+    expect_identical(expected_spec, resolve_delayed(mix1, data_list))
+    expect_identical(expected_spec, resolve_delayed(mix2, data_list))
 
-    mix3_res <- resolve_delayed(mix3, ds)
+    mix3_res <- resolve_delayed(mix3, data_list)
   })
 
   expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
@@ -252,8 +255,13 @@ testthat::test_that("delayed version of data_extract_spec", {
       multiple = FALSE
     )
   )
-
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
@@ -294,7 +302,7 @@ testthat::test_that("delayed version of data_extract_spec", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),

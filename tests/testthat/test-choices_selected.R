@@ -40,7 +40,13 @@ testthat::test_that("delayed version of choices_selected", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   exp_obj <- choices_selected(
     variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
     selected = variable_choices(adsl, subset = c("STUDYID"), key = teal.data::get_cdisc_keys("ADSL"))
@@ -57,7 +63,13 @@ testthat::test_that("delayed version of choices_selected", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   testthat::expect_equal(res_obj, exp_obj)
 })
 

@@ -40,7 +40,13 @@ test_that("delayed version of variable_choices", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
     variable_choices(adsl, subset = c("SEX", "ARMCD", "COUNTRY"))
@@ -57,7 +63,7 @@ test_that("delayed version of variable_choices", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
     variable_choices(adsl, subset = colnames(adsl)[1:2], key = teal.data::get_cdisc_keys("ADSL"))
@@ -73,7 +79,7 @@ test_that("delayed version of variable_choices", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
     variable_choices(adsl, key = c("USUBJID", "STUDYID"))

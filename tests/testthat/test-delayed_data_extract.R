@@ -85,8 +85,14 @@ test_that("Delayed data extract - single data connector with two scda dataset co
       choices = variable_choices(ADAE, subset = get_continuous, key = teal.data::get_cdisc_keys("ADAE"))
     )
   )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list, key = key_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list, key = key_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -107,7 +113,13 @@ test_that("Delayed choices selected - single data connector with two scda datase
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
-  choices_result <- isolate(resolve_delayed(choices, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  choices_result <- isolate(resolve_delayed(choices, datasets = data_list, keys = key_list))
   expect_identical(choices_result, choices_expected)
 })
 
@@ -180,8 +192,11 @@ test_that("Delayed data extract - filtered", {
       choices = variable_choices(ADRS, subset = get_continuous)
     )
   )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -285,8 +300,11 @@ test_that("Delayed extract filter concatenated - single data connector with two 
       multiple = TRUE
     )
   )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -406,8 +424,11 @@ test_that("Delayed extract two filters - single data connector with two scda dat
       )
     )
   )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -526,8 +547,11 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
       )
     )
   )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
