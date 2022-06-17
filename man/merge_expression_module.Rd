@@ -72,6 +72,17 @@ data_list <- list(
   ADLB = ADLB
 )
 
+join_keys <- list(
+ADSL = list(
+  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+),
+ADLB = list(
+  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
+  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+)
+)
+
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -134,7 +145,7 @@ app <- shinyApp(
       data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
       data = data_list,
       datasets = datasets,
-      join_keys = dd,
+      join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
 
