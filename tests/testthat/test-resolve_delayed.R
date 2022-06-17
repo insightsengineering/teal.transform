@@ -80,8 +80,10 @@ testthat::test_that("resolve_delayed.list works correctly", {
     ),
     ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
   )
-
-  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, ds))
+  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_data(dataname = x, filtered = FALSE))
+  })
+  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, data_list))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
@@ -98,7 +100,10 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
   output <- testthat::capture_output({
     shiny::isolate({
       teal.slice:::filtered_data_set(teal.data::teal_data(iris_dataset), ds)
-      resolved_cs <- resolve_delayed(c_s, ds)
+      data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+        isolate(ds$get_data(dataname = x, filtered = FALSE))
+      })
+      resolved_cs <- resolve_delayed(c_s, data_list)
     })
   })
 
