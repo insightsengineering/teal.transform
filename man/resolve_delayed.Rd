@@ -9,7 +9,7 @@ resolve_delayed(x, datasets, keys = NULL)
 \arguments{
 \item{x}{Object of class \code{delayed_data} to resolve.}
 
-\item{datasets}{Object of class \code{data.frame} or a list of \code{data.frame} to use for evaluation.}
+\item{datasets}{A named list of \code{data.frame} to use for evaluation.}
 
 \item{keys}{Optional character.}
 }
@@ -27,7 +27,7 @@ ADSL <- synthetic_cdisc_data("latest")$adsl
 attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 shiny::isolate({
   ds$set_dataset(teal.data::dataset("ADSL", ADSL))
-  ds <- ds$get_data("ADSL")
+  ds <- list(ADSL = ds$get_data("ADSL"))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")

@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param x Object of class `delayed_data` to resolve.
-#' @param datasets Object of class `data.frame` or a list of `data.frame` to use for evaluation.
+#' @param datasets A named list of `data.frame` to use for evaluation.
 #' @param keys Optional character.
 #'
 #' @return Resolved object.
@@ -18,7 +18,7 @@
 #' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 #' shiny::isolate({
 #'   ds$set_dataset(teal.data::dataset("ADSL", ADSL))
-#'   ds <- ds$get_data("ADSL")
+#'   ds <- list(ADSL = ds$get_data("ADSL"))
 #'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
@@ -70,60 +70,40 @@
 #' })
 resolve_delayed <- function(x, datasets, keys = NULL) {
   checkmate::assert(
-    checkmate::check_data_frame(datasets, null.ok = FALSE),
-    checkmate::check_list(datasets, type = "data.frame", min.len = 1)
-  )
-  checkmate::assert(
-    checkmate::check_character(keys, null.ok = TRUE),
-    checkmate::check_list(keys, type = "character", min.len = 1)
+    combine = "and",
+    checkmate::check_list(datasets, type = "data.frame", min.len = 1),
+    !is.null(names(datasets)),
+    all(!names(datasets) %in% "")
   )
   checkmate::assert(
     checkmate::check_null(keys),
-    checkmate::check_data_frame(datasets, null.ok = FALSE) && checkmate::check_character(keys, null.ok = FALSE),
-    length(keys) == length(datasets)
+    checkmate::check_list(keys, types = "character") &&
+      length(keys) == length(datasets) &&
+      all(!names(keys) %in% "") &&
+      all(sort(names(keys)) == sort(names(datasets)))
   )
   UseMethod("resolve_delayed")
 }
 
 #' @export
 resolve_delayed.delayed_variable_choices <- function(x, datasets, keys = NULL) { # nolint
-  one_dataset <- function(dataset, keys) {
-    inner_x <- x
-    if (is.null(inner_x$key)) {
-      inner_x$key <- keys
-    }
-    inner_x$data <- dataset
-    if (inherits(inner_x$subset, "function")) {
-      inner_x$subset <- resolve_delayed_expr(inner_x$subset, ds = inner_x$data, is_value_choices = FALSE)
-    }
-    return(do.call("variable_choices", inner_x))
+  if (is.null(x$key)) {
+    x$key <- `if`(is.null(keys), character(), keys[[x$data]])
   }
-
-  if (inherits(datasets, "data.frame")) {
-    one_dataset(datasets, keys)
-  } else {
-    if (is.null(keys)) {
-      keys <- list(character())
-    }
-    mapply(one_dataset, datasets, keys, SIMPLIFY = FALSE)
+  x$data <- datasets[[x$data]]
+  if (inherits(x$subset, "function")) {
+    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
   }
+  return(do.call("variable_choices", x))
 }
 
 #' @export
-resolve_delayed.delayed_value_choices <- function(x, datasets, keys = NULL) { # nolint
-  one_dataset <- function(dataset) {
-    inner_x <- x
-    inner_x$data <- dataset
-    if (is.function(inner_x$subset)) {
-      inner_x$subset <- resolve_delayed_expr(inner_x$subset, ds = inner_x$data, is_value_choices = TRUE)
-    }
-    return(do.call("value_choices", inner_x))
+resolve_delayed.delayed_value_choices <- function(x, datasets, keys) { # nolint
+  x$data <- datasets[[x$data]]
+  if (is.function(x$subset)) {
+    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
   }
-  if (inherits(datasets, "data.frame")) {
-    one_dataset(datasets)
-  } else {
-    lapply(one_dataset, dataset, SIMPLIFY = FALSE)
-  }
+  return(do.call("value_choices", x))
 }
 
 #' @export
