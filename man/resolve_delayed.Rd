@@ -4,14 +4,14 @@
 \alias{resolve_delayed}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve_delayed(x, datasets, keys = NULL)
+resolve_delayed(x, datasets, join_keys = NULL)
 }
 \arguments{
 \item{x}{Object of class \code{delayed_data} to resolve.}
 
 \item{datasets}{A named list of \code{data.frame} to use for evaluation.}
 
-\item{keys}{Optional character.}
+\item{join_keys}{Optional character.}
 }
 \value{
 Resolved object.

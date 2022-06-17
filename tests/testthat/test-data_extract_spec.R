@@ -261,7 +261,7 @@ testthat::test_that("delayed version of data_extract_spec", {
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
@@ -302,7 +302,7 @@ testthat::test_that("delayed version of data_extract_spec", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),

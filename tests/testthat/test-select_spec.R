@@ -105,7 +105,7 @@ test_that("resolve_delayed select_spec works", {
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed_spec, datasets = data_list, keys = key_list)))
+  expect_identical(expected_spec, isolate(resolve_delayed(delayed_spec, datasets = data_list, join_keys = key_list)))
 })
 
 scda_data <- synthetic_cdisc_data("latest")
@@ -168,7 +168,7 @@ testthat::test_that("delayed version of select_spec", {
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- select_spec(
     variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
     selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
@@ -199,7 +199,7 @@ testthat::test_that("delayed version of select_spec", {
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
   testthat::expect_equal(res_obj, exp_obj)
 })
 
