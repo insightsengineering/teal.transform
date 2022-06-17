@@ -9,7 +9,7 @@ get_dplyr_call(
   idx = 1L,
   join_keys = list(),
   dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
-  datasets = NULL
+  data = NULL
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ When using a reactive named list, the names must be identical to the shiny ids o
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
 selections, reshapes etc. All necessary data for merging}
 
-\item{datasets}{(\code{NULL} or \code{FilteredData}).}
+\item{data}{(\code{NULL} or \code{named `list`}).}
 }
 \value{
 (\code{call}) filter, select, rename and reshape call

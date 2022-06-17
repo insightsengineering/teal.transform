@@ -4,14 +4,13 @@
 \alias{get_anl_relabel_call}
 \title{Gets the relabel call}
 \usage{
-get_anl_relabel_call(columns_source, datasets, anl_name = "ANL")
+get_anl_relabel_call(columns_source, data, anl_name = "ANL")
 }
 \arguments{
 \item{columns_source}{\code{named list}\cr
 where names are column names, values are labels + additional attribute dataname}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data (see \code{teal.slice::FilteredData}).}
+\item{data}{(named \code{list})\cr of datasets.}
 
 \item{anl_name}{(\code{character(1)})\cr
 Name of the analysis dataset.}

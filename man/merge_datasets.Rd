@@ -6,7 +6,8 @@
 \usage{
 merge_datasets(
   selector_list,
-  datasets,
+  data,
+  join_keys,
   merge_function = "dplyr::full_join",
   anl_name = "ANL"
 )
@@ -16,8 +17,9 @@ merge_datasets(
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data (see \code{teal.slice::FilteredData}).}
+\item{data}{(named \code{list})\cr of datasets.}
+
+\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.}
 
 \item{merge_function}{(\code{character(1)} or \code{reactive})\cr
 A character string of a function that accepts the arguments
@@ -29,8 +31,7 @@ Name of the analysis dataset.}
 \value{
 merged_dataset (\code{list}) containing:
 \itemize{
-\item data (\code{data.frame}) after filtering and reshaping containing selected columns.
-\item \code{expr} (\code{character}) code needed to replicate merged dataset.
+\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset.
 \item columns_source (\code{list}) of column selected for particular selector.
 \item keys (\code{list}) the keys of the merged dataset.
 \item filter_info (\code{list}) The information given by the user. This information
@@ -39,7 +40,7 @@ the variables that are selected from the data sets.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\verb{r lifecycle::badge("exploratory")}
 It combines/merges multiple datasets with specified keys attribute.
 }
 \details{
