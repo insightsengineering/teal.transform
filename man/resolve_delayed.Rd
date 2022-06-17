@@ -28,17 +28,18 @@ ADSL <- synthetic_cdisc_data("latest")$adsl
 attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 shiny::isolate({
   ds$set_dataset(teal.data::dataset("ADSL", ADSL))
-  ds <- list(ADSL = ds$get_data("ADSL"))
+  data_list <- list(ADSL = ds$get_data("ADSL"))
+  keys <- list(ADSL = ds$get_keys("ADSL"))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1
-  resolve_delayed(v1, ds)
+  resolve_delayed(v1, data_list, keys)
 
   # variable_choices example
   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
   v2
-  resolve_delayed(v2, ds)
+  resolve_delayed(v2, data_list, keys)
 
   # data_extract_spec example
   adsl_filter <- filter_spec(
@@ -64,9 +65,9 @@ shiny::isolate({
     filter = adsl_filter
   )
 
-  resolve_delayed(adsl_filter, ds)
-  resolve_delayed(adsl_select, ds)
-  resolve_delayed(adsl_de, ds)
+  resolve_delayed(adsl_filter, data_list, keys)
+  resolve_delayed(adsl_select, data_list, keys)
+  resolve_delayed(adsl_de, data_list, keys)
 
   # nested list (arm_ref_comp)
   arm_ref_comp <- list(
@@ -76,6 +77,6 @@ shiny::isolate({
     )
   )
 
-  resolve_delayed(arm_ref_comp, ds)
+  resolve_delayed(arm_ref_comp, data_list, keys)
 })
 }
