@@ -3,7 +3,8 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param x Object of class `delayed_data` to resolve.
-#' @param datasets Object of class `FilteredData` to use for evaluation.
+#' @param datasets Object of class `data.frame` or a list of `data.frame` to use for evaluation.
+#' @param keys Optional character.
 #'
 #' @return Resolved object.
 #'
@@ -17,6 +18,7 @@
 #' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 #' shiny::isolate({
 #'   ds$set_dataset(teal.data::dataset("ADSL", ADSL))
+#'   ds <- ds$get_data("ADSL")
 #'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
@@ -66,38 +68,70 @@
 #'
 #'   resolve_delayed(arm_ref_comp, ds)
 #' })
-resolve_delayed <- function(x, datasets) {
-  stopifnot(inherits(datasets, "FilteredData"))
+resolve_delayed <- function(x, datasets, keys = NULL) {
+  checkmate::assert(
+    checkmate::check_data_frame(datasets, null.ok = FALSE),
+    checkmate::check_list(datasets, type = "data.frame", min.len = 1)
+  )
+  checkmate::assert(
+    checkmate::check_character(keys, null.ok = TRUE),
+    checkmate::check_list(keys, type = "character", min.len = 1)
+  )
+  checkmate::assert(
+    checkmate::check_null(keys),
+    checkmate::check_data_frame(datasets, null.ok = FALSE) && checkmate::check_character(keys, null.ok = FALSE),
+    length(keys) == length(datasets)
+  )
   UseMethod("resolve_delayed")
 }
 
 #' @export
-resolve_delayed.delayed_variable_choices <- function(x, datasets) { # nolint
-  if (is.null(x$key)) {
-    x$key <- datasets$get_keys(x$data)
+resolve_delayed.delayed_variable_choices <- function(x, datasets, keys = NULL) { # nolint
+  one_dataset <- function(dataset, keys) {
+    inner_x <- x
+    if (is.null(inner_x$key)) {
+      inner_x$key <- keys
+    }
+    inner_x$data <- dataset
+    if (inherits(inner_x$subset, "function")) {
+      inner_x$subset <- resolve_delayed_expr(inner_x$subset, ds = inner_x$data, is_value_choices = FALSE)
+    }
+    return(do.call("variable_choices", inner_x))
   }
-  x$data <- datasets$get_data(x$data)
-  if (inherits(x$subset, "function")) {
-    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
+
+  if (inherits(datasets, "data.frame")) {
+    one_dataset(datasets, keys)
+  } else {
+    if (is.null(keys)) {
+      keys <- list(character())
+    }
+    mapply(one_dataset, datasets, keys, SIMPLIFY = FALSE)
   }
-  return(do.call("variable_choices", x))
 }
 
 #' @export
-resolve_delayed.delayed_value_choices <- function(x, datasets) { # nolint
-  x$data <- datasets$get_data(x$data)
-  if (is.function(x$subset)) {
-    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
+resolve_delayed.delayed_value_choices <- function(x, datasets, keys = NULL) { # nolint
+  one_dataset <- function(dataset) {
+    inner_x <- x
+    inner_x$data <- dataset
+    if (is.function(inner_x$subset)) {
+      inner_x$subset <- resolve_delayed_expr(inner_x$subset, ds = inner_x$data, is_value_choices = TRUE)
+    }
+    return(do.call("value_choices", inner_x))
   }
-  return(do.call("value_choices", x))
+  if (inherits(datasets, "data.frame")) {
+    one_dataset(datasets)
+  } else {
+    lapply(one_dataset, dataset, SIMPLIFY = FALSE)
+  }
 }
 
 #' @export
-resolve_delayed.delayed_choices_selected <- function(x, datasets) { # nolint
+resolve_delayed.delayed_choices_selected <- function(x, datasets, keys = NULL) { # nolint
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
+    x$selected <- resolve_delayed(x$selected, datasets = datasets, keys)
   }
-  x$choices <- resolve_delayed(x$choices, datasets = datasets)
+  x$choices <- resolve_delayed(x$choices, datasets = datasets, keys)
 
   if (!all(x$selected %in% x$choices)) {
     logger::log_warn(paste(
@@ -112,54 +146,54 @@ resolve_delayed.delayed_choices_selected <- function(x, datasets) { # nolint
 }
 
 #' @export
-resolve_delayed.delayed_select_spec <- function(x, datasets) { # nolint
-  x$choices <- resolve_delayed(x$choices, datasets = datasets)
+resolve_delayed.delayed_select_spec <- function(x, datasets, keys = NULL) { # nolint
+  x$choices <- resolve_delayed(x$choices, datasets = datasets, keys)
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
+    x$selected <- resolve_delayed(x$selected, datasets = datasets, keys)
   }
   return(do.call("select_spec", x))
 }
 
 #' @export
-resolve_delayed.delayed_filter_spec <- function(x, datasets) { # nolint
+resolve_delayed.delayed_filter_spec <- function(x, datasets, keys = NULL) { # nolint
   if (inherits(x$vars_choices, "delayed_data")) {
-    x$vars_choices <- resolve_delayed(x$vars_choices, datasets = datasets)
+    x$vars_choices <- resolve_delayed(x$vars_choices, datasets = datasets, keys)
   }
   if (inherits(x$vars_selected, "delayed_data")) {
-    x$vars_selected <- resolve_delayed(x$vars_selected, datasets = datasets)
+    x$vars_selected <- resolve_delayed(x$vars_selected, datasets = datasets, keys)
   }
   if (inherits(x$choices, "delayed_data")) {
-    x$choices <- resolve_delayed(x$choices, datasets = datasets)
+    x$choices <- resolve_delayed(x$choices, datasets = datasets, keys)
   }
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
+    x$selected <- resolve_delayed(x$selected, datasets = datasets, keys)
   }
 
   return(do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))]))
 }
 
 #' @export
-resolve_delayed.delayed_data_extract_spec <- function(x, datasets) { # nolint
-  x$select <- `if`(inherits(x$select, "delayed_data"), resolve_delayed(x$select, datasets = datasets), x$select)
+resolve_delayed.delayed_data_extract_spec <- function(x, datasets, keys = NULL) { # nolint
+  x$select <- `if`(inherits(x$select, "delayed_data"), resolve_delayed(x$select, datasets = datasets, keys), x$select)
 
   if (any(vapply(x$filter, inherits, logical(1L), "delayed_data"))) {
     idx <- vapply(x$filter, inherits, logical(1), "delayed_data")
-    x$filter[idx] <- lapply(x$filter[idx], resolve_delayed, datasets = datasets)
+    x$filter[idx] <- lapply(x$filter[idx], resolve_delayed, datasets = datasets, keys = keys)
   }
 
   return(do.call("data_extract_spec", x))
 }
 
 #' @export
-resolve_delayed.list <- function(x, datasets) { # nolint
+resolve_delayed.list <- function(x, datasets, keys = NULL) { # nolint
 
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
-  res <- lapply(x, resolve_delayed, datasets)
+  res <- lapply(x, resolve_delayed, datasets = datasets, keys = keys)
   return(res)
 }
 
 #' @export
-resolve_delayed.default <- function(x, datasets) {
+resolve_delayed.default <- function(x, datasets, keys = NULL) {
   return(x)
 }
 
