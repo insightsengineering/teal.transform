@@ -1,6 +1,6 @@
 #' Merge the datasets on the keys
 #'
-#' @description `r lifecycle::badge("exploratory")`
+#' @description `r lifecycle::badge("experimental")`
 #' It combines/merges multiple datasets with specified keys attribute.
 #'
 #'

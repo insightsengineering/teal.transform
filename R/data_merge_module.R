@@ -99,6 +99,11 @@ data_merge_module <- function(datasets,
                               merge_function = "dplyr::full_join",
                               anl_name = "ANL",
                               id = "merge_id") {
+  lifecycle::deprecate_soft(
+    when = "0.1.2",
+    what = "data_merge_module()",
+    details = "Please use `merge_expression_module()` instead."
+  )
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
 
   checkmate::assert_list(data_extract)
@@ -232,6 +237,11 @@ data_merge_srv <- function(id = "merge_id",
                            datasets,
                            merge_function = "dplyr::full_join",
                            anl_name = "ANL") {
+  lifecycle::deprecate_soft(
+    when = "0.1.2",
+    what = "data_merge_srv()",
+    details = "Please use `merge_expression_srv()` instead."
+  )
   checkmate::assert_string(anl_name)
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
