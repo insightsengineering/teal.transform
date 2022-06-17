@@ -83,7 +83,10 @@ testthat::test_that("resolve_delayed.list works correctly", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, data_list, key_list))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
@@ -103,7 +106,10 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
       data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
         isolate(ds$get_data(dataname = x, filtered = FALSE))
       })
-      resolved_cs <- resolve_delayed(c_s, data_list)
+      key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+        isolate(ds$get_keys(dataname = x))
+      })
+      resolved_cs <- resolve_delayed(c_s, data_list, key_list)
     })
   })
 

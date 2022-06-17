@@ -194,11 +194,14 @@ test_that("delayed data_extract_spec works", {
     data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
       ds$get_data(dataname = x, filtered = FALSE)
     })
-    expect_identical(expected_spec, resolve_delayed(delayed_spec, data_list))
-    expect_identical(expected_spec, resolve_delayed(mix1, data_list))
-    expect_identical(expected_spec, resolve_delayed(mix2, data_list))
+    key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+      isolate(ds$get_keys(dataname = x))
+    })
+    expect_identical(expected_spec, resolve_delayed(delayed_spec, data_list, key_list))
+    expect_identical(expected_spec, resolve_delayed(mix1, data_list, key_list))
+    expect_identical(expected_spec, resolve_delayed(mix2, data_list, key_list))
 
-    mix3_res <- resolve_delayed(mix3, data_list)
+    mix3_res <- resolve_delayed(mix3, data_list, key_list)
   })
 
   expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])

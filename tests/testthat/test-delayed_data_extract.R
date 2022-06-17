@@ -195,8 +195,11 @@ test_that("Delayed data extract - filtered", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  x_result <- isolate(resolve_delayed(x, datasets = data_list))
-  y_result <- isolate(resolve_delayed(y, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list, key_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list, key_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -303,8 +306,11 @@ test_that("Delayed extract filter concatenated - single data connector with two 
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  x_result <- isolate(resolve_delayed(x, datasets = data_list))
-  y_result <- isolate(resolve_delayed(y, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list, key_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list, key_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -427,8 +433,11 @@ test_that("Delayed extract two filters - single data connector with two scda dat
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  x_result <- isolate(resolve_delayed(x, datasets = data_list))
-  y_result <- isolate(resolve_delayed(y, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list, key_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list, key_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })
@@ -550,8 +559,11 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  x_result <- isolate(resolve_delayed(x, datasets = data_list))
-  y_result <- isolate(resolve_delayed(y, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  x_result <- isolate(resolve_delayed(x, datasets = data_list, key_list))
+  y_result <- isolate(resolve_delayed(y, datasets = data_list, key_list))
   expect_identical(x_result, x_expected)
   expect_identical(y_result, y_expected)
 })

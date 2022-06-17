@@ -163,8 +163,11 @@ test_that("delayed filter_spec", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  result_spec <- isolate(resolve_delayed(delayed, data_list))
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list)))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  result_spec <- isolate(resolve_delayed(delayed, data_list, key_list))
+  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list, key_list)))
 })
 
 
@@ -253,9 +256,12 @@ test_that("delayed filter_spec works", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
   expect_identical(
     expected_spec,
-    isolate(resolve_delayed(delayed, data_list))
+    isolate(resolve_delayed(delayed, data_list, key_list))
   )
 
   expected_spec <- data_extract_spec(
@@ -277,7 +283,10 @@ test_that("delayed filter_spec works", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list)))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list, key_list)))
 })
 
 
@@ -355,7 +364,10 @@ testthat::test_that("delayed version of filter_spec", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
   exp_obj <- filter_spec(
     vars = variable_choices(adsl, subset = "ARMCD"),
     choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
@@ -430,7 +442,10 @@ testthat::test_that("delayed version of filter_spec", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
 
   # comparison not implemented, must be done individually
   testthat::expect_equal(res_obj$choices, exp_obj$choices)

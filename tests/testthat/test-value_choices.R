@@ -52,7 +52,10 @@ testthat::test_that("delayed version of value_choices", {
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_data(dataname = x, filtered = FALSE))
   })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list))
+  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
+    isolate(ds$get_keys(dataname = x))
+  })
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
     value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
@@ -84,7 +87,7 @@ testthat::test_that("delayed version of value_choices", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
     value_choices(adsl,
@@ -125,7 +128,7 @@ testthat::test_that("delayed version of value_choices", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
     value_choices(adsl,
