@@ -17,6 +17,9 @@ merge_expression_module(
 \arguments{
 \item{data}{(named \code{list})\cr of datasets.}
 
+\item{datasets}{(\code{FilteredData})\cr
+object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
+
 \item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.}
 
 \item{data_extract}{(named \code{list} of \code{data_extract_spec})\cr}

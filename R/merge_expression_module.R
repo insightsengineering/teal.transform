@@ -7,6 +7,8 @@
 #'
 #' @inheritParams shiny::moduleServer
 #' @param data (named `list`)\cr of datasets.
+#' @param datasets (`FilteredData`)\cr
+#'  object containing data, see [teal.slice::FilteredData] for more.
 #' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
