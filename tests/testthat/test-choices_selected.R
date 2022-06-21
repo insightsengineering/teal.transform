@@ -183,4 +183,3 @@ testthat::test_that("delayed version of choices_selected - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   testthat::expect_equal(res_obj, exp_obj)
 })
-

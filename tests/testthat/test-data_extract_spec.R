@@ -459,7 +459,7 @@ testthat::test_that("delayed version of data_extract_spec - resolve_delayed", {
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-                         selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
+      selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
     ),
     filter = filter_spec(
       vars = variable_choices(adsl, subset = "ARMCD", key = teal.data::get_cdisc_keys("ADSL")),
@@ -500,7 +500,7 @@ testthat::test_that("delayed version of data_extract_spec - resolve_delayed", {
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-                         selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
+      selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
     ),
     filter = filter_spec(
       vars = variable_choices(adsl, subset = "ARMCD", key = teal.data::get_cdisc_keys("ADSL")),
