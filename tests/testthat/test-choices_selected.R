@@ -1,9 +1,5 @@
 adsl <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
 adtte <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADTTE"))))
-data <- teal.data::cdisc_data(teal.data::cdisc_dataset("ADSL", adsl), teal.data::cdisc_dataset("ADTTE", adtte))
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
@@ -40,13 +36,10 @@ testthat::test_that("delayed version of choices_selected", {
     )
   )
 
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
+  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+
+  res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- choices_selected(
     variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
     selected = variable_choices(adsl, subset = c("STUDYID"), key = teal.data::get_cdisc_keys("ADSL"))
@@ -63,13 +56,7 @@ testthat::test_that("delayed version of choices_selected", {
     )
   )
 
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, join_keys = key_list))
+  res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))
   testthat::expect_equal(res_obj, exp_obj)
 })
 
@@ -158,3 +145,42 @@ testthat::test_that("choices_selected remove duplicates", {
     ), class = "choices_selected")
   )
 })
+
+
+# With resolve_delayed
+data <- teal.data::cdisc_data(teal.data::cdisc_dataset("ADSL", adsl), teal.data::cdisc_dataset("ADTTE", adtte))
+ds <- teal.slice:::CDISCFilteredData$new()
+isolate(teal.slice:::filtered_data_set(data, ds))
+
+testthat::test_that("delayed version of choices_selected - resolve_delayed", {
+  # hard-coded choices and selected
+  obj <- choices_selected(vc_hard, selected = vc_hard_short)
+  testthat::expect_equal(
+    obj,
+    structure(
+      list(choices = vc_hard_exp, selected = vc_hard_short_exp, keep_order = FALSE, fixed = FALSE),
+      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+    )
+  )
+
+  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  exp_obj <- choices_selected(
+    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
+    selected = variable_choices(adsl, subset = c("STUDYID"), key = teal.data::get_cdisc_keys("ADSL"))
+  )
+  testthat::expect_equal(res_obj, exp_obj, check.attributes = TRUE)
+
+  # functional choices and selected
+  obj <- choices_selected(vc_fun, selected = vc_fun_short)
+  testthat::expect_equal(
+    obj,
+    structure(
+      list(choices = vc_fun_exp, selected = vc_fun_short_exp, keep_order = FALSE, fixed = FALSE),
+      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+    )
+  )
+
+  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  testthat::expect_equal(res_obj, exp_obj)
+})
+

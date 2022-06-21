@@ -2,13 +2,6 @@ library(scda)
 scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl # nolint
 adtte <- scda_data$adtte # nolint
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
-)
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
 
 testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
@@ -59,7 +52,7 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   testthat::expect_equal(resolve_delayed_expr(function(data) 1:2, ds = adsl, is_value_choices = TRUE), 1:2)
 })
 
-testthat::test_that("resolve_delayed.list works correctly", {
+testthat::test_that("resolve.list works correctly", {
   arm_ref_comp <- list(
     ARMCD = list(
       ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
@@ -80,7 +73,10 @@ testthat::test_that("resolve_delayed.list works correctly", {
     ),
     ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
   )
-  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, ds))
+  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+
+  ddl_resolved <- isolate(resolve(arm_ref_comp_ddl, data_list, key_list))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
@@ -93,12 +89,11 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
     selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
   )
 
-  ds <- teal.slice:::FilteredData$new()
   output <- testthat::capture_output({
-    shiny::isolate({
-      teal.slice:::filtered_data_set(teal.data::teal_data(iris_dataset), ds)
-      resolved_cs <- resolve_delayed(c_s, ds)
-    })
+    data_list <- list(IRIS = head(iris))
+    key_list <- list(IRIS = character(0))
+
+    resolved_cs <- resolve(c_s, data_list, key_list)
   })
 
   testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))

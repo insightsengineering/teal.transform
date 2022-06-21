@@ -158,16 +158,11 @@ test_that("delayed filter_spec", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL)))
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  result_spec <- isolate(resolve_delayed(delayed, data_list, key_list))
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list, key_list)))
+  data_list <- list(ADSL = ADSL)
+  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
+
+  result_spec <- isolate(resolve(delayed, data_list, key_list))
+  expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
 })
 
 
@@ -249,19 +244,15 @@ test_that("delayed filter_spec works", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  ds <- teal.slice:::FilteredData$new()
-  isolate(ds$set_dataset(teal.data::dataset("ADSL", ADSL)))
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
+
+  data_list <- list(ADSL = ADSL)
+  key_list <- list(ADSL = character(0))
+
   expect_identical(
     expected_spec,
-    isolate(resolve_delayed(delayed, data_list, key_list))
+    isolate(resolve(delayed, data_list, key_list))
   )
 
   expected_spec <- data_extract_spec(
@@ -280,26 +271,15 @@ test_that("delayed filter_spec works", {
     )
   )
 
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, data_list, key_list)))
+  expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
 })
 
 
 scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
-)
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+data_list <- list(ADSL = adsl, ADTTE = adtte)
+key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
@@ -361,13 +341,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
+  res_obj <- resolve(obj, datasets = data_list, key_list)
   exp_obj <- filter_spec(
     vars = variable_choices(adsl, subset = "ARMCD"),
     choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
@@ -439,13 +413,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
-  })
-  key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_keys(dataname = x))
-  })
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, key_list))
+  res_obj <- resolve(obj, datasets = data_list, key_list)
 
   # comparison not implemented, must be done individually
   testthat::expect_equal(res_obj$choices, exp_obj$choices)
@@ -460,5 +428,237 @@ testthat::test_that("all_choices passed to selected identical to all choices", {
   testthat::expect_equal(
     filter_spec(vars = "test", choices = c(1, 2), selected = c(1, 2)),
     filter_spec(vars = "test", choices = c(1, 2), selected = all_choices())
+  )
+})
+
+
+# With resolve_delayed
+test_that("delayed filter_spec - resolve_delayed", {
+  set.seed(1)
+  ADSL <- data.frame( # nolint
+    USUBJID = letters[1:10],
+    SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
+    stringsAsFactors = FALSE
+  )
+
+  expected_spec <- filter_spec(
+    vars = variable_choices(ADSL, "SEX"),
+    sep = "-",
+    choices = value_choices(ADSL, "SEX", "SEX"),
+    selected = "F",
+    multiple = FALSE
+  )
+
+  # spec obtained using delayed approach
+  delayed <- filter_spec(
+    vars = variable_choices("ADSL", "SEX"),
+    sep = "-",
+    choices = value_choices("ADSL", "SEX", "SEX"),
+    selected = "F",
+    multiple = FALSE
+  )
+
+  expect_equal(names(expected_spec), names(delayed))
+
+  ds <- teal.slice:::CDISCFilteredData$new()
+  isolate(ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL)))
+  result_spec <- isolate(resolve_delayed(delayed, ds))
+  expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
+})
+
+
+test_that("filter_spec with choices_selected where all selected in choices does not throw an error - resolve_delayed", {
+  valid_cs <- choices_selected(
+    choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+    selected = c("A", "B")
+  )
+  expect_error(filter_spec(vars = valid_cs), regexp = NA)
+})
+
+test_that("delayed filter_spec works with FilteredData", {
+  set.seed(1)
+  ADSL <- data.frame( # nolint
+    USUBJID = letters[1:10],
+    SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
+    stringsAsFactors = FALSE
+  )
+
+  expected_spec <- filter_spec_internal(
+    vars_choices = variable_choices(ADSL),
+    vars_selected = "SEX"
+  )
+
+  # spec obtained using delayed approach
+  delayed <- filter_spec_internal(
+    vars_choices = variable_choices("ADSL"),
+    vars_selected = "SEX"
+  )
+
+  expect_equal(
+    class(delayed),
+    c(
+      "delayed_filter_spec",
+      "filter_spec",
+      "delayed_data"
+    )
+  )
+
+  expect_equal(names(expected_spec), names(delayed))
+
+  ds <- teal.slice:::FilteredData$new()
+  isolate(ds$set_dataset(teal.data::dataset("ADSL", ADSL)))
+  delayed$dataname <- "ADSL"
+  expected_spec$dataname <- "ADSL"
+  expect_identical(
+    expected_spec,
+    isolate(resolve_delayed(delayed, ds))
+  )
+
+  expected_spec <- data_extract_spec(
+    dataname = "ADSL",
+    filter = filter_spec_internal(
+      vars_choices = variable_choices(ADSL),
+      vars_selected = "SEX"
+    )
+  )
+
+  delayed <- data_extract_spec(
+    dataname = "ADSL",
+    filter = filter_spec_internal(
+      vars_choices = variable_choices("ADSL"),
+      vars_selected = "SEX"
+    )
+  )
+
+  expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
+})
+
+scda_data <- synthetic_cdisc_data("latest")
+adsl <- scda_data$adsl
+adtte <- scda_data$adtte
+data <- teal.data::cdisc_data(
+  teal.data::cdisc_dataset("ADSL", adsl),
+  teal.data::cdisc_dataset("ADTTE", adtte)
+)
+
+ds <- teal.slice:::CDISCFilteredData$new()
+isolate(teal.slice:::filtered_data_set(data, ds))
+
+testthat::test_that("delayed version of filter_spec - resolve_delayed", {
+  # hard-coded vars & choices & selected
+  obj <- filter_spec(
+    vars = variable_choices("ADSL", subset = "ARMCD"),
+    choices = value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
+    selected = value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    multiple = FALSE
+  )
+
+  testthat::expect_equal(
+    obj,
+    structure(
+      list(
+        vars_choices = variable_choices("ADSL", subset = "ARMCD"),
+        vars_selected = variable_choices("ADSL", subset = "ARMCD"),
+        vars_label = NULL,
+        vars_fixed = TRUE,
+        vars_multiple = TRUE,
+        choices = value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
+        selected = value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+        label = "Filter by",
+        multiple = FALSE,
+        fixed = FALSE,
+        sep = " - ",
+        drop_keys = FALSE,
+        dataname = NULL,
+        initialized = FALSE
+      ),
+      class = c(
+        "delayed_filter_spec",
+        "filter_spec",
+        "delayed_data"
+      )
+    )
+  )
+
+  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  exp_obj <- filter_spec(
+    vars = variable_choices(adsl, subset = "ARMCD"),
+    choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
+    selected = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    multiple = FALSE
+  )
+
+  # comparison not implemented, must be done individually
+  testthat::expect_equal(res_obj$choices, exp_obj$choices)
+  testthat::expect_equal(res_obj$selected, exp_obj$selected)
+  testthat::expect_equal(
+    res_obj[-match(c("choices", "selected"), names(res_obj))],
+    exp_obj[-match(c("choices", "selected"), names(exp_obj))]
+  )
+
+
+  # functional choices & selected
+  obj <- filter_spec(
+    vars = variable_choices("ADSL", subset = function(data) "ARMCD"),
+    choices = value_choices(
+      "ADSL",
+      var_choices = "ARMCD",
+      var_label = "ARM",
+      subset = function(data) levels(data$ARMCD)[1:2]
+    ),
+    selected = value_choices(
+      "ADSL",
+      var_choices = "ARMCD",
+      var_label = "ARM",
+      subset = function(data) "ARM A"
+    ),
+    multiple = FALSE
+  )
+
+  testthat::expect_equal(
+    obj,
+    structure(
+      list(
+        vars_choices = variable_choices("ADSL", subset = function(data) "ARMCD"),
+        vars_selected = variable_choices("ADSL", subset = function(data) "ARMCD"),
+        vars_label = NULL,
+        vars_fixed = TRUE,
+        vars_multiple = TRUE,
+        choices = value_choices(
+          "ADSL",
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) levels(data$ARMCD)[1:2]
+        ),
+        selected = value_choices(
+          "ADSL",
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) "ARM A"
+        ),
+        label = "Filter by",
+        multiple = FALSE,
+        fixed = FALSE,
+        sep = " - ",
+        drop_keys = FALSE,
+        dataname = NULL,
+        initialized = FALSE
+      ),
+      class = c(
+        "delayed_filter_spec",
+        "filter_spec",
+        "delayed_data"
+      )
+    )
+  )
+
+  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+
+  # comparison not implemented, must be done individually
+  testthat::expect_equal(res_obj$choices, exp_obj$choices)
+  testthat::expect_equal(res_obj$selected, exp_obj$selected)
+  testthat::expect_equal(
+    res_obj[-match(c("choices", "selected"), names(res_obj))],
+    exp_obj[-match(c("choices", "selected"), names(exp_obj))]
   )
 })
