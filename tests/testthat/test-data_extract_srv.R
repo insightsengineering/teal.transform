@@ -1,8 +1,10 @@
 adsl_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
 adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
 
-datasets <- teal.slice:::CDISCFilteredData$new()
-datasets$set_dataset(adsl)
+datasets <- teal.slice::init_filtered_data(
+  list(ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0))),
+  cdisc = TRUE
+)
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
@@ -103,8 +105,9 @@ testthat::test_that("data_extract_srv throws if data_extract_spec's dataname is 
   )
 })
 
-filtered_data <- teal.slice:::FilteredData$new()
-filtered_data$set_dataset(teal.data::dataset("iris", iris))
+filtered_data <- teal.slice::init_filtered_data(
+  list(iris = list(dataset = iris))
+)
 
 testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
   shiny::withReactiveDomain(
@@ -188,7 +191,7 @@ testthat::test_that("data_extract_multiple_srv throws if data_extract is not a n
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_error(
-      data_extract_multiple_srv(list(1), datasets = teal.slice:::FilteredData$new()),
+      data_extract_multiple_srv(list(1), datasets = teal.slice::init_filtered_data(list(iris = list(dataset = iris)))),
       regexp = "Assertion on 'data_extract' failed: Must have names"
     )
   )

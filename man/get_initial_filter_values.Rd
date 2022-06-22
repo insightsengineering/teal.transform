@@ -20,8 +20,8 @@ Returns the initial values for the \code{vals} widget
 of a \code{filter_spec} object.
 }
 \examples{
-filtered_data <- teal.slice:::FilteredData$new()$set_dataset(
-  teal.data::dataset("iris", utils::head(iris))
+filtered_data <- teal.slice::init_filtered_data(
+  list(iris = list(dataset = utils::head(iris)))
 )
 filter <- filter_spec(vars = colnames(iris)[1])
 filter$dataname <- "iris"
