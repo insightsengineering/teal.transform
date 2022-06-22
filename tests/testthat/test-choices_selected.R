@@ -149,8 +149,7 @@ testthat::test_that("choices_selected remove duplicates", {
 
 # With resolve_delayed
 data <- teal.data::cdisc_data(teal.data::cdisc_dataset("ADSL", adsl), teal.data::cdisc_dataset("ADTTE", adtte))
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 testthat::test_that("delayed version of choices_selected - resolve_delayed", {
   # hard-coded choices and selected

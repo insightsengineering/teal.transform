@@ -7,10 +7,7 @@ adsl <- teal.data::cdisc_dataset("ADSL", adsl)
 adlb <- teal.data::cdisc_dataset("ADLB", adlb)
 data <- teal.data::cdisc_data(adsl, adlb)
 
-datasets_used <- teal.slice:::CDISCFilteredData$new()
-
-datasets_used$set_dataset(adsl)
-datasets_used$set_dataset(adlb)
+datasets_used <- teal.slice::init_filtered_data(data)
 
 adsl_data_extract_srv_output <-
   list(

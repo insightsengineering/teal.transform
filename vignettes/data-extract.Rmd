@@ -78,9 +78,7 @@ sample_filtered_data <- function() {
   data <- teal.data::cdisc_data(adsl, adtte)
 
   # covert TealData to FilteredData
-  datasets <- teal.slice:::filtered_data_new(data)
-  teal.slice:::filtered_data_set(data, datasets)
-  datasets
+  teal.slice::init_filtered_data(data)
 }
 
 datasets <- sample_filtered_data()

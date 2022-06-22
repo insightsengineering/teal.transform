@@ -278,6 +278,7 @@ test_that("delayed filter_spec works", {
 scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
+
 data_list <- list(ADSL = adsl, ADTTE = adtte)
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
@@ -460,8 +461,10 @@ test_that("delayed filter_spec - resolve_delayed", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL)))
+  ds <- teal.slice::init_filtered_data(
+    list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
+    cdisc = TRUE
+  )
   result_spec <- isolate(resolve_delayed(delayed, ds))
   expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
@@ -475,7 +478,7 @@ test_that("filter_spec with choices_selected where all selected in choices does 
   expect_error(filter_spec(vars = valid_cs), regexp = NA)
 })
 
-test_that("delayed filter_spec works with FilteredData", {
+test_that("delayed filter_spec works - resolve_delayed", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -504,9 +507,12 @@ test_that("delayed filter_spec works with FilteredData", {
   )
 
   expect_equal(names(expected_spec), names(delayed))
-
-  ds <- teal.slice:::FilteredData$new()
-  isolate(ds$set_dataset(teal.data::dataset("ADSL", ADSL)))
+  
+  ds <- teal.slice::init_filtered_data(
+     list(ADSL = list(dataset = ADSL)),
+     cdisc = TRUE
+  )
+  
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
   expect_identical(
@@ -533,16 +539,12 @@ test_that("delayed filter_spec works with FilteredData", {
   expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
-scda_data <- synthetic_cdisc_data("latest")
+
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
 data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
-)
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+teal.data::cdisc_dataset("ADSL", adsl),
+teal.data::cdisc_dataset("ADTTE", adtte)
 
 testthat::test_that("delayed version of filter_spec - resolve_delayed", {
   # hard-coded vars & choices & selected

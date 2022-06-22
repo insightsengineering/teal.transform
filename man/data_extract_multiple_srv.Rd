@@ -35,9 +35,10 @@ ADSL <- data.frame(
   BMRKR1 = rlnorm(10)
 )
 
-data <- teal.data::teal_data(teal.data::dataset("ADSL", ADSL))
-datasets <- teal.slice:::filtered_data_new(data)
-teal.slice:::filtered_data_set(data, datasets)
+datasets <- teal.slice::init_filtered_data(
+  list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+  cdisc = TRUE
+)
 
 xvar_extract <- data_extract_spec(
   dataname = "ADSL",

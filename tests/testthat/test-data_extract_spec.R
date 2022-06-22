@@ -210,7 +210,6 @@ adtte <- scda_data$adtte
 data_list <- list(ADSL = adsl, ADTTE = adtte)
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
-
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
   list(data = "ADSL", subset = c("STUDYID", "USUBJID"), key = NULL),
@@ -417,9 +416,12 @@ test_that("delayed data_extract_spec works - resolve_delayed", {
   expect_equal(names(expected_spec), names(mix2))
   expect_equal(names(expected_spec), names(mix3))
 
-  ds <- teal.slice:::CDISCFilteredData$new()
+  
   isolate({
-    ds$set_dataset(teal.data::cdisc_dataset("ADSL", ADSL))
+    ds <- teal.slice::init_filtered_data(
+      list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
+      cdisc = TRUE
+    )
     expect_identical(expected_spec, resolve_delayed(delayed_spec, ds))
     expect_identical(expected_spec, resolve_delayed(mix1, ds))
     expect_identical(expected_spec, resolve_delayed(mix2, ds))
@@ -439,8 +441,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADTTE", adtte)
 )
 
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 testthat::test_that("delayed version of data_extract_spec - resolve_delayed", {
   # hard-coded subset
