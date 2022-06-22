@@ -2,19 +2,30 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_srv}
 \alias{data_extract_srv}
+\alias{data_extract_srv.FilteredData}
+\alias{data_extract_srv.list}
 \title{Extraction of the selector(s) details}
 \usage{
-data_extract_srv(id, datasets, data_extract_spec)
+data_extract_srv(id, datasets, data_extract_spec, ...)
+
+\method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec)
+
+\method{data_extract_srv}{list}(id, datasets, data_extract_spec, keys)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
+\item{datasets}{(\code{FilteredData} or \code{list} of \code{data.frame})\cr
+object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
+When passing a list of \code{data.frame}, the argument \code{keys} is required also}
 
 \item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})\cr
 A list of data filter and select information constructed by \link{data_extract_spec}.}
+
+\item{keys}{(\code{list})\cr
+an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
+It shall contain the keys per dataset in \code{datasets}.}
 }
 \value{
 A reactive \code{list} containing following fields:
@@ -73,11 +84,19 @@ app <- shinyApp(
     )
   ),
   server = function(input, output, session) {
+    # using a `FilteredData` object as input to `datasets`
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = datasets,
       data_extract_spec = adsl_extract
     )
+   # using a list of `data.frame` as input to `datasets`
+   # adsl_reactive_input <- data_extract_srv(
+   #   id = "adsl_var",
+   #   datasets = data_list,
+   #   data_extract_spec = adsl_extract,
+   #   keys = key_list
+   # )
     output$out1 <- renderPrint({
       print(adsl_reactive_input())
     })

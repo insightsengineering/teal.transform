@@ -11,8 +11,9 @@ data_extract_multiple_srv(data_extract, datasets)
 The names of the elements in the list need to correspond to the \code{ids} passed to \code{data_extract_ui}.
 See example for details.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
+\item{datasets}{(\code{FilteredData} or \code{list} of \code{data.frame})\cr
+object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
+When passing a list of \code{data.frame}, the argument \code{keys} is required also}
 }
 \value{
 reactive named list containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}. Output list
