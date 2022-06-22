@@ -1,14 +1,27 @@
 adsl_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
 adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
+adlb <- teal.data::cdisc_dataset("ADLB", adsl_df)
 
 datasets <- teal.slice:::CDISCFilteredData$new()
 datasets$set_dataset(adsl)
+datasets$set_dataset(adlb)
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
     choices = variable_choices(adsl, teal.data::get_cdisc_keys("ADSL")),
+    selected = "STUDYID",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+adlb_extract <- data_extract_spec(
+  dataname = "ADLB",
+  select = select_spec(
+    label = "Select variable:",
+    choices = c("STUDYID"),
     selected = "STUDYID",
     multiple = TRUE,
     fixed = FALSE
@@ -89,17 +102,6 @@ testthat::test_that("data_extract_srv uses the current session id when id is mis
         c("filters", "select", "always_selected", "reshape", "dataname", "internal_id", "keys")
       )
     }
-  )
-})
-
-testthat::test_that("data_extract_srv throws if data_extract_spec's dataname is not found in datasets", {
-  shiny::testServer(
-    app = data_extract_srv,
-    args = list(id = "test", data_extract_spec = data_extract_spec(dataname = "test"), datasets = datasets),
-    expr = testthat::expect_error(
-      session$returned(),
-      regexp = "Data extract spec contains datasets that were not handed over to the teal app"
-    )
   )
 })
 
@@ -210,13 +212,13 @@ testthat::test_that("data_extract_srv returns select ordered according to select
     args = list(id = "x", data_extract_spec = extract_ordered, datasets = datasets),
     expr = {
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
-      testthat::expect_identical(filter_and_select$ADSL()$select, c("b", "c"))
+      testthat::expect_identical(filter_and_select_reactive()$select, c("b", "c"))
 
       session$setInputs(`dataset_ADSL_singleextract-select` = "c")
-      testthat::expect_identical(filter_and_select$ADSL()$select, "c")
+      testthat::expect_identical(filter_and_select_reactive()$select, "c")
 
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
-      testthat::expect_identical(filter_and_select$ADSL()$select, c("c", "b"))
+      testthat::expect_identical(filter_and_select_reactive()$select, c("c", "b"))
     }
   )
 })
@@ -237,13 +239,31 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
     args = list(id = "x", data_extract_spec = extract_unordered, datasets = datasets),
     expr = {
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
-      testthat::expect_identical(filter_and_select$ADSL()$select, c("b", "c"))
+      testthat::expect_identical(filter_and_select_reactive()$select, c("b", "c"))
 
       session$setInputs(`dataset_ADSL_singleextract-select` = "c")
-      testthat::expect_identical(filter_and_select$ADSL()$select, "c")
+      testthat::expect_identical(filter_and_select_reactive()$select, "c")
 
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
-      testthat::expect_identical(filter_and_select$ADSL()$select, c("b", "c"))
+      testthat::expect_identical(filter_and_select_reactive()$select, c("b", "c"))
+    }
+  )
+})
+
+testthat::test_that("data_extract_srv with a list of multiple data_extract_spec", {
+  extract_list <- list(adsl_extract = adsl_extract, adlb_extract = adlb_extract)
+
+  shiny::testServer(
+    data_extract_srv,
+    args = list(id = "x", data_extract_spec = extract_list, datasets = datasets),
+    expr = {
+      session$setInputs(`dataset` = "ADLB")
+      testthat::expect_identical(input$dataset, "ADLB")
+      testthat::expect_identical(filter_and_select_reactive()$dataname, "ADLB")
+
+      session$setInputs(`dataset` = "ADSL")
+      testthat::expect_identical(input$dataset, "ADSL")
+      testthat::expect_identical(filter_and_select_reactive()$dataname, "ADSL")
     }
   )
 })

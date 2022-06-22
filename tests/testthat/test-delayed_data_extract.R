@@ -86,7 +86,7 @@ test_that("Delayed data extract - single data connector with two scda dataset co
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
@@ -114,7 +114,7 @@ test_that("Delayed choices selected - single data connector with two scda datase
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
@@ -193,7 +193,7 @@ test_that("Delayed data extract - filtered", {
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
@@ -304,7 +304,7 @@ test_that("Delayed extract filter concatenated - single data connector with two 
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
@@ -431,7 +431,7 @@ test_that("Delayed extract two filters - single data connector with two scda dat
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
@@ -557,7 +557,7 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
-    isolate(ds$get_data(dataname = x, filtered = FALSE))
+    isolate(ds$get_data(dataname = x, filtered = TRUE))
   })
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
