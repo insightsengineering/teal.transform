@@ -707,7 +707,8 @@ test_that("Delayed data extract - filtered", {
 
 # Delayed extract filter concatenated - single data connector with two scda dataset connectors ----
 test_that(
-  "Delayed extract filter concatenated - single data connector with two scda dataset connectors - resolve_delayed", {
+  "Delayed extract filter concatenated - single data connector with two scda dataset connectors - resolve_delayed",
+  {
     adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
     adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
     data <- teal.data::teal_data(adsl, adrs)

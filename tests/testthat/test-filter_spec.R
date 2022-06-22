@@ -508,8 +508,8 @@ test_that("delayed filter_spec works - resolve_delayed", {
 
   expect_equal(names(expected_spec), names(delayed))
   ds <- teal.slice::init_filtered_data(
-     list(ADSL = list(dataset = ADSL)),
-     cdisc = TRUE
+    list(ADSL = list(dataset = ADSL)),
+    cdisc = TRUE
   )
 
   delayed$dataname <- "ADSL"
