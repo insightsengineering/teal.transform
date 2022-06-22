@@ -507,12 +507,11 @@ test_that("delayed filter_spec works - resolve_delayed", {
   )
 
   expect_equal(names(expected_spec), names(delayed))
-  
   ds <- teal.slice::init_filtered_data(
      list(ADSL = list(dataset = ADSL)),
      cdisc = TRUE
   )
-  
+
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
   expect_identical(
@@ -543,8 +542,9 @@ test_that("delayed filter_spec works - resolve_delayed", {
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
 data <- teal.data::cdisc_data(
-teal.data::cdisc_dataset("ADSL", adsl),
-teal.data::cdisc_dataset("ADTTE", adtte)
+  teal.data::cdisc_dataset("ADSL", adsl),
+  teal.data::cdisc_dataset("ADTTE", adtte)
+)
 
 testthat::test_that("delayed version of filter_spec - resolve_delayed", {
   # hard-coded vars & choices & selected
