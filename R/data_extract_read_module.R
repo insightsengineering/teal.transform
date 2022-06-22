@@ -30,7 +30,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
           # replace NA with NA_character_ for class consistency
           if (any(vapply(input_vals, identical, logical(1), "NA")) &&
             anyNA(datasets[[x$dataname]][col]) &&
-            !any(vapply(unique(datasets[[x$dataname]][col]), identical, logical(1), "NA"))) {
+            !any(vapply(unique(datasets[[x$dataname]]()[col]), identical, logical(1), "NA"))) {
             input_vals[vapply(input_vals, identical, logical(1), "NA")] <- NA_character_
           }
         }

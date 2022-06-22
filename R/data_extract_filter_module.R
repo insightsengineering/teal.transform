@@ -73,7 +73,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             filter <<- filter
           } else if (!rlang::is_empty(input$col)) {
             choices <- value_choices(
-              datasets[[filter$dataname]],
+              datasets[[filter$dataname]](),
               input$col
             )
 
@@ -134,7 +134,7 @@ get_initial_filter_values <- function(filter, datasets) {
     initial_values$selected <- character(0)
   } else if (is.null(filter$choices)) {
     initial_values$choices <- value_choices(
-      datasets[[filter$dataname]],
+      datasets[[filter$dataname]](),
       as.character(filter$vars_selected)
     )
     initial_values$selected <- if (inherits(filter$selected, "all_choices")) {

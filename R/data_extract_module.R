@@ -255,7 +255,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' Extracting details of the selection(s) in [data_extract_ui] elements.
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (`FilteredData` or `list` of `data.frame`)\cr
+#' @param datasets (`FilteredData` or `list` of `reactive`)\cr
 #'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
 #'  When passing a list of `data.frame`, the argument `keys` is required also
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
@@ -366,7 +366,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec) {
       )
 
       data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-        isolate(datasets$get_data(dataname = x, filtered = TRUE))
+        reactive(datasets$get_data(dataname = x, filtered = TRUE))
       })
 
       key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
