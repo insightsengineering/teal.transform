@@ -255,9 +255,10 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' Extracting details of the selection(s) in [data_extract_ui] elements.
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (`FilteredData` or `list` of `reactive`)\cr
+#' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
-#'  When passing a list of `data.frame`, the argument `keys` is required also
+#'  When passing a list of non-reactive `data.frame`s, they are converted to reactive `data.frame`s internally.
+#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `keys` is required also
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
 #' @param keys (`list`)\cr
@@ -296,6 +297,14 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   cdisc = TRUE
 #' )
 #'
+#' data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+#'   reactive(datasets$get_data(dataname = x, filtered = FALSE))
+#' })
+#'
+#' key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+#'   isolate(datasets$get_keys(dataname = x))
+#' })
+#'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
 #'   filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
@@ -328,7 +337,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'       datasets = datasets,
 #'       data_extract_spec = adsl_extract
 #'     )
-#'     # using a list of `data.frame` as input to `datasets`
+#'     # using a list of reactive `data.frame` as input to `datasets`
 #'     # adsl_reactive_input <- data_extract_srv(
 #'     #   id = "adsl_var",
 #'     #   datasets = data_list,
@@ -391,12 +400,19 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys) {
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), identical.to = names(keys))
 
+
   moduleServer(
     id,
     function(input, output, session) {
       logger::log_trace(
         "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
       )
+
+      if (!all(vapply(datasets, function(x) is.reactive(x), FUN.VALUE = logical(1)))) {
+        datasets <- sapply(X = names(datasets), simplify = FALSE, FUN = function(x) {
+          reactive(datasets[x])
+        })
+      }
 
       if (inherits(data_extract_spec, "data_extract_spec")) {
         data_extract_spec <- list(data_extract_spec)

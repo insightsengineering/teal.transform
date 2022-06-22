@@ -16,9 +16,10 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{datasets}{(\code{FilteredData} or \code{list} of \code{data.frame})\cr
+\item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
 object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
-When passing a list of \code{data.frame}, the argument \code{keys} is required also}
+When passing a list of non-reactive \code{data.frame}s, they are converted to reactive \code{data.frame}s internally.
+When passing a list of reactive or non-reactive \code{data.frame}s, the argument \code{keys} is required also}
 
 \item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})\cr
 A list of data filter and select information constructed by \link{data_extract_spec}.}
@@ -59,6 +60,14 @@ datasets <- teal.slice::init_filtered_data(
   cdisc = TRUE
 )
 
+data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  reactive(datasets$get_data(dataname = x, filtered = FALSE))
+})
+
+key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  isolate(datasets$get_keys(dataname = x))
+})
+
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
@@ -91,7 +100,7 @@ app <- shinyApp(
       datasets = datasets,
       data_extract_spec = adsl_extract
     )
-    # using a list of `data.frame` as input to `datasets`
+    # using a list of reactive `data.frame` as input to `datasets`
     # adsl_reactive_input <- data_extract_srv(
     #   id = "adsl_var",
     #   datasets = data_list,
