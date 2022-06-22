@@ -416,7 +416,7 @@ test_that("delayed data_extract_spec works - resolve_delayed", {
   expect_equal(names(expected_spec), names(mix2))
   expect_equal(names(expected_spec), names(mix3))
 
-  
+
   isolate({
     ds <- teal.slice::init_filtered_data(
       list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),

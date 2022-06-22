@@ -91,13 +91,13 @@ app <- shinyApp(
       datasets = datasets,
       data_extract_spec = adsl_extract
     )
-   # using a list of `data.frame` as input to `datasets`
-   # adsl_reactive_input <- data_extract_srv(
-   #   id = "adsl_var",
-   #   datasets = data_list,
-   #   data_extract_spec = adsl_extract,
-   #   keys = key_list
-   # )
+    # using a list of `data.frame` as input to `datasets`
+    # adsl_reactive_input <- data_extract_srv(
+    #   id = "adsl_var",
+    #   datasets = data_list,
+    #   data_extract_spec = adsl_extract,
+    #   keys = key_list
+    # )
     output$out1 <- renderPrint({
       print(adsl_reactive_input())
     })
