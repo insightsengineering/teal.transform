@@ -155,7 +155,7 @@ testthat::test_that("get_initial_filters_values returns empty strings if vars_se
 
 testthat::test_that("get_initial_filters_values returns all column values and the selected option
   if choices is NULL", {
-  data_list <- list(iris = utils::head(iris))
+  data_list <- list(iris = reactive(utils::head(iris)))
 
   filter <- filter_spec(vars = colnames(iris)[1])
   filter$choices <- NULL

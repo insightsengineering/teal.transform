@@ -244,6 +244,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", adsl),
   teal.data::cdisc_dataset("ADTTE", adtte)
 )
+ds <- teal.slice::init_filtered_data(data)
 
 testthat::test_that("delayed version of select_spec - resolve_delayed", {
   # hard-coded choices & selected
