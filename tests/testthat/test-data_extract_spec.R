@@ -188,15 +188,16 @@ test_that("delayed data_extract_spec works", {
   expect_equal(names(expected_spec), names(mix2))
   expect_equal(names(expected_spec), names(mix3))
 
-  data_list <- list(ADSL = ADSL)
+  data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
-  expect_identical(expected_spec, resolve(delayed_spec, data_list, key_list))
-  expect_identical(expected_spec, resolve(mix1, data_list, key_list))
-  expect_identical(expected_spec, resolve(mix2, data_list, key_list))
+  isolate({
+    expect_identical(expected_spec, resolve(delayed_spec, data_list, key_list))
+    expect_identical(expected_spec, resolve(mix1, data_list, key_list))
+    expect_identical(expected_spec, resolve(mix2, data_list, key_list))
 
-  mix3_res <- resolve(mix3, data_list, key_list)
-
+    mix3_res <- resolve(mix3, data_list, key_list)
+  })
   expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
   expect_identical(expected_spec$filter[[1]], mix3_res$filter[[2]])
   mix3_res$filter <- NULL
@@ -207,7 +208,7 @@ test_that("delayed data_extract_spec works", {
 scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
-data_list <- list(ADSL = adsl, ADTTE = adtte)
+data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
@@ -247,7 +248,7 @@ testthat::test_that("delayed version of data_extract_spec", {
     )
   )
 
-  res_obj <- resolve(obj, datasets = data_list, join_keys = key_list)
+  res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
@@ -287,7 +288,7 @@ testthat::test_that("delayed version of data_extract_spec", {
     )
   )
 
-  res_obj <- resolve(obj, datasets = data_list, join_keys = key_list)
+  res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))
   exp_obj <- data_extract_spec(
     "ADSL",
     select = select_spec(variable_choices(adsl, c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),

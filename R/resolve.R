@@ -16,10 +16,9 @@
 #'
 #' ADSL <- synthetic_cdisc_data("latest")$adsl
 #' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
+#' data_list <- list(ADSL = shiny::reactive(ADSL))
+#' keys <- list(ADSL = attr(ADSL, "keys"))
 #' shiny::isolate({
-#'   data_list <- list(ADSL = ADSL)
-#'   keys <- list(ADSL = attr(ADSL, "keys"))
-#'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
 #'   v1
@@ -69,7 +68,7 @@
 #'   resolve(arm_ref_comp, data_list, keys)
 #' })
 resolve <- function(x, datasets, join_keys) {
-  checkmate::assert_list(datasets, type = "data.frame", min.len = 1, names = "named")
+  checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
   checkmate::assert_list(join_keys, types = "character", len = length(datasets), names = "named")
   checkmate::assert_names(names(join_keys), identical.to = names(datasets))
   UseMethod("resolve")
@@ -80,7 +79,7 @@ resolve.delayed_variable_choices <- function(x, datasets, join_keys) { # nolint
   if (is.null(x$key)) {
     x$key <- `if`(is.null(join_keys), character(), join_keys[[x$data]])
   }
-  x$data <- datasets[[x$data]]
+  x$data <- datasets[[x$data]]()
   if (inherits(x$subset, "function")) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
   }
@@ -89,7 +88,7 @@ resolve.delayed_variable_choices <- function(x, datasets, join_keys) { # nolint
 
 #' @export
 resolve.delayed_value_choices <- function(x, datasets, join_keys) { # nolint
-  x$data <- datasets[[x$data]]
+  x$data <- datasets[[x$data]]()
   if (is.function(x$subset)) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
   }

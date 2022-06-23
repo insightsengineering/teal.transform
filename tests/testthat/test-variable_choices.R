@@ -34,7 +34,7 @@ test_that("delayed version of variable_choices", {
     )
   )
 
-  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))

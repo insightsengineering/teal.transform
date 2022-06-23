@@ -97,7 +97,7 @@ test_that("resolve select_spec works", {
 
   expect_equal(names(expected_spec), names(delayed_spec))
 
-  data_list <- list(ADSL = ADSL)
+  data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
   expect_identical(expected_spec, isolate(resolve(delayed_spec, datasets = data_list, join_keys = key_list)))
@@ -150,7 +150,7 @@ testthat::test_that("delayed version of select_spec", {
     )
   )
 
-  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, join_keys = key_list))

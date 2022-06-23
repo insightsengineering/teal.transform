@@ -25,10 +25,9 @@ library(scda)
 
 ADSL <- synthetic_cdisc_data("latest")$adsl
 attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
+data_list <- list(ADSL = shiny::reactive(ADSL))
+keys <- list(ADSL = attr(ADSL, "keys"))
 shiny::isolate({
-  data_list <- list(ADSL = ADSL)
-  keys <- list(ADSL = attr(ADSL, "keys"))
-
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1

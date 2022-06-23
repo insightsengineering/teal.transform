@@ -73,7 +73,7 @@ testthat::test_that("resolve.list works correctly", {
     ),
     ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
   )
-  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   ddl_resolved <- isolate(resolve(arm_ref_comp_ddl, data_list, key_list))
@@ -90,10 +90,10 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
   )
 
   output <- testthat::capture_output({
-    data_list <- list(IRIS = head(iris))
+    data_list <- list(IRIS = reactive(head(iris)))
     key_list <- list(IRIS = character(0))
 
-    resolved_cs <- resolve(c_s, data_list, key_list)
+    resolved_cs <- isolate(resolve(c_s, data_list, key_list))
   })
 
   testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))

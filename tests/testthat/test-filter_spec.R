@@ -158,7 +158,7 @@ test_that("delayed filter_spec", {
 
   expect_equal(names(expected_spec), names(delayed))
 
-  data_list <- list(ADSL = ADSL)
+  data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
   result_spec <- isolate(resolve(delayed, data_list, key_list))
@@ -247,7 +247,7 @@ test_that("delayed filter_spec works", {
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
 
-  data_list <- list(ADSL = ADSL)
+  data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = character(0))
 
   expect_identical(
@@ -279,7 +279,7 @@ scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl
 adtte <- scda_data$adtte
 
-data_list <- list(ADSL = adsl, ADTTE = adtte)
+data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
@@ -342,7 +342,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  res_obj <- resolve(obj, datasets = data_list, key_list)
+  res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
   exp_obj <- filter_spec(
     vars = variable_choices(adsl, subset = "ARMCD"),
     choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
@@ -414,7 +414,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  res_obj <- resolve(obj, datasets = data_list, key_list)
+  res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
 
   # comparison not implemented, must be done individually
   testthat::expect_equal(res_obj$choices, exp_obj$choices)

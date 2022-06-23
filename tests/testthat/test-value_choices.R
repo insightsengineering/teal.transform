@@ -42,7 +42,7 @@ testthat::test_that("delayed version of value_choices", {
       class = c("delayed_value_choices", "delayed_data", "choices_labeled")
     )
   )
-  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
