@@ -35,6 +35,7 @@ reference:
       - split_by_sep
       - value_choices
       - variable_choices
+      - resolve
       - resolve_delayed
   - title: Data extract modules
     desc: teal modules to generate transform expressions
