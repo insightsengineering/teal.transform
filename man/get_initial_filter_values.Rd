@@ -26,5 +26,6 @@ filter$dataname <- "iris"
 shiny::isolate(
   teal.transform:::get_initial_filter_values(filter = filter, datasets = filtered_data_list)
 )
+
 }
 \keyword{internal}

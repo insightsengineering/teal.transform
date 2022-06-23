@@ -125,7 +125,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 #' shiny::isolate(
 #'   teal.transform:::get_initial_filter_values(filter = filter, datasets = filtered_data_list)
 #' )
-
+#'
 get_initial_filter_values <- function(filter, datasets) {
   initial_values <- list()
   if (is.null(filter$vars_selected)) {
