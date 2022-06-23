@@ -261,7 +261,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'  When passing a list of reactive or non-reactive `data.frame`s, the argument `keys` is required also
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
-#' @param keys (`list`)\cr
+#' @param ...
 #' an additional argument `keys` is required when `datasets` is a list of `data.frame`.
 #' It shall contain the keys per dataset in `datasets`.
 #'
@@ -365,7 +365,7 @@ data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
 
 #' @rdname data_extract_srv
 #' @export
-data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec) {
+data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) {
   checkmate::assert_class(datasets, "FilteredData")
   moduleServer(
     id,
@@ -394,8 +394,9 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec) {
 }
 
 #' @rdname data_extract_srv
+#' @param keys (`list`) of keys per dataset in `datasets`
 #' @export
-data_extract_srv.list <- function(id, datasets, data_extract_spec, keys) {
+data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
   checkmate::assert_list(datasets, names = "named")
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), identical.to = names(keys))

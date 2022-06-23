@@ -9,7 +9,7 @@ data_extract_single_srv(id, datasets, single_data_extract_spec)
 \arguments{
 \item{id}{(\code{character}) id string}
 
-\item{datasets}{(\code{FilteredData}) the datasets}
+\item{datasets}{(\code{list} of \code{reactive}) \code{data.frame}s}
 
 \item{single_data_extract_spec}{(\code{data_extract_spec}) the \code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
 }
