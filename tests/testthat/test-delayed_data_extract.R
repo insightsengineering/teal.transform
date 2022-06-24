@@ -88,8 +88,8 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  x_result <- isolate(resolve(x, datasets = data_list, join_key = key_list))
-  y_result <- isolate(resolve(y, datasets = data_list, join_key = key_list))
+  x_result <- isolate(resolve(x, datasets = data_list, keys = key_list))
+  y_result <- isolate(resolve(y, datasets = data_list, keys = key_list))
   testthat::expect_identical(x_result, x_expected)
   testthat::expect_identical(y_result, y_expected)
 })
@@ -115,7 +115,7 @@ testthat::test_that("Delayed choices selected - single data connector with two s
   key_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     isolate(ds$get_keys(dataname = x))
   })
-  choices_result <- isolate(resolve(choices, datasets = data_list, join_keys = key_list))
+  choices_result <- isolate(resolve(choices, datasets = data_list, keys = key_list))
   testthat::expect_identical(choices_result, choices_expected)
 })
 

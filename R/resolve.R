@@ -4,7 +4,7 @@
 #'
 #' @param x Object of class `delayed_data` to resolve.
 #' @param datasets A named list of type `data.frame` to use for evaluation.
-#' @param join_keys A named list of type `character` to be used as the join keys for each dataset. The names of this
+#' @param keys A named list of type `character` to be used as the keys for each dataset. The names of this
 #'  list must be exactly the same as for datasets.
 #'
 #' @return Resolved object.
@@ -67,17 +67,17 @@
 #'
 #'   resolve(arm_ref_comp, data_list, keys)
 #' })
-resolve <- function(x, datasets, join_keys) {
+resolve <- function(x, datasets, keys) {
   checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
-  checkmate::assert_list(join_keys, types = "character", len = length(datasets), names = "named")
-  checkmate::assert_names(names(join_keys), identical.to = names(datasets))
+  checkmate::assert_list(keys, types = "character", len = length(datasets), names = "named")
+  checkmate::assert_names(names(keys), identical.to = names(datasets))
   UseMethod("resolve")
 }
 
 #' @export
-resolve.delayed_variable_choices <- function(x, datasets, join_keys) { # nolint
+resolve.delayed_variable_choices <- function(x, datasets, keys) { # nolint
   if (is.null(x$key)) {
-    x$key <- `if`(is.null(join_keys), character(), join_keys[[x$data]])
+    x$key <- `if`(is.null(keys), character(), keys[[x$data]])
   }
   x$data <- datasets[[x$data]]()
   if (inherits(x$subset, "function")) {
@@ -87,7 +87,7 @@ resolve.delayed_variable_choices <- function(x, datasets, join_keys) { # nolint
 }
 
 #' @export
-resolve.delayed_value_choices <- function(x, datasets, join_keys) { # nolint
+resolve.delayed_value_choices <- function(x, datasets, keys) { # nolint
   x$data <- datasets[[x$data]]()
   if (is.function(x$subset)) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
@@ -96,11 +96,11 @@ resolve.delayed_value_choices <- function(x, datasets, join_keys) { # nolint
 }
 
 #' @export
-resolve.delayed_choices_selected <- function(x, datasets, join_keys) { # nolint
+resolve.delayed_choices_selected <- function(x, datasets, keys) { # nolint
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve(x$selected, datasets = datasets, join_keys)
+    x$selected <- resolve(x$selected, datasets = datasets, keys)
   }
-  x$choices <- resolve(x$choices, datasets = datasets, join_keys)
+  x$choices <- resolve(x$choices, datasets = datasets, keys)
 
   if (!all(x$selected %in% x$choices)) {
     logger::log_warn(paste(
@@ -115,57 +115,57 @@ resolve.delayed_choices_selected <- function(x, datasets, join_keys) { # nolint
 }
 
 #' @export
-resolve.delayed_select_spec <- function(x, datasets, join_keys) { # nolint
-  x$choices <- resolve(x$choices, datasets = datasets, join_keys)
+resolve.delayed_select_spec <- function(x, datasets, keys) { # nolint
+  x$choices <- resolve(x$choices, datasets = datasets, keys)
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve(x$selected, datasets = datasets, join_keys)
+    x$selected <- resolve(x$selected, datasets = datasets, keys)
   }
   return(do.call("select_spec", x))
 }
 
 #' @export
-resolve.delayed_filter_spec <- function(x, datasets, join_keys) { # nolint
+resolve.delayed_filter_spec <- function(x, datasets, keys) { # nolint
   if (inherits(x$vars_choices, "delayed_data")) {
-    x$vars_choices <- resolve(x$vars_choices, datasets = datasets, join_keys)
+    x$vars_choices <- resolve(x$vars_choices, datasets = datasets, keys)
   }
   if (inherits(x$vars_selected, "delayed_data")) {
-    x$vars_selected <- resolve(x$vars_selected, datasets = datasets, join_keys)
+    x$vars_selected <- resolve(x$vars_selected, datasets = datasets, keys)
   }
   if (inherits(x$choices, "delayed_data")) {
-    x$choices <- resolve(x$choices, datasets = datasets, join_keys)
+    x$choices <- resolve(x$choices, datasets = datasets, keys)
   }
   if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve(x$selected, datasets = datasets, join_keys)
+    x$selected <- resolve(x$selected, datasets = datasets, keys)
   }
 
   return(do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))]))
 }
 
 #' @export
-resolve.delayed_data_extract_spec <- function(x, datasets, join_keys) { # nolint
+resolve.delayed_data_extract_spec <- function(x, datasets, keys) { # nolint
   x$select <- `if`(
     inherits(x$select, "delayed_data"),
-    resolve(x$select, datasets = datasets, join_keys),
+    resolve(x$select, datasets = datasets, keys),
     x$select
   )
 
   if (any(vapply(x$filter, inherits, logical(1L), "delayed_data"))) {
     idx <- vapply(x$filter, inherits, logical(1), "delayed_data")
-    x$filter[idx] <- lapply(x$filter[idx], resolve, datasets = datasets, join_keys = join_keys)
+    x$filter[idx] <- lapply(x$filter[idx], resolve, datasets = datasets, keys = keys)
   }
 
   return(do.call("data_extract_spec", x))
 }
 
 #' @export
-resolve.list <- function(x, datasets, join_keys) { # nolint
+resolve.list <- function(x, datasets, keys) { # nolint
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
-  res <- lapply(x, resolve, datasets = datasets, join_keys = join_keys)
+  res <- lapply(x, resolve, datasets = datasets, keys = keys)
   return(res)
 }
 
 #' @export
-resolve.default <- function(x, datasets, join_keys) {
+resolve.default <- function(x, datasets, keys) {
   return(x)
 }
 
@@ -196,7 +196,7 @@ resolve_delayed_expr <- function(x, ds, is_value_choices) {
   checkmate::assert_function(x, args = "data", nargs = 1)
 
   # evaluate function
-  res <- do.call("x", list(data = ds))
+  res <- do.call(x, list(data = ds))
 
   # check returned value
   if (is_value_choices) {

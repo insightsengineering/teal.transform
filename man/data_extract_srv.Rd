@@ -103,14 +103,17 @@ app <- shinyApp(
     )
 
     # OR: 2. using a list of reactive `data.frame` as input to `datasets`
-    # adsl_reactive_input <- data_extract_srv(
-    #   id = "adsl_var",
-    #   datasets = data_list,
-    #   data_extract_spec = adsl_extract,
-    #   keys = key_list
-    # )
+    adsl_reactive_input2 <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      keys = key_list
+    )
     output$out1 <- renderPrint({
+      print("# using a `FilteredData` object")
       print(adsl_reactive_input())
+      print("# using a list of reactive `data.frame`")
+      print(adsl_reactive_input2())
     })
   }
 )

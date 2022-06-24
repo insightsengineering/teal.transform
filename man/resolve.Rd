@@ -4,14 +4,14 @@
 \alias{resolve}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve(x, datasets, join_keys)
+resolve(x, datasets, keys)
 }
 \arguments{
 \item{x}{Object of class \code{delayed_data} to resolve.}
 
 \item{datasets}{A named list of type \code{data.frame} to use for evaluation.}
 
-\item{join_keys}{A named list of type \code{character} to be used as the join keys for each dataset. The names of this
+\item{keys}{A named list of type \code{character} to be used as the keys for each dataset. The names of this
 list must be exactly the same as for datasets.}
 }
 \value{
