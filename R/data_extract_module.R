@@ -331,13 +331,14 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     # using a `FilteredData` object as input to `datasets`
+#'     # 1. using a `FilteredData` object as input to `datasets`
 #'     adsl_reactive_input <- data_extract_srv(
 #'       id = "adsl_var",
 #'       datasets = datasets,
 #'       data_extract_spec = adsl_extract
 #'     )
-#'     # using a list of reactive `data.frame` as input to `datasets`
+#'
+#'     # OR: 2. using a list of reactive `data.frame` as input to `datasets`
 #'     # adsl_reactive_input <- data_extract_srv(
 #'     #   id = "adsl_var",
 #'     #   datasets = data_list,
