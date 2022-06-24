@@ -397,10 +397,9 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @param keys (`list`) of keys per dataset in `datasets`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
-  checkmate::assert_list(datasets, names = "named")
+  checkmate::assert_list(datasets, types = "reactive", names = "named")
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), permutation.of = names(keys))
-
 
   moduleServer(
     id,
