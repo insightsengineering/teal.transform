@@ -8,9 +8,15 @@ testthat::test_that("Proper argument types", {
   testthat::expect_error(select_spec(choices = list(list(choices)), selected = selected))
   testthat::expect_error(select_spec(choices = choices, selected = list(list(selected))))
   testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = 1), "Assertion on 'multiple'")
-  testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = c(TRUE, TRUE)), "Assertion on 'multiple'")
+  testthat::expect_error(
+    select_spec(choices = choices, selected = selected, multiple = c(TRUE, TRUE)),
+    "Assertion on 'multiple'"
+  )
   testthat::expect_error(select_spec(choices = choices, selected = selected, fixed = 1), "Assertion on 'fixed'")
-  testthat::expect_error(select_spec(choices = choices, selected = selected, label = factor("Hello")), "Assertion on 'label'")
+  testthat::expect_error(
+    select_spec(choices = choices, selected = selected, label = factor("Hello")),
+    "Assertion on 'label'"
+  )
 })
 
 testthat::test_that("Single choice", {
@@ -52,13 +58,19 @@ testthat::test_that("Single choice", {
 testthat::test_that("Multiple choices", {
   choices <- c("c1", "c2", "c3")
   selected <- c("c1", "c2")
-  testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = FALSE), "multiple \\|\\| length")
+  testthat::expect_error(
+    select_spec(choices = choices, selected = selected, multiple = FALSE),
+    "multiple \\|\\| length"
+  )
 
   testthat::expect_silent(c1 <- select_spec(choices = choices, selected = selected, multiple = TRUE))
   testthat::expect_silent(c2 <- select_spec(choices = choices, selected = selected))
   testthat::expect_identical(c1, c2)
 
-  testthat::expect_identical(names(c1), c("choices", "selected", "multiple", "fixed", "always_selected", "ordered", "label"))
+  testthat::expect_identical(
+    names(c1),
+    c("choices", "selected", "multiple", "fixed", "always_selected", "ordered", "label")
+  )
   testthat::expect_identical(c1$choices, setNames(choices, choices))
   testthat::expect_identical(c1$selected, setNames(selected, selected))
 

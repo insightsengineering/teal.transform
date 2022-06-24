@@ -608,23 +608,25 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
 })
 
 # Delayed choices selected - single data connector with two scda dataset connectors ----
+testthat::test_that(
+  desc = "Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed",
+  code = {
+    adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
+    adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
+    data <- teal.data::cdisc_data(adsl, adae)
 
-testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed", {
-  adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
-  adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
-  data <- teal.data::cdisc_data(adsl, adae)
+    choices <- variable_choices("ADSL")
+    for (connector in data$get_connectors()) {
+      connector$pull()
+    }
+    ds <- teal.slice::init_filtered_data(data)
 
-  choices <- variable_choices("ADSL")
-  for (connector in data$get_connectors()) {
-    connector$pull()
+    ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
+    choices_result <- isolate(resolve_delayed(choices, datasets = ds))
+    testthat::expect_identical(choices_result, choices_expected)
   }
-  ds <- teal.slice::init_filtered_data(data)
-
-  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
-  choices_result <- isolate(resolve_delayed(choices, datasets = ds))
-  testthat::expect_identical(choices_result, choices_expected)
-})
+)
 
 # Delayed data extract - filtered ----
 
@@ -701,228 +703,234 @@ testthat::test_that("Delayed data extract - filtered", {
 })
 
 # Delayed extract filter concatenated - single data connector with two scda dataset connectors ----
-testthat::test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors - r_delayed", {
-  adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
-  adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
-  data <- teal.data::teal_data(adsl, adrs)
+testthat::test_that(
+  desc = "Delayed extract filter concatenated - single data connector with two scda dataset connectors - res_delayed",
+  code = {
+    adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
+    adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
+    data <- teal.data::teal_data(adsl, adrs)
 
-  x <- data_extract_spec(
-    dataname = "ADSL",
-    select = select_spec(
-      choices = variable_choices("ADSL", subset = get_continuous)
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = "ARMCD",
-      choices = value_choices("ADSL",
-        var_choices = "ARMCD",
-        var_label = "ARM",
-        subset = function(data) levels(data$ARMCD)[1:2]
+    x <- data_extract_spec(
+      dataname = "ADSL",
+      select = select_spec(
+        choices = variable_choices("ADSL", subset = get_continuous)
       ),
-      selected = "ARM A",
-      multiple = TRUE
+      filter = filter_spec(
+        label = "Select endpoints:",
+        vars = "ARMCD",
+        choices = value_choices("ADSL",
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) levels(data$ARMCD)[1:2]
+        ),
+        selected = "ARM A",
+        multiple = TRUE
+      )
     )
-  )
-  y <- data_extract_spec(
-    dataname = "ADRS",
-    select = select_spec(
-      choices = variable_choices("ADRS", subset = get_continuous),
-      selected = c("AGE: Age" = "AGE")
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = c("PARAMCD", "AVISIT"),
-      choices = value_choices(
-        data = "ADRS",
-        var_choices = c("PARAMCD", "AVISIT"),
-        var_label = c("PARAMCD", "AVISIT"),
-        subset = function(data) {
-          paste(
-            levels(data$PARAMCD),
-            levels(data$AVISIT)[4:6],
-            sep = " - "
-          )
-        }
+    y <- data_extract_spec(
+      dataname = "ADRS",
+      select = select_spec(
+        choices = variable_choices("ADRS", subset = get_continuous),
+        selected = c("AGE: Age" = "AGE")
       ),
-      selected = "INVET - END OF INDUCTION",
-      multiple = TRUE
+      filter = filter_spec(
+        label = "Select endpoints:",
+        vars = c("PARAMCD", "AVISIT"),
+        choices = value_choices(
+          data = "ADRS",
+          var_choices = c("PARAMCD", "AVISIT"),
+          var_label = c("PARAMCD", "AVISIT"),
+          subset = function(data) {
+            paste(
+              levels(data$PARAMCD),
+              levels(data$AVISIT)[4:6],
+              sep = " - "
+            )
+          }
+        ),
+        selected = "INVET - END OF INDUCTION",
+        multiple = TRUE
+      )
     )
-  )
 
-  for (connector in data$get_connectors()) {
-    connector$pull()
+    for (connector in data$get_connectors()) {
+      connector$pull()
+    }
+    ds <- teal.slice::init_filtered_data(data)
+
+    ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
+    x_expected <- data_extract_spec(
+      dataname = "ADSL",
+      select = select_spec(
+        choices = variable_choices(ADSL, subset = get_continuous),
+        selected = NULL
+      ),
+      filter = filter_spec(
+        label = "Select endpoints:",
+        vars = "ARMCD",
+        choices = value_choices(ADSL,
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) levels(data$ARMCD)[1:2]
+        ),
+        selected = "ARM A",
+        multiple = TRUE
+      )
+    )
+    y_expected <- data_extract_spec(
+      dataname = "ADRS",
+      select = select_spec(
+        choices = variable_choices(ADRS, subset = get_continuous)
+      ),
+      filter = filter_spec(
+        label = "Select endpoints:",
+        vars = c("PARAMCD", "AVISIT"),
+        choices = value_choices(
+          data = ADRS,
+          var_choices = c("PARAMCD", "AVISIT"),
+          var_label = c("PARAMCD", "AVISIT"),
+          subset = function(data) {
+            paste(
+              levels(data$PARAMCD),
+              levels(data$AVISIT)[4:6],
+              sep = " - "
+            )
+          }
+        ),
+        selected = "INVET - END OF INDUCTION",
+        multiple = TRUE
+      )
+    )
+    x_result <- isolate(resolve_delayed(x, datasets = ds))
+    y_result <- isolate(resolve_delayed(y, datasets = ds))
+    testthat::expect_identical(x_result, x_expected)
+    testthat::expect_identical(y_result, y_expected)
   }
-  ds <- teal.slice::init_filtered_data(data)
-
-  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
-  x_expected <- data_extract_spec(
-    dataname = "ADSL",
-    select = select_spec(
-      choices = variable_choices(ADSL, subset = get_continuous),
-      selected = NULL
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = "ARMCD",
-      choices = value_choices(ADSL,
-        var_choices = "ARMCD",
-        var_label = "ARM",
-        subset = function(data) levels(data$ARMCD)[1:2]
-      ),
-      selected = "ARM A",
-      multiple = TRUE
-    )
-  )
-  y_expected <- data_extract_spec(
-    dataname = "ADRS",
-    select = select_spec(
-      choices = variable_choices(ADRS, subset = get_continuous)
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = c("PARAMCD", "AVISIT"),
-      choices = value_choices(
-        data = ADRS,
-        var_choices = c("PARAMCD", "AVISIT"),
-        var_label = c("PARAMCD", "AVISIT"),
-        subset = function(data) {
-          paste(
-            levels(data$PARAMCD),
-            levels(data$AVISIT)[4:6],
-            sep = " - "
-          )
-        }
-      ),
-      selected = "INVET - END OF INDUCTION",
-      multiple = TRUE
-    )
-  )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
-  testthat::expect_identical(x_result, x_expected)
-  testthat::expect_identical(y_result, y_expected)
-})
+)
 
 # Delayed extract two filters - single data connector with two scda dataset connectors ----
-testthat::test_that("Delayed extract two filters - single data connector with two scda dataset connectors - resolve_delayed", {
-  adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
-  adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
-  data <- teal.data::teal_data(adsl, adrs)
+testthat::test_that(
+  desc = "Delayed extract two filters - single data connector with two scda dataset connectors - resolve_delayed",
+  code = {
+    adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
+    adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
+    data <- teal.data::teal_data(adsl, adrs)
 
-  x <- data_extract_spec(
-    dataname = "ADSL",
-    select = select_spec(
-      choices = variable_choices("ADSL", subset = get_continuous)
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = "ARMCD",
-      choices = value_choices("ADSL",
-        var_choices = "ARMCD",
-        var_label = "ARM",
-        subset = function(data) levels(data$ARMCD)[1:2]
+    x <- data_extract_spec(
+      dataname = "ADSL",
+      select = select_spec(
+        choices = variable_choices("ADSL", subset = get_continuous)
       ),
-      selected = "ARM A",
-      multiple = TRUE
-    )
-  )
-  y <- data_extract_spec(
-    dataname = "ADRS",
-    select = select_spec(
-      choices = variable_choices("ADRS", subset = get_continuous),
-      selected = c("AGE: Age" = "AGE")
-    ),
-    filter = list(
-      filter_spec(
+      filter = filter_spec(
         label = "Select endpoints:",
-        vars = "PARAMCD",
-        choices = value_choices(
-          data = "ADRS",
-          var_choices = "PARAMCD",
-          var_label = "PARAMCD",
-          subset = function(data) levels(data$PARAMCD)[2:3]
+        vars = "ARMCD",
+        choices = value_choices("ADSL",
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) levels(data$ARMCD)[1:2]
         ),
-        selected = "OVRINV",
-        multiple = TRUE
-      ),
-      filter_spec(
-        label = "Select endpoints:",
-        vars = "AVISIT",
-        choices = value_choices(
-          data = "ADRS",
-          var_choices = "AVISIT",
-          var_label = "AVISIT",
-          subset = function(data) levels(data$AVISIT)[5:6]
-        ),
-        selected = "END OF INDUCTION",
+        selected = "ARM A",
         multiple = TRUE
       )
     )
-  )
+    y <- data_extract_spec(
+      dataname = "ADRS",
+      select = select_spec(
+        choices = variable_choices("ADRS", subset = get_continuous),
+        selected = c("AGE: Age" = "AGE")
+      ),
+      filter = list(
+        filter_spec(
+          label = "Select endpoints:",
+          vars = "PARAMCD",
+          choices = value_choices(
+            data = "ADRS",
+            var_choices = "PARAMCD",
+            var_label = "PARAMCD",
+            subset = function(data) levels(data$PARAMCD)[2:3]
+          ),
+          selected = "OVRINV",
+          multiple = TRUE
+        ),
+        filter_spec(
+          label = "Select endpoints:",
+          vars = "AVISIT",
+          choices = value_choices(
+            data = "ADRS",
+            var_choices = "AVISIT",
+            var_label = "AVISIT",
+            subset = function(data) levels(data$AVISIT)[5:6]
+          ),
+          selected = "END OF INDUCTION",
+          multiple = TRUE
+        )
+      )
+    )
 
-  for (connector in data$get_connectors()) {
-    connector$pull()
+    for (connector in data$get_connectors()) {
+      connector$pull()
+    }
+    ds <- teal.slice::init_filtered_data(data)
+
+    ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
+    x_expected <- data_extract_spec(
+      dataname = "ADSL",
+      select = select_spec(
+        choices = variable_choices(ADSL, subset = get_continuous),
+        selected = NULL
+      ),
+      filter = filter_spec(
+        label = "Select endpoints:",
+        vars = "ARMCD",
+        choices = value_choices(ADSL,
+          var_choices = "ARMCD",
+          var_label = "ARM",
+          subset = function(data) levels(data$ARMCD)[1:2]
+        ),
+        selected = "ARM A",
+        multiple = TRUE
+      )
+    )
+    y_expected <- data_extract_spec(
+      dataname = "ADRS",
+      select = select_spec(
+        choices = variable_choices(ADRS, subset = get_continuous)
+      ),
+      filter = list(
+        filter_spec(
+          label = "Select endpoints:",
+          vars = "PARAMCD",
+          choices = value_choices(
+            data = ADRS,
+            var_choices = "PARAMCD",
+            var_label = "PARAMCD",
+            subset = function(data) levels(data$PARAMCD)[2:3]
+          ),
+          selected = "OVRINV",
+          multiple = TRUE
+        ),
+        filter_spec(
+          label = "Select endpoints:",
+          vars = "AVISIT",
+          choices = value_choices(
+            data = ADRS,
+            var_choices = "AVISIT",
+            var_label = "AVISIT",
+            subset = function(data) levels(data$AVISIT)[5:6]
+          ),
+          selected = "END OF INDUCTION",
+          multiple = TRUE
+        )
+      )
+    )
+    x_result <- isolate(resolve_delayed(x, datasets = ds))
+    y_result <- isolate(resolve_delayed(y, datasets = ds))
+    testthat::expect_identical(x_result, x_expected)
+    testthat::expect_identical(y_result, y_expected)
   }
-  ds <- teal.slice::init_filtered_data(data)
-
-  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
-  x_expected <- data_extract_spec(
-    dataname = "ADSL",
-    select = select_spec(
-      choices = variable_choices(ADSL, subset = get_continuous),
-      selected = NULL
-    ),
-    filter = filter_spec(
-      label = "Select endpoints:",
-      vars = "ARMCD",
-      choices = value_choices(ADSL,
-        var_choices = "ARMCD",
-        var_label = "ARM",
-        subset = function(data) levels(data$ARMCD)[1:2]
-      ),
-      selected = "ARM A",
-      multiple = TRUE
-    )
-  )
-  y_expected <- data_extract_spec(
-    dataname = "ADRS",
-    select = select_spec(
-      choices = variable_choices(ADRS, subset = get_continuous)
-    ),
-    filter = list(
-      filter_spec(
-        label = "Select endpoints:",
-        vars = "PARAMCD",
-        choices = value_choices(
-          data = ADRS,
-          var_choices = "PARAMCD",
-          var_label = "PARAMCD",
-          subset = function(data) levels(data$PARAMCD)[2:3]
-        ),
-        selected = "OVRINV",
-        multiple = TRUE
-      ),
-      filter_spec(
-        label = "Select endpoints:",
-        vars = "AVISIT",
-        choices = value_choices(
-          data = ADRS,
-          var_choices = "AVISIT",
-          var_label = "AVISIT",
-          subset = function(data) levels(data$AVISIT)[5:6]
-        ),
-        selected = "END OF INDUCTION",
-        multiple = TRUE
-      )
-    )
-  )
-  x_result <- isolate(resolve_delayed(x, datasets = ds))
-  y_result <- isolate(resolve_delayed(y, datasets = ds))
-  testthat::expect_identical(x_result, x_expected)
-  testthat::expect_identical(y_result, y_expected)
-})
+)
 
 # Delayed extract - dataset & connector ----
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors - resolve_delayed", {

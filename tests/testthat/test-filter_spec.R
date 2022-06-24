@@ -8,15 +8,27 @@ choices_l <- as.list(choices)
 testthat::test_that("Proper argument types", {
   testthat::expect_error(filter_spec(vars = list("var"), choices = choices), "Assertion failed.+vars")
   testthat::expect_error(filter_spec(vars = "var", choices = choices_l), "Assertion failed.+choices")
-  testthat::expect_error(filter_spec(vars = "var", choices = choices, selected = list("val2")), "Assertion failed.+selected")
+  testthat::expect_error(
+    filter_spec(vars = "var", choices = choices, selected = list("val2")),
+    "Assertion failed.+selected"
+  )
   testthat::expect_error(filter_spec(vars = 1, choices = choices, selected = choices[1]), "Assertion failed.+vars")
-  testthat::expect_error(filter_spec(vars = factor("var"), choices = choices, selected = choices[1]), "Assertion failed.+vars")
-  testthat::expect_error(filter_spec(vars = "var", choices = choices_f, selected = choices_f[1]), "Assertion failed.+choices")
+  testthat::expect_error(
+    filter_spec(vars = factor("var"), choices = choices, selected = choices[1]),
+    "Assertion failed.+vars"
+  )
+  testthat::expect_error(
+    filter_spec(vars = "var", choices = choices_f, selected = choices_f[1]),
+    "Assertion failed.+choices"
+  )
   testthat::expect_error(filter_spec(vars = "var", choices = choices, multiple = 1), "Assertion on 'multiple'")
   testthat::expect_error(filter_spec(vars = "var", choices = choices, label = factor("test")), "Assertion on 'label'")
 
   testthat::expect_error(filter_spec(vars = "var", choices = choices_d), "duplicated")
-  testthat::expect_error(filter_spec(vars = "var", choices = choices, label = c("test", "test2")), "Assertion on 'label'")
+  testthat::expect_error(
+    filter_spec(vars = "var", choices = choices, label = c("test", "test2")),
+    "Assertion on 'label'"
+  )
   testthat::expect_error(filter_spec(vars = "var", choices = choices, sep = c("-", ",")), "Assertion on 'sep'")
 })
 
@@ -62,7 +74,9 @@ testthat::test_that("Multiple choices", {
 })
 
 testthat::test_that("Multiple vars", {
-  testthat::expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2"), sep = ":"))
+  testthat::expect_error(
+    filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2"), sep = ":")
+  )
   testthat::expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2")))
   testthat::expect_error(filter_spec(vars = "var1", choices = c("val-1", "val2", "val3", "val4"), sep = "-"))
 
@@ -72,7 +86,9 @@ testthat::test_that("Multiple vars", {
     sep = " - "
   ))
 
-  testthat::expect_silent(f2 <- filter_spec(vars = c("var1", "var2"), choices = c("val1.1 - val2.1", "val1.1 - val2.2")))
+  testthat::expect_silent(
+    f2 <- filter_spec(vars = c("var1", "var2"), choices = c("val1.1 - val2.1", "val1.1 - val2.2"))
+  )
 
   testthat::expect_silent(f5 <- filter_spec(
     vars = c("var1", "var2"),
@@ -470,13 +486,16 @@ testthat::test_that("delayed filter_spec - resolve_delayed", {
 })
 
 
-testthat::test_that("filter_spec with choices_selected where all selected in choices does not throw an error - resolve_delayed", {
-  valid_cs <- choices_selected(
-    choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-    selected = c("A", "B")
-  )
-  testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
-})
+testthat::test_that(
+  desc = "filter_spec with choices_selected where all selected in choices does not throw an error - resolve_delayed",
+  code = {
+    valid_cs <- choices_selected(
+      choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+      selected = c("A", "B")
+    )
+    testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
+  }
+)
 
 testthat::test_that("delayed filter_spec works - resolve_delayed", {
   set.seed(1)
