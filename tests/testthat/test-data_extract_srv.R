@@ -7,6 +7,18 @@ datasets <- teal.slice::init_filtered_data(
   cdisc = TRUE
 )
 
+data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  reactive(datasets$get_data(dataname = x, filtered = FALSE))
+})
+
+nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  datasets$get_data(dataname = x, filtered = FALSE)
+})
+
+key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  isolate(datasets$get_keys(dataname = x))
+})
+
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -29,10 +41,95 @@ adlb_extract <- data_extract_spec(
   )
 )
 
+testthat::test_that(
+  desc = "data_extract_srv accepts a FilteredData object or a list of (reactive) data frames to datasets",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = datasets),
+        NA
+      )
+    )
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = key_list),
+        NA
+      )
+    )
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
+        NA
+      )
+    )
+  }
+)
+
+testthat::test_that(
+  desc = "data_extract_srv accepts throws error when a list of reactive data frames is provided with no keys argument",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list),
+        "argument \"keys\" is missing, with no default"
+      )
+    )
+  }
+)
+
+testthat::test_that(
+  desc = "data_extract_srv accepts throws error when keys argument is not a named list",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = "key_list"),
+        regexp = "Assertion on 'keys' failed: Must be of type 'list', not 'character'.",
+        fixed = TRUE
+      )
+    )
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(
+          id = "x",
+          data_extract_spec = adsl_extract,
+          datasets = data_list, keys = list(c("USUBJID"))
+        ),
+        regexp = "Assertion on 'keys' failed: Must have names.",
+        fixed = TRUE
+      )
+    )
+  }
+)
+
+testthat::test_that(
+  desc = "data_extract_srv throws error when names of datasets list and keys list do no correspond",
+  code = {
+    key_list <- list(X = c("STUDYID", "USUBJID"))
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = key_list),
+        regexp = "Assertion on 'names(datasets)' failed",
+        fixed = TRUE
+      )
+    )
+  }
+)
+
 testthat::test_that("data_extract_srv returns list of elements", {
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = adsl_extract, datasets = datasets),
+    args = list(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
     expr = {
       testthat::expect_is(session$returned(), "list")
       testthat::expect_identical(
@@ -47,7 +144,7 @@ testthat::test_that("data_extract_srv throws error with missing arguments", {
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", datasets = datasets),
+      args = list(id = "x", datasets = nr_data_list, keys = key_list),
       expr =  NULL
     ),
     "argument \"data_extract_spec\" is missing, with no default"
@@ -67,7 +164,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = datasets),
+      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = nr_data_list, keys = key_list),
       expr =  NULL
     ),
     regexp = "`data_extract_spec` argument should be"
@@ -76,7 +173,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = TRUE, datasets = datasets),
+      args = list(id = "x", data_extract_spec = TRUE, datasets = nr_data_list, keys = key_list),
       expr =  NULL
     ),
     regexp = "`data_extract_spec` argument should be"
@@ -85,7 +182,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = adsl_extract, datasets = adsl),
+      args = list(id = "x", data_extract_spec = adsl_extract, datasets = adsl, keys = key_list),
       expr =  NULL
     ),
     regexp = "Assertion on 'datasets' failed:"
@@ -95,7 +192,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
 testthat::test_that("data_extract_srv uses the current session id when id is missing", {
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "adsl_extract", data_extract_spec = adsl_extract, datasets = datasets),
+    args = list(id = "adsl_extract", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
     expr = {
       testthat::expect_is(session$returned(), "list")
       testthat::expect_identical(
@@ -106,97 +203,6 @@ testthat::test_that("data_extract_srv uses the current session id when id is mis
   )
 })
 
-filtered_data <- teal.slice::init_filtered_data(
-  list(iris = list(dataset = iris))
-)
-
-testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(list(test = data_extract_spec(dataname = "iris")), datasets = filtered_data),
-      NA
-    )
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv returns a reactive list with reactives", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = {
-      selector_list <- data_extract_multiple_srv(
-        list(test = data_extract_spec(dataname = "iris")),
-        datasets = filtered_data
-      )
-      testthat::expect_true(inherits(selector_list, "reactive"))
-      lapply(isolate(selector_list()), FUN = function(element) testthat::expect_true(inherits(element, "reactive")))
-    }
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv returns a named list", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = {
-      selector_list <-
-        data_extract_multiple_srv(list(test = data_extract_spec(dataname = "iris")), datasets = filtered_data)
-      testthat::expect_equal(
-        names(isolate(selector_list())),
-        "test"
-      )
-    }
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv accepts an empty list", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(data_extract_multiple_srv(list(), datasets = filtered_data), NA)
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv returns an empty list if passed an empty list", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = {
-      selector_list <- data_extract_multiple_srv(list(), datasets = filtered_data)
-      testthat::expect_equal(isolate(selector_list()), list())
-    }
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_equal(
-      length(data_extract_multiple_srv(
-        list(test = data_extract_spec(dataname = "iris"), test2 = NULL),
-        datasets = filtered_data
-      )),
-      1
-    )
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv throws if datasets is not passed FilteredData", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(list(test = NULL), datasets = "wrong type"),
-      regexp = "Assertion on 'datasets' failed:"
-    )
-  )
-})
-
-testthat::test_that("data_extract_multiple_srv throws if data_extract is not a named list", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(list(1), datasets = teal.slice::init_filtered_data(list(iris = list(dataset = iris)))),
-      regexp = "Assertion on 'data_extract' failed: Must have names"
-    )
-  )
-})
 
 testthat::test_that("data_extract_srv returns select ordered according to selection", {
   extract_ordered <- data_extract_spec(

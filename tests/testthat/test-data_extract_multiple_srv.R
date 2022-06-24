@@ -1,0 +1,208 @@
+datasets <- teal.slice::init_filtered_data(
+  list(iris = list(dataset = iris))
+)
+
+data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  shiny::reactive(datasets$get_data(dataname = x, filtered = FALSE))
+})
+
+nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  shiny::isolate(datasets$get_data(dataname = x, filtered = FALSE))
+})
+
+key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+  shiny::isolate(datasets$get_keys(dataname = x))
+})
+
+testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(
+        data_extract = list(test = data_extract_spec(dataname = "iris")),
+        datasets = data_list,
+        keys = key_list
+      ),
+      NA
+    )
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(
+        data_extract = list(test = data_extract_spec(dataname = "iris")),
+        datasets = data_list,
+        keys = key_list
+      ),
+      NA
+    )
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv returns a reactive list with reactives", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = {
+      selector_list <- data_extract_multiple_srv(
+        list(test = data_extract_spec(dataname = "iris")),
+        datasets = data_list,
+        keys = key_list
+      )
+      testthat::expect_true(inherits(selector_list, "reactive"))
+      lapply(isolate(selector_list()), FUN = function(element) testthat::expect_true(inherits(element, "reactive")))
+    }
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv returns a named list", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = {
+      selector_list <-
+        data_extract_multiple_srv(
+          list(test = data_extract_spec(dataname = "iris")),
+          datasets = data_list,
+          keys = key_list
+        )
+      testthat::expect_equal(
+        names(isolate(selector_list())),
+        "test"
+      )
+    }
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv accepts an empty list", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(data_extract_multiple_srv(list(), datasets = data_list, keys = key_list), NA)
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv returns an empty list if passed an empty list", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = {
+      selector_list <- data_extract_multiple_srv(list(), datasets = data_list, keys = key_list)
+      testthat::expect_equal(isolate(selector_list()), list())
+    }
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_equal(
+      length(data_extract_multiple_srv(
+        list(test = data_extract_spec(dataname = "iris"), test2 = NULL),
+        datasets = data_list,
+        keys = key_list
+      )),
+      1
+    )
+  )
+})
+
+testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData or list of (reactive) data.frame", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = datasets),
+      regexp = NA
+    )
+  )
+
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = nr_data_list, keys = key_list),
+      regexp = NA
+    )
+  )
+
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = data_list, keys = key_list),
+      regexp = NA
+    )
+  )
+})
+
+testthat::test_that(
+  desc = "data_extract_multiple_srv throws error if datasets is not FilteredData or list of (reactive) data.frame",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_multiple_srv(list(test = NULL), datasets = "wrong type"),
+        regexp = "Assertion on 'datasets' failed"
+      )
+    )
+  }
+)
+
+testthat::test_that("data_extract_multiple_srv throws if data_extract is not a named list", {
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(list(1), datasets = teal.slice::init_filtered_data(list(iris = list(dataset = iris)))),
+      regexp = "Assertion on 'data_extract' failed: Must have names"
+    )
+  )
+})
+
+testthat::test_that(
+  desc = "data_extract_multiple_srv accepts throws error when a list of data frames is provided with no keys argument",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_multiple_srv(list(test = NULL), datasets = data_list),
+        "argument \"keys\" is missing, with no default"
+      )
+    )
+  }
+)
+
+testthat::test_that(
+  desc = "data_extract_multiple_srv accepts throws error when keys argument is not a named list",
+  code = {
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_multiple_srv(list(test = NULL), datasets = data_list, keys = "key_list"),
+        regexp = "Assertion on 'keys' failed: Must be of type 'list', not 'character'.",
+        fixed = TRUE
+      )
+    )
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_multiple_srv(list(test = NULL), datasets = data_list, keys = list(c("USUBJID"))),
+        regexp = "Assertion on 'keys' failed: Must have names.",
+        fixed = TRUE
+      )
+    )
+  }
+)
+
+testthat::test_that(
+  desc = "data_extract_multiple_srv throws error when names of datasets list and keys list do no correspond",
+  code = {
+    key_list <- list(X = c())
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_multiple_srv(list(test = NULL), datasets = data_list, keys = key_list),
+        regexp = "Assertion on 'names(datasets)' failed",
+        fixed = TRUE
+      )
+    )
+  }
+)

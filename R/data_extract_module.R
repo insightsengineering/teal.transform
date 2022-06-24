@@ -298,7 +298,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' )
 #'
 #' data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-#'   reactive(datasets$get_data(dataname = x, filtered = FALSE))
+#'   reactive(datasets$get_data(dataname = x, filtered = TRUE))
 #' })
 #'
 #' key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
@@ -398,7 +398,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @param keys (`list`) of keys per dataset in `datasets`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
-  checkmate::assert_list(datasets, types = "reactive", names = "named")
+  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), permutation.of = names(keys))
 
@@ -552,12 +552,45 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
 #' \dontrun{
 #' runApp(app)
 #' }
-data_extract_multiple_srv <- function(data_extract, datasets) {
+data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
-  checkmate::assert_class(datasets, "FilteredData")
+  checkmate::assert_multi_class(datasets, classes = c("FilteredData", "list"))
+  UseMethod("data_extract_multiple_srv", datasets)
+}
+
+#' @rdname data_extract_multiple_srv
+#' @export
+data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) {
+  checkmate::assert_class(datasets, classes = "FilteredData")
+  logger::log_trace(
+    "data_extract_multiple_srv.filteredData initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
+  )
+  data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+    reactive(datasets$get_data(dataname = x, filtered = TRUE))
+  })
+
+  key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+    datasets$get_keys(dataname = x)
+  })
+  data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, keys = key_list)
+}
+
+#' @rdname data_extract_multiple_srv
+#' @param keys (`list`) of keys per dataset in `datasets`
+#' @export
+data_extract_multiple_srv.list <- function(data_extract, datasets, keys, ...) {
+  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
+  checkmate::assert_list(keys, names = "named")
+  checkmate::assert_names(names(datasets), permutation.of = names(keys))
+
+  if (!all(vapply(datasets, function(x) is.reactive(x), FUN.VALUE = logical(1)))) {
+    datasets <- sapply(X = names(datasets), simplify = FALSE, FUN = function(x) {
+      reactive(datasets[x])
+    })
+  }
 
   logger::log_trace(
-    "data_extract_multiple_srv initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
+    "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
   )
 
   data_extract <- Filter(Negate(is.null), data_extract)
@@ -570,7 +603,8 @@ data_extract_multiple_srv <- function(data_extract, datasets) {
         data_extract_srv(
           id = x,
           data_extract_spec = data_extract[[x]],
-          datasets = datasets
+          datasets = datasets,
+          keys = keys
         )
       }
     )

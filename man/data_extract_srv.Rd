@@ -62,7 +62,7 @@ datasets <- teal.slice::init_filtered_data(
 )
 
 data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  reactive(datasets$get_data(dataname = x, filtered = FALSE))
+  reactive(datasets$get_data(dataname = x, filtered = TRUE))
 })
 
 key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {

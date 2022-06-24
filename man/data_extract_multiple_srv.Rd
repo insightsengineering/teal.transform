@@ -2,9 +2,15 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_multiple_srv}
 \alias{data_extract_multiple_srv}
+\alias{data_extract_multiple_srv.FilteredData}
+\alias{data_extract_multiple_srv.list}
 \title{Creates a named list of \code{data_extract_srv} output}
 \usage{
-data_extract_multiple_srv(data_extract, datasets)
+data_extract_multiple_srv(data_extract, datasets, ...)
+
+\method{data_extract_multiple_srv}{FilteredData}(data_extract, datasets, ...)
+
+\method{data_extract_multiple_srv}{list}(data_extract, datasets, keys, ...)
 }
 \arguments{
 \item{data_extract}{(named \code{list} of \code{data_extract_spec} objects) the list \code{data_extract_spec} objects.
@@ -15,6 +21,11 @@ See example for details.}
 object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
 When passing a list of non-reactive \code{data.frame}s, they are converted to reactive \code{data.frame}s internally.
 When passing a list of reactive or non-reactive \code{data.frame}s, the argument \code{keys} is required also}
+
+\item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
+It shall contain the keys per dataset in \code{datasets}.}
+
+\item{keys}{(\code{list}) of keys per dataset in \code{datasets}}
 }
 \value{
 reactive named list containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}. Output list
