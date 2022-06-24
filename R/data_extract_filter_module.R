@@ -115,7 +115,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 #' of a `filter_spec` object.
 #'
 #' @inheritParams data_extract_filter_srv
-#' @return `list` of two values: `choices` and `selected`
+#' @return `named list` with two slots `choices` and `selected`
 #' @keywords internal
 #'
 #' @examples

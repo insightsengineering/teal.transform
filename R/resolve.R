@@ -159,7 +159,6 @@ resolve.delayed_data_extract_spec <- function(x, datasets, join_keys) { # nolint
 
 #' @export
 resolve.list <- function(x, datasets, join_keys) { # nolint
-
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
   res <- lapply(x, resolve, datasets = datasets, join_keys = join_keys)
   return(res)
