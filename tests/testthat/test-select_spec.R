@@ -1,20 +1,20 @@
 library(scda)
 
-test_that("Proper argument types", {
+testthat::test_that("Proper argument types", {
   choices <- c("c1", "c2", "c3")
   selected <- c("c1", "c2")
-  expect_silent(select_spec(choices = choices, selected = selected))
+  testthat::expect_silent(select_spec(choices = choices, selected = selected))
 
-  expect_error(select_spec(choices = list(list(choices)), selected = selected))
-  expect_error(select_spec(choices = choices, selected = list(list(selected))))
-  expect_error(select_spec(choices = choices, selected = selected, multiple = 1), "Assertion on 'multiple'")
-  expect_error(select_spec(choices = choices, selected = selected, multiple = c(TRUE, TRUE)), "Assertion on 'multiple'")
-  expect_error(select_spec(choices = choices, selected = selected, fixed = 1), "Assertion on 'fixed'")
-  expect_error(select_spec(choices = choices, selected = selected, label = factor("Hello")), "Assertion on 'label'")
+  testthat::expect_error(select_spec(choices = list(list(choices)), selected = selected))
+  testthat::expect_error(select_spec(choices = choices, selected = list(list(selected))))
+  testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = 1), "Assertion on 'multiple'")
+  testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = c(TRUE, TRUE)), "Assertion on 'multiple'")
+  testthat::expect_error(select_spec(choices = choices, selected = selected, fixed = 1), "Assertion on 'fixed'")
+  testthat::expect_error(select_spec(choices = choices, selected = selected, label = factor("Hello")), "Assertion on 'label'")
 })
 
-test_that("Single choice", {
-  expect_silent(
+testthat::test_that("Single choice", {
+  testthat::expect_silent(
     c1 <- select_spec(
       choices = c("AVAL", "BMRKR1", "AGE"),
       selected = c("AVAL"),
@@ -22,7 +22,7 @@ test_that("Single choice", {
       label = "Column"
     )
   )
-  expect_silent(
+  testthat::expect_silent(
     c2 <- select_spec(
       choices = c("AVAL", "BMRKR1", "AGE"),
       fixed = FALSE,
@@ -30,46 +30,46 @@ test_that("Single choice", {
     )
   )
 
-  expect_identical(c1, c2)
-  expect_identical(class(c1), "select_spec")
-  expect_identical(c1$choices, setNames(c("AVAL", "BMRKR1", "AGE"), c("AVAL", "BMRKR1", "AGE")))
-  expect_identical(c2$selected, setNames("AVAL", "AVAL"))
-  expect_false(c1$multiple)
-  expect_false(c2$multiple)
-  expect_false(c1$fixed)
-  expect_false(c2$fixed)
+  testthat::expect_identical(c1, c2)
+  testthat::expect_identical(class(c1), "select_spec")
+  testthat::expect_identical(c1$choices, setNames(c("AVAL", "BMRKR1", "AGE"), c("AVAL", "BMRKR1", "AGE")))
+  testthat::expect_identical(c2$selected, setNames("AVAL", "AVAL"))
+  testthat::expect_false(c1$multiple)
+  testthat::expect_false(c2$multiple)
+  testthat::expect_false(c1$fixed)
+  testthat::expect_false(c2$fixed)
 
   # minimal example
-  expect_silent(c3 <- select_spec(choices = c("AVAL", "BMRKR1", "AGE")))
-  expect_identical(class(c3), "select_spec")
-  expect_identical(c3$choices, setNames(c("AVAL", "BMRKR1", "AGE"), c("AVAL", "BMRKR1", "AGE")))
-  expect_identical(c3$selected, setNames("AVAL", "AVAL"))
-  expect_false(c3$multiple)
-  expect_false(c3$fixed)
-  expect_identical(c3$label, "Select")
+  testthat::expect_silent(c3 <- select_spec(choices = c("AVAL", "BMRKR1", "AGE")))
+  testthat::expect_identical(class(c3), "select_spec")
+  testthat::expect_identical(c3$choices, setNames(c("AVAL", "BMRKR1", "AGE"), c("AVAL", "BMRKR1", "AGE")))
+  testthat::expect_identical(c3$selected, setNames("AVAL", "AVAL"))
+  testthat::expect_false(c3$multiple)
+  testthat::expect_false(c3$fixed)
+  testthat::expect_identical(c3$label, "Select")
 })
 
-test_that("Multiple choices", {
+testthat::test_that("Multiple choices", {
   choices <- c("c1", "c2", "c3")
   selected <- c("c1", "c2")
-  expect_error(select_spec(choices = choices, selected = selected, multiple = FALSE), "multiple \\|\\| length")
+  testthat::expect_error(select_spec(choices = choices, selected = selected, multiple = FALSE), "multiple \\|\\| length")
 
-  expect_silent(c1 <- select_spec(choices = choices, selected = selected, multiple = TRUE))
-  expect_silent(c2 <- select_spec(choices = choices, selected = selected))
-  expect_identical(c1, c2)
+  testthat::expect_silent(c1 <- select_spec(choices = choices, selected = selected, multiple = TRUE))
+  testthat::expect_silent(c2 <- select_spec(choices = choices, selected = selected))
+  testthat::expect_identical(c1, c2)
 
-  expect_identical(names(c1), c("choices", "selected", "multiple", "fixed", "always_selected", "ordered", "label"))
-  expect_identical(c1$choices, setNames(choices, choices))
-  expect_identical(c1$selected, setNames(selected, selected))
+  testthat::expect_identical(names(c1), c("choices", "selected", "multiple", "fixed", "always_selected", "ordered", "label"))
+  testthat::expect_identical(c1$choices, setNames(choices, choices))
+  testthat::expect_identical(c1$selected, setNames(selected, selected))
 
-  expect_true(c1$multiple)
-  expect_false(c1$fixed)
+  testthat::expect_true(c1$multiple)
+  testthat::expect_false(c1$fixed)
   expect_null(c1$always_selected)
-  expect_false(c1$ordered)
-  expect_identical(c1$label, "Select")
+  testthat::expect_false(c1$ordered)
+  testthat::expect_identical(c1$label, "Select")
 })
 
-test_that("resolve select_spec works", {
+testthat::test_that("resolve select_spec works", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -93,14 +93,14 @@ test_that("resolve select_spec works", {
     fixed = FALSE
   )
 
-  expect_equal(class(delayed_spec), c("delayed_select_spec", "delayed_data", "select_spec"))
+  testthat::expect_equal(class(delayed_spec), c("delayed_select_spec", "delayed_data", "select_spec"))
 
-  expect_equal(names(expected_spec), names(delayed_spec))
+  testthat::expect_equal(names(expected_spec), names(delayed_spec))
 
   data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
-  expect_identical(expected_spec, isolate(resolve(delayed_spec, datasets = data_list, join_keys = key_list)))
+  testthat::expect_identical(expected_spec, isolate(resolve(delayed_spec, datasets = data_list, join_keys = key_list)))
 })
 
 scda_data <- synthetic_cdisc_data("latest")
@@ -205,7 +205,7 @@ testthat::test_that("default values", {
 })
 
 # With resolve_delayed
-test_that("resolve_delayed select_spec works - resolve_delayed", {
+testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -229,15 +229,15 @@ test_that("resolve_delayed select_spec works - resolve_delayed", {
     fixed = FALSE
   )
 
-  expect_equal(class(delayed_spec), c("delayed_select_spec", "delayed_data", "select_spec"))
+  testthat::expect_equal(class(delayed_spec), c("delayed_select_spec", "delayed_data", "select_spec"))
 
-  expect_equal(names(expected_spec), names(delayed_spec))
+  testthat::expect_equal(names(expected_spec), names(delayed_spec))
 
   ds <- teal.slice::init_filtered_data(
     list(ADSL = list(dataset = ADSL, parent = character(0), keys = c("USUBJID", "SUBJID"))),
     cdisc = TRUE
   )
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed_spec, ds)))
+  testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed_spec, ds)))
 })
 
 data <- teal.data::cdisc_data(

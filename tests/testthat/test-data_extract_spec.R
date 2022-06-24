@@ -1,6 +1,6 @@
 library(scda)
 
-test_that("data_extract_spec argument checking", {
+testthat::test_that("data_extract_spec argument checking", {
   expect_error(
     data_extract_spec("toyDataset", select = c("A", "B")),
     "select, \"select_spec\"",
@@ -8,7 +8,7 @@ test_that("data_extract_spec argument checking", {
   )
 })
 
-test_that("data_extract_spec works with valid input", {
+testthat::test_that("data_extract_spec works with valid input", {
   # the dataset does not exist, so we just check if the combinations are accepted
   # we add 1 to the var names to avoid confusion with their respective functions
 
@@ -20,19 +20,19 @@ test_that("data_extract_spec works with valid input", {
     ordered = FALSE,
     fixed = FALSE
   )
-  data_extract_spec1 <- expect_silent(data_extract_spec(
+  data_extract_spec1 <- testthat::expect_silent(data_extract_spec(
     "toyDataset",
     select = select_spec1
   ))
-  expect_identical(data_extract_spec1$select, select_spec1)
-  expect_identical(class(data_extract_spec1), "data_extract_spec")
+  testthat::expect_identical(data_extract_spec1$select, select_spec1)
+  testthat::expect_identical(class(data_extract_spec1), "data_extract_spec")
 
-  expect_identical(
-    expect_silent(data_extract_spec(
+  testthat::expect_identical(
+    testthat::expect_silent(data_extract_spec(
       "toyDataset",
       select = select_spec1
     )),
-    expect_silent(data_extract_spec(
+    testthat::expect_silent(data_extract_spec(
       "toyDataset",
       select = select_spec1,
       filter = NULL
@@ -66,23 +66,23 @@ test_that("data_extract_spec works with valid input", {
   )
   filter_spec2$dataname <- "ADTTE"
 
-  data_extract_spec1 <- expect_silent(data_extract_spec(
+  data_extract_spec1 <- testthat::expect_silent(data_extract_spec(
     dataname = "ADTTE",
     select = select_spec1,
     filter = filter_spec1
   ))
-  expect_identical(data_extract_spec1$select, select_spec1)
+  testthat::expect_identical(data_extract_spec1$select, select_spec1)
 
-  expect_identical(data_extract_spec1$filter, list(filter_spec1))
+  testthat::expect_identical(data_extract_spec1$filter, list(filter_spec1))
 
-  data_extract_spec2 <- expect_silent(data_extract_spec(
+  data_extract_spec2 <- testthat::expect_silent(data_extract_spec(
     dataname = "ADTTE",
     select = select_spec1,
     filter = list(filter_spec1, filter_spec2)
   ))
 
-  expect_identical(data_extract_spec2$select, select_spec1)
-  expect_identical(data_extract_spec2$filter, list(filter_spec1, filter_spec2))
+  testthat::expect_identical(data_extract_spec2$select, select_spec1)
+  testthat::expect_identical(data_extract_spec2$filter, list(filter_spec1, filter_spec2))
 
   # with reshape (only makes sense when filter is there)
   filter_spec1 <- filter_spec(
@@ -93,18 +93,18 @@ test_that("data_extract_spec works with valid input", {
     multiple = TRUE
   )
   filter_spec1$dataname <- "ADTTE"
-  data_extract_spec1 <- expect_silent(data_extract_spec(
+  data_extract_spec1 <- testthat::expect_silent(data_extract_spec(
     dataname = "ADTTE",
     select = select_spec1,
     filter = filter_spec1,
     reshape = TRUE
   ))
-  expect_identical(data_extract_spec1$select, select_spec1)
-  expect_identical(data_extract_spec1$filter, list(filter_spec1))
-  expect_identical(data_extract_spec1$reshape, TRUE)
+  testthat::expect_identical(data_extract_spec1$select, select_spec1)
+  testthat::expect_identical(data_extract_spec1$filter, list(filter_spec1))
+  testthat::expect_identical(data_extract_spec1$reshape, TRUE)
 })
 
-test_that("delayed data_extract_spec works", {
+testthat::test_that("delayed data_extract_spec works", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -178,31 +178,31 @@ test_that("delayed data_extract_spec works", {
     filter = list(filter_delayed, filter_normal)
   )
 
-  expect_equal(class(delayed_spec), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix1), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix2), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix3), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(delayed_spec), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix1), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix2), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix3), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
 
-  expect_equal(names(expected_spec), names(delayed_spec))
-  expect_equal(names(expected_spec), names(mix1))
-  expect_equal(names(expected_spec), names(mix2))
-  expect_equal(names(expected_spec), names(mix3))
+  testthat::expect_equal(names(expected_spec), names(delayed_spec))
+  testthat::expect_equal(names(expected_spec), names(mix1))
+  testthat::expect_equal(names(expected_spec), names(mix2))
+  testthat::expect_equal(names(expected_spec), names(mix3))
 
   data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
   isolate({
-    expect_identical(expected_spec, resolve(delayed_spec, data_list, key_list))
-    expect_identical(expected_spec, resolve(mix1, data_list, key_list))
-    expect_identical(expected_spec, resolve(mix2, data_list, key_list))
+    testthat::expect_identical(expected_spec, resolve(delayed_spec, data_list, key_list))
+    testthat::expect_identical(expected_spec, resolve(mix1, data_list, key_list))
+    testthat::expect_identical(expected_spec, resolve(mix2, data_list, key_list))
 
     mix3_res <- resolve(mix3, data_list, key_list)
   })
-  expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
-  expect_identical(expected_spec$filter[[1]], mix3_res$filter[[2]])
+  testthat::expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
+  testthat::expect_identical(expected_spec$filter[[1]], mix3_res$filter[[2]])
   mix3_res$filter <- NULL
   expected_spec$filter <- NULL
-  expect_identical(expected_spec, mix3_res)
+  testthat::expect_identical(expected_spec, mix3_res)
 })
 
 scda_data <- synthetic_cdisc_data("latest")
@@ -333,7 +333,7 @@ testthat::test_that("data_extract_spec returns select_spec with multiple set to 
 })
 
 # with resolve_delayed
-test_that("delayed data_extract_spec works - resolve_delayed", {
+testthat::test_that("delayed data_extract_spec works - resolve_delayed", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -407,15 +407,15 @@ test_that("delayed data_extract_spec works - resolve_delayed", {
     filter = list(filter_delayed, filter_normal)
   )
 
-  expect_equal(class(delayed_spec), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix1), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix2), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
-  expect_equal(class(mix3), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(delayed_spec), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix1), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix2), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
+  testthat::expect_equal(class(mix3), c("delayed_data_extract_spec", "delayed_data", "data_extract_spec"))
 
-  expect_equal(names(expected_spec), names(delayed_spec))
-  expect_equal(names(expected_spec), names(mix1))
-  expect_equal(names(expected_spec), names(mix2))
-  expect_equal(names(expected_spec), names(mix3))
+  testthat::expect_equal(names(expected_spec), names(delayed_spec))
+  testthat::expect_equal(names(expected_spec), names(mix1))
+  testthat::expect_equal(names(expected_spec), names(mix2))
+  testthat::expect_equal(names(expected_spec), names(mix3))
 
 
   isolate({
@@ -423,18 +423,18 @@ test_that("delayed data_extract_spec works - resolve_delayed", {
       list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
       cdisc = TRUE
     )
-    expect_identical(expected_spec, resolve_delayed(delayed_spec, ds))
-    expect_identical(expected_spec, resolve_delayed(mix1, ds))
-    expect_identical(expected_spec, resolve_delayed(mix2, ds))
+    testthat::expect_identical(expected_spec, resolve_delayed(delayed_spec, ds))
+    testthat::expect_identical(expected_spec, resolve_delayed(mix1, ds))
+    testthat::expect_identical(expected_spec, resolve_delayed(mix2, ds))
 
     mix3_res <- resolve_delayed(mix3, ds)
   })
 
-  expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
-  expect_identical(expected_spec$filter[[1]], mix3_res$filter[[2]])
+  testthat::expect_identical(expected_spec$filter[[1]], mix3_res$filter[[1]])
+  testthat::expect_identical(expected_spec$filter[[1]], mix3_res$filter[[2]])
   mix3_res$filter <- NULL
   expected_spec$filter <- NULL
-  expect_identical(expected_spec, mix3_res)
+  testthat::expect_identical(expected_spec, mix3_res)
 })
 
 data <- teal.data::cdisc_data(

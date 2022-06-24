@@ -5,30 +5,30 @@ choices_d <- c("val1", "val1", "val2", "val3")
 choices_f <- as.factor(choices)
 choices_l <- as.list(choices)
 
-test_that("Proper argument types", {
-  expect_error(filter_spec(vars = list("var"), choices = choices), "Assertion failed.+vars")
-  expect_error(filter_spec(vars = "var", choices = choices_l), "Assertion failed.+choices")
-  expect_error(filter_spec(vars = "var", choices = choices, selected = list("val2")), "Assertion failed.+selected")
-  expect_error(filter_spec(vars = 1, choices = choices, selected = choices[1]), "Assertion failed.+vars")
-  expect_error(filter_spec(vars = factor("var"), choices = choices, selected = choices[1]), "Assertion failed.+vars")
-  expect_error(filter_spec(vars = "var", choices = choices_f, selected = choices_f[1]), "Assertion failed.+choices")
-  expect_error(filter_spec(vars = "var", choices = choices, multiple = 1), "Assertion on 'multiple'")
-  expect_error(filter_spec(vars = "var", choices = choices, label = factor("test")), "Assertion on 'label'")
+testthat::test_that("Proper argument types", {
+  testthat::expect_error(filter_spec(vars = list("var"), choices = choices), "Assertion failed.+vars")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices_l), "Assertion failed.+choices")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices, selected = list("val2")), "Assertion failed.+selected")
+  testthat::expect_error(filter_spec(vars = 1, choices = choices, selected = choices[1]), "Assertion failed.+vars")
+  testthat::expect_error(filter_spec(vars = factor("var"), choices = choices, selected = choices[1]), "Assertion failed.+vars")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices_f, selected = choices_f[1]), "Assertion failed.+choices")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices, multiple = 1), "Assertion on 'multiple'")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices, label = factor("test")), "Assertion on 'label'")
 
-  expect_error(filter_spec(vars = "var", choices = choices_d), "duplicated")
-  expect_error(filter_spec(vars = "var", choices = choices, label = c("test", "test2")), "Assertion on 'label'")
-  expect_error(filter_spec(vars = "var", choices = choices, sep = c("-", ",")), "Assertion on 'sep'")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices_d), "duplicated")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices, label = c("test", "test2")), "Assertion on 'label'")
+  testthat::expect_error(filter_spec(vars = "var", choices = choices, sep = c("-", ",")), "Assertion on 'sep'")
 })
 
-test_that("Single choice", {
-  expect_silent(f1 <- filter_spec(
+testthat::test_that("Single choice", {
+  testthat::expect_silent(f1 <- filter_spec(
     vars = "var1",
     choices = choices,
     selected = choices[1],
     multiple = FALSE,
     label = "test"
   ))
-  expect_identical(names(f1), c(
+  testthat::expect_identical(names(f1), c(
     "vars_choices",
     "vars_selected",
     "vars_label",
@@ -44,53 +44,53 @@ test_that("Single choice", {
     "dataname",
     "initialized"
   ))
-  expect_identical(f1$choices, choices, choices)
-  expect_identical(f1$selected, choices[1])
-  expect_false(f1$multiple)
-  expect_identical(f1$label, "test")
+  testthat::expect_identical(f1$choices, choices, choices)
+  testthat::expect_identical(f1$selected, choices[1])
+  testthat::expect_false(f1$multiple)
+  testthat::expect_identical(f1$label, "test")
 })
 
-test_that("Multiple choices", {
-  expect_error(filter_spec(vars = "var1", choices = choices, selected = choices[1:2], multiple = FALSE))
-  expect_silent(f1 <- filter_spec(vars = "var1", choices = choices, selected = choices[1:2], multiple = TRUE))
-  expect_silent(f2 <- filter_spec(vars = "var1", choices = choices, selected = choices[1:2]))
-  expect_identical(f1, f2)
+testthat::test_that("Multiple choices", {
+  testthat::expect_error(filter_spec(vars = "var1", choices = choices, selected = choices[1:2], multiple = FALSE))
+  testthat::expect_silent(f1 <- filter_spec(vars = "var1", choices = choices, selected = choices[1:2], multiple = TRUE))
+  testthat::expect_silent(f2 <- filter_spec(vars = "var1", choices = choices, selected = choices[1:2]))
+  testthat::expect_identical(f1, f2)
 
-  expect_true(f1$multiple)
-  expect_identical(f1$choices, choices)
-  expect_identical(f1$selected, choices[1:2])
+  testthat::expect_true(f1$multiple)
+  testthat::expect_identical(f1$choices, choices)
+  testthat::expect_identical(f1$selected, choices[1:2])
 })
 
-test_that("Multiple vars", {
-  expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2"), sep = ":"))
-  expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2")))
-  expect_error(filter_spec(vars = "var1", choices = c("val-1", "val2", "val3", "val4"), sep = "-"))
+testthat::test_that("Multiple vars", {
+  testthat::expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2"), sep = ":"))
+  testthat::expect_error(filter_spec(vars = c("var1", "var2"), choices = c("val1.1-val2.1", "val1.1-val2.2")))
+  testthat::expect_error(filter_spec(vars = "var1", choices = c("val-1", "val2", "val3", "val4"), sep = "-"))
 
-  expect_silent(f1 <- filter_spec(
+  testthat::expect_silent(f1 <- filter_spec(
     vars = c("var1", "var2"),
     choices = c("val1.1 - val2.1", "val1.1 - val2.2"),
     sep = " - "
   ))
 
-  expect_silent(f2 <- filter_spec(vars = c("var1", "var2"), choices = c("val1.1 - val2.1", "val1.1 - val2.2")))
+  testthat::expect_silent(f2 <- filter_spec(vars = c("var1", "var2"), choices = c("val1.1 - val2.1", "val1.1 - val2.2")))
 
-  expect_silent(f5 <- filter_spec(
+  testthat::expect_silent(f5 <- filter_spec(
     vars = c("var1", "var2"),
     choices = c(`combo1` = "val1.1 - val2.1", `combo2` = "val1.1 - val2.2")
   ))
 
-  expect_identical(f1, f2)
-  expect_true(all(names(f1$choices) != names(f5$choices)))
+  testthat::expect_identical(f1, f2)
+  testthat::expect_true(all(names(f1$choices) != names(f5$choices)))
 
-  expect_identical(f1$vars_choices, c("var1", "var2"))
-  expect_identical(f1$choices, c("val1.1 - val2.1", "val1.1 - val2.2"))
-  expect_identical(names(f5$choices), c("combo1", "combo2"))
-  expect_identical(f1$selected, c("val1.1 - val2.1"))
+  testthat::expect_identical(f1$vars_choices, c("var1", "var2"))
+  testthat::expect_identical(f1$choices, c("val1.1 - val2.1", "val1.1 - val2.2"))
+  testthat::expect_identical(names(f5$choices), c("combo1", "combo2"))
+  testthat::expect_identical(f1$selected, c("val1.1 - val2.1"))
 
   # Multiple vars and multiple = TRUE
   choices <- c("val1.1 - val2.1", "val1.1 - val2.2", "val1.1 - val2.3")
 
-  expect_silent(
+  testthat::expect_silent(
     f1m <- filter_spec(
       vars = c("var1", "var2"),
       choices = choices,
@@ -100,38 +100,38 @@ test_that("Multiple vars", {
     )
   )
 
-  expect_silent(
+  testthat::expect_silent(
     f2m <- filter_spec(vars = c("var1", "var2"), choices = choices, selected = choices[1:2], sep = " - ")
   )
 
-  expect_identical(f1m, f2m)
+  testthat::expect_identical(f1m, f2m)
 
   # correct object structure
-  expect_identical(f1m$choices, c("val1.1 - val2.1", "val1.1 - val2.2", "val1.1 - val2.3"))
-  expect_identical(f1m$selected, c("val1.1 - val2.1", "val1.1 - val2.2"))
+  testthat::expect_identical(f1m$choices, c("val1.1 - val2.1", "val1.1 - val2.2", "val1.1 - val2.3"))
+  testthat::expect_identical(f1m$selected, c("val1.1 - val2.1", "val1.1 - val2.2"))
 
-  expect_true(f1m$multiple)
-  expect_identical(f1m$label, "Filter by")
+  testthat::expect_true(f1m$multiple)
+  testthat::expect_identical(f1m$label, "Filter by")
 })
 
-test_that("Dropping keys attribute", {
-  expect_silent(f1 <- filter_spec(
+testthat::test_that("Dropping keys attribute", {
+  testthat::expect_silent(f1 <- filter_spec(
     vars = "var1",
     choices = choices,
     selected = choices[1]
   ))
-  expect_false(f1$drop_keys)
+  testthat::expect_false(f1$drop_keys)
 
-  expect_silent(f2 <- filter_spec(
+  testthat::expect_silent(f2 <- filter_spec(
     vars = "var1",
     choices = choices,
     selected = choices[1],
     drop_keys = FALSE
   ))
-  expect_false(f2$drop_keys)
+  testthat::expect_false(f2$drop_keys)
 })
 
-test_that("delayed filter_spec", {
+testthat::test_that("delayed filter_spec", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -162,42 +162,42 @@ test_that("delayed filter_spec", {
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
 
   result_spec <- isolate(resolve(delayed, data_list, key_list))
-  expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
+  testthat::expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
 })
 
 
-test_that("filter_spec with choices_selected where all selected in choices does not throw an error", {
+testthat::test_that("filter_spec with choices_selected where all selected in choices does not throw an error", {
   valid_cs <- choices_selected(
     choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
     selected = c("A", "B")
   )
-  expect_error(filter_spec(vars = valid_cs), regexp = NA)
+  testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
 })
 
 
-test_that("filter_spec_internal", {
-  expect_silent(
+testthat::test_that("filter_spec_internal", {
+  testthat::expect_silent(
     filter_spec_internal(
       vars_choices = letters,
       vars_selected = letters[1]
     )
   )
 
-  expect_silent(
+  testthat::expect_silent(
     filter_spec_internal(
       vars_choices = letters,
       vars_selected = letters[1:5]
     )
   )
 
-  expect_silent(
+  testthat::expect_silent(
     filter_spec_internal(
       vars_choices = variable_choices("ADSL")
     )
   )
 })
 
-test_that("filter_spec_internal contains dataname", {
+testthat::test_that("filter_spec_internal contains dataname", {
   ADSL <- synthetic_cdisc_data("latest")$adsl # nolint
 
   x_filter <- filter_spec_internal(
@@ -211,10 +211,10 @@ test_that("filter_spec_internal contains dataname", {
     filter = x_filter
   )
 
-  expect_equal(x$filter[[1]]$dataname, "ADSL")
+  testthat::expect_equal(x$filter[[1]]$dataname, "ADSL")
 })
 
-test_that("delayed filter_spec works", {
+testthat::test_that("delayed filter_spec works", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -233,7 +233,7 @@ test_that("delayed filter_spec works", {
     vars_selected = "SEX"
   )
 
-  expect_equal(
+  testthat::expect_equal(
     class(delayed),
     c(
       "delayed_filter_spec",
@@ -242,7 +242,7 @@ test_that("delayed filter_spec works", {
     )
   )
 
-  expect_equal(names(expected_spec), names(delayed))
+  testthat::expect_equal(names(expected_spec), names(delayed))
 
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
@@ -250,7 +250,7 @@ test_that("delayed filter_spec works", {
   data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = character(0))
 
-  expect_identical(
+  testthat::expect_identical(
     expected_spec,
     isolate(resolve(delayed, data_list, key_list))
   )
@@ -271,7 +271,7 @@ test_that("delayed filter_spec works", {
     )
   )
 
-  expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
+  testthat::expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
 })
 
 
@@ -434,7 +434,7 @@ testthat::test_that("all_choices passed to selected identical to all choices", {
 
 
 # With resolve_delayed
-test_that("delayed filter_spec - resolve_delayed", {
+testthat::test_that("delayed filter_spec - resolve_delayed", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -459,26 +459,26 @@ test_that("delayed filter_spec - resolve_delayed", {
     multiple = FALSE
   )
 
-  expect_equal(names(expected_spec), names(delayed))
+  testthat::expect_equal(names(expected_spec), names(delayed))
 
   ds <- teal.slice::init_filtered_data(
     list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
     cdisc = TRUE
   )
   result_spec <- isolate(resolve_delayed(delayed, ds))
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
+  testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
 
-test_that("filter_spec with choices_selected where all selected in choices does not throw an error - resolve_delayed", {
+testthat::test_that("filter_spec with choices_selected where all selected in choices does not throw an error - resolve_delayed", {
   valid_cs <- choices_selected(
     choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
     selected = c("A", "B")
   )
-  expect_error(filter_spec(vars = valid_cs), regexp = NA)
+  testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
 })
 
-test_that("delayed filter_spec works - resolve_delayed", {
+testthat::test_that("delayed filter_spec works - resolve_delayed", {
   set.seed(1)
   ADSL <- data.frame( # nolint
     USUBJID = letters[1:10],
@@ -497,7 +497,7 @@ test_that("delayed filter_spec works - resolve_delayed", {
     vars_selected = "SEX"
   )
 
-  expect_equal(
+  testthat::expect_equal(
     class(delayed),
     c(
       "delayed_filter_spec",
@@ -506,7 +506,7 @@ test_that("delayed filter_spec works - resolve_delayed", {
     )
   )
 
-  expect_equal(names(expected_spec), names(delayed))
+  testthat::expect_equal(names(expected_spec), names(delayed))
   ds <- teal.slice::init_filtered_data(
     list(ADSL = list(dataset = ADSL)),
     cdisc = TRUE
@@ -514,7 +514,7 @@ test_that("delayed filter_spec works - resolve_delayed", {
 
   delayed$dataname <- "ADSL"
   expected_spec$dataname <- "ADSL"
-  expect_identical(
+  testthat::expect_identical(
     expected_spec,
     isolate(resolve_delayed(delayed, ds))
   )
@@ -535,7 +535,7 @@ test_that("delayed filter_spec works - resolve_delayed", {
     )
   )
 
-  expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
+  testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
 

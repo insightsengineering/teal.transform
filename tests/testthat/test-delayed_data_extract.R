@@ -42,7 +42,7 @@ get_continuous <- function(data) {
   colnames(data)[idx]
 }
 
-test_that("Delayed data extract - single data connector with two scda dataset connectors", {
+testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
   data <- teal.data::cdisc_data(adsl, adae)
@@ -90,13 +90,13 @@ test_that("Delayed data extract - single data connector with two scda dataset co
   })
   x_result <- isolate(resolve(x, datasets = data_list, join_key = key_list))
   y_result <- isolate(resolve(y, datasets = data_list, join_key = key_list))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed choices selected - single data connector with two scda dataset connectors ----
 
-test_that("Delayed choices selected - single data connector with two scda dataset connectors", {
+testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
   data <- teal.data::cdisc_data(adsl, adae)
@@ -116,12 +116,12 @@ test_that("Delayed choices selected - single data connector with two scda datase
     isolate(ds$get_keys(dataname = x))
   })
   choices_result <- isolate(resolve(choices, datasets = data_list, join_keys = key_list))
-  expect_identical(choices_result, choices_expected)
+  testthat::expect_identical(choices_result, choices_expected)
 })
 
 # Delayed data extract - filtered ----
 
-test_that("Delayed data extract - filtered", {
+testthat::test_that("Delayed data extract - filtered", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adsl$set_ui_input(function(ns) {
     list(
@@ -195,12 +195,12 @@ test_that("Delayed data extract - filtered", {
   })
   x_result <- isolate(resolve(x, datasets = data_list, key_list))
   y_result <- isolate(resolve(y, datasets = data_list, key_list))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract filter concatenated - single data connector with two scda dataset connectors ----
-test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors", {
+testthat::test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
   data <- teal.data::teal_data(adsl, adrs)
@@ -305,12 +305,12 @@ test_that("Delayed extract filter concatenated - single data connector with two 
   })
   x_result <- isolate(resolve(x, datasets = data_list, key_list))
   y_result <- isolate(resolve(y, datasets = data_list, key_list))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract two filters - single data connector with two scda dataset connectors ----
-test_that("Delayed extract two filters - single data connector with two scda dataset connectors", {
+testthat::test_that("Delayed extract two filters - single data connector with two scda dataset connectors", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
   data <- teal.data::teal_data(adsl, adrs)
@@ -431,12 +431,12 @@ test_that("Delayed extract two filters - single data connector with two scda dat
   })
   x_result <- isolate(resolve(x, datasets = data_list, key_list))
   y_result <- isolate(resolve(y, datasets = data_list, key_list))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract - dataset & connector ----
-test_that("Delayed extract - TealData with single dataset and multiple connectors", {
+testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors", {
   adsl <- teal.data::dataset(
     dataname = "ADSL",
     synthetic_cdisc_data("latest")$adsl,
@@ -556,12 +556,12 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
   })
   x_result <- isolate(resolve(x, datasets = data_list, key_list))
   y_result <- isolate(resolve(y, datasets = data_list, key_list))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # with resolve_delayed
-test_that("Delayed data extract - single data connector with two scda dataset connectors - resolve_delayed", {
+testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors - resolve_delayed", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
   data <- teal.data::cdisc_data(adsl, adae)
@@ -603,13 +603,13 @@ test_that("Delayed data extract - single data connector with two scda dataset co
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
   y_result <- isolate(resolve_delayed(y, datasets = ds))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed choices selected - single data connector with two scda dataset connectors ----
 
-test_that("Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed", {
+testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adae <- teal.data::scda_cdisc_dataset_connector("ADAE", "adae")
   data <- teal.data::cdisc_data(adsl, adae)
@@ -623,12 +623,12 @@ test_that("Delayed choices selected - single data connector with two scda datase
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
   choices_result <- isolate(resolve_delayed(choices, datasets = ds))
-  expect_identical(choices_result, choices_expected)
+  testthat::expect_identical(choices_result, choices_expected)
 })
 
 # Delayed data extract - filtered ----
 
-test_that("Delayed data extract - filtered", {
+testthat::test_that("Delayed data extract - filtered", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adsl$set_ui_input(function(ns) {
     list(
@@ -696,12 +696,12 @@ test_that("Delayed data extract - filtered", {
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
   y_result <- isolate(resolve_delayed(y, datasets = ds))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract filter concatenated - single data connector with two scda dataset connectors ----
-test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors - r_delayed", {
+testthat::test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors - r_delayed", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
   data <- teal.data::teal_data(adsl, adrs)
@@ -800,12 +800,12 @@ test_that("Delayed extract filter concatenated - single data connector with two 
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
   y_result <- isolate(resolve_delayed(y, datasets = ds))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract two filters - single data connector with two scda dataset connectors ----
-test_that("Delayed extract two filters - single data connector with two scda dataset connectors - resolve_delayed", {
+testthat::test_that("Delayed extract two filters - single data connector with two scda dataset connectors - resolve_delayed", {
   adsl <- teal.data::scda_cdisc_dataset_connector("ADSL", "adsl")
   adrs <- teal.data::scda_cdisc_dataset_connector("ADRS", "adrs")
   data <- teal.data::teal_data(adsl, adrs)
@@ -920,12 +920,12 @@ test_that("Delayed extract two filters - single data connector with two scda dat
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
   y_result <- isolate(resolve_delayed(y, datasets = ds))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
 
 # Delayed extract - dataset & connector ----
-test_that("Delayed extract - TealData with single dataset and multiple connectors - resolve_delayed", {
+testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors - resolve_delayed", {
   adsl <- teal.data::dataset(
     dataname = "ADSL",
     scda::synthetic_cdisc_data("latest")$adsl,
@@ -1039,6 +1039,6 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
   y_result <- isolate(resolve_delayed(y, datasets = ds))
-  expect_identical(x_result, x_expected)
-  expect_identical(y_result, y_expected)
+  testthat::expect_identical(x_result, x_expected)
+  testthat::expect_identical(y_result, y_expected)
 })
