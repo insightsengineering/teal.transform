@@ -3,6 +3,27 @@ scda_data <- synthetic_cdisc_data("latest")
 adsl <- scda_data$adsl # nolint
 adtte <- scda_data$adtte # nolint
 
+arm_ref_comp <- list(
+  ARMCD = list(
+    ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    comp = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+  ),
+  ARM = list(
+    ref = variable_choices(adsl, subset = "ARM"), comp = variable_choices(adsl, subset = "ARMCD")
+  ),
+  ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+)
+arm_ref_comp_ddl <- list(
+  ARMCD = list(
+    ref = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    comp = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+  ),
+  ARM = list(
+    ref = variable_choices("ADSL", subset = "ARM"), comp = variable_choices("ADSL", subset = "ARMCD")
+  ),
+  ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+)
+
 testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
   # 1) single argument called "data"
@@ -53,26 +74,6 @@ testthat::test_that("resolve_delayed_expr works correctly", {
 })
 
 testthat::test_that("resolve.list works correctly", {
-  arm_ref_comp <- list(
-    ARMCD = list(
-      ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
-      comp = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
-    ),
-    ARM = list(
-      ref = variable_choices(adsl, subset = "ARM"), comp = variable_choices(adsl, subset = "ARMCD")
-    ),
-    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
-  )
-  arm_ref_comp_ddl <- list(
-    ARMCD = list(
-      ref = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
-      comp = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
-    ),
-    ARM = list(
-      ref = variable_choices("ADSL", subset = "ARM"), comp = variable_choices("ADSL", subset = "ARMCD")
-    ),
-    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
-  )
   data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
@@ -92,12 +93,61 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
   output <- testthat::capture_output({
     data_list <- list(IRIS = reactive(head(iris)))
     key_list <- list(IRIS = character(0))
-
     resolved_cs <- isolate(resolve(c_s, data_list, key_list))
   })
 
   testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))
   testthat::expect_true(
     grepl("Removing Petal.Length from 'selected' as not in 'choices' when resolving delayed choices_selected", output)
+  )
+})
+
+testthat::test_that("resolve throws error with non-reactive data.frames or unnamed list as input to datasets", {
+  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
+    "Assertion on 'datasets' failed: May only contain the following types: {reactive}",
+    fixed = TRUE
+  )
+
+  data_list2 <- list(reactive(adsl), reactive(adtte))
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, data_list2, key_list)),
+    "Assertion on 'datasets' failed: Must have names."
+  )
+})
+
+testthat::test_that("resolve throws error with unnamed list or wrong names as input to keys", {
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  key_list <- list(teal.data::get_cdisc_keys("ADSL"), teal.data::get_cdisc_keys("ADTTE"))
+
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
+    "Assertion on 'keys' failed: Must have names."
+  )
+
+  key_list <- list(AA = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
+    "Assertion on 'names(keys)' failed: Names must be a identical to set {'ADSL','ADTTE'}, but is {'AA','ADTTE'}.",
+    fixed = TRUE
+  )
+})
+
+testthat::test_that("resolve throws error with missing arguments", {
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, data_list)),
+    "argument \"keys\" is missing, with no default"
+  )
+
+  testthat::expect_error(
+    isolate(resolve(arm_ref_comp_ddl, keys = key_list)),
+    "argument \"datasets\" is missing, with no default"
   )
 })
