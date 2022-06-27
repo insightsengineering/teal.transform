@@ -144,7 +144,7 @@ testthat::test_that("Multiple datasets", {
 })
 
 testthat::test_that("get_initial_filters_values returns empty strings if vars_selected is NULL", {
-  filtered_data <- teal.slice:::FilteredData$new()
+  filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = utils::head(iris))))
   filter <- filter_spec(vars = "test")
   filter$vars_selected <- NULL
   testthat::expect_equal(
@@ -155,7 +155,7 @@ testthat::test_that("get_initial_filters_values returns empty strings if vars_se
 
 testthat::test_that("get_initial_filters_values returns all column values and the selected option
   if choices is NULL", {
-  filtered_data <- teal.slice:::FilteredData$new()$set_dataset(teal.data::dataset("iris", utils::head(iris)))
+  filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = utils::head(iris))))
   filter <- filter_spec(vars = colnames(iris)[1])
   filter$choices <- NULL
   filter$dataname <- "iris"
@@ -167,7 +167,7 @@ testthat::test_that("get_initial_filters_values returns all column values and th
 })
 
 testthat::test_that("get_initial_filters_values returns the selected and choices if they are not null", {
-  filtered_data <- teal.slice:::FilteredData$new()$set_dataset(teal.data::dataset("iris", utils::head(iris)))
+  filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = utils::head(iris))))
   filter <- filter_spec(vars = colnames(iris)[length(colnames(iris))])
   filter$choices <- "setosa"
   filter$selected <- "setosa"

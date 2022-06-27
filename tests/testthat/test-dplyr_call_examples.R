@@ -3465,10 +3465,7 @@ testthat::test_that("Universal example", {
   testthat::expect_silent(data$set_check(check = TRUE))
   testthat::expect_true(data$check())
 
-  datasets <- teal.slice:::filtered_data_new.TealData(x = data)
-  isolate(
-    teal.slice:::filtered_data_set.TealData(data = data, datasets = datasets)
-  )
+  datasets <- teal.slice::init_filtered_data(data)
 
   merged_datasets <- isolate(
     merge_datasets(

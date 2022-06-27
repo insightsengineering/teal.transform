@@ -34,12 +34,8 @@ testthat::test_that("format_data_extract returns a string representation of the 
 })
 
 testthat::test_that("format_data_extract integrates with data_extract_srv", {
-  sample_filtered_data <- {
-    data <- teal.data::teal_data(teal.data::dataset("iris", iris))
-    datasets <- teal.slice:::filtered_data_new(data)
-    teal.slice:::filtered_data_set(data, datasets)
-    datasets
-  }
+  sample_filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = iris)))
+
 
   simple_des <- data_extract_spec(
     dataname = "iris",

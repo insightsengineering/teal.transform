@@ -5,10 +5,9 @@ simple_des <- teal.transform::data_extract_spec(
 )
 
 sample_filtered_data <- {
-  data <- teal.data::teal_data(teal.data::dataset("iris", iris))
-  datasets <- teal.slice:::filtered_data_new(data)
-  teal.slice:::filtered_data_set(data, datasets)
-  datasets
+  teal.slice::init_filtered_data(
+    list(iris = list(dataset = iris))
+  )
 }
 
 ui <- shiny::fluidPage(

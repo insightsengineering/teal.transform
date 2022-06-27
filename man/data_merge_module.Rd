@@ -62,8 +62,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", ADSL),
   teal.data::cdisc_dataset("ADLB", ADLB)
 )
-datasets <- teal.slice:::filtered_data_new(data)
-teal.slice:::filtered_data_set(data, datasets)
+datasets <- teal.slice::init_filtered_data(data)
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",

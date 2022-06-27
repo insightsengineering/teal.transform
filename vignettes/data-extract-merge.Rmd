@@ -20,16 +20,16 @@ knitr::opts_chunk$set(
 
 #### Combining data-extract with data-merge
 
-`teal.transform` provides `data_merge_srv` which converts `data_extract_srv` into R expression to transform data 
-for analytical purposes. For example, we may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE` filtered 
-for rows where `PARAMCD` is `OS` and merge the results (using the primary keys) to create an analysis dataset 
+`teal.transform` provides `data_merge_srv` which converts `data_extract_srv` into R expression to transform data
+for analytical purposes. For example, we may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE` filtered
+for rows where `PARAMCD` is `OS` and merge the results (using the primary keys) to create an analysis dataset
 `ANL` to be used in the module, as this diagram shows:
 
 ```{r echo=FALSE, out.width='100%'}
 knitr::include_graphics("./images/data_extract_spec/basic_concept.png")
 ```
 
-In the following code block we create a `data_extract_spec` object per dataset as illustrated above. 
+In the following code block we create a `data_extract_spec` object per dataset as illustrated above.
 
 ```{r}
 library(teal.transform)
@@ -67,7 +67,7 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 #### Example module
 
 Here, we create the `merge_ui` and the `merge_srv` functions which will be used to create the `ui` and the `srv`
-components of the shiny app, respectively. 
+components of the shiny app, respectively.
 
 ```{r}
 merge_ui <- function(id, data_extracts) {
@@ -108,11 +108,11 @@ merge_srv <- function(id, datasets, data_extracts) {
 
 Output from `data_extract_srv` (`reactive`) should be passed to `data_merge_srv` together with `datasets`
 (`FilteredData`). `data_merge_srv` returns a reactive list containing merged data and information needed to perform
-the transformation - see more in `data_merge_srv` documentation. 
+the transformation - see more in `data_merge_srv` documentation.
 
 #### Example data
 
-`teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. For example purposes we define a 
+`teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. For example purposes we define a
 wrapper function to initialize the necessary object:
 
 ```{r}
@@ -123,9 +123,7 @@ sample_filtered_data <- function() {
   data <- teal.data::cdisc_data(adsl, adtte)
 
   # covert TealData to FilteredData
-  datasets <- teal.slice:::filtered_data_new(data)
-  teal.slice:::filtered_data_set(data, datasets)
-  datasets
+  teal.slice::init_filtered_data(data)
 }
 
 datasets <- sample_filtered_data()

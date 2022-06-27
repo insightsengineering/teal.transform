@@ -9,9 +9,7 @@ data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADTTE", ADTTE)
 )
 
-
-ds <- teal.slice:::CDISCFilteredData$new()
-isolate(teal.slice:::filtered_data_set(data, ds))
+ds <- teal.slice::init_filtered_data(data)
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
@@ -67,8 +65,7 @@ test_that("Delayed data extract - single data connector with two scda dataset co
     connector$pull()
   }
   # test delayed data extract
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADAE <- data$get_dataset("ADAE")$get_raw_data() # nolint
@@ -102,8 +99,7 @@ test_that("Delayed choices selected - single data connector with two scda datase
   for (connector in data$get_connectors()) {
     connector$pull()
   }
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
@@ -151,8 +147,7 @@ test_that("Delayed data extract - filtered", {
   for (connector in data$get_connectors()) {
     connector$pull()
   }
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
@@ -238,8 +233,7 @@ test_that("Delayed extract filter concatenated - single data connector with two 
   for (connector in data$get_connectors()) {
     connector$pull()
   }
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
@@ -351,8 +345,7 @@ test_that("Delayed extract two filters - single data connector with two scda dat
   for (connector in data$get_connectors()) {
     connector$pull()
   }
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
@@ -416,7 +409,7 @@ test_that("Delayed extract two filters - single data connector with two scda dat
 test_that("Delayed extract - TealData with single dataset and multiple connectors", {
   adsl <- teal.data::dataset(
     dataname = "ADSL",
-    synthetic_cdisc_data("latest")$adsl,
+    scda::synthetic_cdisc_data("latest")$adsl,
     keys = teal.data::get_cdisc_keys("ADSL"),
     code = "ADSL <- synthetic_cdisc_data(\"latest\")$adsl",
     label = "ADSL"
@@ -475,8 +468,7 @@ test_that("Delayed extract - TealData with single dataset and multiple connector
   for (connector in data$get_connectors()) {
     connector$pull()
   }
-  ds <- teal.slice:::CDISCFilteredData$new()
-  isolate(teal.slice:::filtered_data_set(data, ds))
+  ds <- teal.slice::init_filtered_data(data)
 
   ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
