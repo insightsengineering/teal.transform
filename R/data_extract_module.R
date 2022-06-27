@@ -412,11 +412,10 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
         "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
       )
 
-      if (!all(vapply(datasets, function(x) is.reactive(x), FUN.VALUE = logical(1)))) {
-        datasets <- sapply(X = names(datasets), simplify = FALSE, FUN = function(x) {
-          reactive(datasets[x])
-        })
-      }
+      # convert to list of reactives
+      datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+        if (is.reactive(x) x else  reactive(x)
+      })
 
       if (inherits(data_extract_spec, "data_extract_spec")) {
         data_extract_spec <- list(data_extract_spec)
