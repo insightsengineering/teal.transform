@@ -414,7 +414,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-        if (is.reactive(x)) x else  reactive(x)
+        if (is.reactive(x)) x else reactive(x)
       })
 
       if (inherits(data_extract_spec, "data_extract_spec")) {
@@ -588,7 +588,7 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, keys, ...) {
 
   # convert to list of reactives
   datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-    if (is.reactive(x)) x else  reactive(x)
+    if (is.reactive(x)) x else reactive(x)
   })
 
   logger::log_trace(

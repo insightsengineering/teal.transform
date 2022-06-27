@@ -4,12 +4,15 @@
 \alias{resolve_delayed}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve_delayed(x, datasets)
+resolve_delayed(x, datasets, keys)
 }
 \arguments{
-\item{x}{Object of class \code{delayed_data} to resolve.}
+\item{x}{(\code{delayed_data}, \code{list}) to resolve.}
 
-\item{datasets}{Object of class \code{FilteredData} to use for evaluation.}
+\item{datasets}{(\code{FilteredData} or named \code{list}) to use as a reference to resolve \code{x}.}
+
+\item{keys}{(named \code{list}) with primary keys for each dataset from \code{datasets}. \code{names(keys)}
+should match \code{names(datasets)}}
 }
 \value{
 Resolved object.

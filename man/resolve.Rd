@@ -31,12 +31,12 @@ shiny::isolate({
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1
-  resolve(v1, data_list, keys)
+  teal.transform:::resolve(v1, data_list, keys)
 
   # variable_choices example
   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
   v2
-  resolve(v2, data_list, keys)
+  teal.transform:::resolve(v2, data_list, keys)
 
   # data_extract_spec example
   adsl_filter <- filter_spec(
@@ -62,9 +62,9 @@ shiny::isolate({
     filter = adsl_filter
   )
 
-  resolve(adsl_filter, data_list, keys)
-  resolve(adsl_select, data_list, keys)
-  resolve(adsl_de, data_list, keys)
+  teal.transform:::resolve(adsl_filter, data_list, keys)
+  teal.transform:::resolve(adsl_select, data_list, keys)
+  teal.transform:::resolve(adsl_de, data_list, keys)
 
   # nested list (arm_ref_comp)
   arm_ref_comp <- list(
@@ -74,6 +74,6 @@ shiny::isolate({
     )
   )
 
-  resolve(arm_ref_comp, data_list, keys)
+  teal.transform:::resolve(arm_ref_comp, data_list, keys)
 })
 }

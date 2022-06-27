@@ -2,8 +2,10 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param x Object of class `delayed_data` to resolve.
-#' @param datasets Object of class `FilteredData` to use for evaluation.
+#' @param x (`delayed_data`, `list`) to resolve.
+#' @param datasets (`FilteredData` or named `list`) to use as a reference to resolve `x`.
+#' @param keys (named `list`) with primary keys for each dataset from `datasets`. `names(keys)`
+#'   should match `names(datasets)`
 #'
 #' @return Resolved object.
 #'
@@ -69,13 +71,27 @@
 #'
 #'   resolve_delayed(arm_ref_comp, ds)
 #' })
-resolve_delayed <- function(x, datasets) {
-  stopifnot(inherits(datasets, "FilteredData"))
+resolve_delayed <- function(x, datasets, keys) {
+  UseMethod("resolve_delayed", datasets)
+}
+
+
+#' @export
+resolve_delayed.FilteredData <- function(x,
+                                         datasets,
+                                         keys = sapply(datasets$datanames(), datasets$get_keys, simplify = FALSE)) {
   datasets_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
-  key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-    datasets$get_keys(dataname = x)
+  resolve(x, datasets_list, keys)
+}
+
+#' @export
+resolve_delayed.list <- function(x, datasets, keys) {
+  checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
+  # convert to list of reactives
+  datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+    if (is.reactive(x)) x else reactive(x)
   })
-  resolve(x, datasets_list, key_list)
+  resolve(x, datasets_list, keys)
 }
