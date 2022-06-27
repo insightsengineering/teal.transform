@@ -258,7 +258,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
 #'  When passing a list of non-reactive `data.frame`s, they are converted to reactive `data.frame`s internally.
-#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `keys` is required also
+#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `keys` is required also.
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
 #' @param ...
@@ -414,7 +414,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-        if (is.reactive(x) x else  reactive(x)
+        if (is.reactive(x)) x else  reactive(x)
       })
 
       if (inherits(data_extract_spec, "data_extract_spec")) {
@@ -567,6 +567,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
   logger::log_trace(
     "data_extract_multiple_srv.filteredData initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
   )
+
   data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
@@ -585,11 +586,10 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, keys, ...) {
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), permutation.of = names(keys))
 
-  if (!all(vapply(datasets, function(x) is.reactive(x), FUN.VALUE = logical(1)))) {
-    datasets <- sapply(X = names(datasets), simplify = FALSE, FUN = function(x) {
-      reactive(datasets[x])
-    })
-  }
+  # convert to list of reactives
+  datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+    if (is.reactive(x)) x else  reactive(x)
+  })
 
   logger::log_trace(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."

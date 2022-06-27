@@ -67,6 +67,19 @@ testthat::test_that(
         NA
       )
     )
+
+    mixed_data_list <- list(ADSL = reactive(datasets$get_data(dataname = "ADSL", filtered = FALSE)), ADLB = adsl_df)
+    mixed_key_list <- list(
+      ADSL = isolate(datasets$get_keys(dataname = "ADSL")),
+      ADLB = isolate(datasets$get_keys(dataname = "ADSL"))
+    )
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = mixed_data_list, keys = mixed_key_list),
+        NA
+      )
+    )
   }
 )
 

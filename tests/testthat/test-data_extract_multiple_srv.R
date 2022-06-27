@@ -130,6 +130,19 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData 
       regexp = NA
     )
   )
+
+  mixed_data_list <- list(IRIS = reactive(iris), IRIS2 = iris)
+  mixed_key_list <- list(
+    IRIS = isolate(datasets$get_keys(dataname = "iris")),
+    IRIS2 = isolate(datasets$get_keys(dataname = "iris"))
+  )
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = mixed_data_list, keys = mixed_key_list),
+      NA
+    )
+  )
 })
 
 testthat::test_that(
