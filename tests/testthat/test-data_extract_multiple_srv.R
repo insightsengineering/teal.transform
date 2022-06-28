@@ -169,13 +169,12 @@ testthat::test_that("data_extract_multiple_srv throws if data_extract is not a n
 })
 
 testthat::test_that(
-  desc = "data_extract_multiple_srv accepts throws error when a list of data frames is provided with no keys argument",
+  desc = "data_extract_multiple_srv works with keys = NULL (default)",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_multiple_srv(list(test = NULL), datasets = data_list),
-        "argument \"keys\" is missing, with no default"
+      expr = testthat::expect_silent(
+        data_extract_multiple_srv(list(test = NULL), datasets = data_list)
       )
     )
   }
@@ -188,7 +187,7 @@ testthat::test_that(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
         data_extract_multiple_srv(list(test = NULL), datasets = data_list, keys = "key_list"),
-        regexp = "Assertion on 'keys' failed: Must be of type 'list', not 'character'.",
+        regexp = "not 'character'.",
         fixed = TRUE
       )
     )
@@ -207,13 +206,13 @@ testthat::test_that(
 testthat::test_that(
   desc = "data_extract_multiple_srv throws error when names of datasets list and keys list do no correspond",
   code = {
-    key_list <- list(X = c())
+    key_list <- list(X = c(""))
 
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
         data_extract_multiple_srv(list(test = NULL), datasets = data_list, keys = key_list),
-        regexp = "Assertion on 'names(datasets)' failed",
+        regexp = "Names must be a subset of",
         fixed = TRUE
       )
     )

@@ -10,7 +10,7 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 
 \method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec, ...)
 
-\method{data_extract_srv}{list}(id, datasets, data_extract_spec, keys, ...)
+\method{data_extract_srv}{list}(id, datasets, data_extract_spec, keys = NULL, ...)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -45,6 +45,96 @@ A reactive \code{list} containing following fields:
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Extracting details of the selection(s) in \link{data_extract_ui} elements.
+}
+\examples{
+
+library(shiny)
+
+ADSL <- data.frame(
+  STUDYID = "A",
+  USUBJID = LETTERS[1:10],
+  SEX = rep(c("F", "M"), 5),
+  AGE = rpois(10, 30),
+  BMRKR1 = rlnorm(10)
+)
+
+adsl_extract <- data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+  select = select_spec(
+    label = "Select variable:",
+    choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
+    selected = "AGE",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+# Using FilteredData
+datasets <- teal.slice::init_filtered_data(
+  list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+  cdisc = TRUE
+)
+
+app <- shinyApp(
+  ui = fluidPage(
+    teal.widgets::standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "adsl_var",
+          label = "ADSL selection",
+          data_extract_spec = adsl_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = datasets,
+      data_extract_spec = adsl_extract
+    )
+
+    output$out1 <- renderPrint(adsl_reactive_input())
+  }
+)
+\dontrun{
+runApp(app)
+}
+
+# Using reactive list of data.frames
+data_list <- list(ADSL = reactive(ADSL))
+
+key_list <- list(ADSL = c("STUDYID", "USUBJID"))
+
+app <- shinyApp(
+  ui = fluidPage(
+    teal.widgets::standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "adsl_var",
+          label = "ADSL selection",
+          data_extract_spec = adsl_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      keys = key_list
+    )
+    output$out1 <- renderPrint(adsl_reactive_input())
+  }
+)
+\dontrun{
+runApp(app)
+}
+
 }
 \references{
 \link{data_extract_srv}

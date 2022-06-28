@@ -84,13 +84,12 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv accepts throws error when a list of reactive data frames is provided with no keys argument",
+  desc = "data_extract_srv works with keys = NULL (default)",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list),
-        "argument \"keys\" is missing, with no default"
+      expr = testthat::expect_silent(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list)
       )
     )
   }
@@ -103,7 +102,7 @@ testthat::test_that(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
         data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = "key_list"),
-        regexp = "Assertion on 'keys' failed: Must be of type 'list', not 'character'.",
+        regexp = "not 'character'.",
         fixed = TRUE
       )
     )
@@ -132,7 +131,7 @@ testthat::test_that(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
         data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = key_list),
-        regexp = "Assertion on 'names(datasets)' failed",
+        regexp = "Names must be a subset of",
         fixed = TRUE
       )
     )

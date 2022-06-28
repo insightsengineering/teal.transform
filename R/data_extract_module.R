@@ -337,6 +337,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' )
 #' \dontrun{
 #' runApp(app)
+#' }
 #'
 #' # Using reactive list of data.frames
 #' data_list <- list(ADSL = reactive(ADSL))
@@ -412,10 +413,14 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @rdname data_extract_srv
 #' @param keys (`list`) of keys per dataset in `datasets`
 #' @export
-data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
+data_extract_srv.list <- function(id, datasets, data_extract_spec, keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_list(keys, names = "named")
-  checkmate::assert_names(names(datasets), permutation.of = names(keys))
+  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  checkmate::assert(
+    .var.name = "keys",
+    checkmate::check_names(names(keys), subset.of = names(datasets)),
+    checkmate::check_null(keys)
+  )
 
   moduleServer(
     id,
@@ -593,10 +598,14 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #' @rdname data_extract_multiple_srv
 #' @param keys (`list`) of keys per dataset in `datasets`
 #' @export
-data_extract_multiple_srv.list <- function(data_extract, datasets, keys, ...) {
+data_extract_multiple_srv.list <- function(data_extract, datasets, keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_list(keys, names = "named")
-  checkmate::assert_names(names(datasets), permutation.of = names(keys))
+  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  checkmate::assert(
+    .var.name = "keys",
+    checkmate::check_names(names(keys), subset.of = names(datasets)),
+    checkmate::check_null(keys)
+  )
 
   # convert to list of reactives
   datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {

@@ -10,7 +10,7 @@ data_extract_multiple_srv(data_extract, datasets, ...)
 
 \method{data_extract_multiple_srv}{FilteredData}(data_extract, datasets, ...)
 
-\method{data_extract_multiple_srv}{list}(data_extract, datasets, keys, ...)
+\method{data_extract_multiple_srv}{list}(data_extract, datasets, keys = NULL, ...)
 }
 \arguments{
 \item{data_extract}{(named \code{list} of \code{data_extract_spec} objects) the list \code{data_extract_spec} objects.
