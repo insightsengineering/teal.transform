@@ -68,7 +68,8 @@
 resolve <- function(x, datasets, keys) {
   checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
   checkmate::assert_list(keys, types = "character", len = length(datasets), names = "named")
-  checkmate::assert_names(names(keys), identical.to = names(datasets))
+  checkmate::assert_names(names(keys), permutation.of = names(datasets))
+
   UseMethod("resolve")
 }
 
