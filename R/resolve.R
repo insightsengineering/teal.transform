@@ -65,10 +65,14 @@
 #'
 #'   teal.transform:::resolve(arm_ref_comp, data_list, keys)
 #' })
-resolve <- function(x, datasets, keys) {
+resolve <- function(x, datasets, keys = NULL) {
   checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
-  checkmate::assert_list(keys, types = "character", len = length(datasets), names = "named")
-  checkmate::assert_names(names(keys), permutation.of = names(datasets))
+  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  checkmate::assert(
+    .var.name = "keys",
+    checkmate::check_names(names(keys), subset.of = names(datasets)),
+    checkmate::check_null(keys)
+  )
 
   UseMethod("resolve")
 }

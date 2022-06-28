@@ -4,7 +4,7 @@
 \alias{resolve}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve(x, datasets, keys)
+resolve(x, datasets, keys = NULL)
 }
 \arguments{
 \item{x}{Object of class \code{delayed_data} to resolve.}

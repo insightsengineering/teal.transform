@@ -87,8 +87,14 @@ resolve_delayed.FilteredData <- function(x,
 }
 
 #' @export
-resolve_delayed.list <- function(x, datasets, keys) {
+resolve_delayed.list <- function(x, datasets, keys = NULL) {
   checkmate::assert_list(datasets, type = c("reactive", "data.frame"), min.len = 1, names = "named")
+  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  checkmate::assert(
+    .var.name = "keys",
+    checkmate::check_names(names(keys), subset.of = names(datasets)),
+    checkmate::check_null(keys)
+  )
   # convert to list of reactives
   datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
     if (is.reactive(x)) x else reactive(x)
