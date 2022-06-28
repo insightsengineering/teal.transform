@@ -293,6 +293,7 @@ get_filter_call <- function(filter, dataname = NULL, data = NULL) {
   stopifnot((!is.null(dataname) && is.null(data)) ||
     (is.null(dataname) && is.null(data)) ||
     (!is.null(data) && isTRUE(dataname %in% names(data))))
+
   get_filter_call_internal <- function(filter, dataname, data) {
     if (rlang::is_empty(filter$selected)) {
       return(FALSE)

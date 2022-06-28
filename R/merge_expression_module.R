@@ -153,15 +153,9 @@ merge_expression_module <- function(data,
                                     id = "merge_id") {
   logger::log_trace("merge_expression_module called with: { paste(names(data), collapse = ', ') } datasets.")
 
-  checkmate::assert_list(data_extract)
-  stopifnot(
-    all(vapply(
-      data_extract,
-      function(x) {
-        inherits(x, "data_extract_spec") || all(vapply(x, inherits, logical(1), "data_extract_spec"))
-      },
-      logical(1)
-    ))
+  checkmate::assert(
+    checkmate::check_class(data_extract, "data_extract_spec"),
+    checkmate::check_list(data_extract, "data_extract_spec")
   )
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets)
@@ -340,6 +334,8 @@ merge_expression_srv <- function(id = "merge_id",
   checkmate::assert_class(selector_list, "reactive")
   checkmate::assert_list(data, names = "named")
   checkmate::assert_list(join_keys, names = "named")
+  checkmate::assert_names(names(keys), permutation.of = names(data))
+
   moduleServer(
     id,
     function(input, output, session) {
