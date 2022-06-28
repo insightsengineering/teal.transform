@@ -58,7 +58,7 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   testthat::expect_equal(resolve_delayed_expr(function(data) 1:2, ds = adsl, is_value_choices = TRUE), 1:2)
 })
 
-testthat::test_that("resolve_delayed.list works correctly", {
+testthat::test_that("resolve_delayed.FilteredData works correctly", {
   arm_ref_comp <- list(
     ARMCD = list(
       ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
@@ -80,6 +80,71 @@ testthat::test_that("resolve_delayed.list works correctly", {
     ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
   )
   ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, ds))
+  testthat::expect_identical(arm_ref_comp, ddl_resolved)
+})
+
+
+testthat::test_that("resolve_delayed.list works correctly with reactive objects", {
+  data <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  arm_ref_comp <- list(
+    ARMCD = list(
+      ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+      comp = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+    ),
+    ARM = list(
+      ref = variable_choices(adsl, subset = "ARM"), comp = variable_choices(adsl, subset = "ARMCD")
+    ),
+    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+  )
+  arm_ref_comp_ddl <- list(
+    ARMCD = list(
+      ref = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+      comp = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+    ),
+    ARM = list(
+      ref = variable_choices("ADSL", subset = "ARM"), comp = variable_choices("ADSL", subset = "ARMCD")
+    ),
+    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+  )
+  ddl_resolved <- isolate(
+    resolve_delayed(
+      arm_ref_comp_ddl,
+      data,
+      keys = list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+    )
+  )
+  testthat::expect_identical(arm_ref_comp, ddl_resolved)
+})
+
+testthat::test_that("resolve_delayed.list works correctly with non-reactive objects", {
+  data <- list(ADSL = adsl, ADTTE = reactive(adtte))
+  arm_ref_comp <- list(
+    ARMCD = list(
+      ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+      comp = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+    ),
+    ARM = list(
+      ref = variable_choices(adsl, subset = "ARM"), comp = variable_choices(adsl, subset = "ARMCD")
+    ),
+    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+  )
+  arm_ref_comp_ddl <- list(
+    ARMCD = list(
+      ref = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+      comp = value_choices("ADTTE", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+    ),
+    ARM = list(
+      ref = variable_choices("ADSL", subset = "ARM"), comp = variable_choices("ADSL", subset = "ARMCD")
+    ),
+    ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
+  )
+  ddl_resolved <- isolate(
+    resolve_delayed(
+      arm_ref_comp_ddl,
+      data,
+      keys = list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+    )
+  )
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
