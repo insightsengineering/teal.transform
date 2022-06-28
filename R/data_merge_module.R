@@ -274,6 +274,7 @@ data_merge_srv <- function(id = "merge_id",
 
         merged_data$data <- reactive({ch$get("ANL")})
         merged_data$chunks <- ch
+        merged_data$expr <- paste(merged_data$expr, collapse = "\n")
         merged_data
       })
     }
