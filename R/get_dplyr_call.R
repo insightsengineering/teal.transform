@@ -123,7 +123,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = list()) {
 #' @param idx optional (\code{integer}) current selector index in all selectors list
 #' @param dplyr_call_data (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
-#' @param data (\code{NULL} or \code{named `list`}).
+#' @param data (`NULL` or named `list`).
 #'
 #' @return (\code{call}) filter, select, rename and reshape call
 #' @keywords internal
