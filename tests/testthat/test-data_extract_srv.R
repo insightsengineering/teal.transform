@@ -180,7 +180,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(id = "x", data_extract_spec = c("data_extract"), datasets = nr_data_list, keys = key_list),
       expr =  NULL
     ),
-    regexp = "`data_extract_spec` argument should be"
+    regexp = "Assertion failed"
   )
 
   testthat::expect_error(
@@ -189,7 +189,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(id = "x", data_extract_spec = TRUE, datasets = nr_data_list, keys = key_list),
       expr =  NULL
     ),
-    regexp = "`data_extract_spec` argument should be"
+    regexp = "Assertion failed"
   )
 
   testthat::expect_error(

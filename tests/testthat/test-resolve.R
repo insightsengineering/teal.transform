@@ -132,7 +132,7 @@ testthat::test_that("resolve throws error with unnamed list or wrong names as in
 
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
-    "Assertion on 'names(keys)' failed: Names must be a identical to set {'ADSL','ADTTE'}, but is {'AA','ADTTE'}.",
+    "Names must be a permutation of set {'ADSL','ADTTE'}, but has extra elements {'AA'}.",
     fixed = TRUE
   )
 })

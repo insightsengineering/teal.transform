@@ -359,11 +359,12 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
   checkmate::assert_multi_class(datasets, c("FilteredData", "list"))
-  stopifnot(
-    "`data_extract_spec` argument should be of \"data_extract_spec\" class or a list with all elements of such class" =
-      inherits(data_extract_spec, "data_extract_spec") ||
-        (is.list(data_extract_spec) && all(vapply(data_extract_spec, inherits, logical(1), "data_extract_spec")))
+
+  checkmate::assert(
+    checkmate::check_class(data_extract_spec, "data_extract_spec"),
+    checkmate::check_list(data_extract_spec, types = "data_extract_spec")
   )
+
   UseMethod("data_extract_srv", datasets)
 }
 
@@ -402,6 +403,10 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, keys, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
+  reactive_dfs <- datasets[sapply(datasets, function(x) is.reactive(x))]
+  reactive_dfs <- sapply(X = reactive_dfs, simplify = FALSE, FUN = function(x) isolate(x()))
+  checkmate::assert_list(reactive_dfs, types = c("data.frame"))
+
   checkmate::assert_list(keys, names = "named")
   checkmate::assert_names(names(datasets), permutation.of = names(keys))
 
