@@ -283,6 +283,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @export
 #'
 #' @examples
+#'
 #' library(shiny)
 #'
 #' ADSL <- data.frame(
@@ -292,18 +293,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   AGE = rpois(10, 30),
 #'   BMRKR1 = rlnorm(10)
 #' )
-#' datasets <- teal.slice::init_filtered_data(
-#'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
-#'   cdisc = TRUE
-#' )
-#'
-#' data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-#'   reactive(datasets$get_data(dataname = x, filtered = TRUE))
-#' })
-#'
-#' key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-#'   isolate(datasets$get_keys(dataname = x))
-#' })
 #'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
@@ -315,6 +304,12 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'     multiple = TRUE,
 #'     fixed = FALSE
 #'   )
+#' )
+#'
+#' # Using FilteredData
+#' datasets <- teal.slice::init_filtered_data(
+#'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+#'   cdisc = TRUE
 #' )
 #'
 #' app <- shinyApp(
@@ -331,26 +326,44 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     # 1. using a `FilteredData` object as input to `datasets`
 #'     adsl_reactive_input <- data_extract_srv(
 #'       id = "adsl_var",
 #'       datasets = datasets,
 #'       data_extract_spec = adsl_extract
 #'     )
 #'
-#'     # OR: 2. using a list of reactive `data.frame` as input to `datasets`
-#'     adsl_reactive_input2 <- data_extract_srv(
+#'     output$out1 <- renderPrint(adsl_reactive_input())
+#'   }
+#' )
+#' \dontrun{
+#' runApp(app)
+#'
+#' # Using reactive list of data.frames
+#' data_list <- list(ADSL = reactive(ADSL))
+#'
+#' key_list <- list(ADSL = c("STUDYID", "USUBJID"))
+#'
+#' app <- shinyApp(
+#'   ui = fluidPage(
+#'     teal.widgets::standard_layout(
+#'       output = verbatimTextOutput("out1"),
+#'       encoding = tagList(
+#'         data_extract_ui(
+#'           id = "adsl_var",
+#'           label = "ADSL selection",
+#'           data_extract_spec = adsl_extract
+#'         )
+#'       )
+#'     )
+#'   ),
+#'   server = function(input, output, session) {
+#'     adsl_reactive_input <- data_extract_srv(
 #'       id = "adsl_var",
 #'       datasets = data_list,
 #'       data_extract_spec = adsl_extract,
 #'       keys = key_list
 #'     )
-#'     output$out1 <- renderPrint({
-#'       print("# using a `FilteredData` object")
-#'       print(adsl_reactive_input())
-#'       print("# using a list of reactive `data.frame`")
-#'       print(adsl_reactive_input2())
-#'     })
+#'     output$out1 <- renderPrint(adsl_reactive_input())
 #'   }
 #' )
 #' \dontrun{
@@ -359,10 +372,9 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
   checkmate::assert_multi_class(datasets, c("FilteredData", "list"))
-
   checkmate::assert(
     checkmate::check_class(data_extract_spec, "data_extract_spec"),
-    checkmate::check_list(data_extract_spec, types = "data_extract_spec")
+    checkmate::check_list(data_extract_spec, "data_extract_spec")
   )
 
   UseMethod("data_extract_srv", datasets)
