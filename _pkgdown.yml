@@ -38,6 +38,8 @@ reference:
       - data_merge_srv
       - data_merge_module
       - datanames_input
+      - merge_expression_module
+      - merge_expression_srv
       - get_dataset_prefixed_col_names
       - get_anl_relabel_call
       - get_merge_call
