@@ -3421,113 +3421,49 @@ testthat::test_that("Universal example", {
     )
   )
 
-  data <- teal.data::teal_data(
-    teal.data::dataset(
-      dataname = "X",
-      X,
-      code = "X <- data.frame(
-        A = c(1, 1:3),
-        B = 2:5,
-        D = 1:4,
-        E = letters[1:4],
-        G = letters[6:9]
-      )"
+  data_list <- list(X = reactive(X), Y = reactive(Y), Z = reactive(Z))
+  join_keys <- list(
+    X = list(
+      Y = c(A = "A", B = "B"),
+      Z = c(D = "D"),
+      X = character(0)
     ),
-    teal.data::dataset(
-      dataname = "Y",
-      Y,
-      code = "Y <- data.frame(
-        A = c(1, 1, 2),
-        B = 2:4, C = c(4, 4:5),
-        E = letters[4:6],
-        F = letters[5:7],
-        G = letters[1:3]
-      )"
+    Y = list(
+      X = c(A = "A", B = "B"),
+      Z = c(C = "C"),
+      Y = character(0)
     ),
-    teal.data::dataset(
-      dataname = "Z",
-      Z,
-      code = "Z <- data.frame(
-        C = c(4, 4:6),
-        D = 1:4,
-        E = letters[4:7],
-        F = letters[6:9],
-        G = letters[1:4]
-      )"
-    ),
-    join_keys = teal.data::join_keys(
-      teal.data::join_key("X", "Y", c("A", "B")),
-      teal.data::join_key("Y", "Z", "C"),
-      teal.data::join_key("X", "Z", "D")
+    Z = list(
+      X = c(D = "D"),
+      Y = c(C = "C"),
+      Z = character(0)
     )
   )
-
-  testthat::expect_silent(data$set_check(check = TRUE))
-  testthat::expect_true(data$check())
-
-  datasets <- teal.slice::init_filtered_data(data)
 
   merged_datasets <- isolate(
     merge_datasets(
       selector_list = selector_list,
-      datasets = datasets,
+      dataset = data_list,
+      join_keys = join_keys,
       merge_function = "dplyr::left_join",
       anl_name = "ANL"
     )
   )
 
   testthat::expect_identical(
-    merged_datasets$expr,
+    paste(merged_datasets$expr),
     paste(
       c(
+        "X_FILTERED <- X",
+        "Y_FILTERED <- Y",
+        "Z_FILTERED <- Z",
         "ANL_1 <- X_FILTERED %>% dplyr::select(A, B, D, E)",
         "ANL_2 <- Y_FILTERED %>% dplyr::select(A, B, C, G) %>% dplyr::rename(y.G = G)",
         "ANL_3 <- Z_FILTERED %>% dplyr::select(D, C, F, G) %>% dplyr::rename(z.G = G)",
         "ANL <- ANL_1",
         "ANL <- dplyr::left_join(ANL, ANL_2, by = c(\"A\", \"B\"))",
         "ANL <- dplyr::left_join(ANL, ANL_3, by = c(\"D\", \"C\"))"
-      ),
-      collapse = "\n"
-    )
-  )
-
-  # we assume no filters were set - filteredData is tested in teal
-  # this means that X === datasets$get_data("X")
-  testthat::expect_identical(
-    X,
-    isolate(datasets$get_data("X"))
-  )
-  testthat::expect_identical(
-    Y,
-    isolate(datasets$get_data("Y"))
-  )
-  testthat::expect_identical(
-    Z,
-    isolate(datasets$get_data("Z"))
-  )
-
-  # Good pointer management
-  anl_from_x <- merged_datasets$chunks$.__enclos_env__$private$envir$ANL_1
-  lapply(
-    X = colnames(anl_from_x),
-    function(col) {
-      expect_reference(
-        X[[col]],
-        anl_from_x[[col]]
       )
-    }
-  )
-
-  # compare final merge objects
-  new_env <- new.env()
-  assign("X_FILTERED", X, new_env)
-  assign("Y_FILTERED", Y, new_env)
-  assign("Z_FILTERED", Z, new_env)
-  eval(parse(text = merged_datasets$expr, keep.source = FALSE), envir = new_env)
-
-
-  testthat::expect_identical(
-    get("ANL", new_env),
-    merged_datasets$data()
+    )
   )
 })
