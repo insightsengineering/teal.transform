@@ -5,7 +5,6 @@
 \title{Merge expression module}
 \usage{
 merge_expression_module(
-  data,
   datasets,
   join_keys = NULL,
   data_extract,
@@ -15,12 +14,12 @@ merge_expression_module(
 )
 }
 \arguments{
-\item{data}{(named \code{list})\cr of datasets.}
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame}s, they are
+converted to reactive \code{data.frame}s internally.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
-
-\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.}
+\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.
+This will be used to extract the \code{keys} of every dataset.}
 
 \item{data_extract}{(named \code{list} of \code{data_extract_spec})\cr}
 
@@ -63,27 +62,20 @@ ADLB <- expand.grid(
 ADLB$AVAL <- rlnorm(120)
 ADLB$CHG <- rnorm(120)
 
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", ADSL),
-  teal.data::cdisc_dataset("ADLB", ADLB)
-)
-datasets <- teal.slice:::filtered_data_new(data)
-teal.slice:::filtered_data_set(data, datasets)
-
 data_list <- list(
   ADSL = ADSL,
   ADLB = ADLB
 )
 
 join_keys <- list(
-ADSL = list(
-  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-),
-ADLB = list(
-  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-)
+  ADSL = list(
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+  ),
+  ADLB = list(
+    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+  )
 )
 
 adsl_extract <- data_extract_spec(
@@ -146,8 +138,7 @@ app <- shinyApp(
 
     merged_data <- merge_expression_module(
       data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      data = data_list,
-      datasets = datasets,
+      datasets = data_list,
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )

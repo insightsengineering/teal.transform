@@ -6,7 +6,7 @@
 \usage{
 merge_datasets(
   selector_list,
-  data,
+  datasets,
   join_keys,
   merge_function = "dplyr::full_join",
   anl_name = "ANL"
@@ -17,9 +17,12 @@ merge_datasets(
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{data}{(named \code{list})\cr of datasets.}
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame}s, they are
+converted to reactive \code{data.frame}s internally.}
 
-\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.}
+\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.
+This will be used to extract the \code{keys} of every dataset.}
 
 \item{merge_function}{(\code{character(1)} or \code{reactive})\cr
 A character string of a function that accepts the arguments

@@ -342,7 +342,7 @@ get_dropped_filters <- function(selector) {
 #' @return (`call`) to relabel `dataset` and assign to `anl_name`.
 #'
 #' @export
-get_anl_relabel_call <- function(columns_source, data, anl_name = "ANL") {
+get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
   logger::log_trace(
     paste(
       "get_anl_relabel_call called with:",
@@ -362,9 +362,9 @@ get_anl_relabel_call <- function(columns_source, data, anl_name = "ANL") {
           return(NULL)
         }
 
-        data_used <- data[attr(selector, "dataname")]
-        labels <- formatters::var_labels(data[attr(selector, "dataname")][[1]], fill = FALSE)
-        column_labels <- labels[intersect(colnames(data_used), column_names)]
+        data_used <- datasets[[attr(selector, "dataname")]]
+        labels <- formatters::var_labels(datasets[[attr(selector, "dataname")]](), fill = FALSE)
+        column_labels <- labels[intersect(colnames(data_used()), column_names)]
 
         # NULL for no labels at all, character(0) for no labels for a given columns
         return(

@@ -33,18 +33,19 @@
 #' )
 #' merged_data <- merge_datasets(list(regressor(), response()))
 #' }
-merge_datasets <- function(selector_list, data, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
+merge_datasets <- function(selector_list, datasets, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
   logger::log_trace(
     paste(
       "merge_datasets called with:",
-      "{ paste(names(data), collapse = ', ') } datasets;",
+      "{ paste(names(datasets), collapse = ', ') } datasets;",
       "{ paste(names(selector_list), collapse = ', ') } selectors;",
       "{ merge_function } merge function."
     )
   )
+
   checkmate::assert_list(selector_list, min.len = 1)
   checkmate::assert_string(anl_name)
-  checkmate::assert_list(data, names = "named")
+  checkmate::assert_list(datasets, names = "named")
   checkmate::assert_list(join_keys, names = "named")
   stopifnot(attr(regexec("[A-Za-z0-9\\_]*", anl_name)[[1]], "match.length") == nchar(anl_name))
   lapply(selector_list, check_selector)
@@ -93,7 +94,7 @@ merge_datasets <- function(selector_list, data, join_keys, merge_function = "dpl
       selector_list = merged_selector_list,
       idx = idx,
       dplyr_call_data = dplyr_call_data,
-      data = data
+      datasets = datasets
     )
     anl_i_call <- call("<-", as.name(paste0(anl_name, "_", idx)), dplyr_call)
     anl_i_call
@@ -108,7 +109,7 @@ merge_datasets <- function(selector_list, data, join_keys, merge_function = "dpl
 
   anl_relabel_call <- get_anl_relabel_call(
     columns_source = get_relabel_cols(columns_source, dplyr_call_data), # don't relabel reshaped cols
-    data = data,
+    datasets = datasets,
     anl_name = anl_name
   )
 

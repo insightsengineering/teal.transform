@@ -10,7 +10,7 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 
 \method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec, ...)
 
-\method{data_extract_srv}{list}(id, datasets, data_extract_spec, keys = NULL, ...)
+\method{data_extract_srv}{list}(id, datasets, data_extract_spec, join_keys = NULL, ...)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -19,7 +19,7 @@ UI function.}
 \item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
 object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
 When passing a list of non-reactive \code{data.frame}s, they are converted to reactive \code{data.frame}s internally.
-When passing a list of reactive or non-reactive \code{data.frame}s, the argument \code{keys} is required also.}
+When passing a list of reactive or non-reactive \code{data.frame}s, the argument \code{join_keys} is required also.}
 
 \item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})\cr
 A list of data filter and select information constructed by \link{data_extract_spec}.}
@@ -27,7 +27,7 @@ A list of data filter and select information constructed by \link{data_extract_s
 \item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{keys}{(\code{list}) of keys per dataset in \code{datasets}}
+\item{join_keys}{(named \code{list}) of keys per dataset in \code{datasets}}
 }
 \value{
 A reactive \code{list} containing following fields:

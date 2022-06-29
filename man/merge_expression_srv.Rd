@@ -7,8 +7,8 @@
 merge_expression_srv(
   id = "merge_id",
   selector_list,
-  data,
-  join_keys = NULL,
+  datasets,
+  join_keys,
   merge_function = "dplyr::full_join",
   anl_name = "ANL"
 )
@@ -21,9 +21,12 @@ UI function.}
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{data}{(named \code{list})\cr of datasets.}
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame}s, they are
+converted to reactive \code{data.frame}s internally.}
 
-\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.}
+\item{join_keys}{(named \code{list})\cr of variables used as join keys for each of the datasets in \code{data}.
+This will be used to extract the \code{keys} of every dataset.}
 
 \item{merge_function}{(\code{character(1)} or \code{reactive})\cr
 A character string of a function that accepts the arguments
@@ -63,27 +66,20 @@ ADLB <- expand.grid(
 ADLB$AVAL <- rlnorm(120)
 ADLB$CHG <- rlnorm(120)
 
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", ADSL),
-  teal.data::cdisc_dataset("ADLB", ADLB)
-)
-datasets <- teal.slice:::filtered_data_new(data)
-teal.slice:::filtered_data_set(data, datasets)
-
 data_list <- list(
   ADSL = ADSL,
   ADLB = ADLB
 )
 
 join_keys <- list(
-ADSL = list(
-  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-),
-ADLB = list(
-  ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-  ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-)
+  ADSL = list(
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+  ),
+  ADLB = list(
+    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+  )
 )
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
@@ -146,18 +142,18 @@ app <- shinyApp(
 
     selector_list <- data_extract_multiple_srv(
       list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      datasets = datasets
+      datasets = data_list
     )
     merged_data <- merge_expression_srv(
       selector_list = selector_list,
-      data = data_list,
+      datasets = data_list,
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
 
     ch_merge <- reactive({
       ch <- teal.code::chunks_deep_clone(chunks_h)
-      teal.code::chunks_push(chunks = ch, expression = merged_data()$expr)
+      for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
       ch$eval()
       ch
     })

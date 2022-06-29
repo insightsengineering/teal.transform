@@ -258,7 +258,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
 #'  When passing a list of non-reactive `data.frame`s, they are converted to reactive `data.frame`s internally.
-#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `keys` is required also.
+#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `join_keys` is required also.
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
 #' @param ...
@@ -395,15 +395,13 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
         reactive(datasets$get_data(dataname = x, filtered = TRUE))
       })
 
-      key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-        datasets$get_keys(dataname = x)
-      })
+      join_keys_list <- datasets$get_join_keys()
 
       filter_and_select_reactive <- data_extract_srv(
         id = NULL,
         datasets = data_list,
         data_extract_spec = data_extract_spec,
-        keys = key_list
+        join_keys = join_keys_list
       )
       filter_and_select_reactive
     }
@@ -411,15 +409,16 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 }
 
 #' @rdname data_extract_srv
-#' @param keys (`list`) of keys per dataset in `datasets`
+#' @param join_keys (named `list`) of keys per dataset in `datasets`
 #' @export
-data_extract_srv.list <- function(id, datasets, data_extract_spec, keys = NULL, ...) {
+data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  if (length(join_keys) == 0) join_keys <- NULL
+  checkmate::assert_list(join_keys, names = "named", null.ok = TRUE)
   checkmate::assert(
-    .var.name = "keys",
-    checkmate::check_names(names(keys), subset.of = names(datasets)),
-    checkmate::check_null(keys)
+    .var.name = "join_keys",
+    checkmate::check_names(names(join_keys), subset.of = names(datasets)),
+    checkmate::check_null(join_keys)
   )
 
   moduleServer(
@@ -428,6 +427,12 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys = NULL, 
       logger::log_trace(
         "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
       )
+
+      # get keys out of join_keys
+      is_nested_list <- any(sapply(join_keys, is.list))
+      keys <- sapply(names(datasets), simplify = FALSE, function(x) {
+        if (is_nested_list) join_keys[[x]][[x]] else join_keys[[x]]
+      })
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -473,6 +478,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, keys = NULL, 
           input$dataset
         }
       })
+
       filter_and_select_reactive <- reactive({
         if (is.null(dataname())) {
           NULL
@@ -589,23 +595,28 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
 
-  key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-    datasets$get_keys(dataname = x)
-  })
-  data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, keys = key_list)
+  join_keys_list <- datasets$get_join_keys()
+  data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, join_keys = join_keys_list)
 }
 
 #' @rdname data_extract_multiple_srv
-#' @param keys (`list`) of keys per dataset in `datasets`
+#' @param join_keys (named `list`) of join keys per dataset in `datasets`.
 #' @export
-data_extract_multiple_srv.list <- function(data_extract, datasets, keys = NULL, ...) {
+data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  if (length(join_keys) == 0) join_keys <- NULL
+  checkmate::assert_list(join_keys, names = "named", null.ok = TRUE)
   checkmate::assert(
-    .var.name = "keys",
-    checkmate::check_names(names(keys), subset.of = names(datasets)),
-    checkmate::check_null(keys)
+    .var.name = "join_keys",
+    checkmate::check_names(names(join_keys), subset.of = names(datasets)),
+    checkmate::check_null(join_keys)
   )
+
+  # get keys out of join_keys
+  is_nested_list <- any(sapply(join_keys, is.list))
+  keys <- sapply(names(datasets), simplify = FALSE, function(x) {
+    if (is_nested_list) join_keys[[x]][[x]] else join_keys[[x]]
+  })
 
   # convert to list of reactives
   datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -627,7 +638,7 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, keys = NULL, 
           id = x,
           data_extract_spec = data_extract[[x]],
           datasets = datasets,
-          keys = keys
+          join_keys = keys
         )
       }
     )

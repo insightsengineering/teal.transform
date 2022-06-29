@@ -4,13 +4,15 @@
 \alias{get_anl_relabel_call}
 \title{Gets the relabel call}
 \usage{
-get_anl_relabel_call(columns_source, data, anl_name = "ANL")
+get_anl_relabel_call(columns_source, datasets, anl_name = "ANL")
 }
 \arguments{
 \item{columns_source}{\code{named list}\cr
 where names are column names, values are labels + additional attribute dataname}
 
-\item{data}{(named \code{list})\cr of datasets.}
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame}s, they are
+converted to reactive \code{data.frame}s internally.}
 
 \item{anl_name}{(\code{character(1)})\cr
 Name of the analysis dataset.}

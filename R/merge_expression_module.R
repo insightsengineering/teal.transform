@@ -6,10 +6,11 @@
 #' Compare the example below with that found in [merge_expression_srv()].
 #'
 #' @inheritParams shiny::moduleServer
-#' @param data (named `list`)\cr of datasets.
-#' @param datasets (`FilteredData`)\cr
-#'  object containing data, see [teal.slice::FilteredData] for more.
+#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
+#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame`s, they are
+#'  converted to reactive `data.frame`s internally.
 #' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
+#' This will be used to extract the `keys` of every dataset.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
@@ -41,27 +42,20 @@
 #' ADLB$AVAL <- rlnorm(120)
 #' ADLB$CHG <- rnorm(120)
 #'
-#' data <- teal.data::cdisc_data(
-#'   teal.data::cdisc_dataset("ADSL", ADSL),
-#'   teal.data::cdisc_dataset("ADLB", ADLB)
-#' )
-#' datasets <- teal.slice:::filtered_data_new(data)
-#' teal.slice:::filtered_data_set(data, datasets)
-#'
 #' data_list <- list(
 #'   ADSL = ADSL,
 #'   ADLB = ADLB
 #' )
 #'
 #' join_keys <- list(
-#' ADSL = list(
-#'   ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-#'   ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#' ),
-#' ADLB = list(
-#'   ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-#'   ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#' )
+#'   ADSL = list(
+#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+#'   ),
+#'   ADLB = list(
+#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
+#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+#'   )
 #' )
 #'
 #' adsl_extract <- data_extract_spec(
@@ -124,8 +118,7 @@
 #'
 #'     merged_data <- merge_expression_module(
 #'       data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-#'       data = data_list,
-#'       datasets = datasets,
+#'       datasets = data_list,
 #'       join_keys = join_keys,
 #'       merge_function = "dplyr::left_join"
 #'     )
@@ -144,26 +137,22 @@
 #' \dontrun{
 #' runApp(app)
 #' }
-merge_expression_module <- function(data,
-                                    datasets,
+merge_expression_module <- function(datasets,
                                     join_keys = NULL,
                                     data_extract,
                                     merge_function = "dplyr::full_join",
                                     anl_name = "ANL",
                                     id = "merge_id") {
-  logger::log_trace("merge_expression_module called with: { paste(names(data), collapse = ', ') } datasets.")
+  logger::log_trace("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
 
-  checkmate::assert(
-    checkmate::check_class(data_extract, "data_extract_spec"),
-    checkmate::check_list(data_extract, "data_extract_spec")
-  )
+  checkmate::assert_list(data_extract, types = "data_extract_spec", names = "named")
 
-  selector_list <- data_extract_multiple_srv(data_extract, datasets)
+  selector_list <- data_extract_multiple_srv(data_extract, datasets, join_keys)
 
   merge_expression_srv(
     id = id,
     selector_list = selector_list,
-    data = data,
+    datasets = datasets,
     join_keys = join_keys,
     merge_function = merge_function,
     anl_name = anl_name
@@ -179,8 +168,11 @@ merge_expression_module <- function(data,
 #'   Compare the example below with that found in [merge_expression_module()].
 #'
 #' @inheritParams shiny::moduleServer
-#' @param data (named `list`)\cr of datasets.
+#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
+#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame`s, they are
+#'  converted to reactive `data.frame`s internally.
 #' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
+#' This will be used to extract the `keys` of every dataset.
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
 #'   When using a reactive named list, the names must be identical to the shiny ids of the respective [data_extract_ui()].
@@ -216,27 +208,20 @@ merge_expression_module <- function(data,
 #' ADLB$AVAL <- rlnorm(120)
 #' ADLB$CHG <- rlnorm(120)
 #'
-#' data <- teal.data::cdisc_data(
-#'   teal.data::cdisc_dataset("ADSL", ADSL),
-#'   teal.data::cdisc_dataset("ADLB", ADLB)
-#' )
-#' datasets <- teal.slice:::filtered_data_new(data)
-#' teal.slice:::filtered_data_set(data, datasets)
-#'
 #' data_list <- list(
 #'   ADSL = ADSL,
 #'   ADLB = ADLB
 #' )
 #'
 #' join_keys <- list(
-#' ADSL = list(
-#'   ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-#'   ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#' ),
-#' ADLB = list(
-#'   ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-#'   ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#' )
+#'   ADSL = list(
+#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+#'   ),
+#'   ADLB = list(
+#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
+#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+#'   )
 #' )
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
@@ -299,18 +284,18 @@ merge_expression_module <- function(data,
 #'
 #'     selector_list <- data_extract_multiple_srv(
 #'       list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-#'       datasets = datasets
+#'       datasets = data_list
 #'     )
 #'     merged_data <- merge_expression_srv(
 #'       selector_list = selector_list,
-#'       data = data_list,
+#'       datasets = data_list,
 #'       join_keys = join_keys,
 #'       merge_function = "dplyr::left_join"
 #'     )
 #'
 #'     ch_merge <- reactive({
 #'       ch <- teal.code::chunks_deep_clone(chunks_h)
-#'       teal.code::chunks_push(chunks = ch, expression = merged_data()$expr)
+#'       for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
 #'       ch$eval()
 #'       ch
 #'     })
@@ -322,26 +307,31 @@ merge_expression_module <- function(data,
 #' \dontrun{
 #' runApp(app)
 #' }
-
 merge_expression_srv <- function(id = "merge_id",
                                  selector_list,
-                                 data,
-                                 join_keys = NULL,
+                                 datasets,
+                                 join_keys,
                                  merge_function = "dplyr::full_join",
                                  anl_name = "ANL") {
   checkmate::assert_string(anl_name)
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
-  checkmate::assert_list(data, names = "named")
+  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_list(join_keys, names = "named")
-  checkmate::assert_names(names(keys), permutation.of = names(data))
+  checkmate::assert_names(names(join_keys), permutation.of = names(datasets))
 
   moduleServer(
     id,
     function(input, output, session) {
       logger::log_trace(
-        "merge_expression_srv initialized with: { paste(names(data), collapse = ', ') } datasets."
+        "merge_expression_srv initialized with: { paste(names(datasets), collapse = ', ') } datasets."
       )
+
+      # convert to list of reactives
+      datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+        if (is.reactive(x)) x else reactive(x)
+      })
+
       reactive({
         checkmate::assert_list(selector_list(), names = "named", types = "reactive")
         merge_fun_name <- if (inherits(merge_function, "reactive")) merge_function() else merge_function
@@ -351,7 +341,7 @@ merge_expression_srv <- function(id = "merge_id",
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
         merge_datasets(
           selector_list = ds,
-          data = data,
+          datasets = datasets,
           join_keys = join_keys,
           merge_function = merge_fun_name,
           anl_name = anl_name

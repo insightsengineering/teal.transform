@@ -4,7 +4,7 @@
 \alias{get_filter_call}
 \title{Returns \code{dplyr} filter call}
 \usage{
-get_filter_call(filter, dataname = NULL, data = NULL)
+get_filter_call(filter, dataname = NULL, datasets = NULL)
 }
 \arguments{
 \item{filter}{(\code{list}) Either list of lists or list with \code{select} and \code{selected} items.}

@@ -202,11 +202,11 @@ get_dplyr_call <- function(selector_list,
                            idx = 1L,
                            join_keys = list(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
-                           data = NULL) {
+                           datasets = NULL) {
   logger::log_trace(
     paste(
       "get_dplyr_call called with:",
-      "{ paste(names(data), collapse = ', ') } datasets;",
+      "{ paste(names(datasets), collapse = ', ') } datasets;",
       "{ paste(names(selector_list), collapse = ', ') } selectors."
     )
   )
@@ -218,7 +218,7 @@ get_dplyr_call <- function(selector_list,
 
   dataname_filtered <- as.name(paste0(selector_list[[idx]]$dataname, "_FILTERED"))
 
-  filter_call <- get_filter_call(selector_list[[idx]]$filters, selector_list[[idx]]$dataname, data)
+  filter_call <- get_filter_call(selector_list[[idx]]$filters, selector_list[[idx]]$dataname, datasets)
 
   select_call <- get_select_call(dplyr_call_data[[idx]]$init_select_cols_with_keys)
 
@@ -278,7 +278,7 @@ get_select_call <- function(select) {
 #'   list(columns = "SEX", selected = list(NA, "F", "M")),
 #'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
 #' ))
-get_filter_call <- function(filter, dataname = NULL, data = NULL) {
+get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
   logger::log_trace(
     paste(
       "get_filter_call called with:",
@@ -286,21 +286,22 @@ get_filter_call <- function(filter, dataname = NULL, data = NULL) {
       "{ paste(sapply(filter, function(x) x$columns), collapse = ', ') } filters."
     )
   )
+  checkmate::assert_list(datasets, types = "reactive", names = "named", null.ok = TRUE)
   if (is.null(filter)) {
     return(NULL)
   }
 
-  stopifnot((!is.null(dataname) && is.null(data)) ||
-    (is.null(dataname) && is.null(data)) ||
-    (!is.null(data) && isTRUE(dataname %in% names(data))))
+  stopifnot((!is.null(dataname) && is.null(datasets)) ||
+    (is.null(dataname) && is.null(datasets)) ||
+    (!is.null(datasets) && isTRUE(dataname %in% names(datasets))))
 
-  get_filter_call_internal <- function(filter, dataname, data) {
+  get_filter_call_internal <- function(filter, dataname, datasets) {
     if (rlang::is_empty(filter$selected)) {
       return(FALSE)
     }
 
     keys <- filter$columns
-    datas_vars <- if (!is.null(data)) data[[dataname]] else NULL
+    datas_vars <- if (!is.null(datasets)) datasets[[dataname]]() else NULL
 
     if (!is.null(datas_vars)) {
       u_variables <- unique(apply(datas_vars[, keys, drop = FALSE], 1, function(x) paste(x, collapse = "-")))
@@ -370,9 +371,9 @@ get_filter_call <- function(filter, dataname = NULL, data = NULL) {
   }
 
   internal <- if (length(filter) == 1) {
-    get_filter_call_internal(filter[[1]], dataname, data)
+    get_filter_call_internal(filter[[1]], dataname, datasets)
   } else {
-    res <- Filter(Negate(is.null), Map(function(x) get_filter_call_internal(x, dataname, data), filter))
+    res <- Filter(Negate(is.null), Map(function(x) get_filter_call_internal(x, dataname, datasets), filter))
     calls_combine_by("&", res)
   }
 
