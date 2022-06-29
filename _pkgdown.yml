@@ -4,14 +4,6 @@ url: https://insightsengineering.github.io/teal.transform
 template:
   package: nesttemplate
 
-articles:
-  - title: Articles
-    navbar: ~
-    contents:
-      - data-extract
-      - data-extract-merge
-      - data-merge
-
 navbar:
   right:
     - icon: fa-github
@@ -35,6 +27,7 @@ reference:
       - split_by_sep
       - value_choices
       - variable_choices
+      - resolve
       - resolve_delayed
   - title: Data extract modules
     desc: teal modules to generate transform expressions

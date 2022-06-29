@@ -2,19 +2,32 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_srv}
 \alias{data_extract_srv}
+\alias{data_extract_srv.FilteredData}
+\alias{data_extract_srv.list}
 \title{Extraction of the selector(s) details}
 \usage{
-data_extract_srv(id, datasets, data_extract_spec)
+data_extract_srv(id, datasets, data_extract_spec, ...)
+
+\method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec, ...)
+
+\method{data_extract_srv}{list}(id, datasets, data_extract_spec, keys = NULL, ...)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data, see \link[teal.slice:FilteredData]{teal.slice::FilteredData} for more.}
+\item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame}s, they are converted to reactive \code{data.frame}s internally.
+When passing a list of reactive or non-reactive \code{data.frame}s, the argument \code{keys} is required also.}
 
 \item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})\cr
 A list of data filter and select information constructed by \link{data_extract_spec}.}
+
+\item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
+It shall contain the keys per dataset in \code{datasets}.}
+
+\item{keys}{(\code{list}) of keys per dataset in \code{datasets}}
 }
 \value{
 A reactive \code{list} containing following fields:
@@ -34,6 +47,7 @@ A reactive \code{list} containing following fields:
 Extracting details of the selection(s) in \link{data_extract_ui} elements.
 }
 \examples{
+
 library(shiny)
 
 ADSL <- data.frame(
@@ -42,10 +56,6 @@ ADSL <- data.frame(
   SEX = rep(c("F", "M"), 5),
   AGE = rpois(10, 30),
   BMRKR1 = rlnorm(10)
-)
-datasets <- teal.slice::init_filtered_data(
-  list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
-  cdisc = TRUE
 )
 
 adsl_extract <- data_extract_spec(
@@ -58,6 +68,12 @@ adsl_extract <- data_extract_spec(
     multiple = TRUE,
     fixed = FALSE
   )
+)
+
+# Using FilteredData
+datasets <- teal.slice::init_filtered_data(
+  list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+  cdisc = TRUE
 )
 
 app <- shinyApp(
@@ -79,9 +95,40 @@ app <- shinyApp(
       datasets = datasets,
       data_extract_spec = adsl_extract
     )
-    output$out1 <- renderPrint({
-      print(adsl_reactive_input())
-    })
+
+    output$out1 <- renderPrint(adsl_reactive_input())
+  }
+)
+\dontrun{
+runApp(app)
+}
+
+# Using reactive list of data.frames
+data_list <- list(ADSL = reactive(ADSL))
+
+key_list <- list(ADSL = c("STUDYID", "USUBJID"))
+
+app <- shinyApp(
+  ui = fluidPage(
+    teal.widgets::standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "adsl_var",
+          label = "ADSL selection",
+          data_extract_spec = adsl_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      keys = key_list
+    )
+    output$out1 <- renderPrint(adsl_reactive_input())
   }
 )
 \dontrun{
