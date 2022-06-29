@@ -1,5 +1,9 @@
 # teal.transform 0.1.1.9002
 
+### New features
+
+* `data_extract_ui`, `data_extract_srv`, `data_extract_multiple_srv` can be initialized by the list of (optionally `reactive`) `data.frame` objects.
+
 # teal.transform 0.1.1
 
 ### New features

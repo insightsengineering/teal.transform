@@ -2,8 +2,10 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param x Object of class `delayed_data` to resolve.
-#' @param datasets Object of class `FilteredData` to use for evaluation.
+#' @param x (`delayed_data`, `list`) to resolve.
+#' @param datasets (`FilteredData` or named `list`) to use as a reference to resolve `x`.
+#' @param keys (named `list`) with primary keys for each dataset from `datasets`. `names(keys)`
+#'   should match `names(datasets)`
 #'
 #' @return Resolved object.
 #'
@@ -69,239 +71,33 @@
 #'
 #'   resolve_delayed(arm_ref_comp, ds)
 #' })
-resolve_delayed <- function(x, datasets) {
-  stopifnot(inherits(datasets, "FilteredData"))
-  UseMethod("resolve_delayed")
+resolve_delayed <- function(x, datasets, keys) {
+  UseMethod("resolve_delayed", datasets)
+}
+
+
+#' @export
+resolve_delayed.FilteredData <- function(x,
+                                         datasets,
+                                         keys = sapply(datasets$datanames(), datasets$get_keys, simplify = FALSE)) {
+  datasets_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
+    reactive(datasets$get_data(dataname = x, filtered = TRUE))
+  })
+  resolve(x, datasets_list, keys)
 }
 
 #' @export
-resolve_delayed.delayed_variable_choices <- function(x, datasets) { # nolint
-  if (is.null(x$key)) {
-    x$key <- datasets$get_keys(x$data)
-  }
-  x$data <- datasets$get_data(x$data)
-  if (inherits(x$subset, "function")) {
-    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
-  }
-  return(do.call("variable_choices", x))
-}
-
-#' @export
-resolve_delayed.delayed_value_choices <- function(x, datasets) { # nolint
-  x$data <- datasets$get_data(x$data)
-  if (is.function(x$subset)) {
-    x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
-  }
-  return(do.call("value_choices", x))
-}
-
-#' @export
-resolve_delayed.delayed_choices_selected <- function(x, datasets) { # nolint
-  if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
-  }
-  x$choices <- resolve_delayed(x$choices, datasets = datasets)
-
-  if (!all(x$selected %in% x$choices)) {
-    logger::log_warn(paste(
-      "Removing",
-      paste(x$selected[which(!x$selected %in% x$choices)]),
-      "from 'selected' as not in 'choices' when resolving delayed choices_selected"
-    ))
-    x$selected <- x$selected[which(x$selected %in% x$choices)]
-  }
-
-  return(do.call("choices_selected", x))
-}
-
-#' @export
-resolve_delayed.delayed_select_spec <- function(x, datasets) { # nolint
-  x$choices <- resolve_delayed(x$choices, datasets = datasets)
-  if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
-  }
-  return(do.call("select_spec", x))
-}
-
-#' @export
-resolve_delayed.delayed_filter_spec <- function(x, datasets) { # nolint
-  if (inherits(x$vars_choices, "delayed_data")) {
-    x$vars_choices <- resolve_delayed(x$vars_choices, datasets = datasets)
-  }
-  if (inherits(x$vars_selected, "delayed_data")) {
-    x$vars_selected <- resolve_delayed(x$vars_selected, datasets = datasets)
-  }
-  if (inherits(x$choices, "delayed_data")) {
-    x$choices <- resolve_delayed(x$choices, datasets = datasets)
-  }
-  if (inherits(x$selected, "delayed_data")) {
-    x$selected <- resolve_delayed(x$selected, datasets = datasets)
-  }
-
-  return(do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))]))
-}
-
-#' @export
-resolve_delayed.delayed_data_extract_spec <- function(x, datasets) { # nolint
-  x$select <- `if`(inherits(x$select, "delayed_data"), resolve_delayed(x$select, datasets = datasets), x$select)
-
-  if (any(vapply(x$filter, inherits, logical(1L), "delayed_data"))) {
-    idx <- vapply(x$filter, inherits, logical(1), "delayed_data")
-    x$filter[idx] <- lapply(x$filter[idx], resolve_delayed, datasets = datasets)
-  }
-
-  return(do.call("data_extract_spec", x))
-}
-
-#' @export
-resolve_delayed.list <- function(x, datasets) { # nolint
-
-  # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
-  res <- lapply(x, resolve_delayed, datasets)
-  return(res)
-}
-
-#' @export
-resolve_delayed.default <- function(x, datasets) {
-  return(x)
-}
-
-#' Resolve expression after delayed data are loaded
-#'
-#'
-#' @param x (`function`) Function that is applied on dataset.
-#' It must take only a single argument "data" and return character vector with columns / values.
-#' @param ds (`data.frame`) `TealDataset` on which the function is applied to.
-#' @param is_value_choices (`logical`) Determines which check of the returned value will be applied.
-#'
-#' @return Character vector - result of calling function `x` on dataset `ds`.
-#' @keywords internal
-#'
-#' @examples
-#' \dontrun{
-#' # get only possible factor variables from mtcars dataset
-#' resolve_delayed_expr(
-#'   function(data) {
-#'     idx <- vapply(data, function(x) is.numeric(x) && length(unique(x)) <= 6, logical(1))
-#'     colnames(data)[idx]
-#'   },
-#'   ds = mtcars,
-#'   is_value_choices = FALSE
-#' )
-#' }
-resolve_delayed_expr <- function(x, ds, is_value_choices) {
-  checkmate::assert_function(x, args = "data", nargs = 1)
-
-  # evaluate function
-  res <- do.call("x", list(data = ds))
-
-  # check returned value
-  if (is_value_choices) {
-    if (!is.atomic(res) || anyDuplicated(res)) {
-      stop(paste(
-        "The following function must return a vector with unique values",
-        "from the respective columns of the dataset.\n\n",
-        deparse1(bquote(.(x)), collapse = "\n")
-      ))
-    }
-  } else {
-    if (!checkmate::test_character(res, any.missing = FALSE) || length(res) > ncol(ds) || anyDuplicated(res)) {
-      stop(paste(
-        "The following function must return a character vector with unique",
-        "names from the available columns of the dataset:\n\n",
-        deparse1(bquote(.(x)), collapse = "\n")
-      ))
-    }
-  }
-
-  return(res)
-}
-
-#' @keywords internal
-#' @export
-print.delayed_variable_choices <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, paste("variable_choices with delayed data:", x$data)))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.delayed_value_choices <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, paste("value_choices with delayed data: ", x$data)))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.delayed_choices_selected <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, paste("choices_selected with delayed data: ", x$choices$data)))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.delayed_select_spec <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, paste("select_spec with delayed data:", x$choices$data)))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.filter_spec <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, "filter_spec with delayed data:"))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.delayed_filter_spec <- function(x, indent = 0L, ...) {
-  cat(indent_msg(indent, "filter_spec with delayed data:"))
-  cat("\n")
-  print_delayed_list(x, indent)
-  return(invisible(NULL))
-}
-
-#' @keywords internal
-#' @export
-print.delayed_data_extract_spec <- function(x, indent = 0L, ...) {
-  cat(paste("data_extract_spec with delayed data:", x$dataname))
-  cat("\n\n")
-  print_delayed_list(x)
-  return(invisible(NULL))
-}
-
-indent_msg <- function(n, msg) {
-  checkmate::assert_integer(n, len = 1, lower = 0, any.missing = FALSE)
-  checkmate::assert_character(msg, min.len = 1, any.missing = FALSE)
-  indent <- paste(rep("  ", n), collapse = "")
-  return(paste0(indent, msg))
-}
-
-print_delayed_list <- function(obj, n = 0L) {
-  checkmate::assert_integer(n, len = 1, lower = 0, any.missing = FALSE)
-  stopifnot(is.list(obj))
-
-  for (idx in seq_along(obj)) {
-    cat(indent_msg(n, ifelse(is.null(names(obj)[[idx]]), paste0("[[", idx, "]]"), paste("$", names(obj)[[idx]]))))
-    cat("\n")
-    if (inherits(obj[[idx]], "delayed_data")) {
-      print(obj[[idx]], n + 1L)
-    } else if (is.list(obj[[idx]])) {
-      print_delayed_list(obj[[idx]], n + 1L)
-    } else {
-      cat(indent_msg(n, paste(utils::capture.output(print(obj[[idx]])), collapse = "\n")))
-      cat("\n")
-    }
-  }
-  return(invisible(NULL))
+resolve_delayed.list <- function(x, datasets, keys = NULL) {
+  checkmate::assert_list(datasets, type = c("reactive", "data.frame"), min.len = 1, names = "named")
+  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
+  checkmate::assert(
+    .var.name = "keys",
+    checkmate::check_names(names(keys), subset.of = names(datasets)),
+    checkmate::check_null(keys)
+  )
+  # convert to list of reactives
+  datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+    if (is.reactive(x)) x else reactive(x)
+  })
+  resolve(x, datasets_list, keys)
 }

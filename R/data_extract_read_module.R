@@ -11,6 +11,7 @@
 #'
 data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
   checkmate::assert_class(single_data_extract_spec, "data_extract_spec")
+  checkmate::assert_list(datasets, types = "reactive", names = "named")
   moduleServer(
     id,
     function(input, output, session) {
@@ -23,14 +24,14 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
         input_col <- input[[paste0("filter", idx, ns.sep, "col")]]
         input_vals <- input[[paste0("filter", idx, ns.sep, "vals")]]
         # convert to numeric for class consistency because everything coming from input is character, e.g. "1"
-        if (length(input_col) == 1L && is.numeric(datasets$get_data(x$dataname)[[input_col]])) {
+        if (length(input_col) == 1L && is.numeric(datasets[[x$dataname]]()[[input_col]])) {
           input_vals <- as.numeric(input_vals)
         }
         for (col in input_col) {
           # replace NA with NA_character_ for class consistency
           if (any(vapply(input_vals, identical, logical(1), "NA")) &&
-            anyNA(datasets$get_data(x$dataname)[col]) &&
-            !any(vapply(unique(datasets$get_data(x$dataname)[col]), identical, logical(1), "NA"))) {
+            anyNA(datasets[[x$dataname]]()[col]) &&
+            !any(vapply(unique(datasets[[x$dataname]]()[col]), identical, logical(1), "NA"))) {
             input_vals[vapply(input_vals, identical, logical(1), "NA")] <- NA_character_
           }
         }

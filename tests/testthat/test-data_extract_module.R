@@ -155,13 +155,14 @@ testthat::test_that("get_initial_filters_values returns empty strings if vars_se
 
 testthat::test_that("get_initial_filters_values returns all column values and the selected option
   if choices is NULL", {
-  filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = utils::head(iris))))
+  data_list <- list(iris = reactive(utils::head(iris)))
+
   filter <- filter_spec(vars = colnames(iris)[1])
   filter$choices <- NULL
   filter$dataname <- "iris"
   filter$selected <- "test"
   testthat::expect_equal(
-    isolate(get_initial_filter_values(filter = filter, datasets = filtered_data)),
+    isolate(get_initial_filter_values(filter = filter, datasets = data_list)),
     list(choices = value_choices(utils::head(iris), colnames(iris)[1]), selected = "test")
   )
 })
