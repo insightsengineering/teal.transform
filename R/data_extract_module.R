@@ -429,10 +429,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       )
 
       # get keys out of join_keys
-      is_nested_list <- any(sapply(join_keys, is.list))
-      keys <- sapply(names(datasets), simplify = FALSE, function(x) {
-        if (is_nested_list) join_keys[[x]][[x]] else join_keys[[x]]
-      })
+      keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[[x]][[x]])
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -612,17 +609,6 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
     checkmate::check_null(join_keys)
   )
 
-  # get keys out of join_keys
-  is_nested_list <- any(sapply(join_keys, is.list))
-  keys <- sapply(names(datasets), simplify = FALSE, function(x) {
-    if (is_nested_list) join_keys[[x]][[x]] else join_keys[[x]]
-  })
-
-  # convert to list of reactives
-  datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-    if (is.reactive(x)) x else reactive(x)
-  })
-
   logger::log_trace(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
   )
@@ -638,7 +624,7 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
           id = x,
           data_extract_spec = data_extract[[x]],
           datasets = datasets,
-          join_keys = keys
+          join_keys = join_keys
         )
       }
     )

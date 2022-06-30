@@ -10,9 +10,7 @@ nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = functio
   shiny::isolate(datasets$get_data(dataname = x, filtered = FALSE))
 })
 
-key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  shiny::isolate(datasets$get_keys(dataname = x))
-})
+key_list <- datasets$get_join_keys()
 
 testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
   shiny::withReactiveDomain(
