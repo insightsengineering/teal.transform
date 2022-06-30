@@ -86,7 +86,7 @@
 #'       datasets = datasets,
 #'       merge_function = "dplyr::left_join"
 #'     )
-#'     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
+#'     output$expr <- renderText(merged_data()$expr)
 #'     output$data <- renderDataTable(merged_data()$data())
 #'   }
 #' )
