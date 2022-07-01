@@ -7,10 +7,11 @@
 #'
 #' @inheritParams shiny::moduleServer
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame`s, they are
-#'  converted to reactive `data.frame`s internally.
-#' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
-#' This will be used to extract the `keys` of every dataset.
+#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
+#'  converted to reactive `data.frame` objects internally.
+#' @param join_keys (named `list`)\cr
+#'  of variables used as join keys for each of the datasets in `datasets`.
+#'  This will be used to extract the `keys` of every dataset.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
 #' @param merge_function (`character(1)`)\cr
 #'  A character string of a function that
@@ -169,10 +170,11 @@ merge_expression_module <- function(datasets,
 #'
 #' @inheritParams shiny::moduleServer
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame`s, they are
-#'  converted to reactive `data.frame`s internally.
-#' @param join_keys (named `list`)\cr of variables used as join keys for each of the datasets in `data`.
-#' This will be used to extract the `keys` of every dataset.
+#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
+#'  converted to reactive `data.frame` objects internally.
+#' @param join_keys (named `list`)\cr
+#'  of variables used as join keys for each of the datasets in `datasets`.
+#'  This will be used to extract the `keys` of every dataset.
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
 #'   When using a reactive named list, the names must be identical to the shiny ids of the respective [data_extract_ui()].

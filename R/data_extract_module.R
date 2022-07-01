@@ -257,8 +257,8 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @inheritParams shiny::moduleServer
 #' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
-#'  When passing a list of non-reactive `data.frame`s, they are converted to reactive `data.frame`s internally.
-#'  When passing a list of reactive or non-reactive `data.frame`s, the argument `join_keys` is required also.
+#'  When passing a list of non-reactive `data.frame` objects, they are converted to reactive `data.frame`s internally.
+#'  When passing a list of reactive or non-reactive `data.frame` objects, the argument `join_keys` is required also.
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
 #' @param ...

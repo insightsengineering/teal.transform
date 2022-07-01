@@ -266,7 +266,7 @@ get_select_call <- function(select) {
 #'
 #' @param filter (\code{list}) Either list of lists or list with \code{select} and \code{selected} items.
 #' @param dataname (\code{NULL} or \code{character}) name of dataset.
-#' @param data (\code{NULL} or \code{named `list`}).
+#' @param datasets (\code{NULL} or \code{named `list`}).
 #' @return (\code{call}) \code{dplyr} filter call
 #' @keywords internal
 #'

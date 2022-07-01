@@ -99,7 +99,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv works with join_keys = NULL (default) na djoin_keys = character(0)",
+  desc = "data_extract_srv works with join_keys = NULL (default) and join_keys = character(0)",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),

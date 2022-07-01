@@ -11,7 +11,7 @@ get_filter_call(filter, dataname = NULL, datasets = NULL)
 
 \item{dataname}{(\code{NULL} or \code{character}) name of dataset.}
 
-\item{data}{(\code{NULL} or \code{named `list`}).}
+\item{datasets}{(\code{NULL} or \code{named `list`}).}
 }
 \value{
 (\code{call}) \code{dplyr} filter call
