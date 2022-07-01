@@ -101,15 +101,6 @@ data_merge_module <- function(datasets,
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
 
   checkmate::assert_list(data_extract)
-  stopifnot(
-    all(vapply(
-      data_extract,
-      function(x) {
-        inherits(x, "data_extract_spec") || all(vapply(x, inherits, logical(1), "data_extract_spec"))
-      },
-      logical(1)
-    ))
-  )
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets)
 
@@ -243,16 +234,35 @@ data_merge_srv <- function(id = "merge_id",
       reactive({
         checkmate::assert_list(selector_list(), names = "named", types = "reactive")
         merge_fun_name <- if (inherits(merge_function, "reactive")) merge_function() else merge_function
+
+        datasets_list <- sapply(
+          datasets$datanames(),
+          simplify = FALSE,
+          function(x) reactive(datasets$get_data(x, filtered = TRUE))
+        )
+        join_keys <- datasets$get_join_keys()
         check_merge_function(merge_fun_name)
 
         ds <- Filter(Negate(is.null), lapply(selector_list(), function(x) x()))
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
-        merge_datasets(
-          ds,
-          datasets = datasets,
+        merged_data <- merge_datasets(
+          selector_list = ds,
+          datasets = datasets_list,
+          join_keys = join_keys,
           merge_function = merge_fun_name,
           anl_name = anl_name
         )
+        ch <- teal.code::chunks_new()
+        datasets_list_nr <- sapply(datasets$datanames(), simplify = FALSE, datasets$get_data, filtered = TRUE)
+        teal.code::chunks_reset(envir = list2env(datasets_list_nr), chunks = ch)
+        for (chunk in merged_data$expr) teal.code::chunks_push(expression = chunk, chunks = ch)
+        teal.code::chunks_safe_eval(chunks = ch)
+        merged_data$data <- reactive({
+          ch$get(anl_name)
+        })
+        merged_data$chunks <- ch
+        merged_data$expr <- paste(merged_data$expr, collapse = "\n")
+        merged_data
       })
     }
   )

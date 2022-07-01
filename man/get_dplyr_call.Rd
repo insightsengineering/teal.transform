@@ -24,7 +24,7 @@ When using a reactive named list, the names must be identical to the shiny ids o
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
 selections, reshapes etc. All necessary data for merging}
 
-\item{datasets}{(\code{NULL} or \code{FilteredData}).}
+\item{data}{(\code{NULL} or named \code{list}).}
 }
 \value{
 (\code{call}) filter, select, rename and reshape call

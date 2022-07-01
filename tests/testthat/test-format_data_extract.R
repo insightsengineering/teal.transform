@@ -34,8 +34,7 @@ testthat::test_that("format_data_extract returns a string representation of the 
 })
 
 testthat::test_that("format_data_extract integrates with data_extract_srv", {
-  sample_filtered_data <- teal.slice::init_filtered_data(list(iris = list(dataset = iris)))
-
+  sample_data <- list(iris = iris)
 
   simple_des <- data_extract_spec(
     dataname = "iris",
@@ -45,7 +44,7 @@ testthat::test_that("format_data_extract integrates with data_extract_srv", {
 
   shiny::testServer(
     data_extract_srv,
-    args = list(data_extract_spec = simple_des, datasets = sample_filtered_data),
+    args = list(data_extract_spec = simple_des, datasets = sample_data),
     expr = {
       testthat::expect_error(format_data_extract(session$returned()), regexp = NA)
     }

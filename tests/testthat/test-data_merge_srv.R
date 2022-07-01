@@ -43,7 +43,7 @@ testthat::test_that("data_merge_srv returns a reactive containing a list", {
       testthat::expect_is(session$returned, "reactive")
       testthat::expect_is(session$returned(), "list")
       testthat::expect_identical(
-        c("data", "expr", "chunks", "columns_source", "keys", "filter_info"),
+        c("expr", "columns_source", "keys", "filter_info", "data", "chunks"),
         names(session$returned())
       )
     }
@@ -105,16 +105,6 @@ testthat::test_that("data_merge_srv default anl_name is ANL", {
   )
 })
 
-testthat::test_that("data_merge_srv default anl_name is ANL", {
-  shiny::testServer(
-    data_merge_srv,
-    args = list(selector_list = selector_list, datasets = datasets_used),
-    expr = {
-      testthat::expect_identical(anl_name, "ANL")
-    }
-  )
-})
-
 testthat::test_that("data_merge_srv throws error when anl_name is not character or using non-allowed names", {
   testthat::expect_error(
     shiny::testServer(
@@ -157,13 +147,14 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
   )
 })
 
-testthat::test_that("data_merge_srv throws error selector_list is not list or reactive", {
+testthat::test_that("data_merge_srv throws error when selector_list is not a list or a reactive", {
   testthat::expect_error(
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = "A", datasets = datasets_used),
       expr = NULL
-    )
+    ),
+    "Assertion on 'selector_list' failed: Must inherit from class 'reactive', but has class 'character'."
   )
 
   testthat::expect_error(
@@ -171,7 +162,8 @@ testthat::test_that("data_merge_srv throws error selector_list is not list or re
       data_merge_srv,
       args = list(selector_list = reactive(c("A")), datasets = datasets_used),
       expr = session$returned()
-    )
+    ),
+    "Must be of type 'list', not 'character'."
   )
 })
 
@@ -208,7 +200,7 @@ testthat::test_that("data_merge_srv accepts reactive and character merge_functio
   )
 })
 
-selector_list <- reactive({
+selector_list2 <- reactive({
   list(
     adsl_extract = reactive(adsl_data_extract_srv_output),
     adlb_extract = reactive(adlb_data_extract_srv_output)
@@ -218,7 +210,7 @@ selector_list <- reactive({
 testthat::test_that("data_merge_srv returns merged data.frame when passing 2 extracts in selector_list", {
   shiny::testServer(
     data_merge_srv,
-    args = list(selector_list = selector_list, datasets = datasets_used),
+    args = list(selector_list = selector_list2, datasets = datasets_used),
     expr = {
       testthat::expect_true(inherits(session$returned()$data, "function"))
       testthat::expect_true(inherits(session$returned()$data(), "data.frame"))

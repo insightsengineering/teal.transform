@@ -123,7 +123,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = list()) {
 #' @param idx optional (\code{integer}) current selector index in all selectors list
 #' @param dplyr_call_data (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
-#' @param datasets (\code{NULL} or \code{FilteredData}).
+#' @param data (`NULL` or named `list`).
 #'
 #' @return (\code{call}) filter, select, rename and reshape call
 #' @keywords internal
@@ -206,7 +206,7 @@ get_dplyr_call <- function(selector_list,
   logger::log_trace(
     paste(
       "get_dplyr_call called with:",
-      "{ paste(datasets$datanames(), collapse = ', ') } datasets;",
+      "{ paste(names(datasets), collapse = ', ') } datasets;",
       "{ paste(names(selector_list), collapse = ', ') } selectors."
     )
   )
@@ -266,7 +266,7 @@ get_select_call <- function(select) {
 #'
 #' @param filter (\code{list}) Either list of lists or list with \code{select} and \code{selected} items.
 #' @param dataname (\code{NULL} or \code{character}) name of dataset.
-#' @param datasets (\code{NULL} or \code{FilteredData}).
+#' @param datasets (\code{NULL} or \code{named `list`}).
 #' @return (\code{call}) \code{dplyr} filter call
 #' @keywords internal
 #'
@@ -286,13 +286,14 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
       "{ paste(sapply(filter, function(x) x$columns), collapse = ', ') } filters."
     )
   )
+  checkmate::assert_list(datasets, types = "reactive", names = "named", null.ok = TRUE)
   if (is.null(filter)) {
     return(NULL)
   }
 
   stopifnot((!is.null(dataname) && is.null(datasets)) ||
     (is.null(dataname) && is.null(datasets)) ||
-    (!is.null(datasets) && isTRUE(dataname %in% datasets$datanames())))
+    (!is.null(datasets) && isTRUE(dataname %in% names(datasets))))
 
   get_filter_call_internal <- function(filter, dataname, datasets) {
     if (rlang::is_empty(filter$selected)) {
@@ -300,7 +301,7 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
     }
 
     keys <- filter$columns
-    datas_vars <- if (!is.null(datasets)) datasets$get_data(dataname, filtered = TRUE) else NULL
+    datas_vars <- if (!is.null(datasets)) datasets[[dataname]]() else NULL
 
     if (!is.null(datas_vars)) {
       u_variables <- unique(apply(datas_vars[, keys, drop = FALSE], 1, function(x) paste(x, collapse = "-")))

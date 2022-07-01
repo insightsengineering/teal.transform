@@ -361,7 +361,10 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
         if (rlang::is_empty(column_names)) {
           return(NULL)
         }
-        column_labels <- datasets$get_varlabels(attr(selector, "dataname"), column_names)
+
+        data_used <- datasets[[attr(selector, "dataname")]]
+        labels <- formatters::var_labels(datasets[[attr(selector, "dataname")]](), fill = FALSE)
+        column_labels <- labels[intersect(colnames(data_used()), column_names)]
 
         # NULL for no labels at all, character(0) for no labels for a given columns
         return(

@@ -7,6 +7,7 @@
 merge_datasets(
   selector_list,
   datasets,
+  join_keys,
   merge_function = "dplyr::full_join",
   anl_name = "ANL"
 )
@@ -16,8 +17,13 @@ merge_datasets(
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{datasets}{(\code{FilteredData})\cr
-object containing data (see \code{teal.slice::FilteredData}).}
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
+converted to reactive \code{data.frame} objects internally.}
+
+\item{join_keys}{(named \code{list})\cr
+of variables used as join keys for each of the datasets in \code{datasets}.
+This will be used to extract the \code{keys} of every dataset.}
 
 \item{merge_function}{(\code{character(1)} or \code{reactive})\cr
 A character string of a function that accepts the arguments
@@ -29,8 +35,7 @@ Name of the analysis dataset.}
 \value{
 merged_dataset (\code{list}) containing:
 \itemize{
-\item data (\code{data.frame}) after filtering and reshaping containing selected columns.
-\item \code{expr} (\code{character}) code needed to replicate merged dataset.
+\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset.
 \item columns_source (\code{list}) of column selected for particular selector.
 \item keys (\code{list}) the keys of the merged dataset.
 \item filter_info (\code{list}) The information given by the user. This information
@@ -39,7 +44,7 @@ the variables that are selected from the data sets.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 It combines/merges multiple datasets with specified keys attribute.
 }
 \details{

@@ -1,9 +1,14 @@
 adsl_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
+adlb_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADLB"))))
+
 adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
-adlb <- teal.data::cdisc_dataset("ADLB", adsl_df)
+adlb <- teal.data::cdisc_dataset("ADLB", adlb_df)
 
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0))),
+  join_keys = teal.data::join_keys(
+    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+  ),
   cdisc = TRUE
 )
 
@@ -15,9 +20,7 @@ nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = functio
   datasets$get_data(dataname = x, filtered = FALSE)
 })
 
-key_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  isolate(datasets$get_keys(dataname = x))
-})
+join_keys_list <- datasets$get_join_keys()
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
@@ -55,7 +58,7 @@ testthat::test_that(
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = key_list),
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = join_keys_list),
         NA
       )
     )
@@ -63,20 +66,32 @@ testthat::test_that(
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
+        data_extract_srv(
+          id = "x",
+          data_extract_spec = adsl_extract,
+          datasets = nr_data_list,
+          join_keys = join_keys_list
+        ),
         NA
       )
     )
 
     mixed_data_list <- list(ADSL = reactive(datasets$get_data(dataname = "ADSL", filtered = FALSE)), ADLB = adsl_df)
-    mixed_key_list <- list(
-      ADSL = isolate(datasets$get_keys(dataname = "ADSL")),
-      ADLB = isolate(datasets$get_keys(dataname = "ADSL"))
-    )
+    mixed_join_keys_list <- teal.data::join_keys(
+      teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
+      teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADLB")),
+      teal.data::join_key("ADSL", "ADLB", teal.data::get_cdisc_keys("ADSL"))
+    )$get()
+
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = mixed_data_list, keys = mixed_key_list),
+        data_extract_srv(
+          id = "x",
+          data_extract_spec = adsl_extract,
+          datasets = mixed_data_list,
+          join_keys = mixed_join_keys_list
+        ),
         NA
       )
     )
@@ -84,7 +99,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv works with keys = NULL (default)",
+  desc = "data_extract_srv works with join_keys = NULL (default) and join_keys = character(0)",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
@@ -92,16 +107,23 @@ testthat::test_that(
         data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list)
       )
     )
+
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = testthat::expect_silent(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = character(0))
+      )
+    )
   }
 )
 
 testthat::test_that(
-  desc = "data_extract_srv accepts throws error when keys argument is not a named list",
+  desc = "data_extract_srv accepts throws error when join_keys argument is not a named list",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = "key_list"),
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = "key_list"),
         regexp = "not 'character'.",
         fixed = TRUE
       )
@@ -113,9 +135,9 @@ testthat::test_that(
         data_extract_srv(
           id = "x",
           data_extract_spec = adsl_extract,
-          datasets = data_list, keys = list(c("USUBJID"))
+          datasets = data_list, join_keys = list(c("USUBJID"))
         ),
-        regexp = "Assertion on 'keys' failed: Must have names.",
+        regexp = "Assertion on 'join_keys' failed: Must have names.",
         fixed = TRUE
       )
     )
@@ -123,14 +145,14 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv throws error when names of datasets list and keys list do no correspond",
+  desc = "data_extract_srv throws error when names of datasets list and join_keys list do no correspond",
   code = {
     key_list <- list(X = c("STUDYID", "USUBJID"))
 
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, keys = key_list),
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = key_list),
         regexp = "Names must be a subset of",
         fixed = TRUE
       )
@@ -138,10 +160,10 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("data_extract_srv returns list of elements", {
+testthat::test_that("data_extract_srv returns a list of elements", {
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
+    args = list(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, join_keys = join_keys_list),
     expr = {
       testthat::expect_is(session$returned(), "list")
       testthat::expect_identical(
@@ -156,7 +178,7 @@ testthat::test_that("data_extract_srv throws error with missing arguments", {
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", datasets = nr_data_list, keys = key_list),
+      args = list(id = "x", datasets = nr_data_list, join_keys = join_keys_list),
       expr =  NULL
     ),
     "argument \"data_extract_spec\" is missing, with no default"
@@ -176,7 +198,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = nr_data_list, keys = key_list),
+      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = nr_data_list, join_keys = join_keys_list),
       expr =  NULL
     ),
     regexp = "has class 'character'"
@@ -185,7 +207,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = TRUE, datasets = nr_data_list, keys = key_list),
+      args = list(id = "x", data_extract_spec = TRUE, datasets = nr_data_list, join_keys = join_keys_list),
       expr =  NULL
     ),
     regexp = "has class 'logical'"
@@ -194,7 +216,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = adsl_extract, datasets = adsl, keys = key_list),
+      args = list(id = "x", data_extract_spec = adsl_extract, datasets = adsl, join_keys = join_keys_list),
       expr =  NULL
     ),
     regexp = "Assertion on 'datasets' failed:"
@@ -204,7 +226,12 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
 testthat::test_that("data_extract_srv uses the current session id when id is missing", {
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "adsl_extract", data_extract_spec = adsl_extract, datasets = nr_data_list, keys = key_list),
+    args = list(
+      id = "adsl_extract",
+      data_extract_spec = adsl_extract,
+      datasets = nr_data_list,
+      join_keys = join_keys_list
+    ),
     expr = {
       testthat::expect_is(session$returned(), "list")
       testthat::expect_identical(
