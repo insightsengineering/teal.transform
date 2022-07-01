@@ -25,7 +25,7 @@ When passing a list of reactive or non-reactive \code{data.frame} objects, the a
 \item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(named \code{list}) of join keys per dataset in \code{datasets}.}
+\item{join_keys}{(named \code{list} or \code{NULL}) of join keys per dataset in \code{datasets}.}
 }
 \value{
 reactive named list containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}. Output list

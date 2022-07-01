@@ -27,7 +27,7 @@ A list of data filter and select information constructed by \link{data_extract_s
 \item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(named \code{list}) of keys per dataset in \code{datasets}}
+\item{join_keys}{(named \code{list} or \code{NULL}) of keys per dataset in \code{datasets}}
 }
 \value{
 A reactive \code{list} containing following fields:

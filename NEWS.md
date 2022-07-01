@@ -3,7 +3,8 @@
 ### New features
 
 * `data_extract_ui`, `data_extract_srv`, `data_extract_multiple_srv` can be initialized by the list of (optionally `reactive`) `data.frame` objects.
-* Added new modules `merge_expression_srv` and `merge_expression_module`, updates of `data_merge_srv` and `data_merge_module` respectively, where `datasets` argument takes a list of (optionally `reactive`) `data.frame` objects and a new argument `join_keys`.
+* Added new modules `merge_expression_srv` and `merge_expression_module`, updates of `data_merge_srv` and `data_merge_module` 
+(which will be deprecated in future releases) respectively, where `datasets` argument takes a list of (optionally `reactive`) `data.frame` objects and a new argument `join_keys`.
 
 # teal.transform 0.1.1
 

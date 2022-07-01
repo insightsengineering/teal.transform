@@ -409,7 +409,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 }
 
 #' @rdname data_extract_srv
-#' @param join_keys (named `list`) of keys per dataset in `datasets`
+#' @param join_keys (named `list` or `NULL`) of keys per dataset in `datasets`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
@@ -597,7 +597,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 }
 
 #' @rdname data_extract_multiple_srv
-#' @param join_keys (named `list`) of join keys per dataset in `datasets`.
+#' @param join_keys (named `list` or `NULL`) of join keys per dataset in `datasets`.
 #' @export
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")

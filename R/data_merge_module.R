@@ -253,17 +253,12 @@ data_merge_srv <- function(id = "merge_id",
           anl_name = anl_name
         )
         ch <- teal.code::chunks_new()
-        datasets_list_nr <- sapply(
-          datasets$datanames(),
-          simplify = FALSE,
-          function(x) datasets$get_data(x, filtered = TRUE)
-        )
+        datasets_list_nr <- sapply(datasets$datanames(), simplify = FALSE, datasets$get_data, filtered = TRUE)
         teal.code::chunks_reset(envir = list2env(datasets_list_nr), chunks = ch)
         for (chunk in merged_data$expr) teal.code::chunks_push(expression = chunk, chunks = ch)
         teal.code::chunks_safe_eval(chunks = ch)
-
         merged_data$data <- reactive({
-          ch$get("ANL")
+          ch$get(anl_name)
         })
         merged_data$chunks <- ch
         merged_data$expr <- paste(merged_data$expr, collapse = "\n")
