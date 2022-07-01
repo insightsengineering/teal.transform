@@ -12,7 +12,7 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/teal.transform/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -77,7 +71,7 @@ Extracting details of the selection(s) in <a href="data_extract_ui.html">data_ex
 <span><span class="fu">data_extract_srv</span><span class="op">(</span><span class="va">id</span>, <span class="va">datasets</span>, <span class="va">data_extract_spec</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for list</span></span>
-<span><span class="fu">data_extract_srv</span><span class="op">(</span><span class="va">id</span>, <span class="va">datasets</span>, <span class="va">data_extract_spec</span>, keys <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">data_extract_srv</span><span class="op">(</span><span class="va">id</span>, <span class="va">datasets</span>, <span class="va">data_extract_spec</span>, join_keys <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,8 +84,8 @@ UI function.</p></dd>
 <dt>datasets</dt>
 <dd><p>(<code>FilteredData</code> or <code>list</code> of <code>reactive</code> or non-<code>reactive</code> <code>data.frame</code>)<br>
 object containing data either in the form of <a href="https://rdrr.io/pkg/teal.slice/man/FilteredData.html" class="external-link">teal.slice::FilteredData</a> or as a list of <code>data.frame</code>.
-When passing a list of non-reactive <code>data.frame</code>s, they are converted to reactive <code>data.frame</code>s internally.
-When passing a list of reactive or non-reactive <code>data.frame</code>s, the argument <code>keys</code> is required also.</p></dd>
+When passing a list of non-reactive <code>data.frame</code> objects, they are converted to reactive <code>data.frame</code>s internally.
+When passing a list of reactive or non-reactive <code>data.frame</code> objects, the argument <code>join_keys</code> is required also.</p></dd>
 
 
 <dt>data_extract_spec</dt>
@@ -104,8 +98,8 @@ A list of data filter and select information constructed by <a href="data_extrac
 It shall contain the keys per dataset in <code>datasets</code>.</p></dd>
 
 
-<dt>keys</dt>
-<dd><p>(<code>list</code>) of keys per dataset in <code>datasets</code></p></dd>
+<dt>join_keys</dt>
+<dd><p>(named <code>list</code> or <code>NULL</code>) of keys per dataset in <code>datasets</code></p></dd>
 
 </dl></div>
     <div class="section level2">
