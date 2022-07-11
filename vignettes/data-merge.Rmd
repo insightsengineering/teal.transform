@@ -94,7 +94,7 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     ANL <- reactive({
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-    
+
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
   })
@@ -157,7 +157,7 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     ANL <- reactive({
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-    
+
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
   })

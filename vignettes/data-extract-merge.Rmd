@@ -95,21 +95,21 @@ merge_ui <- function(id, data_extracts) {
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets, join_keys)
-    
+
     merged_data <- teal.transform::merge_expression_srv(
       selector_list = selector_list,
       datasets = datasets,
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
-    
+
     ANL <- reactive({
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-    
+
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
-   })
+  })
 }
 ```
 
