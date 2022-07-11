@@ -94,28 +94,22 @@ merge_ui <- function(id, data_extracts) {
 
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    chunks_h <- teal.code::chunks_new()
-    teal.code::chunks_push(str2lang("ADSL <- scda::synthetic_cdisc_data('latest')$adsl"), chunks = chunks_h)
-    teal.code::chunks_push(str2lang("ADTTE <- scda::synthetic_cdisc_data('latest')$adtte"), chunks = chunks_h)
-
     selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets, join_keys)
+    
     merged_data <- teal.transform::merge_expression_srv(
       selector_list = selector_list,
       datasets = datasets,
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
-
-    ch_merge <- reactive({
-      ch <- teal.code::chunks_deep_clone(chunks_h)
-      for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
-      ch$eval()
-      ch
+    
+    ANL <- reactive({
+      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-
+    
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(ch_merge()$get("ANL"))
-  })
+    output$data <- renderDataTable(ANL())
+   })
 }
 ```
 

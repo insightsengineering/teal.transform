@@ -84,10 +84,6 @@ merge_ui <- function(id, data_extracts) {
 
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    chunks_h <- teal.code::chunks_new()
-    teal.code::chunks_push(str2lang("ADSL <- scda::synthetic_cdisc_data('latest')$adsl"), chunks = chunks_h)
-    teal.code::chunks_push(str2lang("ADTTE <- scda::synthetic_cdisc_data('latest')$adtte"), chunks = chunks_h)
-
     merged_data <- teal.transform::merge_expression_module(
       data_extract = data_extracts,
       datasets = datasets,
@@ -95,14 +91,12 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       merge_function = "dplyr::left_join"
     )
 
-    ch_merge <- reactive({
-      ch <- teal.code::chunks_deep_clone(chunks_h)
-      for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
-      ch$eval()
-      ch
+    ANL <- reactive({
+      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
+    
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(ch_merge()$get("ANL"))
+    output$data <- renderDataTable(ANL())
   })
 }
 
@@ -144,10 +138,6 @@ In the scenario above, if the user deselects the `ADTTE` variable, the merging b
 ```{r}
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    chunks_h <- teal.code::chunks_new()
-    teal.code::chunks_push(str2lang("ADSL <- scda::synthetic_cdisc_data('latest')$adsl"), chunks = chunks_h)
-    teal.code::chunks_push(str2lang("ADTTE <- scda::synthetic_cdisc_data('latest')$adtte"), chunks = chunks_h)
-
     selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets, join_keys)
     reactive_selector_list <- reactive({
       if (is.null(selector_list()$adtte_extract) || length(selector_list()$adtte_extract()$select) == 0) {
@@ -164,15 +154,12 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       merge_function = "dplyr::left_join"
     )
 
-    ch_merge <- reactive({
-      ch <- teal.code::chunks_deep_clone(chunks_h)
-      for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
-      ch$eval()
-      ch
+    ANL <- reactive({
+      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-
+    
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(ch_merge()$get("ANL"))
+    output$data <- renderDataTable(ANL())
   })
 }
 ```
@@ -181,7 +168,7 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
 
 ```{r eval=FALSE}
 shinyApp(
-  ui = fluidPage(merge_ui("data_merge", data_extracts, join_keys)),
+  ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
     merge_module("data_merge", datasets, data_extracts, join_keys)
   }
