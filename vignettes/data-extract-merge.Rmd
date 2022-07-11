@@ -106,7 +106,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
-   })
+  })
 }
 ```
 
