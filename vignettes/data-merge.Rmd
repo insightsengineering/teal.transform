@@ -91,18 +91,17 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       merge_function = "dplyr::left_join"
     )
 
-    ANL <- reactive({
+    ANL <- reactive({ # nolint
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-    
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
   })
 }
 
 # Define data.frame objects
-ADSL <- scda::synthetic_cdisc_data("latest")$adsl
-ADTTE <- scda::synthetic_cdisc_data("latest")$adtte
+ADSL <- scda::synthetic_cdisc_data("latest")$adsl # nolint
+ADTTE <- scda::synthetic_cdisc_data("latest")$adtte # nolint
 
 # create a list of data.frame objects
 datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
@@ -154,10 +153,9 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       merge_function = "dplyr::left_join"
     )
 
-    ANL <- reactive({
+    ANL <- reactive({ # nolint
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
-    
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
   })
