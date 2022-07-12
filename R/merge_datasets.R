@@ -104,7 +104,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     anl_name = anl_name
   )
 
-  all_calls_expression <- c(filtered_data_call, dplyr_calls, anl_merge_calls, anl_relabel_call)
+  all_calls_expression <- c(dplyr_calls, anl_merge_calls, anl_relabel_call)
 
   # keys in each merged_selector_list element should be identical
   # so take first one
