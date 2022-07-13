@@ -576,6 +576,11 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #' }
 data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
+  lapply(data_extract, function(x) {
+    if (is.list(x) && !inherits(x, "data_extract_spec")) {
+      checkmate::assert_list(x, "data_extract_spec")
+    }
+  })
   checkmate::assert_multi_class(datasets, classes = c("FilteredData", "list"))
   UseMethod("data_extract_multiple_srv", datasets)
 }

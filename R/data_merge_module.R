@@ -100,7 +100,12 @@ data_merge_module <- function(datasets,
                               id = "merge_id") {
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
 
-  checkmate::assert_list(data_extract)
+  checkmate::assert_list(data_extract, c("list", "data_extract_spec"))
+  lapply(data_extract, function(x) {
+    if (is.list(x) && !inherits(x, "data_extract_spec")) {
+      checkmate::assert_list(x, "data_extract_spec")
+    }
+  })
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets)
 
