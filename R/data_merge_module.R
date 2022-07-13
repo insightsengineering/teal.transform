@@ -100,7 +100,12 @@ data_merge_module <- function(datasets,
                               id = "merge_id") {
   logger::log_trace("data_merge_module called with: { paste(datasets$datanames(), collapse = ', ') } datasets.")
 
-  checkmate::assert_list(data_extract)
+  checkmate::assert_list(data_extract, c("list", "data_extract_spec"))
+  lapply(data_extract, function(x) {
+    if (is.list(x) && !inherits(x, "data_extract_spec")) {
+      checkmate::assert_list(x, "data_extract_spec")
+    }
+  })
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets)
 
@@ -254,6 +259,8 @@ data_merge_srv <- function(id = "merge_id",
         )
         ch <- teal.code::chunks_new()
         datasets_list_nr <- sapply(datasets$datanames(), simplify = FALSE, datasets$get_data, filtered = TRUE)
+        names(datasets_list_nr) <- paste0(names(datasets_list_nr), "_FILTERED")
+
         teal.code::chunks_reset(envir = list2env(datasets_list_nr), chunks = ch)
         for (chunk in merged_data$expr) teal.code::chunks_push(expression = chunk, chunks = ch)
         teal.code::chunks_safe_eval(chunks = ch)

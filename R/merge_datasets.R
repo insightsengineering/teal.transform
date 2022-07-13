@@ -80,15 +80,6 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 
   selector_datanames <- unique(vapply(merged_selector_list, `[[`, character(1), "dataname"))
 
-  filtered_data_call <- lapply(selector_datanames, function(i) {
-    logger::log_trace("merge_datasets { paste0(i, \"_FILTERED\") } assigned.")
-    call(
-      "<-",
-      as.name(paste0(i, "_FILTERED")),
-      as.name(i)
-    )
-  })
-
   dplyr_calls <- lapply(seq_along(merged_selector_list), function(idx) {
     dplyr_call <- get_dplyr_call(
       selector_list = merged_selector_list,
@@ -113,7 +104,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     anl_name = anl_name
   )
 
-  all_calls_expression <- c(filtered_data_call, dplyr_calls, anl_merge_calls, anl_relabel_call)
+  all_calls_expression <- c(dplyr_calls, anl_merge_calls, anl_relabel_call)
 
   # keys in each merged_selector_list element should be identical
   # so take first one

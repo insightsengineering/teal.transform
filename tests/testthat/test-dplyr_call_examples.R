@@ -3454,9 +3454,6 @@ testthat::test_that("Universal example", {
     paste(merged_datasets$expr),
     paste(
       c(
-        "X_FILTERED <- X",
-        "Y_FILTERED <- Y",
-        "Z_FILTERED <- Z",
         "ANL_1 <- X_FILTERED %>% dplyr::select(A, B, D, E)",
         "ANL_2 <- Y_FILTERED %>% dplyr::select(A, B, C, G) %>% dplyr::rename(y.G = G)",
         "ANL_3 <- Z_FILTERED %>% dplyr::select(D, C, F, G) %>% dplyr::rename(z.G = G)",
