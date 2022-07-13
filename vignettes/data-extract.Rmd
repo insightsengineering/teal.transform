@@ -36,7 +36,7 @@ e.g. `teal.modules.general` and `teal.modules.clinical`.
 
 In order to showcase different initialization options of `data_extract_spec`, first we define a `shiny` module which
 uses `data_extract_ui` and `data_extract_srv` designed to handle `data_extract_spec` objects. The module creates a UI
-component for single `data_extract_spec` and prints a list of values returned from `data_extract_srv` module. Please see
+component for a single `data_extract_spec` and prints a list of values returned from `data_extract_srv` module. Please see
 package documentation for more information about `data_extract_ui` and `data_extract_srv`.
 
 ```{r}
@@ -51,9 +51,9 @@ extract_ui <- function(id, data_extract) {
   )
 }
 
-extract_srv <- function(id, datasets, data_extract) {
+extract_srv <- function(id, datasets, data_extract, join_keys) {
   moduleServer(id, function(input, output, session) {
-    reactive_extract_input <- data_extract_srv("data_extract", datasets, data_extract)
+    reactive_extract_input <- data_extract_srv("data_extract", datasets, data_extract, join_keys)
     s <- reactive({
       format_data_extract(reactive_extract_input())
     })
@@ -67,21 +67,29 @@ extract_srv <- function(id, datasets, data_extract) {
 
 #### Example data
 
-`teal.transform` functions depend on a `FilteredData` object from the `teal.slice` package. Normally, `FilteredData` is created
-automatically by [`teal::init`](https://insightsengineering.github.io/teal/reference/init), but for example purposes we define a wrapper function to initialize the necessary object.
+`data_extract_srv` module depends on either a list of reactive or non-reactive `data.frame` objects. Here, we show the 
+usage of a list of `data.frame` objects as input to `datasets`
+where a list of necessary join keys per `data.frame` object is required:
 
 ```{r}
-sample_filtered_data <- function() {
-  # create TealData
-  adsl <- teal.data::cdisc_dataset("ADSL", scda::synthetic_cdisc_data("latest")$adsl)
-  adtte <- teal.data::cdisc_dataset("ADTTE", scda::synthetic_cdisc_data("latest")$adtte)
-  data <- teal.data::cdisc_data(adsl, adtte)
+# Define data.frame objects
+ADSL <- scda::synthetic_cdisc_data("latest")$adsl # nolint
+ADTTE <- scda::synthetic_cdisc_data("latest")$adtte # nolint
 
-  # covert TealData to FilteredData
-  teal.slice::init_filtered_data(data)
-}
+# create a list of data.frame objects
+datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
 
-datasets <- sample_filtered_data()
+# create a list of join_keys
+join_keys <- list(
+  ADSL = list(
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+    ADTTE = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
+  ),
+  ADTTE = list(
+    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
+    ADTTE = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD")
+  )
+)
 ```
 
 Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
@@ -104,7 +112,7 @@ Finally, we pass `extract_ui` to the `ui` of the `shinyApp` and we use `extract_
 shinyApp(
   ui = fluidPage(extract_ui("data_extract", simple_des)),
   server = function(input, output, session) {
-    extract_srv("data_extract", datasets, simple_des)
+    extract_srv("data_extract", datasets, simple_des, join_keys)
   }
 )
 ```
