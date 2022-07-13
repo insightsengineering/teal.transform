@@ -74,17 +74,19 @@ testthat::test_that("merge_expression_module returns a reactive containing a lis
 })
 
 testthat::test_that("merge_expression_module throws error if data_extract is not a list of data_extract_spec", {
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      merge_expression_module(
-        data_extract = list(adsl_var = adsl_extract, adlb_var = "aa"),
-        datasets = data_list,
-        join_keys = join_keys
-      ),
-      "May only contain the following types: {data_extract_spec}, but element 2 has type 'character'",
-      fixed = TRUE
-    )
+  testthat::expect_error(
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = {
+        merge_expression_module(
+          data_extract = list(adsl_var = adsl_extract, adlb_var = "aa"),
+          datasets = data_list,
+          join_keys = join_keys
+        )
+      }
+    ),
+    "May only contain the following types: {list,data_extract_spec}, but element 2 has type 'character'",
+    fixed = TRUE
   )
 })
 

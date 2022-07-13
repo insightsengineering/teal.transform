@@ -146,7 +146,12 @@ merge_expression_module <- function(datasets,
                                     id = "merge_id") {
   logger::log_trace("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
 
-  checkmate::assert_list(data_extract, types = "data_extract_spec", names = "named")
+  checkmate::assert_list(data_extract, names = "named", types = c("list", "data_extract_spec"))
+  lapply(data_extract, function(x) {
+    if (is.list(x) && !inherits(x, "data_extract_spec")) {
+      checkmate::assert_list(x, "data_extract_spec")
+    }
+  })
 
   selector_list <- data_extract_multiple_srv(data_extract, datasets, join_keys)
 
