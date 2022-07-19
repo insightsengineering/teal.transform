@@ -309,9 +309,9 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' # Using FilteredData
 #' datasets <- teal.slice::init_filtered_data(
 #'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
-#'    join_keys = teal.data::join_keys(
-#'      teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
-#'    ),
+#'   join_keys = teal.data::join_keys(
+#'     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+#'   ),
 #'   cdisc = TRUE
 #' )
 #'
@@ -427,7 +427,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       )
 
       # get keys out of join_keys
-      if(!is.null(join_keys)) {
+      if (!is.null(join_keys)) {
         keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys$get(x, x))
       } else {
         keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
@@ -527,7 +527,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #' datasets <- teal.slice::init_filtered_data(
 #'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
 #'   join_keys = teal.data::join_keys(
-#'      teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+#'     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
 #'   ),
 #'   cdisc = TRUE
 #' )
