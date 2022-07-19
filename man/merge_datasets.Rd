@@ -21,7 +21,7 @@ When using a reactive named list, the names must be identical to the shiny ids o
 object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(named \code{list})\cr
+\item{join_keys}{(\code{JoinKeys})\cr
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 

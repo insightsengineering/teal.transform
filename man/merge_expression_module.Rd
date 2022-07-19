@@ -18,7 +18,7 @@ merge_expression_module(
 object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(named \code{list})\cr
+\item{join_keys}{(\code{JoinKeys})\cr
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
@@ -68,16 +68,12 @@ data_list <- list(
   ADLB = ADLB
 )
 
-join_keys <- list(
-  ADSL = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-  ),
-  ADLB = list(
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-  )
+join_keys <- teal.data::join_keys(
+  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 )
+
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
