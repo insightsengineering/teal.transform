@@ -50,7 +50,7 @@ ADSL <- data.frame(
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
   join_keys = teal.data::join_keys(
-     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+    teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
   ),
   cdisc = TRUE
 )
