@@ -262,7 +262,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
 #'  A list of data filter and select information constructed by [data_extract_spec].
 #' @param ...
-#' an additional argument `keys` is required when `datasets` is a list of `data.frame`.
+#' an additional argument `join_keys` is required when `datasets` is a list of `data.frame`.
 #' It shall contain the keys per dataset in `datasets`.
 #'
 #' @return
@@ -309,6 +309,9 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' # Using FilteredData
 #' datasets <- teal.slice::init_filtered_data(
 #'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+#'    join_keys = teal.data::join_keys(
+#'      teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+#'    ),
 #'   cdisc = TRUE
 #' )
 #'
@@ -342,7 +345,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' # Using reactive list of data.frames
 #' data_list <- list(ADSL = reactive(ADSL))
 #'
-#' key_list <- list(ADSL = c("STUDYID", "USUBJID"))
+#' key_list <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 #'
 #' app <- shinyApp(
 #'   ui = fluidPage(
@@ -362,7 +365,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'       id = "adsl_var",
 #'       datasets = data_list,
 #'       data_extract_spec = adsl_extract,
-#'       keys = key_list
+#'       join_keys = key_list
 #'     )
 #'     output$out1 <- renderPrint(adsl_reactive_input())
 #'   }
@@ -395,13 +398,13 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
         reactive(datasets$get_data(dataname = x, filtered = TRUE))
       })
 
-      join_keys_list <- datasets$get_join_keys()
+      join_keys <- datasets$get_join_keys()
 
       filter_and_select_reactive <- data_extract_srv(
         id = NULL,
         datasets = data_list,
         data_extract_spec = data_extract_spec,
-        join_keys = join_keys_list
+        join_keys = join_keys
       )
       filter_and_select_reactive
     }
@@ -409,17 +412,12 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 }
 
 #' @rdname data_extract_srv
-#' @param join_keys (named `list` or `NULL`) of keys per dataset in `datasets`
+#' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  if (length(join_keys) == 0) join_keys <- NULL
-  checkmate::assert_list(join_keys, names = "named", null.ok = TRUE)
-  checkmate::assert(
-    .var.name = "join_keys",
-    checkmate::check_names(names(join_keys), subset.of = names(datasets)),
-    checkmate::check_null(join_keys)
-  )
+  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  # TODO check JoinKeys contains the names of the datasets we need etc.?
 
   moduleServer(
     id,
@@ -429,7 +427,11 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       )
 
       # get keys out of join_keys
-      keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[[x]][[x]])
+      if(!is.null(join_keys)) {
+        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys$get(x, x))
+      } else {
+        keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
+      }
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -524,6 +526,9 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'
 #' datasets <- teal.slice::init_filtered_data(
 #'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+#'   join_keys = teal.data::join_keys(
+#'      teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+#'   ),
 #'   cdisc = TRUE
 #' )
 #'
@@ -597,22 +602,17 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
 
-  join_keys_list <- datasets$get_join_keys()
-  data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, join_keys = join_keys_list)
+  join_keys <- datasets$get_join_keys()
+  data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, join_keys = join_keys)
 }
 
 #' @rdname data_extract_multiple_srv
-#' @param join_keys (named `list` or `NULL`) of join keys per dataset in `datasets`.
+#' @param join_keys (`JoinKeys` or `NULL`) of join keys per dataset in `datasets`.
 #' @export
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  if (length(join_keys) == 0) join_keys <- NULL
-  checkmate::assert_list(join_keys, names = "named", null.ok = TRUE)
-  checkmate::assert(
-    .var.name = "join_keys",
-    checkmate::check_names(names(join_keys), subset.of = names(datasets)),
-    checkmate::check_null(join_keys)
-  )
+  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  # TODO check JoinKeys contains the names of the datasets we need etc.?
 
   logger::log_trace(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."

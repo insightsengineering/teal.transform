@@ -7,9 +7,9 @@
 #' @return (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
 #' @keywords internal
-get_dplyr_call_data <- function(selector_list, join_keys = list()) {
+get_dplyr_call_data <- function(selector_list, join_keys) {
   logger::log_trace("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
-  checkmate::assert_list(join_keys)
+  checkmate::assert_class(join_keys, "JoinKeys")
   lapply(selector_list, check_selector)
 
   all_merge_key_list <- get_merge_key_grid(selector_list, join_keys)
@@ -200,7 +200,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = list()) {
 #' )
 get_dplyr_call <- function(selector_list,
                            idx = 1L,
-                           join_keys = list(),
+                           join_keys = NULL,
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
                            datasets = NULL) {
   logger::log_trace(
@@ -211,7 +211,7 @@ get_dplyr_call <- function(selector_list,
     )
   )
   lapply(selector_list, check_selector)
-  checkmate::assert_list(join_keys)
+  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
 
   n_selectors <- length(selector_list)
@@ -447,7 +447,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #' teal.transform:::get_rename_call(x, 4L)
 get_rename_call <- function(selector_list = list(),
                             idx = 1L,
-                            join_keys = list(),
+                            join_keys,
                             dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
   stopifnot(length(dplyr_call_data) >= idx)

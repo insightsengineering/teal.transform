@@ -6,7 +6,7 @@
 \usage{
 get_merge_call(
   selector_list,
-  join_keys = list(),
+  join_keys,
   dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
   merge_function = "dplyr::full_join",
   anl_name = "ANL"
@@ -17,7 +17,7 @@ get_merge_call(
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{join_keys}{(named \code{list}) nested list of keys used for joining}
+\item{join_keys}{(\code{JoinKeys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,}
 

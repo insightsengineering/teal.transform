@@ -9,7 +9,7 @@
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
 #'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (named `list`)\cr
+#' @param join_keys (`JoinKeys`)\cr
 #'  of variables used as join keys for each of the datasets in `datasets`.
 #'  This will be used to extract the `keys` of every dataset.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
@@ -48,16 +48,12 @@
 #'   ADLB = ADLB
 #' )
 #'
-#' join_keys <- list(
-#'   ADSL = list(
-#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#'   ),
-#'   ADLB = list(
-#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#'   )
+#' join_keys <- teal.data::join_keys(
+#'   teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+#'   teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+#'   teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 #' )
+#'
 #'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
@@ -177,7 +173,7 @@ merge_expression_module <- function(datasets,
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
 #'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (named `list`)\cr
+#' @param join_keys (`JoinKeys`)\cr
 #'  of variables used as join keys for each of the datasets in `datasets`.
 #'  This will be used to extract the `keys` of every dataset.
 #' @param selector_list (`reactive`)\cr
@@ -220,16 +216,12 @@ merge_expression_module <- function(datasets,
 #'   ADLB = ADLB
 #' )
 #'
-#' join_keys <- list(
-#'   ADSL = list(
-#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#'   ),
-#'   ADLB = list(
-#'     ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT"),
-#'     ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-#'   )
+#' join_keys <- teal.data::join_keys(
+#'   teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+#'   teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+#'   teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 #' )
+#'
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
 #'   select = select_spec(
@@ -324,8 +316,8 @@ merge_expression_srv <- function(id = "merge_id",
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_list(join_keys, names = "named")
-  checkmate::assert_names(names(join_keys), permutation.of = names(datasets))
+  checkmate::assert_class(join_keys, "JoinKeys")
+  #TODO check names
 
   moduleServer(
     id,
