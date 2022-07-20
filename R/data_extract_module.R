@@ -417,7 +417,6 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
-  # TODO check JoinKeys contains the names of the datasets we need etc.?
 
   moduleServer(
     id,
@@ -612,7 +611,6 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
-  # TODO check JoinKeys contains the names of the datasets we need etc.?
 
   logger::log_trace(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."

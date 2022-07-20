@@ -124,22 +124,6 @@ testthat::test_that(
   }
 )
 
-testthat::test_that(
-  desc = "data_extract_srv throws error when names of datasets list and join_keys list do no correspond",
-  code = {
-    key_list <- teal.data::join_keys(teal.data::join_key("adsl", "adsl", c("STUDYID", "USUBJID")))
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = key_list),
-        regexp = "Names must be a subset of",
-        fixed = TRUE
-      )
-    )
-  }
-)
-
 testthat::test_that("data_extract_srv returns a list of elements", {
   shiny::testServer(
     data_extract_srv,

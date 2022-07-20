@@ -253,18 +253,6 @@ testthat::test_that("merge_expression_srv throws error if join_keys is not a Joi
   )
 })
 
-testthat::test_that("merge_expression_srv throws error if names of datasets and join_keys do not correspond", {
-  testthat::expect_error(
-    shiny::testServer(
-      merge_expression_srv,
-      args = list(selector_list = selector_list, datasets = list(ADSL = adsl_df, YY = adlb_df), join_keys = join_keys),
-      expr = NULL
-    ),
-    "Names must be a permutation of set {'ADSL','YY'}, but has extra elements {'ADLB'}.",
-    fixed = TRUE
-  )
-})
-
 testthat::test_that("merge_expression_srv accepts a list of (reactive) data.frames for datasets argument", {
   testthat::expect_error(
     shiny::testServer(

@@ -317,7 +317,6 @@ merge_expression_srv <- function(id = "merge_id",
   checkmate::assert_class(selector_list, "reactive")
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys")
-  # TODO check names
 
   moduleServer(
     id,

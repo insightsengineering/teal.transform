@@ -166,19 +166,3 @@ testthat::test_that(
     )
   }
 )
-
-testthat::test_that(
-  desc = "data_extract_multiple_srv throws error when names of datasets list and join_keys list do no correspond",
-  code = {
-    key_list <- list(X = c(""))
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_multiple_srv(list(test = NULL), datasets = data_list, join_keys = key_list),
-        regexp = "Names must be a subset of",
-        fixed = TRUE
-      )
-    )
-  }
-)
