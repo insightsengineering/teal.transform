@@ -4,7 +4,7 @@
 \alias{get_dplyr_call_data}
 \title{Aggregates data extract selectors}
 \usage{
-get_dplyr_call_data(selector_list, join_keys)
+get_dplyr_call_data(selector_list, join_keys = teal.data::join_keys())
 }
 \arguments{
 \item{selector_list}{(\code{reactive})\cr

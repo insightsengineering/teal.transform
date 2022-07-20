@@ -7,7 +7,7 @@
 get_reshape_call(
   selector_list = list(),
   idx = 1L,
-  join_keys = list(),
+  join_keys = teal.data::join_keys(),
   dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)
 )
 }

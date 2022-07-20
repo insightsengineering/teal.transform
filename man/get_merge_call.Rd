@@ -6,7 +6,7 @@
 \usage{
 get_merge_call(
   selector_list,
-  join_keys,
+  join_keys = teal.data::join_keys(),
   dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
   merge_function = "dplyr::full_join",
   anl_name = "ANL"

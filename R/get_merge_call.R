@@ -11,7 +11,7 @@
 #'
 #' @export
 get_merge_call <- function(selector_list,
-                           join_keys,
+                           join_keys = teal.data::join_keys(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
                            merge_function = "dplyr::full_join",
                            anl_name = "ANL") {
@@ -116,7 +116,7 @@ get_merge_call <- function(selector_list,
 #' @inheritParams get_merge_call
 #' @return list of key pairs between all datasets
 #' @keywords internal
-get_merge_key_grid <- function(selector_list, join_keys) {
+get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace(
     paste(
       "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors;"

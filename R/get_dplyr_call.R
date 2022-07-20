@@ -7,7 +7,7 @@
 #' @return (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
 #' @keywords internal
-get_dplyr_call_data <- function(selector_list, join_keys) {
+get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_class(join_keys, "JoinKeys")
   lapply(selector_list, check_selector)

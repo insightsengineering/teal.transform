@@ -4,7 +4,7 @@
 \alias{get_merge_key_grid}
 \title{Gets keys list from keys list}
 \usage{
-get_merge_key_grid(selector_list, join_keys)
+get_merge_key_grid(selector_list, join_keys = teal.data::join_keys())
 }
 \arguments{
 \item{selector_list}{(\code{reactive})\cr
