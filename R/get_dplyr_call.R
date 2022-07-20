@@ -200,7 +200,7 @@ get_dplyr_call_data <- function(selector_list, join_keys) {
 #' )
 get_dplyr_call <- function(selector_list,
                            idx = 1L,
-                           join_keys = NULL,
+                           join_keys = teal.data::join_keys(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
                            datasets = NULL) {
   logger::log_trace(
@@ -447,7 +447,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #' teal.transform:::get_rename_call(x, 4L)
 get_rename_call <- function(selector_list = list(),
                             idx = 1L,
-                            join_keys,
+                            join_keys = teal.data::join_keys(),
                             dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
   stopifnot(length(dplyr_call_data) >= idx)
@@ -505,7 +505,7 @@ get_rename_call <- function(selector_list = list(),
 #' teal.transform:::get_reshape_call(x, 1L)
 get_reshape_call <- function(selector_list = list(),
                              idx = 1L,
-                             join_keys = list(),
+                             join_keys = teal.data::join_keys(),
                              dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
   stopifnot(length(dplyr_call_data) >= idx)

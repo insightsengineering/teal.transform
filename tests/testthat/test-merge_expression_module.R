@@ -4,15 +4,10 @@ adlb <- as.data.frame(
 )
 
 data_list <- list(ADSL = reactive(adsl), ADLB = reactive(adlb))
-join_keys <- list(
-  ADSL = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-  ),
-  ADLB = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT")
-  )
+join_keys <- teal.data::join_keys(
+  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 )
 
 adsl_extract <- data_extract_spec(
@@ -38,7 +33,7 @@ adlb_extract <- data_extract_spec(
 )
 
 testthat::test_that(
-  "merge_expression_module accepts a list of data_extract_spec, a list of reactive data frames and a list of join keys",
+  "merge_expression_module accepts a list of data_extract_spec, a list of reactive data frames and a join keys",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
