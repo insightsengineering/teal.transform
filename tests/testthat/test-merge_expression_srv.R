@@ -9,15 +9,10 @@ adlb <- teal.data::cdisc_dataset("ADLB", adlb_df)
 data_list <- list(ADSL = reactive(adsl_df), ADLB = reactive(adlb_df))
 data_list_nr <- list(ADSL = adsl_df, ADLB = adlb_df)
 
-join_keys <- list(
-  ADSL = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-  ),
-  ADLB = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADLB = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD", AVISIT = "AVISIT")
-  )
+join_keys <- teal.data::join_keys(
+  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 )
 
 adsl_data_extract_srv_output <-
@@ -25,7 +20,7 @@ adsl_data_extract_srv_output <-
     dataname = "ADSL",
     filters = NULL,
     select = "AGE",
-    keys = join_keys$ADSL$ADSL,
+    keys = join_keys$get("ADSL", "ADSL"),
     reshape = FALSE,
     internal_id = "adsl_extract"
   )
@@ -35,7 +30,7 @@ adlb_data_extract_srv_output <-
     dataname = "ADLB",
     filters = NULL,
     select = c("AVAL", "CHG"),
-    keys = join_keys$ADLB$ADLB,
+    keys = join_keys$get("ADLB", "ADLB"),
     reshape = FALSE,
     internal_id = "adlb_extract"
   )
@@ -247,14 +242,14 @@ testthat::test_that("merge_expression_srv throws error if datasets is not a name
   )
 })
 
-testthat::test_that("merge_expression_srv throws error if join_keys is not a named list", {
+testthat::test_that("merge_expression_srv throws error if join_keys is not a JoinKeys object", {
   testthat::expect_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = list("USUBJID")),
       expr = NULL
     ),
-    "Assertion on 'join_keys' failed: Must have names."
+    "class 'JoinKeys', but has class 'list'"
   )
 })
 

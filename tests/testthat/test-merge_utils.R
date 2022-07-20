@@ -613,7 +613,7 @@ testthat::test_that("get_merge_call", {
       internal_id = "test2"
     )
   )
-  jk <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+  jk <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
@@ -640,7 +640,7 @@ testthat::test_that("get_merge_call", {
       internal_id = "test2"
     )
   )
-  jk <- teal.data::join_keys(teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS")))$get()
+  jk <- teal.data::join_keys(teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS")))
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
@@ -681,7 +681,7 @@ testthat::test_that("get_merge_call", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADRS", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
@@ -762,7 +762,7 @@ testthat::test_that(
 
     join_keys <- teal.data::join_keys(
       teal.data::join_key("dataset1", "dataset1", c("key" = "key"))
-    )$get()
+    )
 
     testthat::expect_true(are_needed_keys_provided(join_keys, merged_selector_list_mock))
   }
@@ -785,7 +785,7 @@ testthat::test_that(
       teal.data::join_key("dataset1", "dataset2", c("key" = "key")),
       teal.data::join_key("dataset2", "dataset3", c("key" = "key")),
       teal.data::join_key("dataset1", "dataset3", c("key" = "key"))
-    )$get()
+    )
 
     testthat::expect_true(are_needed_keys_provided(join_keys, merged_selector_list_mock))
   }
