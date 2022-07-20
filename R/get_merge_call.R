@@ -118,10 +118,9 @@ get_merge_call <- function(selector_list,
 #' @keywords internal
 get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace(
-    paste(
-      "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors."
-    )
+    "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors."
   )
+
   lapply(
     selector_list,
     function(selector_from) {
