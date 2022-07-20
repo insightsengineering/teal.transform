@@ -109,7 +109,7 @@ runApp(app)
 # Using reactive list of data.frames
 data_list <- list(ADSL = reactive(ADSL))
 
-key_list <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
+join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 
 app <- shinyApp(
   ui = fluidPage(
@@ -129,7 +129,7 @@ app <- shinyApp(
       id = "adsl_var",
       datasets = data_list,
       data_extract_spec = adsl_extract,
-      join_keys = key_list
+      join_keys = join_keys
     )
     output$out1 <- renderPrint(adsl_reactive_input())
   }
