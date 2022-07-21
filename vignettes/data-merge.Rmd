@@ -106,16 +106,11 @@ ADTTE <- scda::synthetic_cdisc_data("latest")$adtte # nolint
 # create a list of data.frame objects
 datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
 
-# create a list of join_keys
-join_keys <- list(
-  ADSL = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADTTE = c(STUDYID = "STUDYID", USUBJID = "USUBJID")
-  ),
-  ADTTE = list(
-    ADSL = c(STUDYID = "STUDYID", USUBJID = "USUBJID"),
-    ADTTE = c(STUDYID = "STUDYID", USUBJID = "USUBJID", PARAMCD = "PARAMCD")
-  )
+# create  join_keys
+join_keys <- teal.data::join_keys(
+  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  teal.data::join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
 )
 ```
 

@@ -85,7 +85,7 @@ testthat::test_that("Different join types", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL2", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
 
   testthat::expect_identical(
@@ -141,7 +141,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk1 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors1, join_keys = jk1),
@@ -171,7 +171,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk2 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors2, join_keys = jk2),
@@ -209,7 +209,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk3 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors3, join_keys = jk3),
@@ -263,7 +263,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk4 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors4, join_keys = jk4),
@@ -317,7 +317,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk5 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors5, join_keys = jk5),
@@ -347,7 +347,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk6 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors6, join_keys = jk6),
@@ -378,7 +378,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk7 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors7, join_keys = jk7),
@@ -409,7 +409,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk8 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors8, join_keys = jk8),
@@ -440,7 +440,7 @@ testthat::test_that("Single wide dataset", {
   )[[1]]
   jk9 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors9, join_keys = jk9),
@@ -484,7 +484,7 @@ testthat::test_that("Multiple wide dataset", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL2", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -535,7 +535,7 @@ testthat::test_that("Multiple wide dataset", {
   jk2 <- teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -603,7 +603,7 @@ testthat::test_that("Multiple wide dataset", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -680,7 +680,7 @@ testthat::test_that("Multiple wide dataset", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -764,7 +764,7 @@ testthat::test_that("Multiple wide dataset", {
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -818,7 +818,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk1 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors1, join_keys = jk1),
@@ -849,7 +849,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk1 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors1, join_keys = jk1),
@@ -883,7 +883,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk2 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     get_dplyr_call(merged_selectors2, join_keys = jk2),
@@ -929,7 +929,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk3 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     deparse(get_dplyr_call(merged_selectors3, join_keys = jk3), 120),
@@ -975,7 +975,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk3 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   # failure:
 
@@ -1038,7 +1038,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk4 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1095,7 +1095,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk5 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1155,7 +1155,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk6 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1218,7 +1218,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk7 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1293,7 +1293,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk8 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1348,7 +1348,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk9 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors9, join_keys = jk9),
@@ -1390,7 +1390,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk10 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     get_dplyr_call(merged_selectors10, join_keys = jk10),
@@ -1434,7 +1434,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk11 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     get_dplyr_call(merged_selectors11, join_keys = jk11),
@@ -1488,7 +1488,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk12 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     get_dplyr_call(merged_selectors12, 1L, jk12),
@@ -1541,7 +1541,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk13 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1616,7 +1616,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk14 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1686,7 +1686,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk15 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1769,7 +1769,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk16 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1869,7 +1869,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk17 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -1948,7 +1948,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk18 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_identical(
     get_dplyr_call(merged_selectors18, join_keys = jk18),
@@ -2014,7 +2014,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk20 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -2084,7 +2084,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk21 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     get_dplyr_call(merged_selectors21, join_keys = jk21),
@@ -2191,7 +2191,7 @@ testthat::test_that("Single long dataset", {
   )[[1]]
   jk22 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -2261,7 +2261,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk1 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2314,7 +2314,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk2 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", stats::setNames(c("STUDYID", "USUBJID"), c("USUBJID", "STUDYID")))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2373,7 +2373,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk3 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2429,7 +2429,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk4 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2487,7 +2487,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk5 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2543,7 +2543,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk6 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2608,7 +2608,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk7 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2685,7 +2685,7 @@ testthat::test_that("Multiple long datasets", {
   jk8 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_identical(
     list(
@@ -2785,7 +2785,7 @@ testthat::test_that("Multiple long datasets", {
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -2889,7 +2889,7 @@ testthat::test_that("Multiple long datasets", {
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
 
   testthat::expect_equal(
@@ -2961,7 +2961,7 @@ testthat::test_that("Multiple long datasets", {
   )[[1]]
   jk11 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
 
   testthat::expect_equal(
@@ -3045,7 +3045,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS")),
     teal.data::join_key("ADTTE", "ADRS", teal.data::get_cdisc_keys("ADTTE")),
     teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD")) # non-stadard keys set for example purpose
-  )$get()
+  )
 
   # PARAMCD is included if drop_keys = TRUE - because merge is on different datasets
   testthat::expect_equal(
@@ -3110,7 +3110,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   )[[1]]
   jk13 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
 
   testthat::expect_identical(
@@ -3199,7 +3199,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   jk14 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -3281,7 +3281,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   jk15 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
     teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -3353,7 +3353,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   )[[1]]
   jk16 <- teal.data::join_keys(
     teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
-  )$get()
+  )
 
   testthat::expect_equal(
     list(
@@ -3422,22 +3422,10 @@ testthat::test_that("Universal example", {
   )
 
   data_list <- list(X = reactive(X), Y = reactive(Y), Z = reactive(Z))
-  join_keys <- list(
-    X = list(
-      Y = c(A = "A", B = "B"),
-      Z = c(D = "D"),
-      X = character(0)
-    ),
-    Y = list(
-      X = c(A = "A", B = "B"),
-      Z = c(C = "C"),
-      Y = character(0)
-    ),
-    Z = list(
-      X = c(D = "D"),
-      Y = c(C = "C"),
-      Z = character(0)
-    )
+  join_keys <- teal.data::join_keys(
+    teal.data::join_key("X", "Y", c("A", "B")),
+    teal.data::join_key("X", "Z", c("D")),
+    teal.data::join_key("Y", "Z", c("C"))
   )
 
   merged_datasets <- isolate(

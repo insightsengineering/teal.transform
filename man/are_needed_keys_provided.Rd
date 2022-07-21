@@ -7,7 +7,7 @@
 are_needed_keys_provided(join_keys, merged_selector_list)
 }
 \arguments{
-\item{join_keys}{(\code{list}) the provided join keys}
+\item{join_keys}{(\code{JoinKeys}) the provided join keys}
 
 \item{merged_selector_list}{(\code{list}) the specification of datasets' slices to merge}
 }

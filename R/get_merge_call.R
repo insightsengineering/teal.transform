@@ -4,14 +4,14 @@
 #' Returns list of calls depending on selector(s) and type of the merge
 #' Order of merge is the same as in selectors passed to the function.
 #' @inheritParams merge_datasets
-#' @param join_keys (named `list`) nested list of keys used for joining
+#' @param join_keys (`JoinKeys`) nested list of keys used for joining
 #' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
 #'
 #' @return (`list` with `call` elements)
 #'
 #' @export
 get_merge_call <- function(selector_list,
-                           join_keys = list(),
+                           join_keys = teal.data::join_keys(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
                            merge_function = "dplyr::full_join",
                            anl_name = "ANL") {
@@ -21,7 +21,6 @@ get_merge_call <- function(selector_list,
     logger::log_trace(
       paste(
         "get_merge_call called with: { paste(names(selector_list), collapse = ', ') } selectors;",
-        "{ length(join_keys) } join key pairs;",
         "{ merge_function } merge function."
       )
     )
@@ -30,7 +29,6 @@ get_merge_call <- function(selector_list,
       paste(
         "get_merge_call called with:",
         "{ paste(sapply(dplyr_call_data, `[[`, 'internal_id'), collapse = ', ') } selectors;",
-        "{ length(join_keys) } join key pairs;",
         "{ merge_function } merge function."
       )
     )
@@ -118,13 +116,11 @@ get_merge_call <- function(selector_list,
 #' @inheritParams get_merge_call
 #' @return list of key pairs between all datasets
 #' @keywords internal
-get_merge_key_grid <- function(selector_list, join_keys = list()) {
+get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace(
-    paste(
-      "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors;",
-      "{ length(join_keys) } key pairs."
-    )
+    "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors."
   )
+
   lapply(
     selector_list,
     function(selector_from) {
@@ -134,7 +130,7 @@ get_merge_key_grid <- function(selector_list, join_keys = list()) {
           get_merge_key_pair(
             selector_from,
             selector_to,
-            join_keys[[selector_from$dataname]][[selector_to$dataname]]
+            join_keys$get(selector_from$dataname, selector_to$dataname)
           )
         }
       )

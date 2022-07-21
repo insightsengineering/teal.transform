@@ -103,7 +103,7 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData 
     teal.data::join_key("IRIS", "IRIS", character(0)),
     teal.data::join_key("IRIS2", "IRIS2", character(0)),
     teal.data::join_key("IRIS", "IRIS2", character(0))
-  )$get()
+  )
 
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
@@ -142,7 +142,7 @@ testthat::test_that("data_extract_multiple_srv throws if data_extract is not a n
 })
 
 testthat::test_that(
-  desc = "data_extract_multiple_srv works with join_keys = NULL (default) or join_keys = character(0)",
+  desc = "data_extract_multiple_srv works with join_keys = NULL (default)",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
@@ -150,49 +150,17 @@ testthat::test_that(
         data_extract_multiple_srv(list(test = NULL), datasets = data_list)
       )
     )
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_silent(
-        data_extract_multiple_srv(list(test = NULL), datasets = data_list, join_keys = character(0))
-      )
-    )
   }
 )
 
 testthat::test_that(
-  desc = "data_extract_multiple_srv accepts throws error when join_keys argument is not a named list",
+  desc = "data_extract_multiple_srv accepts throws error when join_keys argument is not JoinKeys object",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_error(
         data_extract_multiple_srv(list(test = NULL), datasets = data_list, join_keys = "key_list"),
-        regexp = "not 'character'.",
-        fixed = TRUE
-      )
-    )
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_multiple_srv(list(test = NULL), datasets = data_list, join_keys = list(c("USUBJID"))),
-        regexp = "Assertion on 'join_keys' failed: Must have names.",
-        fixed = TRUE
-      )
-    )
-  }
-)
-
-testthat::test_that(
-  desc = "data_extract_multiple_srv throws error when names of datasets list and join_keys list do no correspond",
-  code = {
-    key_list <- list(X = c(""))
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_multiple_srv(list(test = NULL), datasets = data_list, join_keys = key_list),
-        regexp = "Names must be a subset of",
+        regexp = "class 'character'.",
         fixed = TRUE
       )
     )

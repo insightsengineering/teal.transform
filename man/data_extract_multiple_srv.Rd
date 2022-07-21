@@ -22,10 +22,10 @@ object containing data either in the form of \link[teal.slice:FilteredData]{teal
 When passing a list of non-reactive \code{data.frame} objects, they are converted to reactive \code{data.frame}s internally.
 When passing a list of reactive or non-reactive \code{data.frame} objects, the argument \code{join_keys} is required also.}
 
-\item{...}{an additional argument \code{keys} is required when \code{datasets} is a list of \code{data.frame}.
+\item{...}{an additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(named \code{list} or \code{NULL}) of join keys per dataset in \code{datasets}.}
+\item{join_keys}{(\code{JoinKeys} or \code{NULL}) of join keys per dataset in \code{datasets}.}
 }
 \value{
 reactive named list containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}. Output list
@@ -49,6 +49,9 @@ ADSL <- data.frame(
 
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
+  join_keys = teal.data::join_keys(
+    teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
+  ),
   cdisc = TRUE
 )
 

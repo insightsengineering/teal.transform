@@ -164,7 +164,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(ADSL_FILTERED %>% dplyr::select(STUDYID, USUBJID))
   )
@@ -180,7 +180,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -200,7 +200,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -220,7 +220,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -241,7 +241,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -261,7 +261,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -281,7 +281,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -314,7 +314,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
         )
       ),
       idx = 1L,
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADSL_FILTERED %>%
@@ -338,7 +338,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
         reshape = TRUE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(ADLB_FILTERED %>%
       dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
@@ -363,7 +363,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))$get()
+      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
       ADLB_FILTERED %>%
