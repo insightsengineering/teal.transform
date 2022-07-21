@@ -259,7 +259,6 @@ data_merge_srv <- function(id = "merge_id",
         )
         ch <- teal.code::chunks_new()
         datasets_list_nr <- sapply(datasets$datanames(), simplify = FALSE, datasets$get_data, filtered = TRUE)
-        names(datasets_list_nr) <- paste0(names(datasets_list_nr), "_FILTERED")
 
         teal.code::chunks_reset(envir = list2env(datasets_list_nr), chunks = ch)
         for (chunk in merged_data$expr) teal.code::chunks_push(expression = chunk, chunks = ch)

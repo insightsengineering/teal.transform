@@ -216,7 +216,7 @@ get_dplyr_call <- function(selector_list,
 
   n_selectors <- length(selector_list)
 
-  dataname_filtered <- as.name(paste0(selector_list[[idx]]$dataname, "_FILTERED"))
+  dataname_filtered <- as.name(selector_list[[idx]]$dataname)
 
   filter_call <- get_filter_call(selector_list[[idx]]$filters, selector_list[[idx]]$dataname, datasets)
 

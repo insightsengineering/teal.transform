@@ -220,8 +220,8 @@ testthat::test_that("merge_expression_srv returns merge expression when passing 
       testthat::expect_true(inherits(session$returned()$expr[[1]], "<-"))
       testthat::expect_identical(
         c(
-          "ANL_1 <- ADSL_FILTERED %>% dplyr::select(STUDYID, USUBJID, AGE)",
-          "ANL_2 <- ADLB_FILTERED %>% dplyr::select(STUDYID, USUBJID, AVAL, CHG)",
+          "ANL_1 <- ADSL %>% dplyr::select(STUDYID, USUBJID, AGE)",
+          "ANL_2 <- ADLB %>% dplyr::select(STUDYID, USUBJID, AVAL, CHG)",
           "ANL <- ANL_1",
           "ANL <- dplyr::full_join(ANL, ANL_2, by = c(\"STUDYID\", \"USUBJID\"))"
         ),
