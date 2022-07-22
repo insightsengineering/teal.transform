@@ -2195,26 +2195,26 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_equal(
     list(
-      get_dplyr_call(merged_selectors22, 1L, jk22),
-      get_dplyr_call(merged_selectors22, 2L, jk22),
-      get_dplyr_call(merged_selectors22, 3L, jk22)
+      deparse1(get_dplyr_call(merged_selectors22, 1L, jk22)),
+      deparse1(get_dplyr_call(merged_selectors22, 2L, jk22)),
+      deparse1(get_dplyr_call(merged_selectors22, 3L, jk22))
     ),
     list(
       # x1 and x3 are from the identical dataset - select(s) are combined
       # so output are just three ANLs instead of four
-      quote(
+      deparse1(quote(
         ADRS %>%
           dplyr::filter((PARAMCD == "BESRSPI" & AVISIT == "SCREENING") & SEX == "F") %>%
           dplyr::select(STUDYID, USUBJID, AGE, PARAMCD, COUNTRY, AVISIT) %>%
           dplyr::rename(x1.AGE = AGE, x1.PARAMCD = PARAMCD, x1.AVISIT = AVISIT)
-      ),
-      quote(
+      )),
+      deparse1(quote(
         ADRS %>%
           dplyr::filter((PARAMCD == "BESRSPI" & AVISIT == "BASELINE") & SEX == "M") %>%
           dplyr::select(STUDYID, USUBJID, AGE, AVISIT) %>%
           dplyr::rename(x2.AGE = AGE, x2.AVISIT = AVISIT)
-      ),
-      quote(
+      )),
+      deparse1(quote(
         ADRS %>%
           dplyr::filter((PARAMCD == "INVET" & AVISIT == "BASELINE") & SEX == "F") %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL, AGE) %>%
@@ -2222,7 +2222,7 @@ testthat::test_that("Single long dataset", {
           tidyr::pivot_longer(cols = c("AVAL", "x4.AGE"), names_to = "MEASURE", values_to = "VALUE") %>%
           tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
           tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
-      )
+      ))
     )
   ) # AVISIT should be included in select
 
