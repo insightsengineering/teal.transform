@@ -1,4 +1,23 @@
-.data-extract { border-left: 3px solid #e3e3e3; padding-left: 0.6em; border-radius: 5px; margin-left: -0.6em; margin-bottom: 1em; }
-.data-extract label.control-label { font-weight: normal; color: grey; }
-.data-extract .label-help { margin-top: -4px; margin-bottom: 3px; }
-.data-extract .filter_spec > div:first-child { margin-bottom: 5px; }
+/* teal.transform data_extract css */
+
+.data-extract {
+  border-left: 3px solid #e3e3e3;
+  padding-left: 0.6em;
+  border-radius: 5px;
+  margin-left: -0.6em;
+  margin-bottom: 1em;
+}
+
+.data-extract label.control-label {
+  font-weight: normal;
+  color: grey;
+}
+
+.data-extract .label-help {
+  margin-top: -4px;
+  margin-bottom: 3px;
+}
+
+.data-extract .filter_spec > div:first-child {
+  margin-bottom: 5px;
+}
