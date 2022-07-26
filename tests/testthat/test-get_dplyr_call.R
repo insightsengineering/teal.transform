@@ -166,7 +166,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       )),
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
-    quote(ADSL_FILTERED %>% dplyr::select(STUDYID, USUBJID))
+    quote(ADSL %>% dplyr::select(STUDYID, USUBJID))
   )
 
   # filter call, default select
@@ -183,7 +183,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(SEX %in% c("F", "M")) %>%
         dplyr::select(STUDYID, USUBJID)
     )
@@ -203,7 +203,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(SEX %in% c("F", "M")) %>%
         dplyr::select(STUDYID, USUBJID, AVAL)
     )
@@ -223,7 +223,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(SEX == "F") %>%
         dplyr::select(STUDYID, USUBJID, AVAL, SEX)
     )
@@ -244,7 +244,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(SEX == "F") %>%
         dplyr::select(STUDYID, USUBJID, AVAL, SEX)
     )
@@ -264,7 +264,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(STUDYID == "ANY") %>%
         dplyr::select(USUBJID, AVAL)
     )
@@ -284,7 +284,7 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::filter(STUDYID == "ANY") %>%
         dplyr::select(STUDYID, USUBJID, AVAL)
     )
@@ -317,7 +317,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
       join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADSL_FILTERED %>%
+      ADSL %>%
         dplyr::select(STUDYID, USUBJID, COL_1, COL_2) %>%
         dplyr::rename(test1.COL_2 = COL_2)
     )
@@ -340,7 +340,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
       )),
       join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
     ),
-    quote(ADLB_FILTERED %>%
+    quote(ADLB %>%
       dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
       dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
       tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -366,7 +366,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
       join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
     ),
     quote(
-      ADLB_FILTERED %>%
+      ADLB %>%
         dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
         dplyr::select(STUDYID, USUBJID, AVAL)
     )
