@@ -1,4 +1,8 @@
-# teal.transform 0.1.1.9009
+# teal.transform 0.1.1.9010
+
+### Breaking changes
+
+* Following changes to the output of `teal.slice::FilteredData$get_call()` the data merge functionality no longer expects input datanames to have the suffix `_FILTERED`.
 
 ### New features
 
