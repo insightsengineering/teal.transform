@@ -36,9 +36,18 @@ Name of the analysis dataset.}
 merged_dataset (\code{list}) containing:
 \itemize{
 \item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset.
-\item columns_source (\code{list}) of column selected for particular selector.
-\item keys (\code{list}) the keys of the merged dataset.
-\item filter_info (\code{list}) The information given by the user. This information
+\item \verb{columns_source`` (}list`) of column names selected for particular selector.
+Each list element contains named character vector where:
+\itemize{
+\item Values are the names of the columns in the ANL. In case if the same column name is selected in more than one
+selector it gets prefixed by the id of the selector. For example if two \code{data_extract} have id \code{x}, \code{y}, then
+their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE}.
+\item Names of the vector denote names of the variables in the input dataset.
+\item \code{attr(,"dataname")} to indicate which dataset variable is merged from.
+\item \code{attr(, "always selected")} to denote the names of the variables which need to be always selected.
+}
+\item \verb{keys`` (}list`) the keys of the merged dataset.
+\item \verb{filter_info`` (}list`) The information given by the user. This information
 defines the filters that are applied on the data. Additionally it defines
 the variables that are selected from the data sets.
 }
