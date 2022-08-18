@@ -335,7 +335,7 @@ merge_expression_srv <- function(id = "merge_id",
         merge_fun_name <- if (inherits(merge_function, "reactive")) merge_function() else merge_function
         check_merge_function(merge_fun_name)
 
-        ds <- Filter(Negate(is.null), lapply(selector_list(), function(x) x()))
+        ds <- Filter(function(e) length(e) > 0, lapply(selector_list(), function(x) x()))
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
         merge_datasets(
           selector_list = ds,
