@@ -39,7 +39,7 @@ merged_dataset (\code{list}) containing:
 \item \code{columns_source} (\code{list}) of column names selected for particular selector.
 Each list element contains named character vector where:
 \itemize{
-\item Values are the names of the columns in the ANL. In case if the same column name is selected in more than one
+\item Values are the names of the columns in the \code{ANL}. In case if the same column name is selected in more than one
 selector it gets prefixed by the id of the selector. For example if two \code{data_extract} have id \code{x}, \code{y}, then
 their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE}.
 \item Names of the vector denote names of the variables in the input dataset.
