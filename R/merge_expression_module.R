@@ -141,8 +141,7 @@ merge_expression_module <- function(datasets,
                                     anl_name = "ANL",
                                     id = "merge_id") {
   logger::log_trace("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
-
-  checkmate::assert_list(data_extract, names = "named", types = c("list", "data_extract_spec"))
+  checkmate::assert_list(data_extract, names = "named", types = c("list", "data_extract_spec", "NULL"))
   lapply(data_extract, function(x) {
     if (is.list(x) && !inherits(x, "data_extract_spec")) {
       checkmate::assert_list(x, "data_extract_spec")

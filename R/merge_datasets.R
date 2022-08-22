@@ -8,14 +8,19 @@
 #'
 #' @inheritParams merge_expression_srv
 #' @return merged_dataset (`list`) containing:
-#' \itemize{
-#'  \item `expr` (`list` of `call`) code needed to replicate merged dataset.
-#'  \item columns_source (`list`) of column selected for particular selector.
-#'  \item keys (`list`) the keys of the merged dataset.
-#'  \item filter_info (`list`) The information given by the user. This information
+#' - `expr` (`list` of `call`) code needed to replicate merged dataset.
+#' - `columns_source` (`list`) of column names selected for particular selector.
+#'   Each list element contains named character vector where:
+#'   * Values are the names of the columns in the `ANL`. In case if the same column name is selected in more than one
+#'     selector it gets prefixed by the id of the selector. For example if two `data_extract` have id `x`, `y`, then
+#'     their duplicated selected variable (for example `AGE`) is prefixed to be `x.AGE` and `y.AGE`.
+#'   * Names of the vector denote names of the variables in the input dataset.
+#'   * `attr(,"dataname")` to indicate which dataset variable is merged from.
+#'   * `attr(, "always selected")` to denote the names of the variables which need to be always selected.
+#' - `keys` (`list`) the keys of the merged dataset.
+#' - `filter_info` (`list`) The information given by the user. This information
 #'    defines the filters that are applied on the data. Additionally it defines
 #'    the variables that are selected from the data sets.
-#' }
 #' @export
 #'
 #' @examples
