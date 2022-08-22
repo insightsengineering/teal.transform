@@ -20,7 +20,7 @@ such as teal.widgets::optionalSelectInput()
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9013</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,6 @@ such as teal.widgets::optionalSelectInput()
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/teal.transform/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -192,7 +186,7 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
 <span class="r-in"><span><span class="fu">choices_selected</span><span class="op">(</span><span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span>, <span class="st">"SEX"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $choices</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 44 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 45 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
@@ -222,6 +216,7 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAFFL: Safety Population Flag</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> BMEASIFL: Response Evaluable Population Flag</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> BEP01FL: Biomarker Evaluable Population Flag</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AEWITHFL: AE Leading to Drug Withdrawal Flag</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RANDDT: Date of Randomization</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRTSDTM: Datetime of First Exposure to Treatment</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRTEDTM: Datetime of Last Exposure to Treatment</span>
@@ -395,7 +390,7 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx &lt;- vapply(data, is.factor, logical(1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   return(names(data)[idx])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559034c587d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55d8a6fd6ae0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ selected</span>

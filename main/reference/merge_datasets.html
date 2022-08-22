@@ -12,7 +12,7 @@ It combines/merges multiple datasets with specified keys attribute."><!-- mathja
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9013</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,12 +37,6 @@ It combines/merges multiple datasets with specified keys attribute."><!-- mathja
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" href="https://insightsengineering.github.io/teal.transform/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -116,9 +110,16 @@ Name of the analysis dataset.</p></dd>
     
 
 <p>merged_dataset (<code>list</code>) containing:</p><ul><li><p><code>expr</code> (<code>list</code> of <code>call</code>) code needed to replicate merged dataset.</p></li>
-<li><p>columns_source (<code>list</code>) of column selected for particular selector.</p></li>
-<li><p>keys (<code>list</code>) the keys of the merged dataset.</p></li>
-<li><p>filter_info (<code>list</code>) The information given by the user. This information
+<li><p><code>columns_source</code> (<code>list</code>) of column names selected for particular selector.
+Each list element contains named character vector where:</p><ul><li><p>Values are the names of the columns in the <code>ANL</code>. In case if the same column name is selected in more than one
+selector it gets prefixed by the id of the selector. For example if two <code>data_extract</code> have id <code>x</code>, <code>y</code>, then
+their duplicated selected variable (for example <code>AGE</code>) is prefixed to be <code>x.AGE</code> and <code>y.AGE</code>.</p></li>
+<li><p>Names of the vector denote names of the variables in the input dataset.</p></li>
+<li><p><code>attr(,"dataname")</code> to indicate which dataset variable is merged from.</p></li>
+<li><p><code>attr(, "always selected")</code> to denote the names of the variables which need to be always selected.</p></li>
+</ul></li>
+<li><p><code>keys</code> (<code>list</code>) the keys of the merged dataset.</p></li>
+<li><p><code>filter_info</code> (<code>list</code>) The information given by the user. This information
 defines the filters that are applied on the data. Additionally it defines
 the variables that are selected from the data sets.</p></li>
 </ul></div>
