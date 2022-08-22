@@ -68,6 +68,21 @@ testthat::test_that("merge_expression_module returns a reactive containing a lis
   )
 })
 
+testthat::test_that("merge_expression_module works if list some elements of the list are  NULL", {
+  testthat::expect_silent(
+    shiny::withReactiveDomain(
+      domain = shiny::MockShinySession$new(),
+      expr = {
+        merge_expression_module(
+          data_extract = list(adsl_var = adsl_extract, adlb_var = NULL),
+          datasets = data_list,
+          join_keys = join_keys
+        )
+      }
+    )
+  )
+})
+
 testthat::test_that("merge_expression_module throws error if data_extract is not a list of data_extract_spec", {
   testthat::expect_error(
     shiny::withReactiveDomain(
