@@ -82,7 +82,7 @@ testthat::test_that("merge_expression_module throws error if data_extract is not
     ),
     paste0(
       "Assertion on 'data_extract' failed: ",
-      "May only contain the following types: {list,data_extract_spec,null}, but element 2 has type 'character'."
+      "May only contain the following types: {list,data_extract_spec,NULL}, but element 2 has type 'character'."
     ),
     fixed = TRUE
   )
