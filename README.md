@@ -15,3 +15,10 @@ remotes::install_github("insightsengineering/teal.transform@*release")
 A stable release of all `NEST` packages from June 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
 
 See package vignettes `browseVignettes(package = "teal.transform")` for usage of this package.
+
+[![Stargazers repo roster for @insightsengineering/teal.transform](https://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
+[![Forkers repo roster for @insightsengineering/teal.transform](https://reporoster.com/forks/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/network/members)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/insightsengineering/teal.transform.svg)](https://starchart.cc/insightsengineering/teal.transform)
