@@ -22,7 +22,7 @@ See package vignettes `browseVignettes(package = "teal.transform")` for usage of
 
 [![Stargazers over time](https://starchart.cc/insightsengineering/teal.transform.svg)](https://starchart.cc/insightsengineering/teal.transform)
 
-### Stargazers 
+### Stargazers
 
 [![Stargazers repo roster for @insightsengineering/teal.transform](https://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
 
