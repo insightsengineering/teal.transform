@@ -2,13 +2,19 @@
 
 ### Breaking changes
 
-* Following changes to the output of `teal.slice::FilteredData$get_call()` the data merge functionality no longer expects input datanames to have the suffix `_FILTERED`.
+* Updated the data merge functionality to no longer expect input datanames with the suffix `_FILTERED` following changes to the output of `teal.slice::FilteredData$get_call()`.
+* Updated the data merge downstream functions to accept a `joinKeys` object for the `join_keys` argument.
 
 ### New features
 
-* `data_extract_ui`, `data_extract_srv`, `data_extract_multiple_srv` can be initialized by the list of (optionally `reactive`) `data.frame` objects.
+* `data_extract_ui`, `data_extract_srv`, `data_extract_multiple_srv` can be initialized by a list of (optionally `reactive`) `data.frame` objects.
 * Added new modules `merge_expression_srv` and `merge_expression_module`, updates of `data_merge_srv` and `data_merge_module` 
-(which will be deprecated in future releases) respectively, where `datasets` argument takes a list of (optionally `reactive`) `data.frame` objects and a new argument `join_keys`.
+(which will be deprecated in future releases) respectively, where `datasets` argument takes a list of (optionally `reactive`) `data.frame` objects and a new argument `join_keys` that accepts a `joinKeys` object.
+
+### Enhancements
+* Updated the examples and the tests to use `teal.slice::init_filtered_data` to initialize a `FilteredData` object.
+* Updated the vignettes and the README content.
+* Updated `data_merge_module` and `merge_expression_module` to accept `NULL` `data_extract` inputs.
 
 # teal.transform 0.1.1
 
