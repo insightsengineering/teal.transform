@@ -20,7 +20,7 @@ such as teal.widgets::optionalSelectInput()
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9016</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,12 +45,6 @@ such as teal.widgets::optionalSelectInput()
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -192,7 +186,7 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adsl</span></span></span>
 <span class="r-in"><span><span class="fu">choices_selected</span><span class="op">(</span><span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span>, <span class="st">"SEX"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $choices</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 46 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 56 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
@@ -213,6 +207,8 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02P: Planned Treatment for Period 02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02A: Actual Treatment for Period 02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
@@ -226,6 +222,14 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RANDDT: Date of Randomization</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRTSDTM: Datetime of First Exposure to Treatment</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TRTEDTM: Datetime of Last Exposure to Treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01SDTM: Datetime of First Exposure to Treatment in Period 01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01EDTM: Datetime of Last Exposure in Period 01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02SDTM: Datetime of First Exposure to Treatment in Period 02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02EDTM: Datetime of Last Exposure to Treatment in Period 02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AP01SDTM: Period 01 Start Datetime</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AP01EDTM: Period 01 End Datetime</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AP02SDTM: Period 02 Start Datetime</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AP02EDTM: Period 02 End Datetime</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EOSSTT: End of Study Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EOTSTT: End of Treatment Status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EOSDT: End of Study Date</span>
@@ -397,7 +401,7 @@ argument is set to false which will run the following code inside:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx &lt;- vapply(data, is.factor, logical(1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   return(names(data)[idx])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x555a5535f210&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c0a08b5f20&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ selected</span>
