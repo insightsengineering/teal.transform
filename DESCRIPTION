@@ -1,6 +1,6 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the `teal` Framework
-Version: 0.2.0
+Version: 0.2.0.9000
 Date: 2022-10-14
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
@@ -40,7 +40,7 @@ Suggests:
     knitr,
     rmarkdown,
     scda (>= 0.1.5),
-    scda.2021 (>= 0.1.5),
+    scda.2022 (>= 0.1.3),
     shinytest,
     testthat (>= 2.0)
 VignetteBuilder:
@@ -48,7 +48,7 @@ VignetteBuilder:
 RdMacros:
     lifecycle
 Remotes:
-    insightsengineering/scda.2021@*release,
+    insightsengineering/scda.2022@*release,
     insightsengineering/scda@*release,
     insightsengineering/teal.code@*release,
     insightsengineering/teal.data@*release,
