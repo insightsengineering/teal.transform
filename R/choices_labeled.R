@@ -342,14 +342,15 @@ value_choices.character <- function(data,
                                     var_label = NULL,
                                     subset = NULL,
                                     sep = " - ") {
-  out <- structure(list(
-    data = data,
-    var_choices = var_choices,
-    var_label = var_label,
-    subset = subset,
-    sep = sep
-  ),
-  class = c("delayed_value_choices", "delayed_data", "choices_labeled")
+  out <- structure(
+    list(
+      data = data,
+      var_choices = var_choices,
+      var_label = var_label,
+      subset = subset,
+      sep = sep
+    ),
+    class = c("delayed_value_choices", "delayed_data", "choices_labeled")
   )
   return(out)
 }
