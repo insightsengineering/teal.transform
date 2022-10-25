@@ -60,11 +60,11 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     choices <- as.character(choices)
   }
 
-  stopifnot(
-    is.character(choices) ||
-      is.numeric(choices) ||
-      is.logical(choices) ||
-      (length(choices) == 1 && is.na(choices))
+  checkmate::assert(
+    checkmate::check_numeric(choices),
+    checkmate::check_character(choices),
+    checkmate::check_logical(choices),
+    checkmate::check_true(length(choices) == 1 && is.na(choices))
   )
 
   if (is.factor(labels)) {
@@ -75,11 +75,11 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   if (length(choices) != length(labels)) {
     stop("length of choices must be the same as labels")
   }
-  stopifnot(is.null(subset) || is.vector(subset))
-  stopifnot(is.null(types) || is.vector(types))
+  checkmate::assert_vector(subset, null.ok = TRUE)
+  checkmate::assert_vector(types, null.ok = TRUE)
 
   if (is.vector(types)) {
-    stopifnot(length(choices) == length(types))
+    checkmate::assert_true(length(choices) == length(types))
   }
 
   if (!is.null(subset)) {
@@ -208,7 +208,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
   if (length(subset) == 0) {
     subset <- names(data)
   }
-  stopifnot(all(subset %in% c("", names(data))))
+  checkmate::assert_subset(subset, c("", names(data)))
 
   key <- intersect(subset, key)
 
@@ -361,8 +361,8 @@ value_choices.data.frame <- function(data, # nolint
                                      var_label = NULL,
                                      subset = NULL,
                                      sep = " - ") {
-  stopifnot(all(var_choices %in% names(data)))
-  stopifnot(is.null(var_label) || all(var_label %in% names(data)))
+  checkmate::assert_subset(var_choices, names(data))
+  checkmate::assert_subset(var_label, names(data))
 
   df_choices <- data[var_choices]
   df_label <- data[var_label]
