@@ -1,7 +1,7 @@
 library(scda)
-ADSL <- synthetic_cdisc_data("rcd_2021_05_05")$adsl # nolint
-ADLB <- synthetic_cdisc_data("rcd_2021_05_05")$adlb # nolint
-ADTTE <- synthetic_cdisc_data("rcd_2021_05_05")$adtte # nolint
+ADSL <- synthetic_cdisc_data("rcd_2022_06_27")$adsl # nolint
+ADLB <- synthetic_cdisc_data("rcd_2022_06_27")$adlb # nolint
+ADTTE <- synthetic_cdisc_data("rcd_2022_06_27")$adtte # nolint
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(
