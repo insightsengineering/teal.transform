@@ -1,5 +1,9 @@
 # teal.transform 0.2.0.9000
 
+### Enhancements
+
+* Updated error messages for `choices_labeled()`, `variable_choices()` and `value_choices()` to be more informative.
+
 # teal.transform 0.2.0
 
 ### Breaking changes
