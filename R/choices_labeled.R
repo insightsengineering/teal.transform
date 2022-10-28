@@ -4,14 +4,14 @@
 #' This is often useful for [choices_selected] as it marks up the dropdown boxes
 #' for [shiny::selectInput()].
 #'
-#' @param choices a character / numeric / logical vector
+#' @param choices A character / factor / numeric / logical vector of length > 1.
 #' @param labels character vector containing labels to be applied to `choices`. If `NA` then
 #' "Label Missing" will be used.
 #' @param subset a vector that is a subset of `choices`. This is useful if
 #'   only a few variables need to be named. If this argument is used, the returned vector will
 #'   match its order.
-#' @param types vector containing the types of the columns to be used for applying the appropriate
-#'   icons to the [choices_selected] drop down box
+#' @param types Character vector containing the types of the columns to be used for applying the appropriate
+#'   icons to the [choices_selected] drop down box. (e.g. "numeric")
 #' @details If either `choices` or `labels` are factors, they are coerced to character.
 #' Duplicated elements from `choices` get removed.
 #'
