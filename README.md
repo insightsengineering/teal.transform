@@ -1,5 +1,9 @@
 # teal.transform
 
+<!-- start badges -->
+[![Code Coverage](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/coverage.xml)
+<!-- end badges -->
+
 This package contains functions and shiny modules for extracting and merging data within the `teal` framework.
 
 ## Installation
