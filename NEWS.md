@@ -2,6 +2,10 @@
 
 * Examples use `scda.2022` instead of `scda.2021`
 
+### Enhancements
+
+* Updated error messages for `choices_labeled()`, `variable_choices()` and `value_choices()` to be more informative.
+
 # teal.transform 0.2.0
 
 ### Breaking changes

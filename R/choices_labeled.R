@@ -4,14 +4,14 @@
 #' This is often useful for [choices_selected] as it marks up the dropdown boxes
 #' for [shiny::selectInput()].
 #'
-#' @param choices a character / numeric / logical vector
+#' @param choices A character / factor / numeric / logical vector of length > 1.
 #' @param labels character vector containing labels to be applied to `choices`. If `NA` then
 #' "Label Missing" will be used.
 #' @param subset a vector that is a subset of `choices`. This is useful if
 #'   only a few variables need to be named. If this argument is used, the returned vector will
 #'   match its order.
-#' @param types vector containing the types of the columns to be used for applying the appropriate
-#'   icons to the [choices_selected] drop down box
+#' @param types Character vector containing the types of the columns to be used for applying the appropriate
+#'   icons to the [choices_selected] drop down box. (e.g. "numeric")
 #' @details If either `choices` or `labels` are factors, they are coerced to character.
 #' Duplicated elements from `choices` get removed.
 #'
@@ -60,11 +60,11 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     choices <- as.character(choices)
   }
 
-  stopifnot(
-    is.character(choices) ||
-      is.numeric(choices) ||
-      is.logical(choices) ||
-      (length(choices) == 1 && is.na(choices))
+  checkmate::assert(
+    checkmate::check_character(choices, min.len = 2, any.missing = FALSE),
+    checkmate::check_factor(choices, min.len = 2, any.missing = FALSE),
+    checkmate::check_numeric(choices, min.len = 2, any.missing = FALSE),
+    checkmate::check_logical(choices, min.len = 2, any.missing = FALSE)
   )
 
   if (is.factor(labels)) {
@@ -75,12 +75,8 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   if (length(choices) != length(labels)) {
     stop("length of choices must be the same as labels")
   }
-  stopifnot(is.null(subset) || is.vector(subset))
-  stopifnot(is.null(types) || is.vector(types))
-
-  if (is.vector(types)) {
-    stopifnot(length(choices) == length(types))
-  }
+  checkmate::assert_subset(subset, choices, empty.ok = TRUE)
+  checkmate::assert_character(types, len = length(choices), null.ok = TRUE)
 
   if (!is.null(subset)) {
     if (!all(subset %in% choices)) {
@@ -201,14 +197,20 @@ variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = 
 #' @export
 variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) { # nolint
 
+  checkmate::assert(
+    checkmate::check_character(subset, null.ok = TRUE),
+    checkmate::check_function(subset, null.ok = TRUE)
+  )
+
   if (is.function(subset)) {
     subset <- resolve_delayed_expr(subset, ds = data, is_value_choices = FALSE)
   }
 
+  checkmate::assert_subset(subset, c("", names(data)), empty.ok = TRUE)
+
   if (length(subset) == 0) {
     subset <- names(data)
   }
-  stopifnot(all(subset %in% c("", names(data))))
 
   key <- intersect(subset, key)
 
@@ -342,14 +344,15 @@ value_choices.character <- function(data,
                                     var_label = NULL,
                                     subset = NULL,
                                     sep = " - ") {
-  out <- structure(list(
-    data = data,
-    var_choices = var_choices,
-    var_label = var_label,
-    subset = subset,
-    sep = sep
-  ),
-  class = c("delayed_value_choices", "delayed_data", "choices_labeled")
+  out <- structure(
+    list(
+      data = data,
+      var_choices = var_choices,
+      var_label = var_label,
+      subset = subset,
+      sep = sep
+    ),
+    class = c("delayed_value_choices", "delayed_data", "choices_labeled")
   )
   return(out)
 }
@@ -361,8 +364,8 @@ value_choices.data.frame <- function(data, # nolint
                                      var_label = NULL,
                                      subset = NULL,
                                      sep = " - ") {
-  stopifnot(all(var_choices %in% names(data)))
-  stopifnot(is.null(var_label) || all(var_label %in% names(data)))
+  checkmate::assert_subset(var_choices, names(data))
+  checkmate::assert_subset(var_label, names(data), empty.ok = TRUE)
 
   df_choices <- data[var_choices]
   df_label <- data[var_label]

@@ -10,7 +10,7 @@ choices_labeled(choices, labels, subset = NULL, types = NULL)
 \method{print}{choices_labeled}(x, ...)
 }
 \arguments{
-\item{choices}{a character / numeric / logical vector}
+\item{choices}{A character / factor / numeric / logical vector of length > 1.}
 
 \item{labels}{character vector containing labels to be applied to \code{choices}. If \code{NA} then
 "Label Missing" will be used.}
@@ -19,8 +19,8 @@ choices_labeled(choices, labels, subset = NULL, types = NULL)
 only a few variables need to be named. If this argument is used, the returned vector will
 match its order.}
 
-\item{types}{vector containing the types of the columns to be used for applying the appropriate
-icons to the \link{choices_selected} drop down box}
+\item{types}{Character vector containing the types of the columns to be used for applying the appropriate
+icons to the \link{choices_selected} drop down box. (e.g. "numeric")}
 
 \item{x}{an object used to select a method.}
 
