@@ -61,10 +61,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   }
 
   checkmate::assert(
-    checkmate::check_numeric(choices),
-    checkmate::check_character(choices),
-    checkmate::check_logical(choices),
-    checkmate::check_true(length(choices) == 1 && is.na(choices))
+    checkmate::assert_atomic(choices, min.len = 1, any.missing = FALSE)
   )
 
   if (is.factor(labels)) {
