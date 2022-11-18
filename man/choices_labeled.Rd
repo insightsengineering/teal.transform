@@ -10,7 +10,7 @@ choices_labeled(choices, labels, subset = NULL, types = NULL)
 \method{print}{choices_labeled}(x, ...)
 }
 \arguments{
-\item{choices}{A character / factor / numeric / logical vector of length > 1.}
+\item{choices}{A character / factor / numeric / logical vector.}
 
 \item{labels}{character vector containing labels to be applied to \code{choices}. If \code{NA} then
 "Label Missing" will be used.}
