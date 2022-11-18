@@ -4,7 +4,7 @@
 #' This is often useful for [choices_selected] as it marks up the dropdown boxes
 #' for [shiny::selectInput()].
 #'
-#' @param choices A character / factor / numeric / logical vector of length > 1.
+#' @param choices A character / factor / numeric / logical vector.
 #' @param labels character vector containing labels to be applied to `choices`. If `NA` then
 #' "Label Missing" will be used.
 #' @param subset a vector that is a subset of `choices`. This is useful if
@@ -60,12 +60,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     choices <- as.character(choices)
   }
 
-  checkmate::assert(
-    checkmate::check_character(choices, min.len = 2, any.missing = FALSE),
-    checkmate::check_factor(choices, min.len = 2, any.missing = FALSE),
-    checkmate::check_numeric(choices, min.len = 2, any.missing = FALSE),
-    checkmate::check_logical(choices, min.len = 2, any.missing = FALSE)
-  )
+  checkmate::assert_atomic(choices, min.len = 1, any.missing = FALSE)
 
   if (is.factor(labels)) {
     labels <- as.character(labels)
