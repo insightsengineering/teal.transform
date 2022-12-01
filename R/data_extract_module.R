@@ -414,7 +414,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @rdname data_extract_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
 #' @export
-data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, ...) {
+data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, select_validation_rule = NULL, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
 
@@ -462,7 +462,8 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
         data_extract_read_srv(
           id = id_for_dataset(x$dataname),
           datasets = datasets,
-          single_data_extract_spec = x
+          single_data_extract_spec = x,
+          select_validation_rule = select_validation_rule
         )
       })
       names(filter_and_select) <- sapply(data_extract_spec, function(x) x$dataname)

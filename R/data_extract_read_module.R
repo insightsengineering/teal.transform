@@ -9,7 +9,7 @@
 #' @return `shiny::reactive` the reactive list with reactive values read from the UI
 #' @keywords internal
 #'
-data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
+data_extract_read_srv <- function(id, datasets, single_data_extract_spec, select_validation_rule) {
   checkmate::assert_class(single_data_extract_spec, "data_extract_spec")
   checkmate::assert_list(datasets, types = "reactive", names = "named")
   moduleServer(
@@ -68,6 +68,11 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
           res
         }
       )
+
+      iv <- shinyvalidate::InputValidator$new()
+      if (!is.null(select_validation_rule)) {
+        iv$add_rule("select", select_validation_rule)
+      }
 
       tracked_input <- teal.slice::Queue$new()
       r_select <- eventReactive(
@@ -146,7 +151,8 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec) {
           filters = r_filter(),
           select = r_select(),
           always_selected = single_data_extract_spec$select$always_selected,
-          reshape = r_reshape()
+          reshape = r_reshape(),
+          iv = iv
         )
       })
     }
