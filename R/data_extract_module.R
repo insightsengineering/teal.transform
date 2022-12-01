@@ -414,7 +414,10 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @rdname data_extract_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
 #' @export
-data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL, select_validation_rule = NULL, ...) {
+data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
+  select_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule)) NULL else shinyvalidate::sv_required(),
+  ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
 
@@ -478,9 +481,15 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
         }
       })
 
+      iv <- shinyvalidate::InputValidator$new()
+      if (!is.null(dataset_validation_rule)) {
+        iv$add_rule("dataset", dataset_validation_rule)
+      }
+
       filter_and_select_reactive <- reactive({
         if (is.null(dataname())) {
-          NULL
+          list(iv = iv)
+          # NULL - TODO does this break stuff?
         } else {
           append(
             filter_and_select[[dataname()]](),
