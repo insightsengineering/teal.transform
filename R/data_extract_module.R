@@ -618,7 +618,10 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #' @rdname data_extract_multiple_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of join keys per dataset in `datasets`.
 #' @export
-data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL, ...) {
+data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL,
+  select_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule)) NULL else shinyvalidate::sv_required(), ...) {
+
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
 
@@ -627,6 +630,25 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
   )
 
   data_extract <- Filter(Negate(is.null), data_extract)
+
+  if (is.function(select_validation_rule)) {
+    select_validation_rule <- sapply(
+      names(data_extract),
+      simplify = FALSE,
+      USE.NAMES = TRUE,
+      function(x) select_validation_rule
+    )
+  }
+
+  if (is.function(dataset_validation_rule)) {
+    dataset_validation_rule <- sapply(
+      names(data_extract),
+      simplify = FALSE,
+      USE.NAMES = TRUE,
+      function(x) dataset_validation_rule
+    )
+  }
+
   reactive({
     sapply(
       X = names(data_extract),
@@ -637,7 +659,9 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
           id = x,
           data_extract_spec = data_extract[[x]],
           datasets = datasets,
-          join_keys = join_keys
+          join_keys = join_keys,
+          select_validation_rule = select_validation_rule[[x]],
+          dataset_validation_rule = dataset_validation_rule[[x]]
         )
       }
     )
