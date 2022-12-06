@@ -38,3 +38,16 @@ extract_choices_labels <- function(choices, values = NULL) {
 
   return(res)
 }
+
+
+#' TODO
+#' @export
+compose_and_enable_validators <- function(iv, selector_list, validator_names){
+
+  for (validator_name in validator_names) {
+    selector_list()[[validator_name]]()$iv$enable()
+    iv$add_validator(selector_list()[[validator_name]]()$iv)
+  }
+  iv$enable()
+  iv
+}

@@ -4,7 +4,12 @@
 \alias{data_extract_read_srv}
 \title{Returns a reactive list with values read from the inputs of \code{data_extract_spec}}
 \usage{
-data_extract_read_srv(id, datasets, single_data_extract_spec)
+data_extract_read_srv(
+  id,
+  datasets,
+  single_data_extract_spec,
+  select_validation_rule = NULL
+)
 }
 \arguments{
 \item{id}{(\code{character}) id string}

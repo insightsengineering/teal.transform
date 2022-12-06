@@ -10,7 +10,16 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 
 \method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec, ...)
 
-\method{data_extract_srv}{list}(id, datasets, data_extract_spec, join_keys = NULL, ...)
+\method{data_extract_srv}{list}(
+  id,
+  datasets,
+  data_extract_spec,
+  join_keys = NULL,
+  select_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule)) NULL else
+    shinyvalidate::sv_required(),
+  ...
+)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
