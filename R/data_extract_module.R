@@ -457,7 +457,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       check_data_extract_spec(data_extract_spec = data_extract_spec)
 
       iv <- shinyvalidate::InputValidator$new()
-      if (!is.null(dataset_validation_rule)) {
+      if (!is.null(dataset_validation_rule) && length(data_extract_spec) > 1) {
         iv$add_rule("dataset", dataset_validation_rule)
       }
 
