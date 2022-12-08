@@ -456,6 +456,11 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
 
+      iv <- shinyvalidate::InputValidator$new()
+      if (!is.null(dataset_validation_rule)) {
+        iv$add_rule("dataset", dataset_validation_rule)
+      }
+
       filter_and_select <- lapply(data_extract_spec, function(x) {
         data_extract_single_srv(
           id = id_for_dataset(x$dataname),
@@ -467,6 +472,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
           id = id_for_dataset(x$dataname),
           datasets = datasets,
           single_data_extract_spec = x,
+          iv = iv,
           select_validation_rule = select_validation_rule
         )
       })
@@ -481,11 +487,6 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
           input$dataset
         }
       })
-
-      iv <- shinyvalidate::InputValidator$new()
-      if (!is.null(dataset_validation_rule)) {
-        iv$add_rule("dataset", dataset_validation_rule)
-      }
 
       filter_and_select_reactive <- reactive({
         if (is.null(dataname())) {

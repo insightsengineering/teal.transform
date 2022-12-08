@@ -10,7 +10,7 @@
 #' @keywords internal
 #'
 data_extract_read_srv <- function(
-    id, datasets, single_data_extract_spec, select_validation_rule = NULL) {
+    id, datasets, single_data_extract_spec, iv, select_validation_rule = NULL) {
   checkmate::assert_class(single_data_extract_spec, "data_extract_spec")
   checkmate::assert_list(datasets, types = "reactive", names = "named")
   moduleServer(
@@ -70,7 +70,6 @@ data_extract_read_srv <- function(
         }
       )
 
-      iv <- shinyvalidate::InputValidator$new()
       if (!is.null(select_validation_rule)) {
         iv$add_rule("select", select_validation_rule)
       }
