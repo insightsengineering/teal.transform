@@ -74,11 +74,14 @@ data_extract_read_srv <- function(
       if (!is.null(select_validation_rule)) {
         iv$add_rule("select", select_validation_rule)
       }
+
       if (!is.null(filter_validation_rule)) {
-        iv$add_rule(
-          paste0("filter", filter_idx, ns.sep, "vals"),
-          filter_validation_rule
-        )
+        for (idx in filter_idx) {
+          iv$add_rule(
+            paste0("filter", idx, ns.sep, "vals"),
+            filter_validation_rule
+          )
+       }
       }
 
       tracked_input <- teal.slice::Queue$new()
