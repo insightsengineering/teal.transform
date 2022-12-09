@@ -10,7 +10,8 @@
 #' @keywords internal
 #'
 data_extract_read_srv <- function(
-    id, datasets, single_data_extract_spec, iv, select_validation_rule = NULL) {
+    id, datasets, single_data_extract_spec, iv, select_validation_rule = NULL,
+    filter_validation_rule = NULL) {
   checkmate::assert_class(single_data_extract_spec, "data_extract_spec")
   checkmate::assert_list(datasets, types = "reactive", names = "named")
   moduleServer(
@@ -72,6 +73,15 @@ data_extract_read_srv <- function(
 
       if (!is.null(select_validation_rule)) {
         iv$add_rule("select", select_validation_rule)
+      }
+
+      if (!is.null(filter_validation_rule)) {
+        for (idx in filter_idx) {
+          iv$add_rule(
+            paste0("filter", idx, ns.sep, "vals"),
+            filter_validation_rule
+          )
+       }
       }
 
       tracked_input <- teal.slice::Queue$new()

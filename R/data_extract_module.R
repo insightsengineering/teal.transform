@@ -416,7 +416,8 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
   select_validation_rule = NULL,
-  dataset_validation_rule = if (is.null(select_validation_rule)) NULL
+  filter_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) NULL
     else shinyvalidate::sv_required("Please select a dataset"),
   ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
@@ -473,7 +474,8 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
           datasets = datasets,
           single_data_extract_spec = x,
           iv = iv,
-          select_validation_rule = select_validation_rule
+          select_validation_rule = select_validation_rule,
+          filter_validation_rule = filter_validation_rule
         )
       })
       names(filter_and_select) <- sapply(data_extract_spec, function(x) x$dataname)
@@ -622,7 +624,8 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #' @export
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL,
   select_validation_rule = NULL,
-  dataset_validation_rule = if (is.null(select_validation_rule)) NULL
+  filter_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) NULL
     else shinyvalidate::sv_required("Please select a dataset"), ...
   ) {
 
@@ -665,6 +668,7 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
           datasets = datasets,
           join_keys = join_keys,
           select_validation_rule = select_validation_rule[[x]],
+          filter_validation_rule = filter_validation_rule[[x]],
           dataset_validation_rule = dataset_validation_rule[[x]]
         )
       }
