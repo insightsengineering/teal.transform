@@ -19,7 +19,6 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/insightsengineering/teal.transform?color=red\&label=open%20issues)](https://github.com/insightsengineering/teal.transform/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 <!-- end badges -->
 
-
 This package contains functions and shiny modules for extracting and merging data within the `teal` framework.
 
 ## Installation
