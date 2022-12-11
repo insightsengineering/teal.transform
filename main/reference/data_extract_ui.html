@@ -20,7 +20,7 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9005</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,14 +45,6 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -112,17 +104,17 @@ constructor calls.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>shiny <a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput</a><code>s</code> that allow to define how to extract data from
-a specific dataset. The input elements will be returned inside a <a href="https://rdrr.io/pkg/shiny/man/reexports.html" class="external-link">shiny::div</a> container.</p>
+<p>shiny <a href="https://shiny.rstudio.com/reference/shiny/latest/selectInput.html" class="external-link">shiny::selectInput</a><code>s</code> that allow to define how to extract data from
+a specific dataset. The input elements will be returned inside a <a href="https://shiny.rstudio.com/reference/shiny/latest/reexports.html" class="external-link">shiny::div</a> container.</p>
 
 
 <p>There are three inputs that will be rendered</p><ol><li><p>Dataset select Optional. If more than one <a href="data_extract_spec.html">data_extract_spec</a> is handed over
-to the function, a shiny <a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput</a> will be rendered. Else just the name
+to the function, a shiny <a href="https://shiny.rstudio.com/reference/shiny/latest/selectInput.html" class="external-link">shiny::selectInput</a> will be rendered. Else just the name
 of the dataset is given.</p></li>
 <li><p>Filter Panel Optional. If the <a href="data_extract_spec.html">data_extract_spec</a> contains a
-filter element a shiny <a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput</a> will be rendered with the options to
+filter element a shiny <a href="https://shiny.rstudio.com/reference/shiny/latest/selectInput.html" class="external-link">shiny::selectInput</a> will be rendered with the options to
 filter the dataset.</p></li>
-<li><p>Select panel A shiny <a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput</a> to select columns from the dataset to
+<li><p>Select panel A shiny <a href="https://shiny.rstudio.com/reference/shiny/latest/selectInput.html" class="external-link">shiny::selectInput</a> to select columns from the dataset to
 go into the analysis.</p></li>
 </ol><p>The output can be analyzed using <code>data_extract_srv(...)</code>.</p>
     </div>
