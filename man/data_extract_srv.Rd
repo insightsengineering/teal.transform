@@ -18,8 +18,12 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
   select_validation_rule = NULL,
   filter_validation_rule = NULL,
   dataset_validation_rule = if (is.null(select_validation_rule) &&
-    is.null(filter_validation_rule)) NULL else
-    shinyvalidate::sv_required("Please select a dataset"),
+    is.null(filter_validation_rule)) {
+     NULL
+ } else {
+    
+    shinyvalidate::sv_required("Please select a dataset")
+ },
   ...
 )
 }
@@ -81,7 +85,39 @@ adsl_extract <- data_extract_spec(
   )
 )
 
-# Using FilteredData
+# Using reactive list of data.frames
+data_list <- list(ADSL = reactive(ADSL))
+
+join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
+
+app <- shinyApp(
+  ui = fluidPage(
+    teal.widgets::standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "adsl_var",
+          label = "ADSL selection",
+          data_extract_spec = adsl_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      join_keys = join_keys
+    )
+    output$out1 <- renderPrint(adsl_reactive_input())
+  }
+)
+if (interactive()) {
+  runApp(app)
+}
+
+# Using FilteredData - Note this method will be deprecated
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
   join_keys = teal.data::join_keys(
@@ -113,42 +149,9 @@ app <- shinyApp(
     output$out1 <- renderPrint(adsl_reactive_input())
   }
 )
-\dontrun{
-runApp(app)
+if (interactive()) {
+  runApp(app)
 }
-
-# Using reactive list of data.frames
-data_list <- list(ADSL = reactive(ADSL))
-
-join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
-
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = verbatimTextOutput("out1"),
-      encoding = tagList(
-        data_extract_ui(
-          id = "adsl_var",
-          label = "ADSL selection",
-          data_extract_spec = adsl_extract
-        )
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    adsl_reactive_input <- data_extract_srv(
-      id = "adsl_var",
-      datasets = data_list,
-      data_extract_spec = adsl_extract,
-      join_keys = join_keys
-    )
-    output$out1 <- renderPrint(adsl_reactive_input())
-  }
-)
-\dontrun{
-runApp(app)
-}
-
 }
 \references{
 \link{data_extract_srv}

@@ -70,7 +70,6 @@ app <- shinyApp(
     )
   ),
   server = function(input, output, session) {
-
     exactly_2_validation <- function() {
       ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
     }
@@ -99,10 +98,15 @@ app <- shinyApp(
     })
 
     output$out1 <- renderPrint({
-      if (iv_r()$is_valid())
-        "Everything is valid"
-      else
-        "Check that you have made a selection"
+      if (iv_r()$is_valid()) {
+        lapply(selector_list(), function(x) {
+          x <- x()
+          x$iv <- NULL # remove iv from output for print
+          x
+        })
+      } else {
+        "Check that you have made a valid selection"
+      }
     })
   }
 )
