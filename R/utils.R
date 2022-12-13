@@ -100,7 +100,6 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'
 #'     exactly_2_validation <- function() {
 #'       ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
 #'     }
@@ -129,18 +128,22 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'     })
 #'
 #'     output$out1 <- renderPrint({
-#'       if (iv_r()$is_valid())
-#'         "Everything is valid"
-#'       else
-#'         "Check that you have made a selection"
+#'       if (iv_r()$is_valid()) {
+#'         lapply(selector_list(), function(x) {
+#'           x <- x()
+#'           x$iv <- NULL # remove iv from output for print
+#'           x
+#'         })
+#'       } else {
+#'         "Check that you have made a valid selection"
+#'       }
 #'     })
 #'   }
 #' )
 #' if (interactive()) {
 #'   runApp(app)
 #' }
-compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL){
-
+compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {
   if (is.null(validator_names)) {
     validator_names <- names(selector_list())
   }

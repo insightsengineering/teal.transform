@@ -415,11 +415,14 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 #' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
-  select_validation_rule = NULL,
-  filter_validation_rule = NULL,
-  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) NULL
-    else shinyvalidate::sv_required("Please select a dataset"),
-  ...) {
+                                  select_validation_rule = NULL,
+                                  filter_validation_rule = NULL,
+                                  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) {
+                                    NULL
+                                  } else {
+                                    shinyvalidate::sv_required("Please select a dataset")
+                                  },
+                                  ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
 
@@ -529,68 +532,95 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'
 #' @examples
 #' library(shiny)
-#' ADSL <- data.frame(
-#'   STUDYID = "A",
-#'   USUBJID = LETTERS[1:10],
-#'   SEX = rep(c("F", "M"), 5),
-#'   AGE = rpois(10, 30),
-#'   BMRKR1 = rlnorm(10)
-#' )
+#' library(shinyvalidate)
+#' library(shinyjs)
+#' library(teal.widgets)
 #'
-#' datasets <- teal.slice::init_filtered_data(
-#'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
-#'   join_keys = teal.data::join_keys(
-#'     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
-#'   ),
-#'   cdisc = TRUE
-#' )
-#'
-#' xvar_extract <- data_extract_spec(
-#'   dataname = "ADSL",
-#'   filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+#' iris_select <- data_extract_spec(
+#'   dataname = "iris",
 #'   select = select_spec(
 #'     label = "Select variable:",
-#'     choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
-#'     selected = "AGE",
+#'     choices = variable_choices(iris, colnames(iris)),
+#'     selected = "Sepal.Length",
 #'     multiple = TRUE,
 #'     fixed = FALSE
 #'   )
 #' )
 #'
-#' yvar_extract <- data_extract_spec(
-#'   dataname = "ADSL",
-#'   select = select_spec(
-#'     label = "Select variable:",
-#'     choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
-#'     selected = "BMRKR1",
-#'     multiple = TRUE,
-#'     fixed = FALSE
+#' iris_filter <- data_extract_spec(
+#'   dataname = "iris",
+#'   filter = filter_spec(
+#'     vars = "Species",
+#'     choices = c("setosa", "versicolor", "virginica"),
+#'     selected = "setosa",
+#'     multiple = TRUE
 #'   )
 #' )
+#'
+#' data_list <- list(iris = reactive(iris))
 #'
 #' app <- shinyApp(
 #'   ui = fluidPage(
-#'     teal.widgets::standard_layout(
+#'     useShinyjs(),
+#'     standard_layout(
 #'       output = verbatimTextOutput("out1"),
 #'       encoding = tagList(
-#'         data_extract_ui(id = "xvar", label = "Select x-var", xvar_extract),
-#'         data_extract_ui(id = "yvar", label = "Select y-var", yvar_extract),
+#'         data_extract_ui(
+#'           id = "x_var",
+#'           label = "Please select an X column",
+#'           data_extract_spec = iris_select
+#'         ),
+#'         data_extract_ui(
+#'           id = "species_var",
+#'           label = "Please select 2 Species",
+#'           data_extract_spec = iris_filter
+#'         )
 #'       )
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     list_of_reactive_inputs <- data_extract_multiple_srv(
-#'       # names of the list corresponding to data_extract_ui ids
-#'       list(xvar = xvar_extract, yvar = yvar_extract),
-#'       datasets
+#'     exactly_2_validation <- function(msg) {
+#'       ~ if (length(.) != 2) msg
+#'     }
+#'
+#'
+#'     selector_list <- data_extract_multiple_srv(
+#'       list(x_var = iris_select, species_var = iris_filter),
+#'       datasets = data_list,
+#'       select_validation_rule = list(
+#'         x_var = sv_required("Please select an X column")
+#'       ),
+#'       filter_validation_rule = list(
+#'         species_var = compose_rules(
+#'           sv_required("Exactly 2 Species must be chosen"),
+#'           exactly_2_validation("Exactly 2 Species must be chosen")
+#'         )
+#'       )
 #'     )
+#'     iv_r <- reactive({
+#'       iv <- InputValidator$new()
+#'       compose_and_enable_validators(
+#'         iv,
+#'         selector_list,
+#'         validator_names = NULL
+#'       )
+#'     })
+#'
 #'     output$out1 <- renderPrint({
-#'       lapply(list_of_reactive_inputs(), function(x) x())
+#'       if (iv_r()$is_valid()) {
+#'         lapply(selector_list(), function(x) {
+#'           x <- x()
+#'           x$iv <- NULL # remove iv from output for print
+#'           x
+#'         })
+#'       } else {
+#'         "Please fix errors in your selection"
+#'       }
 #'     })
 #'   }
 #' )
-#' \dontrun{
-#' runApp(app)
+#' if (interactive()) {
+#'   runApp(app)
 #' }
 data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
@@ -621,14 +651,25 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 
 #' @rdname data_extract_multiple_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of join keys per dataset in `datasets`.
+#' @param select_validation_rule (`NULL`, `function` or `named list` of `function`)
+#'   Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`
+#'   If all `data_extract` require the same validation function then this can be used directly (
+#'   i.e. `select_validation_rule = shinyvalidate::sv_required()`). For more fine-grained control use a list:
+#'   `select_validation_rule = list(extract_1 = sv_required(), extract2 = ~ if (length(.) > 2) "Error")`.
+#'   If `NULL` then no validation will be added. See example for more details.
+#' @param filter_validation_rule (`NULL`, `function` or `named list` of `function`) Same as
+#'   `select_validation_rule` but for the filter (values) part of the `data_extract_ui`.
+#' @param dataset_validation_rule (`NULL`, `function` or `named list` of `function`) Same as
+#'   `select_validation_rule` but for the choose dataset part of the `data_extract_ui`
 #' @export
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL,
-  select_validation_rule = NULL,
-  filter_validation_rule = NULL,
-  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) NULL
-    else shinyvalidate::sv_required("Please select a dataset"), ...
-  ) {
-
+                                           select_validation_rule = NULL,
+                                           filter_validation_rule = NULL,
+                                           dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) {
+                                             NULL
+                                           } else {
+                                             shinyvalidate::sv_required("Please select a dataset")
+                                           }, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
 
