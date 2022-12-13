@@ -77,6 +77,7 @@ Extracting details of the selection(s) in \link{data_extract_ui} elements.
 \examples{
 
 library(shiny)
+library(shinyvalidate)
 
 ADSL <- data.frame(
   STUDYID = "A",
@@ -121,9 +122,27 @@ app <- shinyApp(
       id = "adsl_var",
       datasets = data_list,
       data_extract_spec = adsl_extract,
-      join_keys = join_keys
+      join_keys = join_keys,
+      select_validation_rule = sv_required("Please select a variable.")
     )
-    output$out1 <- renderPrint(adsl_reactive_input())
+
+    iv_r <- reactive({
+      iv <- InputValidator$new()
+      adsl_reactive_input()$iv$enable()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        x <- adsl_reactive_input()
+        x$iv <- NULL # remove iv from output for print
+        x
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
   }
 )
 if (interactive()) {
