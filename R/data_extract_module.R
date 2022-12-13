@@ -412,6 +412,16 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 
 #' @rdname data_extract_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
+#' @param select_validation_rule (`NULL` or `function`)
+#'   Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`.
+#'   You can use a validation function directly (i.e. `select_validation_rule = shinyvalidate::sv_required()`)
+#'   or for more fine-grained control use a function:
+#'   `select_validation_rule = ~ if (length(.) > 2) "Error"`.
+#'   If `NULL` then no validation will be added. See example for more details.
+#' @param filter_validation_rule (`NULL` or `function`) Same as
+#'   `select_validation_rule` but for the filter (values) part of the `data_extract_ui`.
+#' @param dataset_validation_rule (`NULL` or `function`) Same as
+#'   `select_validation_rule` but for the choose dataset part of the `data_extract_ui`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
                                   select_validation_rule = NULL,
