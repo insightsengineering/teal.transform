@@ -16,8 +16,10 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
   data_extract_spec,
   join_keys = NULL,
   select_validation_rule = NULL,
-  dataset_validation_rule = if (is.null(select_validation_rule)) NULL else
-    shinyvalidate::sv_required(),
+  filter_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule) &&
+    is.null(filter_validation_rule)) NULL else
+    shinyvalidate::sv_required("Please select a dataset"),
   ...
 )
 }

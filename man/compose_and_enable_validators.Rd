@@ -2,10 +2,111 @@
 % Please edit documentation in R/utils.R
 \name{compose_and_enable_validators}
 \alias{compose_and_enable_validators}
-\title{TODO}
+\title{Function to compose validators from \code{data_extract_multiple_srv}}
 \usage{
-compose_and_enable_validators(iv, selector_list, validator_names)
+compose_and_enable_validators(iv, selector_list, validator_names = NULL)
+}
+\arguments{
+\item{iv}{(\code{shinyvalidate::InputValidator}) A validator.}
+
+\item{selector_list}{(\code{reactive} named list of \code{reactives}).
+Typically this is the output from \code{data_extract_multiple_srv}.
+The validators in this list (specifically \verb{selector_list()[[validator_names]]()iv})
+will be added into \code{iv}.}
+
+\item{validator_names}{(\code{character} or \code{NULL}). If \code{character} then only validators
+in the elements of \code{selector_list()} whose name is in this list will be added. If \code{NULL}
+all validators will be added}
+}
+\value{
+(\code{shinyvalidate::InputValidator}) enabled \code{iv} with appropriate validators added into it.
 }
 \description{
-TODO
+This function takes the output from \code{data_extract_multiple_srv} and
+collates the \code{shinyvalidate::InputValidator}s returned into a single
+validator and enables this
+}
+\examples{
+library(shiny)
+library(shinyvalidate)
+library(shinyjs)
+library(teal.widgets)
+
+iris_extract <- data_extract_spec(
+  dataname = "iris",
+  select = select_spec(
+    label = "Select variable:",
+    choices = variable_choices(iris, colnames(iris)),
+    selected = "Sepal.Length",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+data_list <- list(iris = reactive(iris))
+
+app <- shinyApp(
+  ui = fluidPage(
+    useShinyjs(),
+    standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "x_var",
+          label = "Please select an X column",
+          data_extract_spec = iris_extract
+        ),
+        data_extract_ui(
+          id = "y_var",
+          label = "Please select a Y column",
+          data_extract_spec = iris_extract
+        ),
+        data_extract_ui(
+          id = "col_var",
+          label = "Please select a color column",
+          data_extract_spec = iris_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+
+    exactly_2_validation <- function() {
+      ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
+    }
+
+
+    selector_list <- data_extract_multiple_srv(
+      list(x_var = iris_extract, y_var = iris_extract, col_var = iris_extract),
+      datasets = data_list,
+      select_validation_rule = list(
+        x_var = sv_required("Please select an X column"),
+        y_var = compose_rules(
+          sv_required("Exactly 2 'Y' column variables must be chosen"),
+          exactly_2_validation()
+        )
+      )
+    )
+    iv_r <- reactive({
+      iv <- InputValidator$new()
+      compose_and_enable_validators(
+        iv,
+        selector_list,
+        # if validator_names = NULL then all validators are used
+        # to turn on only "x_var" then set this argument to "x_var"
+        validator_names = NULL
+      )
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid())
+        "Everything is valid"
+      else
+        "Check that you have made a selection"
+    })
+  }
+)
+if (interactive()) {
+  runApp(app)
+}
 }
