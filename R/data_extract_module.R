@@ -285,6 +285,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @examples
 #'
 #' library(shiny)
+#' library(shinyvalidate)
 #'
 #' ADSL <- data.frame(
 #'   STUDYID = "A",
@@ -329,9 +330,27 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'       id = "adsl_var",
 #'       datasets = data_list,
 #'       data_extract_spec = adsl_extract,
-#'       join_keys = join_keys
+#'       join_keys = join_keys,
+#'       select_validation_rule = sv_required("Please select a variable.")
 #'     )
-#'     output$out1 <- renderPrint(adsl_reactive_input())
+#'
+#'     iv_r <- reactive({
+#'       iv <- InputValidator$new()
+#'       adsl_reactive_input()$iv$enable()
+#'       iv$add_validator(adsl_reactive_input()$iv)
+#'       iv$enable()
+#'       iv
+#'     })
+#'
+#'     output$out1 <- renderPrint({
+#'       if (iv_r()$is_valid()) {
+#'         x <- adsl_reactive_input()
+#'         x$iv <- NULL # remove iv from output for print
+#'         x
+#'       } else {
+#'         "Please fix errors in your selection"
+#'       }
+#'     })
 #'   }
 #' )
 #' if (interactive()) {
@@ -412,6 +431,16 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 
 #' @rdname data_extract_srv
 #' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
+#' @param select_validation_rule (`NULL` or `function`)
+#'   Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`.
+#'   You can use a validation function directly (i.e. `select_validation_rule = shinyvalidate::sv_required()`)
+#'   or for more fine-grained control use a function:
+#'   `select_validation_rule = ~ if (length(.) > 2) "Error"`.
+#'   If `NULL` then no validation will be added. See example for more details.
+#' @param filter_validation_rule (`NULL` or `function`) Same as
+#'   `select_validation_rule` but for the filter (values) part of the `data_extract_ui`.
+#' @param dataset_validation_rule (`NULL` or `function`) Same as
+#'   `select_validation_rule` but for the choose dataset part of the `data_extract_ui`
 #' @export
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
                                   select_validation_rule = NULL,
@@ -424,6 +453,9 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
                                   ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  checkmate::assert_function(select_validation_rule, null.ok = TRUE)
+  checkmate::assert_function(filter_validation_rule, null.ok = TRUE)
+  checkmate::assert_function(dataset_validation_rule, null.ok = TRUE)
 
   moduleServer(
     id,
@@ -671,6 +703,21 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
                                            }, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  checkmate::assert(
+    checkmate::check_function(select_validation_rule, null.ok = TRUE),
+    checkmate::check_list(select_validation_rule, types = "function", null.ok = TRUE),
+    checkmate::check_subset(names(select_validation_rule), names(data_extract))
+  )
+  checkmate::assert(
+    checkmate::check_function(filter_validation_rule, null.ok = TRUE),
+    checkmate::check_list(filter_validation_rule, types = "function", null.ok = TRUE),
+    checkmate::check_subset(names(filter_validation_rule), names(data_extract))
+  )
+  checkmate::assert(
+    checkmate::check_function(dataset_validation_rule, null.ok = TRUE),
+    checkmate::check_list(dataset_validation_rule, types = "function", null.ok = TRUE),
+    checkmate::check_subset(names(dataset_validation_rule), names(data_extract))
+  )
 
   logger::log_trace(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."

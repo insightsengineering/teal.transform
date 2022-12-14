@@ -43,6 +43,19 @@ A list of data filter and select information constructed by \link{data_extract_s
 It shall contain the keys per dataset in \code{datasets}.}
 
 \item{join_keys}{(\code{JoinKeys} or \code{NULL}) of keys per dataset in \code{datasets}}
+
+\item{select_validation_rule}{(\code{NULL} or \code{function})
+Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}.
+You can use a validation function directly (i.e. \code{select_validation_rule = shinyvalidate::sv_required()})
+or for more fine-grained control use a function:
+\code{select_validation_rule = ~ if (length(.) > 2) "Error"}.
+If \code{NULL} then no validation will be added. See example for more details.}
+
+\item{filter_validation_rule}{(\code{NULL} or \code{function}) Same as
+\code{select_validation_rule} but for the filter (values) part of the \code{data_extract_ui}.}
+
+\item{dataset_validation_rule}{(\code{NULL} or \code{function}) Same as
+\code{select_validation_rule} but for the choose dataset part of the \code{data_extract_ui}}
 }
 \value{
 A reactive \code{list} containing following fields:
@@ -64,6 +77,7 @@ Extracting details of the selection(s) in \link{data_extract_ui} elements.
 \examples{
 
 library(shiny)
+library(shinyvalidate)
 
 ADSL <- data.frame(
   STUDYID = "A",
@@ -108,9 +122,27 @@ app <- shinyApp(
       id = "adsl_var",
       datasets = data_list,
       data_extract_spec = adsl_extract,
-      join_keys = join_keys
+      join_keys = join_keys,
+      select_validation_rule = sv_required("Please select a variable.")
     )
-    output$out1 <- renderPrint(adsl_reactive_input())
+
+    iv_r <- reactive({
+      iv <- InputValidator$new()
+      adsl_reactive_input()$iv$enable()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        x <- adsl_reactive_input()
+        x$iv <- NULL # remove iv from output for print
+        x
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
   }
 )
 if (interactive()) {
