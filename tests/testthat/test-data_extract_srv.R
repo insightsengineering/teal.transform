@@ -361,3 +361,150 @@ testthat::test_that("data_extract_srv with a list of multiple data_extract_spec"
     }
   )
 })
+
+ADSL_val <- data.frame(
+  STUDYID = "A",
+  USUBJID = LETTERS[1:10],
+  SEX = rep(c("F", "M"), 5),
+  AGE = rpois(10, 30),
+  BMRKR1 = rlnorm(10)
+)
+
+adsl_extract_val <- data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+  select = select_spec(
+    label = "Select variable:",
+    choices = variable_choices(ADSL_val, c("AGE", "BMRKR1")),
+    selected = "AGE",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+data_list_val <- list(ADSL = reactive(ADSL_val))
+join_keys_val <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
+
+testthat::test_that("select validation", {
+
+  server <- function(input, output, session) {
+
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list_val,
+      data_extract_spec = adsl_extract_val,
+      join_keys = join_keys_val,
+      select_validation_rule = shinyvalidate::sv_required("Please select a variable.")
+    )
+
+    iv_r <- reactive({
+      iv <- shinyvalidate::InputValidator$new()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        cat(format_data_extract(adsl_reactive_input()))
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+
+  shiny::testServer(server, {
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "STUDYID")
+    expect_true(iv_r()$is_valid())
+    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
+    expect_match(output$out1, "Please fix errors in your selection")
+  })
+
+})
+
+
+testthat::test_that("filter validation", {
+
+  server <- function(input, output, session) {
+
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list_val,
+      data_extract_spec = adsl_extract_val,
+      join_keys = join_keys_val,
+      filter_validation_rule = shinyvalidate::sv_required("Please select a variable.")
+    )
+
+    iv_r <- reactive({
+      iv <- shinyvalidate::InputValidator$new()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        cat(format_data_extract(adsl_reactive_input()))
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+
+  shiny::testServer(server, {
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-filter1-vals" = "F")
+    expect_true(iv_r()$is_valid())
+    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-filter1-vals" = "")
+    expect_match(output$out1, "Please fix errors in your selection")
+  })
+
+})
+
+
+testthat::test_that("select validation accepts function as validator", {
+
+  server <- function(input, output, session) {
+
+    length_not_zero <- function(msg) {
+      ~ if (length(.) == 0) msg
+    }
+
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list_val,
+      data_extract_spec = adsl_extract_val,
+      join_keys = join_keys_val,
+      select_validation_rule = function(x) { if (nchar(x) == 0) "error"}
+    )
+
+    iv_r <- reactive({
+      iv <- shinyvalidate::InputValidator$new()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        cat(format_data_extract(adsl_reactive_input()))
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+
+  shiny::testServer(server, {
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "STUDYID")
+    expect_true(iv_r()$is_valid())
+    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
+    expect_match(output$out1, "Please fix errors in your selection")
+  })
+
+})
+
