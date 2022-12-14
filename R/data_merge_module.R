@@ -248,7 +248,13 @@ data_merge_srv <- function(id = "merge_id",
         join_keys <- datasets$get_join_keys()
         check_merge_function(merge_fun_name)
 
-        ds <- Filter(Negate(is.null), lapply(selector_list(), function(x) x()))
+        # function to filter out selectors which are NULL or only have validator
+        f <- function(x) {
+          is.null(x) || (length(names(x)) == 1 && names(x) == "iv")
+        }
+
+        ds <- Filter(Negate(f), lapply(selector_list(), function(x) x()))
+
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
         merged_data <- merge_datasets(
           selector_list = ds,
