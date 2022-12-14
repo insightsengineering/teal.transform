@@ -469,16 +469,12 @@ testthat::test_that("select validation accepts function as validator", {
 
   server <- function(input, output, session) {
 
-    length_not_zero <- function(msg) {
-      ~ if (length(.) == 0) msg
-    }
-
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list_val,
       data_extract_spec = adsl_extract_val,
       join_keys = join_keys_val,
-      select_validation_rule = function(x) { if (nchar(x) == 0) "error"}
+      select_validation_rule = ~ if (nchar(.) == 0) "error"
     )
 
     iv_r <- reactive({
@@ -507,4 +503,116 @@ testthat::test_that("select validation accepts function as validator", {
   })
 
 })
+
+iris_select <- data_extract_spec(
+  dataname = "iris",
+  select = select_spec(
+    label = "Select variable:",
+    choices = variable_choices(iris, colnames(iris)),
+    selected = "Sepal.Length",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+iris_filter <- data_extract_spec(
+  dataname = "iris",
+  filter = filter_spec(
+    vars = "Species",
+    choices = c("setosa", "versicolor", "virginica"),
+    selected = "setosa",
+    multiple = TRUE
+  )
+)
+
+data_list <- list(iris = reactive(iris))
+
+testthat::test_that("data_extract_multiple_srv input validation", {
+
+  server = function(input, output, session) {
+    exactly_2_validation <- function(msg) {
+      ~ if (length(.) != 2) msg
+    }
+
+
+    selector_list <- data_extract_multiple_srv(
+      list(x_var = iris_select, species_var = iris_filter),
+      datasets = data_list,
+      select_validation_rule = list(
+        x_var = shinyvalidate::sv_required("Please select an X column")
+      ),
+      filter_validation_rule = list(
+        species_var = shinyvalidate::compose_rules(
+          shinyvalidate::sv_required("Exactly 2 Species must be chosen"),
+          exactly_2_validation("Exactly 2 Species must be chosen")
+        )
+      )
+    )
+    iv_r <- reactive({
+      iv <- shinyvalidate::InputValidator$new()
+      compose_and_enable_validators(
+        iv,
+        selector_list,
+        validator_names = NULL
+      )
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        ans <- lapply(selector_list(), function(x) {
+          cat(format_data_extract(x()), "\n\n")
+        })
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+
+  shiny::testServer(server, {
+    expect_false(iv_r()$is_valid())
+    session$setInputs(
+      "x_var-dataset_iris_singleextract-select" = "Sepal.Length"
+    )
+    session$setInputs(
+      "species_var-dataset_iris_singleextract-filter1-vals" = c("setosa", "versicolor")
+    )
+    expect_true(iv_r()$is_valid())
+
+    out1 <- paste(output$out1, collapse = "")
+    msg <-       paste(
+      lapply(
+        selector_list(),
+        function(x) format_data_extract(x())
+      ),
+      collapse = ""
+    )
+    # slight difference in spacing and new line b/c of cat()
+    expect_equal(
+      gsub("(\\s)|(\n)", "", out1),
+      gsub("(\\s)|(\n)", "", msg)
+    )
+
+    session$setInputs(
+      "x_var-dataset_iris_singleextract-select" = ""
+    )
+    expect_false(iv_r()$is_valid())
+    expect_match(output$out1, "Please fix errors in your selection")
+
+    session$setInputs(
+      "x_var-dataset_iris_singleextract-select" = "Sepal.Length"
+    )
+    session$setInputs(
+      "species_var-dataset_iris_singleextract-filter1-vals" = ""
+    )
+    expect_false(iv_r()$is_valid())
+
+    session$setInputs(
+      "species_var-dataset_iris_singleextract-filter1-vals" = c("setosa", "versicolor")
+    )
+    expect_true(iv_r()$is_valid())
+
+  })
+
+})
+
 
