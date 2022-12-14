@@ -702,17 +702,14 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
   checkmate::assert(
     checkmate::check_function(select_validation_rule, null.ok = TRUE),
     checkmate::check_list(select_validation_rule, types = "function", null.ok = TRUE),
-    checkmate::check_subset(names(select_validation_rule), names(data_extract))
   )
   checkmate::assert(
     checkmate::check_function(filter_validation_rule, null.ok = TRUE),
     checkmate::check_list(filter_validation_rule, types = "function", null.ok = TRUE),
-    checkmate::check_subset(names(filter_validation_rule), names(data_extract))
   )
   checkmate::assert(
     checkmate::check_function(dataset_validation_rule, null.ok = TRUE),
     checkmate::check_list(dataset_validation_rule, types = "function", null.ok = TRUE),
-    checkmate::check_subset(names(dataset_validation_rule), names(data_extract))
   )
 
   logger::log_trace(
