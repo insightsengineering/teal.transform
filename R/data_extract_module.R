@@ -443,7 +443,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = NULL,
                                   select_validation_rule = NULL,
                                   filter_validation_rule = NULL,
-                                  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) {
+                                  dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) { # nolint
                                     NULL
                                   } else {
                                     shinyvalidate::sv_required("Please select a dataset")
@@ -692,7 +692,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = NULL,
                                            select_validation_rule = NULL,
                                            filter_validation_rule = NULL,
-                                           dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) {
+                                           dataset_validation_rule = if (is.null(select_validation_rule) && is.null(filter_validation_rule)) { # nolint
                                              NULL
                                            } else {
                                              shinyvalidate::sv_required("Please select a dataset")
