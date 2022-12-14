@@ -10,7 +10,22 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 
 \method{data_extract_srv}{FilteredData}(id, datasets, data_extract_spec, ...)
 
-\method{data_extract_srv}{list}(id, datasets, data_extract_spec, join_keys = NULL, ...)
+\method{data_extract_srv}{list}(
+  id,
+  datasets,
+  data_extract_spec,
+  join_keys = NULL,
+  select_validation_rule = NULL,
+  filter_validation_rule = NULL,
+  dataset_validation_rule = if (is.null(select_validation_rule) &&
+    is.null(filter_validation_rule)) {
+     NULL
+ } else {
+    
+    shinyvalidate::sv_required("Please select a dataset")
+ },
+  ...
+)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -28,6 +43,19 @@ A list of data filter and select information constructed by \link{data_extract_s
 It shall contain the keys per dataset in \code{datasets}.}
 
 \item{join_keys}{(\code{JoinKeys} or \code{NULL}) of keys per dataset in \code{datasets}}
+
+\item{select_validation_rule}{(\code{NULL} or \code{function})
+Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}.
+You can use a validation function directly (i.e. \code{select_validation_rule = shinyvalidate::sv_required()})
+or for more fine-grained control use a function:
+\code{select_validation_rule = ~ if (length(.) > 2) "Error"}.
+If \code{NULL} then no validation will be added. See example for more details.}
+
+\item{filter_validation_rule}{(\code{NULL} or \code{function}) Same as
+\code{select_validation_rule} but for the filter (values) part of the \code{data_extract_ui}.}
+
+\item{dataset_validation_rule}{(\code{NULL} or \code{function}) Same as
+\code{select_validation_rule} but for the choose dataset part of the \code{data_extract_ui}}
 }
 \value{
 A reactive \code{list} containing following fields:
@@ -40,6 +68,7 @@ A reactive \code{list} containing following fields:
 \item{\code{dataname}: }{The name of the data set.}
 \item{\code{internal_id}: }{The \code{id} of the corresponding shiny input element.}
 \item{\code{keys}: }{The names of the columns that can be used to merge the data set.}
+\item{\code{iv}:}{A \code{shinyvalidate::InputValidator} containing validator for this \code{data_extract}}
 }
 }
 \description{
@@ -49,6 +78,7 @@ Extracting details of the selection(s) in \link{data_extract_ui} elements.
 \examples{
 
 library(shiny)
+library(shinyvalidate)
 
 ADSL <- data.frame(
   STUDYID = "A",
@@ -70,7 +100,54 @@ adsl_extract <- data_extract_spec(
   )
 )
 
-# Using FilteredData
+# Using reactive list of data.frames
+data_list <- list(ADSL = reactive(ADSL))
+
+join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
+
+app <- shinyApp(
+  ui = fluidPage(
+    teal.widgets::standard_layout(
+      output = verbatimTextOutput("out1"),
+      encoding = tagList(
+        data_extract_ui(
+          id = "adsl_var",
+          label = "ADSL selection",
+          data_extract_spec = adsl_extract
+        )
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      join_keys = join_keys,
+      select_validation_rule = sv_required("Please select a variable.")
+    )
+
+    iv_r <- reactive({
+      iv <- InputValidator$new()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        cat(format_data_extract(adsl_reactive_input()))
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+)
+if (interactive()) {
+  runApp(app)
+}
+
+# Using FilteredData - Note this method will be deprecated
 datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
   join_keys = teal.data::join_keys(
@@ -102,42 +179,9 @@ app <- shinyApp(
     output$out1 <- renderPrint(adsl_reactive_input())
   }
 )
-\dontrun{
-runApp(app)
+if (interactive()) {
+  runApp(app)
 }
-
-# Using reactive list of data.frames
-data_list <- list(ADSL = reactive(ADSL))
-
-join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
-
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = verbatimTextOutput("out1"),
-      encoding = tagList(
-        data_extract_ui(
-          id = "adsl_var",
-          label = "ADSL selection",
-          data_extract_spec = adsl_extract
-        )
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    adsl_reactive_input <- data_extract_srv(
-      id = "adsl_var",
-      datasets = data_list,
-      data_extract_spec = adsl_extract,
-      join_keys = join_keys
-    )
-    output$out1 <- renderPrint(adsl_reactive_input())
-  }
-)
-\dontrun{
-runApp(app)
-}
-
 }
 \references{
 \link{data_extract_srv}

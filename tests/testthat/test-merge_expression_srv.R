@@ -61,7 +61,7 @@ testthat::test_that("merge_expression_srv throws error with missing selector_lis
     shiny::testServer(
       merge_expression_srv,
       args = list(datasets = data_list),
-      expr =  NULL
+      expr = NULL
     ),
     "argument \"selector_list\" is missing, with no default"
   )
@@ -70,7 +70,7 @@ testthat::test_that("merge_expression_srv throws error with missing selector_lis
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list),
-      expr =  NULL
+      expr = NULL
     ),
     "argument \"datasets\" is missing, with no default"
   )
@@ -111,7 +111,7 @@ testthat::test_that("merge_expression_srv throws error when anl_name is not char
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys, anl_name = 1),
-      expr =  NULL
+      expr = NULL
     ),
     regexp = "Must be of type 'string', not 'double'",
     fixed = TRUE
@@ -121,7 +121,7 @@ testthat::test_that("merge_expression_srv throws error when anl_name is not char
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys, anl_name = "565"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -131,7 +131,7 @@ testthat::test_that("merge_expression_srv throws error when anl_name is not char
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys, anl_name = "TRUE"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -141,7 +141,7 @@ testthat::test_that("merge_expression_srv throws error when anl_name is not char
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys, anl_name = "NA"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -171,7 +171,7 @@ testthat::test_that("merge_expression_srv throws error if selector_list is not n
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = reactive(list("A")), datasets = data_list, join_keys = join_keys),
-      expr =  session$returned()
+      expr = session$returned()
     ),
     "Assertion on 'selector_list()' failed: Must have names",
     fixed = TRUE

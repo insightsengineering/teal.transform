@@ -47,6 +47,7 @@ reference:
       - is_single_dataset
       - list_extract_spec
       - merge_datasets
+      - compose_and_enable_validators
   - title: Human-readable formatting of a data extract object
     contents:
       - format_data_extract
