@@ -185,6 +185,82 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
     ),
     regexp = "Assertion on 'datasets' failed:"
   )
+
+  testthat::expect_error(
+    shiny::testServer(
+      data_extract_srv,
+      args = list(
+        id = "adsl_extract",
+        data_extract_spec = adsl_extract,
+        datasets = nr_data_list,
+        join_keys = join_keys_list,
+        select_validation_rule = "string"
+      ),
+      expr = NULL
+    ),
+    regexp = "Assertion on 'select_validation_rule' failed:"
+  )
+
+  testthat::expect_error(
+    shiny::testServer(
+      data_extract_srv,
+      args = list(
+        id = "adsl_extract",
+        data_extract_spec = adsl_extract,
+        datasets = nr_data_list,
+        join_keys = join_keys_list,
+        filter_validation_rule = "string"
+      ),
+      expr = NULL
+    ),
+    regexp = "Assertion on 'filter_validation_rule' failed:"
+  )
+
+  testthat::expect_error(
+    shiny::testServer(
+      data_extract_srv,
+      args = list(
+        id = "adsl_extract",
+        data_extract_spec = adsl_extract,
+        datasets = nr_data_list,
+        join_keys = join_keys_list,
+        dataset_validation_rule = "string"
+      ),
+      expr = NULL
+    ),
+    regexp = "Assertion on 'dataset_validation_rule' failed:"
+  )
+
+  testthat::expect_error(
+    shiny::testServer(
+      data_extract_srv,
+      args = list(
+        id = "adsl_extract",
+        data_extract_spec = adsl_extract,
+        datasets = nr_data_list,
+        join_keys = join_keys_list,
+        select_validation_rule = TRUE
+      ),
+      expr = NULL
+    ),
+    regexp = "Assertion on 'select_validation_rule' failed:"
+  )
+
+  testthat::expect_error(
+    shiny::testServer(
+      data_extract_srv,
+      args = list(
+        id = "adsl_extract",
+        data_extract_spec = adsl_extract,
+        datasets = nr_data_list,
+        join_keys = join_keys_list,
+        select_validation_rule = 1
+      ),
+      expr = NULL
+    ),
+    regexp = "Assertion on 'select_validation_rule' failed:"
+  )
+
 })
 
 testthat::test_that("data_extract_srv uses the current session id when id is missing", {
