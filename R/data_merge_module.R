@@ -129,7 +129,8 @@ data_merge_module <- function(datasets,
 #' @inheritParams shiny::moduleServer
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
-#'   When using a reactive named list, the names must be identical to the shiny ids of the respective [data_extract_ui()].
+#'   When using a reactive named list, the names must be identical to the shiny ids of the
+#'   respective [data_extract_ui()].
 #' @param datasets (`FilteredData`)\cr
 #'  object containing data (see `teal.slice::FilteredData`).
 #' @param merge_function (`character(1)` or `reactive`)\cr
