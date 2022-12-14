@@ -130,9 +130,9 @@ testthat::test_that("data_extract_srv returns a list of elements", {
     args = list(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, join_keys = join_keys_list),
     expr = {
       testthat::expect_is(session$returned(), "list")
-      testthat::expect_identical(
+      testthat::expect_setequal(
         names(session$returned()),
-        c("filters", "select", "always_selected", "reshape", "dataname", "internal_id", "keys")
+        c("filters", "select", "always_selected", "reshape", "dataname", "internal_id", "keys", "iv")
       )
     }
   )
@@ -198,9 +198,9 @@ testthat::test_that("data_extract_srv uses the current session id when id is mis
     ),
     expr = {
       testthat::expect_is(session$returned(), "list")
-      testthat::expect_identical(
+      testthat::expect_setequal(
         names(session$returned()),
-        c("filters", "select", "always_selected", "reshape", "dataname", "internal_id", "keys")
+        c("filters", "select", "always_selected", "reshape", "dataname", "internal_id", "keys", "iv")
       )
     }
   )

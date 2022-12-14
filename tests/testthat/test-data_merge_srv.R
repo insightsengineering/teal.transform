@@ -36,6 +36,10 @@ selector_list <- reactive({
 })
 
 testthat::test_that("data_merge_srv returns a reactive containing a list", {
+
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   shiny::testServer(
     data_merge_srv,
     args = list(selector_list = selector_list, datasets = datasets_used),
@@ -51,6 +55,9 @@ testthat::test_that("data_merge_srv returns a reactive containing a list", {
 })
 
 testthat::test_that("data_merge_srv$data returns data.frame when passing 1 extract in selector_list", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   shiny::testServer(
     data_merge_srv,
     args = list(selector_list = selector_list, datasets = datasets_used),
@@ -66,6 +73,9 @@ testthat::test_that("data_merge_srv$data returns data.frame when passing 1 extra
 })
 
 testthat::test_that("data_merge_srv throws error with missing selector_list and datasets arguments", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   testthat::expect_error(
     shiny::testServer(
       data_merge_srv,
@@ -86,6 +96,9 @@ testthat::test_that("data_merge_srv throws error with missing selector_list and 
 })
 
 testthat::test_that("data_merge_srv default merge_function is dplyr::full_join", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   shiny::testServer(
     data_merge_srv,
     args = list(selector_list = selector_list, datasets = datasets_used),
@@ -96,6 +109,9 @@ testthat::test_that("data_merge_srv default merge_function is dplyr::full_join",
 })
 
 testthat::test_that("data_merge_srv default anl_name is ANL", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   shiny::testServer(
     data_merge_srv,
     args = list(selector_list = selector_list, datasets = datasets_used),
@@ -106,6 +122,9 @@ testthat::test_that("data_merge_srv default anl_name is ANL", {
 })
 
 testthat::test_that("data_merge_srv throws error when anl_name is not character or using non-allowed names", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   testthat::expect_error(
     shiny::testServer(
       data_merge_srv,
@@ -148,6 +167,9 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
 })
 
 testthat::test_that("data_merge_srv throws error when selector_list is not a list or a reactive", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   testthat::expect_error(
     shiny::testServer(
       data_merge_srv,
@@ -168,6 +190,9 @@ testthat::test_that("data_merge_srv throws error when selector_list is not a lis
 })
 
 testthat::test_that("data_merge_srv throws error selector_list is not named list", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   testthat::expect_error(
     shiny::testServer(
       data_merge_srv,
@@ -180,6 +205,9 @@ testthat::test_that("data_merge_srv throws error selector_list is not named list
 })
 
 testthat::test_that("data_merge_srv accepts reactive and character merge_function", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   m_fun <- reactive("dplyr::left_join")
   testthat::expect_error(
     shiny::testServer(
@@ -208,6 +236,9 @@ selector_list2 <- reactive({
 })
 
 testthat::test_that("data_merge_srv returns merged data.frame when passing 2 extracts in selector_list", {
+  #filtered data ("datasets_used") case produces deprecation warning as chunks are deprecated
+  rlang::local_options(lifecycle_verbosity = "quiet")
+
   shiny::testServer(
     data_merge_srv,
     args = list(selector_list = selector_list2, datasets = datasets_used),
