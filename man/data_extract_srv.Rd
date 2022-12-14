@@ -136,9 +136,7 @@ app <- shinyApp(
 
     output$out1 <- renderPrint({
       if (iv_r()$is_valid()) {
-        x <- adsl_reactive_input()
-        x$iv <- NULL # remove iv from output for print
-        x
+        cat(format_data_extract(adsl_reactive_input()))
       } else {
         "Please fix errors in your selection"
       }

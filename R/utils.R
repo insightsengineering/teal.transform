@@ -129,10 +129,8 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'
 #'     output$out1 <- renderPrint({
 #'       if (iv_r()$is_valid()) {
-#'         lapply(selector_list(), function(x) {
-#'           x <- x()
-#'           x$iv <- NULL # remove iv from output for print
-#'           x
+#'         ans <- lapply(selector_list(), function(x) {
+#'           cat(format_data_extract(x()), "\n\n")
 #'         })
 #'       } else {
 #'         "Check that you have made a valid selection"

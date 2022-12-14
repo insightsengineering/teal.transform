@@ -344,9 +344,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'
 #'     output$out1 <- renderPrint({
 #'       if (iv_r()$is_valid()) {
-#'         x <- adsl_reactive_input()
-#'         x$iv <- NULL # remove iv from output for print
-#'         x
+#'         cat(format_data_extract(adsl_reactive_input()))
 #'       } else {
 #'         "Please fix errors in your selection"
 #'       }
@@ -639,10 +637,8 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'
 #'     output$out1 <- renderPrint({
 #'       if (iv_r()$is_valid()) {
-#'         lapply(selector_list(), function(x) {
-#'           x <- x()
-#'           x$iv <- NULL # remove iv from output for print
-#'           x
+#'         ans <- lapply(selector_list(), function(x) {
+#'           cat(format_data_extract(x()), "\n\n")
 #'         })
 #'       } else {
 #'         "Please fix errors in your selection"
