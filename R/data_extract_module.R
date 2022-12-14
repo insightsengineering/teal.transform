@@ -276,6 +276,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   \item{`dataname`: }{The name of the data set.}
 #'   \item{`internal_id`: }{The `id` of the corresponding shiny input element.}
 #'   \item{`keys`: }{The names of the columns that can be used to merge the data set.}
+#'   \item{`iv`:}{A `shinyvalidate::InputValidator` containing validator for this `data_extract`}
 #' }
 #'
 #' @references [data_extract_srv]
@@ -336,7 +337,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'
 #'     iv_r <- reactive({
 #'       iv <- InputValidator$new()
-#'       adsl_reactive_input()$iv$enable()
 #'       iv$add_validator(adsl_reactive_input()$iv)
 #'       iv$enable()
 #'       iv

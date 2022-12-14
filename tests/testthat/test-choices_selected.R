@@ -118,11 +118,12 @@ testthat::test_that("choices_selected remove duplicates", {
       ),
       selected = c("A", "A")
     ),
-    structure(list(
-      choices = c(`name for A` = "A", `Name for nothing` = "", `name for b` = "B", `name for C` = "C"),
-      selected = "A", fixed = FALSE
-    ),
-    class = "choices_selected"
+    structure(
+      list(
+        choices = c(`name for A` = "A", `Name for nothing` = "", `name for b` = "B", `name for C` = "C"),
+        selected = "A", fixed = FALSE
+      ),
+      class = "choices_selected"
     )
   )
 

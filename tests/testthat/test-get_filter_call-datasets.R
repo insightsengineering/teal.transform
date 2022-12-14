@@ -1,15 +1,17 @@
-data_small <- structure(list(
-  AGE = structure(c(29L, 29L, 48L, 37L, 36L)),
-  SEX = structure(c(1L, 2L, 2L, 1L, 1L), .Label = c("F", "M"), class = "factor"),
-  TRTSDTM = structure(c(
-    1558930539.683, 1572360404.683, 1580052056.683, 1578713100.683, 1584009162.683
+data_small <- structure(
+  list(
+    AGE = structure(c(29L, 29L, 48L, 37L, 36L)),
+    SEX = structure(c(1L, 2L, 2L, 1L, 1L), .Label = c("F", "M"), class = "factor"),
+    TRTSDTM = structure(
+      c(
+        1558930539.683, 1572360404.683, 1580052056.683, 1578713100.683, 1584009162.683
+      ),
+      tzone = "",
+      class = c("POSIXct", "POSIXt")
+    ),
+    DCSREAS = structure(c(1L, NA, NA, 2L, 2L), .Label = c("ADVERSE EVENT", "DEATH"), class = "factor")
   ),
-  tzone = "",
-  class = c("POSIXct", "POSIXt")
-  ),
-  DCSREAS = structure(c(1L, NA, NA, 2L, 2L), .Label = c("ADVERSE EVENT", "DEATH"), class = "factor")
-),
-class = "data.frame", row.names = c(NA, -5L)
+  class = "data.frame", row.names = c(NA, -5L)
 )
 
 data_list <- list(ADAMSET = reactive(data_small))

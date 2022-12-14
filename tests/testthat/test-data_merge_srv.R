@@ -70,7 +70,7 @@ testthat::test_that("data_merge_srv throws error with missing selector_list and 
     shiny::testServer(
       data_merge_srv,
       args = list(datasets = datasets_used),
-      expr =  NULL
+      expr = NULL
     ),
     "argument \"selector_list\" is missing, with no default"
   )
@@ -79,7 +79,7 @@ testthat::test_that("data_merge_srv throws error with missing selector_list and 
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = selector_list),
-      expr =  NULL
+      expr = NULL
     ),
     "argument \"datasets\" is missing, with no default"
   )
@@ -110,7 +110,7 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = selector_list, datasets = datasets_used, anl_name = 1),
-      expr =  NULL
+      expr = NULL
     ),
     regexp = "Must be of type 'string', not 'double'",
     fixed = TRUE
@@ -120,7 +120,7 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = selector_list, datasets = datasets_used, anl_name = "565"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -130,7 +130,7 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = selector_list, datasets = datasets_used, anl_name = "TRUE"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -140,7 +140,7 @@ testthat::test_that("data_merge_srv throws error when anl_name is not character 
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = selector_list, datasets = datasets_used, anl_name = "NA"),
-      expr =  NULL
+      expr = NULL
     ),
     "make.names(anl_name) == anl_name is not TRUE",
     fixed = TRUE
@@ -172,7 +172,7 @@ testthat::test_that("data_merge_srv throws error selector_list is not named list
     shiny::testServer(
       data_merge_srv,
       args = list(selector_list = reactive(list("A")), datasets = datasets_used),
-      expr =  session$returned()
+      expr = session$returned()
     ),
     "Assertion on 'selector_list()' failed: Must have names",
     fixed = TRUE
