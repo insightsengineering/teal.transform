@@ -260,7 +260,6 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
     ),
     regexp = "Assertion on 'select_validation_rule' failed:"
   )
-
 })
 
 testthat::test_that("data_extract_srv uses the current session id when id is missing", {
@@ -386,9 +385,7 @@ data_list_val <- list(ADSL = reactive(ADSL_val))
 join_keys_val <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 
 testthat::test_that("select validation", {
-
   server <- function(input, output, session) {
-
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list_val,
@@ -421,14 +418,11 @@ testthat::test_that("select validation", {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
     expect_match(output$out1, "Please fix errors in your selection")
   })
-
 })
 
 
 testthat::test_that("filter validation", {
-
   server <- function(input, output, session) {
-
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list_val,
@@ -461,14 +455,11 @@ testthat::test_that("filter validation", {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-filter1-vals" = "")
     expect_match(output$out1, "Please fix errors in your selection")
   })
-
 })
 
 
 testthat::test_that("select validation accepts function as validator", {
-
   server <- function(input, output, session) {
-
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list_val,
@@ -501,11 +492,9 @@ testthat::test_that("select validation accepts function as validator", {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
     expect_match(output$out1, "Please fix errors in your selection")
   })
-
 })
 
 testthat::test_that("data_extract_multiple_srv input validation", {
-
   iris_select <- data_extract_spec(
     dataname = "iris",
     select = select_spec(
@@ -529,7 +518,7 @@ testthat::test_that("data_extract_multiple_srv input validation", {
 
   data_list <- list(iris = reactive(iris))
 
-  server = function(input, output, session) {
+  server <- function(input, output, session) {
     exactly_2_validation <- function(msg) {
       ~ if (length(.) != 2) msg
     }
@@ -579,7 +568,7 @@ testthat::test_that("data_extract_multiple_srv input validation", {
     expect_true(iv_r()$is_valid())
 
     out1 <- paste(output$out1, collapse = "")
-    msg <-       paste(
+    msg <- paste(
       lapply(
         selector_list(),
         function(x) format_data_extract(x())
@@ -610,9 +599,5 @@ testthat::test_that("data_extract_multiple_srv input validation", {
       "species_var-dataset_iris_singleextract-filter1-vals" = c("setosa", "versicolor")
     )
     expect_true(iv_r()$is_valid())
-
   })
-
 })
-
-
