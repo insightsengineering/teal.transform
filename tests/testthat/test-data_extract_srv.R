@@ -504,30 +504,30 @@ testthat::test_that("select validation accepts function as validator", {
 
 })
 
-iris_select <- data_extract_spec(
-  dataname = "iris",
-  select = select_spec(
-    label = "Select variable:",
-    choices = variable_choices(iris, colnames(iris)),
-    selected = "Sepal.Length",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-
-iris_filter <- data_extract_spec(
-  dataname = "iris",
-  filter = filter_spec(
-    vars = "Species",
-    choices = c("setosa", "versicolor", "virginica"),
-    selected = "setosa",
-    multiple = TRUE
-  )
-)
-
-data_list <- list(iris = reactive(iris))
-
 testthat::test_that("data_extract_multiple_srv input validation", {
+
+  iris_select <- data_extract_spec(
+    dataname = "iris",
+    select = select_spec(
+      label = "Select variable:",
+      choices = variable_choices(iris, colnames(iris)),
+      selected = "Sepal.Length",
+      multiple = TRUE,
+      fixed = FALSE
+    )
+  )
+
+  iris_filter <- data_extract_spec(
+    dataname = "iris",
+    filter = filter_spec(
+      vars = "Species",
+      choices = c("setosa", "versicolor", "virginica"),
+      selected = "setosa",
+      multiple = TRUE
+    )
+  )
+
+  data_list <- list(iris = reactive(iris))
 
   server = function(input, output, session) {
     exactly_2_validation <- function(msg) {
