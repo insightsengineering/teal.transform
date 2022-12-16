@@ -361,7 +361,7 @@ testthat::test_that("data_extract_srv with a list of multiple data_extract_spec"
   )
 })
 
-ADSL_val <- data.frame(
+ADSL_val <- data.frame( # nolint
   STUDYID = "A",
   USUBJID = LETTERS[1:10],
   SEX = rep(c("F", "M"), 5),
