@@ -525,7 +525,6 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       filter_and_select_reactive <- reactive({
         if (is.null(dataname())) {
           list(iv = iv)
-          # NULL - TODO does this break stuff?
         } else {
           append(
             filter_and_select[[dataname()]](),
