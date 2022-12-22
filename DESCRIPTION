@@ -28,6 +28,7 @@ Imports:
     rlang,
     shiny,
     shinyjs,
+    shinyvalidate,
     stats,
     teal.code (>= 0.2.0),
     teal.data (>= 0.1.2),
