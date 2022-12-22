@@ -500,7 +500,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       })
       names(iv) <- lapply(data_extract_spec, `[[`, "dataname")
 
-      #also need a final iv for the case where no dataset is selected
+      # also need a final iv for the case where no dataset is selected
       iv[["blank_dataset_case"]] <- shinyvalidate::InputValidator$new()
       if (!is.null(dataset_validation_rule) && length(data_extract_spec) > 1) {
         iv[["blank_dataset_case"]]$add_rule("dataset", dataset_validation_rule)
