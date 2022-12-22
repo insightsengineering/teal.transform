@@ -489,10 +489,16 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
 
-      iv <- shinyvalidate::InputValidator$new()
-      if (!is.null(dataset_validation_rule) && length(data_extract_spec) > 1) {
-        iv$add_rule("dataset", dataset_validation_rule)
-      }
+      # Each dataset needs its own shinyvalidate to make sure only the
+      # currently visible d-e-s's validation is used
+      iv <- lapply(data_extract_spec, function(x) {
+        iv_dataset <- shinyvalidate::InputValidator$new()
+        if (!is.null(dataset_validation_rule) && length(data_extract_spec) > 1) {
+          iv_dataset$add_rule("dataset", dataset_validation_rule)
+        }
+        iv_dataset
+      })
+      names(iv) <- lapply(data_extract_spec, `[[`, "dataname")
 
       filter_and_select <- lapply(data_extract_spec, function(x) {
         data_extract_single_srv(
@@ -505,7 +511,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
           id = id_for_dataset(x$dataname),
           datasets = datasets,
           single_data_extract_spec = x,
-          iv = iv,
+          iv = iv[[x$dataname]],
           select_validation_rule = select_validation_rule,
           filter_validation_rule = filter_validation_rule
         )
@@ -524,7 +530,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 
       filter_and_select_reactive <- reactive({
         if (is.null(dataname())) {
-          list(iv = iv)
+          list(iv = iv[[1]])
         } else {
           append(
             filter_and_select[[dataname()]](),
