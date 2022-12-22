@@ -412,14 +412,64 @@ testthat::test_that("select validation", {
 
   shiny::testServer(server, {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "STUDYID")
-    expect_true(iv_r()$is_valid())
-    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+    testthat::expect_true(iv_r()$is_valid())
+    testthat::expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
 
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
-    expect_match(output$out1, "Please fix errors in your selection")
+    testthat::expect_match(output$out1, "Please fix errors in your selection")
   })
 })
 
+testthat::test_that("validation only runs on currently selected dataset's data extract spec", {
+
+  iris_extract_val <- data_extract_spec(
+    dataname = "IRIS",
+    select = select_spec(
+      label = "Select variable:",
+      choices = variable_choices(iris, colnames(iris)),
+      selected = "Sepal.Length",
+      multiple = TRUE,
+      fixed = FALSE
+    )
+  )
+
+
+  server <- function(input, output, session) {
+
+    adsl_reactive_input <- data_extract_srv(
+      id = "adsl_var",
+      datasets = data_list_val,
+      data_extract_spec = list(adsl_extract_val, iris_extract_val),
+      join_keys = join_keys_val,
+      select_validation_rule = shinyvalidate::sv_required("Please select a variable.")
+    )
+
+    iv_r <- reactive({
+      iv <- shinyvalidate::InputValidator$new()
+      iv$add_validator(adsl_reactive_input()$iv)
+      iv$enable()
+      iv
+    })
+
+    output$out1 <- renderPrint({
+      if (iv_r()$is_valid()) {
+        cat(format_data_extract(adsl_reactive_input()))
+      } else {
+        "Please fix errors in your selection"
+      }
+    })
+  }
+
+  shiny::testServer(server, {
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
+    testthat::expect_match(output$out1, "Please fix errors in your selection")
+    session$setInputs("adsl_var-dataset" = "IRIS")
+    session$setInputs("adsl_var-dataset_IRIS_singleextract-select" = "Species")
+    testthat::expect_true(iv_r()$is_valid())
+  })
+
+
+})
 
 testthat::test_that("filter validation", {
   server <- function(input, output, session) {
@@ -449,11 +499,11 @@ testthat::test_that("filter validation", {
 
   shiny::testServer(server, {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-filter1-vals" = "F")
-    expect_true(iv_r()$is_valid())
-    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+    testthat::expect_true(iv_r()$is_valid())
+    testthat::expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
 
     session$setInputs("adsl_var-dataset_ADSL_singleextract-filter1-vals" = "")
-    expect_match(output$out1, "Please fix errors in your selection")
+    testthat::expect_match(output$out1, "Please fix errors in your selection")
   })
 })
 
@@ -486,11 +536,11 @@ testthat::test_that("select validation accepts function as validator", {
 
   shiny::testServer(server, {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "STUDYID")
-    expect_true(iv_r()$is_valid())
-    expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
+    testthat::expect_true(iv_r()$is_valid())
+    testthat::expect_equal(output$out1, format_data_extract(adsl_reactive_input()))
 
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
-    expect_match(output$out1, "Please fix errors in your selection")
+    testthat::expect_match(output$out1, "Please fix errors in your selection")
   })
 })
 
@@ -558,14 +608,14 @@ testthat::test_that("data_extract_multiple_srv input validation", {
   }
 
   shiny::testServer(server, {
-    expect_false(iv_r()$is_valid())
+    testthat::expect_false(iv_r()$is_valid())
     session$setInputs(
       "x_var-dataset_iris_singleextract-select" = "Sepal.Length"
     )
     session$setInputs(
       "species_var-dataset_iris_singleextract-filter1-vals" = c("setosa", "versicolor")
     )
-    expect_true(iv_r()$is_valid())
+    testthat::expect_true(iv_r()$is_valid())
 
     out1 <- paste(output$out1, collapse = "")
     msg <- paste(
@@ -576,7 +626,7 @@ testthat::test_that("data_extract_multiple_srv input validation", {
       collapse = ""
     )
     # slight difference in spacing and new line b/c of cat()
-    expect_equal(
+    testthat::expect_equal(
       gsub("(\\s)|(\n)", "", out1),
       gsub("(\\s)|(\n)", "", msg)
     )
@@ -584,8 +634,8 @@ testthat::test_that("data_extract_multiple_srv input validation", {
     session$setInputs(
       "x_var-dataset_iris_singleextract-select" = ""
     )
-    expect_false(iv_r()$is_valid())
-    expect_match(output$out1, "Please fix errors in your selection")
+    testthat::expect_false(iv_r()$is_valid())
+    testthat::expect_match(output$out1, "Please fix errors in your selection")
 
     session$setInputs(
       "x_var-dataset_iris_singleextract-select" = "Sepal.Length"
@@ -593,11 +643,11 @@ testthat::test_that("data_extract_multiple_srv input validation", {
     session$setInputs(
       "species_var-dataset_iris_singleextract-filter1-vals" = ""
     )
-    expect_false(iv_r()$is_valid())
+    testthat::expect_false(iv_r()$is_valid())
 
     session$setInputs(
       "species_var-dataset_iris_singleextract-filter1-vals" = c("setosa", "versicolor")
     )
-    expect_true(iv_r()$is_valid())
+    testthat::expect_true(iv_r()$is_valid())
   })
 })
