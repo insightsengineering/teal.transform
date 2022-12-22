@@ -15,7 +15,8 @@ merge_datasets(
 \arguments{
 \item{selector_list}{(\code{reactive})\cr
 output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective \code{\link[=data_extract_ui]{data_extract_ui()}}.}
+When using a reactive named list, the names must be identical to the shiny ids of the respective
+\code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
 \item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
 object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
