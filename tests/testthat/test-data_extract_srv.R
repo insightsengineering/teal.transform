@@ -421,7 +421,6 @@ testthat::test_that("select validation", {
 })
 
 testthat::test_that("validation only runs on currently selected dataset's data extract spec", {
-
   iris_extract_val <- data_extract_spec(
     dataname = "IRIS",
     select = select_spec(
@@ -435,7 +434,6 @@ testthat::test_that("validation only runs on currently selected dataset's data e
 
 
   server <- function(input, output, session) {
-
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list_val,
@@ -467,8 +465,6 @@ testthat::test_that("validation only runs on currently selected dataset's data e
     session$setInputs("adsl_var-dataset_IRIS_singleextract-select" = "Species")
     testthat::expect_true(iv_r()$is_valid())
   })
-
-
 })
 
 testthat::test_that("filter validation", {
