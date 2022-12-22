@@ -700,15 +700,15 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
   checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
   checkmate::assert(
     checkmate::check_multi_class(select_validation_rule, class = c("function", "formula"), null.ok = TRUE),
-    checkmate::check_list(select_validation_rule, types = c("function", "formula"), null.ok = TRUE)
+    checkmate::check_list(select_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
   checkmate::assert(
     checkmate::check_multi_class(filter_validation_rule, class = c("function", "formula"), null.ok = TRUE),
-    checkmate::check_list(filter_validation_rule, types = c("function", "formula"), null.ok = TRUE)
+    checkmate::check_list(filter_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
   checkmate::assert(
     checkmate::check_multi_class(dataset_validation_rule, class = c("function", "formula"), null.ok = TRUE),
-    checkmate::check_list(dataset_validation_rule, types = c("function", "formula"), null.ok = TRUE)
+    checkmate::check_list(dataset_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
 
   logger::log_trace(
