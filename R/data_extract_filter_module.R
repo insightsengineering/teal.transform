@@ -102,6 +102,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             choices = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous"),
             selected = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous")
           )
+
           teal.widgets::updateOptionalSelectInput(
             session = session,
             inputId = "vals",
