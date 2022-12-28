@@ -78,10 +78,14 @@ data_extract_filter_srv <- function(id, datasets, filter) {
               input$col
             )
 
-            if (filter$multiple) {
-              selected <- choices
+            selected <- if (!is.null(filter$selected)) {
+              filter$selected
             } else {
-              selected <- choices[1]
+              if (filter$multiple) {
+                choices
+              } else {
+                choices[1]
+              }
             }
           } else {
             choices <- character(0)
