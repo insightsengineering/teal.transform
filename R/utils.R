@@ -143,10 +143,11 @@ extract_choices_labels <- function(choices, values = NULL) {
 #' }
 compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {
   if (is.null(validator_names)) {
-    validator_names <- intersect(validator_names, names(selector_list()))
+    validator_names <- names(selector_list())
   }
+  valid_validator_names <- intersect(validator_names, names(selector_list()))
 
-  for (validator_name in validator_names) {
+  for (validator_name in valid_validator_names) {
     single_des <- selector_list()[[validator_name]]()
     if (!is.null(single_des$iv)) {
       iv$add_validator(single_des$iv)
