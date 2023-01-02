@@ -75,7 +75,8 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           } else if (!rlang::is_empty(input$col)) {
             choices <- value_choices(
               datasets[[filter$dataname]](),
-              input$col
+              input$col,
+              `if`(input$col == attr(filter$choices, "var_choices"), attr(filter$choices, "var_label"), NULL)
             )
 
             selected <- if (!is.null(filter$selected)) {
