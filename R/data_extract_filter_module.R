@@ -76,7 +76,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             choices <- value_choices(
               datasets[[filter$dataname]](),
               input$col,
-              `if`(input$col == attr(filter$choices, "var_choices"), attr(filter$choices, "var_label"), NULL)
+              `if`(input$col %in% attr(filter$choices, "var_choices"), attr(filter$choices, "var_label"), NULL)
             )
 
             selected <- if (!is.null(filter$selected)) {
