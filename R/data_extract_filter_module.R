@@ -75,13 +75,16 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           } else if (!rlang::is_empty(input$col)) {
             choices <- value_choices(
               datasets[[filter$dataname]](),
-              input$col
+              input$col,
+              `if`(isTRUE(input$col == attr(filter$choices, "var_choices")), attr(filter$choices, "var_label"), NULL)
             )
 
-            if (filter$multiple) {
-              selected <- choices
+            selected <- if (!is.null(filter$selected)) {
+              filter$selected
+            } else if (filter$multiple) {
+              choices
             } else {
-              selected <- choices[1]
+              choices[1]
             }
           } else {
             choices <- character(0)
@@ -98,6 +101,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             choices = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous"),
             selected = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous")
           )
+
           teal.widgets::updateOptionalSelectInput(
             session = session,
             inputId = "vals",
