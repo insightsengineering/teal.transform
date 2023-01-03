@@ -1,12 +1,18 @@
-# teal.transform 0.2.0.9006
-
-* Examples use `scda.2022` instead of `scda.2021`
+# teal.transform 0.2.0.9007
 
 ### Enhancements
 
 * Updated error messages for `choices_labeled()`, `variable_choices()` and `value_choices()` to be more informative.
 * Updated `data_extract` to be compatible with `shinyvalidate`: `data_extract_srv` and `data_extract_multiple_srv` accept `shinyvalidate` validation rules and their return objects now include `shinyvalidate::InputValidator`(s). 
 * Added helper function `compose_and_enable_validators` to simplify enabling `shinyvalidate::InputValidator`s returned from `data_extract_multiple_srv`. 
+
+### Bug fixes
+
+* Fixed a bug in `data_extract_filter_srv` when app developer sets a selected value.
+
+### Miscellaneous
+
+* Examples use `scda.2022` instead of `scda.2021`
 
 # teal.transform 0.2.0
 
