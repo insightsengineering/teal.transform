@@ -164,8 +164,8 @@ merge_expression_module <- function(datasets,
 #' Data merge module server
 #'
 #' @description `r lifecycle::badge("experimental")`
-#' @details When additional processing of the `data_extract` list input is required, `merge_expression_srv()` can be combined
-#'   with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
+#' @details When additional processing of the `data_extract` list input is required, `merge_expression_srv()` can be
+#'   combined with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
 #'   Compare the example below with that found in [merge_expression_module()].
 #'
 #' @inheritParams shiny::moduleServer
@@ -177,7 +177,8 @@ merge_expression_module <- function(datasets,
 #'  This will be used to extract the `keys` of every dataset.
 #' @param selector_list (`reactive`)\cr
 #'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
-#'   When using a reactive named list, the names must be identical to the shiny ids of the respective [data_extract_ui()].
+#'   When using a reactive named list, the names must be identical to the shiny ids of the respective
+#'   [data_extract_ui()].
 #' @param merge_function (`character(1)` or `reactive`)\cr
 #'  A character string of a function that accepts the arguments
 #'  `x`, `y` and `by` to perform the merging of datasets.
@@ -334,7 +335,12 @@ merge_expression_srv <- function(id = "merge_id",
         merge_fun_name <- if (inherits(merge_function, "reactive")) merge_function() else merge_function
         check_merge_function(merge_fun_name)
 
-        ds <- Filter(Negate(is.null), lapply(selector_list(), function(x) x()))
+        # function to filter out selectors which are NULL or only have validator
+        f <- function(x) {
+          is.null(x) || (length(names(x)) == 1 && names(x) == "iv")
+        }
+
+        ds <- Filter(Negate(f), lapply(selector_list(), function(x) x()))
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
         merge_datasets(
           selector_list = ds,
