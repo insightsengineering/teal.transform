@@ -76,4 +76,3 @@ testthat::test_that("print method- displays proper format", {
     )
   )
 })
-
