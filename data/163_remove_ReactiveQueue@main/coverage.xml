@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.816191656340355" branch-rate="0" lines-covered="1976" lines-valid="2421" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-24 14:57:52">
+<coverage line-rate="0.819909128459314" branch-rate="0" lines-covered="1985" lines-valid="2421" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-24 23:59:28">
   <sources/>
   <packages>
-    <package name="teal.transform" line-rate="0.816191656340355" branch-rate="0" complexity="0">
+    <package name="teal.transform" line-rate="0.819909128459314" branch-rate="0" complexity="0">
       <classes>
         <class name="all_choices.R" filename="R/all_choices.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -4920,18 +4920,18 @@
             <line number="354" hits="14" branch="false"/>
           </lines>
         </class>
-        <class name="Queue.R" filename="R/Queue.R" line-rate="0.608695652173913" branch-rate="0" complexity="0">
+        <class name="Queue.R" filename="R/Queue.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
             <method name="push" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="25" hits="10" branch="false"/>
-                <line number="27" hits="50" branch="false"/>
-                <line number="30" hits="10" branch="false"/>
+                <line number="25" hits="11" branch="false"/>
+                <line number="27" hits="52" branch="false"/>
+                <line number="30" hits="11" branch="false"/>
               </lines>
             </method>
             <method name="get" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="38" hits="19" branch="false"/>
+                <line number="38" hits="21" branch="false"/>
               </lines>
             </method>
             <method name="pop" signature="" line-rate="1" branch-rate="0">
@@ -4957,28 +4957,28 @@
             </method>
             <method name="size" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="81" hits="3" branch="false"/>
+                <line number="81" hits="4" branch="false"/>
               </lines>
             </method>
-            <method name="print" signature="" line-rate="0" branch-rate="0">
+            <method name="print" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="90" hits="0" branch="false"/>
-                <line number="91" hits="0" branch="false"/>
-                <line number="92" hits="0" branch="false"/>
-                <line number="93" hits="0" branch="false"/>
-                <line number="94" hits="0" branch="false"/>
-                <line number="95" hits="0" branch="false"/>
-                <line number="96" hits="0" branch="false"/>
-                <line number="97" hits="0" branch="false"/>
-                <line number="98" hits="0" branch="false"/>
+                <line number="90" hits="1" branch="false"/>
+                <line number="91" hits="1" branch="false"/>
+                <line number="92" hits="1" branch="false"/>
+                <line number="93" hits="1" branch="false"/>
+                <line number="94" hits="1" branch="false"/>
+                <line number="95" hits="1" branch="false"/>
+                <line number="96" hits="1" branch="false"/>
+                <line number="97" hits="1" branch="false"/>
+                <line number="98" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="25" hits="10" branch="false"/>
-            <line number="27" hits="50" branch="false"/>
-            <line number="30" hits="10" branch="false"/>
-            <line number="38" hits="19" branch="false"/>
+            <line number="25" hits="11" branch="false"/>
+            <line number="27" hits="52" branch="false"/>
+            <line number="30" hits="11" branch="false"/>
+            <line number="38" hits="21" branch="false"/>
             <line number="47" hits="1" branch="false"/>
             <line number="48" hits="1" branch="false"/>
             <line number="49" hits="1" branch="false"/>
@@ -4988,16 +4988,16 @@
             <line number="64" hits="7" branch="false"/>
             <line number="72" hits="1" branch="false"/>
             <line number="73" hits="1" branch="false"/>
-            <line number="81" hits="3" branch="false"/>
-            <line number="90" hits="0" branch="false"/>
-            <line number="91" hits="0" branch="false"/>
-            <line number="92" hits="0" branch="false"/>
-            <line number="93" hits="0" branch="false"/>
-            <line number="94" hits="0" branch="false"/>
-            <line number="95" hits="0" branch="false"/>
-            <line number="96" hits="0" branch="false"/>
-            <line number="97" hits="0" branch="false"/>
-            <line number="98" hits="0" branch="false"/>
+            <line number="81" hits="4" branch="false"/>
+            <line number="90" hits="1" branch="false"/>
+            <line number="91" hits="1" branch="false"/>
+            <line number="92" hits="1" branch="false"/>
+            <line number="93" hits="1" branch="false"/>
+            <line number="94" hits="1" branch="false"/>
+            <line number="95" hits="1" branch="false"/>
+            <line number="96" hits="1" branch="false"/>
+            <line number="97" hits="1" branch="false"/>
+            <line number="98" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="resolve_delayed.R" filename="R/resolve_delayed.R" line-rate="1" branch-rate="0" complexity="0">
