@@ -29,7 +29,7 @@ Elements are returned in the same order that they were added.
 \if{html}{\out{<a id="method-Queue-push"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-push}{}}}
 \subsection{Method \code{push()}}{
-Adds element(s) to Queue.
+Adds element(s) to \code{Queue}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$push(new_elements)}\if{html}{\out{</div>}}
 }
@@ -49,7 +49,7 @@ self invisibly
 \if{html}{\out{<a id="method-Queue-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-get}{}}}
 \subsection{Method \code{get()}}{
-Returns all contents of the Queue object.
+Returns all contents of the \code{Queue} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$get(reversed = FALSE)}\if{html}{\out{</div>}}
 }
@@ -58,32 +58,33 @@ Returns all contents of the Queue object.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{reversed}}{(\code{logical})\cr
-if TRUE then returns the First-In-First-Out order; otherwise returns the Last-In-First-Out order.}
+if TRUE then returns the First-In-First-Out order;
+otherwise returns the Last-In-First-Out order.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-single vector containing all queue contents
+single vector containing all \code{Queue} contents
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-pop"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-pop}{}}}
 \subsection{Method \code{pop()}}{
-Returns the first (oldest) element of the Queue and removes it.
+Returns the first (oldest) element of the \code{Queue} and removes it.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$pop()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-vector of length 1 containing the first element of Queue or \code{NULL} if Queue is empty
+vector of length 1 containing the first element of \code{Queue} or NULL if \code{Queue} is empty
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-remove"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-remove}{}}}
 \subsection{Method \code{remove()}}{
-Removes the oldest occurrence of specified element(s) from Queue.
+Removes the oldest occurrence of specified element(s) from \code{Queue}.
 Relies on implicit type conversions of R identify elements to remove.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$remove(elements)}\if{html}{\out{</div>}}
@@ -92,7 +93,7 @@ Relies on implicit type conversions of R identify elements to remove.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{elements}}{vector of elements to remove from Queue}
+\item{\code{elements}}{vector of elements to remove from \code{Queue}}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,7 +105,7 @@ self invisibly
 \if{html}{\out{<a id="method-Queue-empty"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-empty}{}}}
 \subsection{Method \code{empty()}}{
-Removes all elements from Queue.
+Removes all elements from \code{Queue}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$empty()}\if{html}{\out{</div>}}
 }
@@ -117,7 +118,7 @@ self invisibly
 \if{html}{\out{<a id="method-Queue-size"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-size}{}}}
 \subsection{Method \code{size()}}{
-Returns the number of elements in queue.
+Returns the number of elements in \code{Queue}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$size()}\if{html}{\out{</div>}}
 }
@@ -130,7 +131,7 @@ integer of length 1
 \if{html}{\out{<a id="method-Queue-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-print}{}}}
 \subsection{Method \code{print()}}{
-Prints this queue.
+Prints this \code{Queue}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Queue$print(...)}\if{html}{\out{</div>}}
 }
@@ -138,7 +139,7 @@ Prints this queue.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{the additional arguments to this method, ignored}
+\item{\code{...}}{additional arguments to this method, ignored}
 }
 \if{html}{\out{</div>}}
 }

@@ -15,7 +15,7 @@ Queue <- R6::R6Class( # nolint
   # public methods ----
   public = list(
     #' @description
-    #' Adds element(s) to Queue.
+    #' Adds element(s) to `Queue`.
     #'
     #' @param new_elements vector of elements to add
     #'
@@ -36,12 +36,13 @@ Queue <- R6::R6Class( # nolint
       invisible(self)
     },
     #' @description
-    #' Returns all contents of the Queue object.
+    #' Returns all contents of the `Queue` object.
     #'
     #' @param reversed (`logical`)\cr
-    #' if TRUE then returns the First-In-First-Out order; otherwise returns the Last-In-First-Out order.
+    #' if TRUE then returns the First-In-First-Out order;
+    #' otherwise returns the Last-In-First-Out order.
     #'
-    #' @return single vector containing all queue contents
+    #' @return single vector containing all `Queue` contents
     #'
     get = function(reversed = FALSE) {
       if (reversed) {
@@ -51,9 +52,10 @@ Queue <- R6::R6Class( # nolint
       }
     },
     #' @description
-    #' Returns the first (oldest) element of the Queue and removes it.
+    #' Returns the first (oldest) element of the `Queue` and removes it.
     #'
-    #' @return vector of length 1 containing the first element of Queue or `NULL` if Queue is empty
+    #' @return
+    #' vector of length 1 containing the first element of `Queue` or NULL if `Queue` is empty
     #'
     pop = function() {
       returned_element <- self$get()[1]
@@ -61,10 +63,10 @@ Queue <- R6::R6Class( # nolint
       returned_element
     },
     #' @description
-    #' Removes the oldest occurrence of specified element(s) from Queue.
+    #' Removes the oldest occurrence of specified element(s) from `Queue`.
     #' Relies on implicit type conversions of R identify elements to remove.
     #'
-    #' @param elements vector of elements to remove from Queue
+    #' @param elements vector of elements to remove from `Queue`
     #'
     #' @return self invisibly
     #'
@@ -76,7 +78,7 @@ Queue <- R6::R6Class( # nolint
       invisible(self)
     },
     #' @description
-    #' Removes all elements from Queue.
+    #' Removes all elements from `Queue`.
     #'
     #' @return self invisibly
     #'
@@ -85,7 +87,7 @@ Queue <- R6::R6Class( # nolint
       invisible(self)
     },
     #' @description
-    #' Returns the number of elements in queue.
+    #' Returns the number of elements in `Queue`.
     #'
     #' @return integer of length 1
     #'
@@ -93,9 +95,9 @@ Queue <- R6::R6Class( # nolint
       length(self$get())
     },
     #' @description
-    #' Prints this queue.
+    #' Prints this `Queue`.
     #'
-    #' @param ... the additional arguments to this method, ignored
+    #' @param ... additional arguments to this method, ignored
     #'
     #' @return invisibly self
     print = function(...) {
