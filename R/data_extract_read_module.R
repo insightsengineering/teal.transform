@@ -83,7 +83,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
         }
       }
 
-      tracked_input <- teal.slice::Queue$new()
+      tracked_input <- Queue$new()
       r_select <- eventReactive(
         ignoreNULL = FALSE,
         eventExpr = {
