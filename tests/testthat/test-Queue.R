@@ -57,4 +57,3 @@ testthat::test_that("empty method removes all elements from queue", {
   testthat::expect_no_error(queue$empty())
   testthat::expect_equal(queue, Queue$new())
 })
-

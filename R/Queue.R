@@ -59,7 +59,7 @@ Queue <- R6::R6Class( # nolint
     remove = function(elements) {
       for (el in elements) {
         ind <- Position(function(x) identical(x, el), private$array)
-        if (!is.na(ind)) {private$array <- private$array[-ind]}
+        if (!is.na(ind)) private$array <- private$array[-ind]
       }
       invisible(self)
     },
