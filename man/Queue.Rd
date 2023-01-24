@@ -51,18 +51,9 @@ self invisibly
 \subsection{Method \code{get()}}{
 Returns all contents of the \code{Queue} object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$get(reversed = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Queue$get()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{reversed}}{(\code{logical})\cr
-if TRUE then returns the First-In-First-Out order;
-otherwise returns the Last-In-First-Out order.}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 single vector containing all \code{Queue} contents
 }
