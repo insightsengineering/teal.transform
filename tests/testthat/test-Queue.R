@@ -24,7 +24,6 @@ testthat::test_that("get method returns elements of queue", {
   queue <- Queue$new()
   queue$push(letters)
   testthat::expect_identical(queue$get(), letters)
-  testthat::expect_identical(queue$get(reversed = TRUE), rev(letters))
 })
 
 testthat::test_that("pop method removes first element from queue", {
@@ -39,6 +38,10 @@ testthat::test_that("remove method removes specified element from queue", {
   queue$push(c(7, 8, 7, 8))
   testthat::expect_no_error(queue$remove(7))
   testthat::expect_equal(queue$get(), c(8, 7, 8))
+  testthat::expect_no_error(queue$remove(7))
+  testthat::expect_equal(queue$get(), c(8, 8))
+  testthat::expect_no_error(queue$remove(7))
+  testthat::expect_equal(queue$get(), c(8, 8))
 })
 
 testthat::test_that("remove method can remove several elements", {
