@@ -108,7 +108,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
               )
             )
             tracked_input$remove(setdiff(tracked_input$get(), input$select))
-            tracked_input$push(setdiff(input$select, tracked_input$get(reversed = TRUE)))
+            tracked_input$push(setdiff(input$select, tracked_input$get()))
             res <- tracked_input$get()
             res <- if (is.null(res)) character(0) else res
           } else {
