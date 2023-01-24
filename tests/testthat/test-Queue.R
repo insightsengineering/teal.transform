@@ -57,3 +57,23 @@ testthat::test_that("empty method removes all elements from queue", {
   testthat::expect_no_error(queue$empty())
   testthat::expect_equal(queue, Queue$new())
 })
+
+testthat::test_that("print method- displays proper format", {
+  queue <- Queue$new()
+  queue$push(c(7, 8))
+  testthat::expect_identical(
+    testthat::capture_output(
+      queue$print()
+    ),
+    testthat::capture_output(
+      cat(
+        "<Queue>",
+        "Size: 2",
+        "Elements:",
+        "7 8",
+        sep = "\n"
+      )
+    )
+  )
+})
+
