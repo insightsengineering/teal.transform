@@ -22,15 +22,9 @@ Queue <- R6::R6Class( # nolint
     #' @return self invisibly
     #'
     push = function(new_elements) {
-      if (R6::is.R6(new_elements) || isS4(new_elements)) {
-        private$set(new_elements, append = TRUE)
-      } else {
-        for (i in seq_along(new_elements)) {
-          if (length(new_elements[i]) == 1 || R6::is.R6(new_elements[i])) {
-            # new_elements[i] does not discard names if it's a names list
-            private$set(new_elements[i], append = TRUE)
-          }
-        }
+      for (i in seq_along(new_elements)) {
+        # new_elements[i] does not discard names if it's a named list
+        private$array <- append(private$array, new_elements[i])
       }
 
       invisible(self)
@@ -38,18 +32,10 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns all contents of the `Queue` object.
     #'
-    #' @param reversed (`logical`)\cr
-    #' if TRUE then returns the First-In-First-Out order;
-    #' otherwise returns the Last-In-First-Out order.
-    #'
     #' @return single vector containing all `Queue` contents
     #'
-    get = function(reversed = FALSE) {
-      if (reversed) {
-        rev(private$array)
-      } else {
-        private$array
-      }
+    get = function() {
+      private$array
     },
     #' @description
     #' Returns the first (oldest) element of the `Queue` and removes it.
@@ -58,8 +44,8 @@ Queue <- R6::R6Class( # nolint
     #' vector of length 1 containing the first element of `Queue` or NULL if `Queue` is empty
     #'
     pop = function() {
-      returned_element <- self$get()[1]
-      private$set(self$get()[-1])
+      returned_element <- self$get()[1L]
+      private$array <- private$array[-1L]
       returned_element
     },
     #' @description
@@ -71,10 +57,10 @@ Queue <- R6::R6Class( # nolint
     #' @return self invisibly
     #'
     remove = function(elements) {
-      lapply(elements, function(element) {
-        index_to_remove <- which(vapply(self$get(), identical, logical(1), element))[1]
-        if (!is.na(index_to_remove)) private$set(self$get()[-index_to_remove])
-      })
+      for (el in elements) {
+        ind <- Position(function(x) identical(x, el), private$array)
+        if (!is.na(ind)) {private$array <- private$array[-ind]}
+      }
       invisible(self)
     },
     #' @description
@@ -83,7 +69,7 @@ Queue <- R6::R6Class( # nolint
     #' @return self invisibly
     #'
     empty = function() {
-      private$set(c())
+      private$array <- c()
       invisible(self)
     },
     #' @description
@@ -115,14 +101,8 @@ Queue <- R6::R6Class( # nolint
 
   # private members ----
   private = list(
-    array = c(),
-    set = function(x, append = FALSE) {
-      if (isTRUE(append)) {
-        private$array <- c(private$array, x)
-      } else {
-        private$array <- x
-      }
-    }
+    array = c()
   ),
+
   lock_class = TRUE
 )
