@@ -10,6 +10,8 @@
 #'
 #' Elements are returned in the same order that they were added.
 #'
+#' @keywords internal
+#'
 Queue <- R6::R6Class( # nolint
   classname = "Queue",
   # public methods ----

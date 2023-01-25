@@ -12,6 +12,7 @@ thus all data types can be stored, but silent coercion may occur.
 
 Elements are returned in the same order that they were added.
 }
+\keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

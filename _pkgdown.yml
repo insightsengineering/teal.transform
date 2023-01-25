@@ -51,6 +51,3 @@ reference:
   - title: Human-readable formatting of a data extract object
     contents:
       - format_data_extract
-  - title: Class definitions
-    contents:
-      - Queue
