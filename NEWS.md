@@ -1,5 +1,9 @@
 # teal.transform 0.2.0.9008
 
+### New Features
+
+* Added `Queue` class with updated unit tests.
+
 ### Enhancements
 
 * Updated error messages for `choices_labeled()`, `variable_choices()` and `value_choices()` to be more informative.
