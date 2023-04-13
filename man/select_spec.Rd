@@ -74,94 +74,48 @@ If \code{select_spec}, then the function double checks the \code{choices} and \c
 \code{select_spec} is used inside teal to create a \code{\link[shiny]{selectInput}}
 that will select columns from a dataset.
 }
-\details{
-To give you some more insights into this function there are several examples. These all
-start by a data set containing the columns \code{"AGE"}, \code{"AVAL"} and \code{"BMRKR1"}.
-
-\enumerate{
-\item{Selection with just one column allowed }{
-\preformatted{
-select = select_spec(
+\examples{
+# Selection with just one column allowed
+select_spec(
   choices = c("AVAL", "BMRKR1", "AGE"),
   selected = c("AVAL"),
   multiple = FALSE,
   fixed = FALSE,
   label = "Column"
 )
-    }
-\if{html}{
-      \figure{select_spec_1.png}{options: alt="Selection with just one column allowed"}
-    }
-\if{html}{
-      \figure{select_spec_11.png}{options: alt="Selection with just one column allowed"}
-    }
-}
-\item{Selection with just multiple columns allowed }{
-\preformatted{
-select = select_spec(
+
+# Selection with just multiple columns allowed
+select_spec(
   choices = c("AVAL", "BMRKR1", "AGE"),
   selected = c("AVAL", "BMRKR1"),
   multiple = TRUE,
   fixed = FALSE,
   label = "Columns"
 )
-    }
-\if{html}{
-      \figure{select_spec_2.png}{options: alt="Selection with just multiple columns allowed"}
-    }
-\if{html}{
-      \figure{select_spec_21.png}{options: alt="Selection with just multiple columns allowed"}
-    }
-}
-\item{Selection without user access }{
-\preformatted{
-select = select_spec(
+
+# Selection without user access
+select_spec(
   choices = c("AVAL", "BMRKR1"),
   selected = c("AVAL", "BMRKR1"),
   multiple = TRUE,
   fixed = TRUE,
   label = "Columns"
 )
-    }
-\if{html}{
-      \figure{select_spec_3.png}{options: alt="Selection without user access"}
-    }
-}
-\item{Delayed version}{
-\preformatted{
-      adsl_select <- select_spec(
-        label = "Select variable:",
-        choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-        selected = "BMRKR1",
-        multiple = FALSE,
-        fixed = FALSE
-      )
-    }
-}
-\item{all_choices passed to selected}{
-\preformatted{
-      adsl_select <- select_spec(
-        label = "Select variable:",
-        choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-        selected = all_choices()
-      )
-    }
-}
-}
-}
-\examples{
-# functional form (subsetting for factor variables only) of select_spec with delayed data loading
+
+# Delayed version
 select_spec(
-  choices = variable_choices("ADSL", subset = function(data) {
-    idx <- vapply(data, is.factor, logical(1))
-    return(names(data)[idx])
-  }),
-  # setting first factor variable as default
-  selected = variable_choices("ADSL", subset = function(data) {
-    idx <- vapply(data, is.factor, logical(1))
-    return(names(data)[idx][1])
-  }),
-  multiple = TRUE
+  label = "Select variable:",
+  choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
+  selected = "BMRKR1",
+  multiple = FALSE,
+  fixed = FALSE
+)
+
+# all_choices passed to selected
+select_spec(
+  label = "Select variable:",
+  choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
+  selected = all_choices()
 )
 
 # Both below objects are semantically the same
