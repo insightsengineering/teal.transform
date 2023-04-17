@@ -14,7 +14,7 @@ that will select columns from a dataset."><!-- mathjax --><script src="https://c
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9011</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,14 +39,6 @@ that will select columns from a dataset."><!-- mathjax --><script src="https://c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -158,74 +150,118 @@ shiny <code><a href="https://shiny.rstudio.com/reference/shiny/latest/selectInpu
 It contains all input values.
 If <code>select_spec</code>, then the function double checks the <code>choices</code> and <code>selected</code> inputs.</p>
     </div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>To give you some more insights into this function there are several examples. These all
-start by a data set containing the columns <code>"AGE"</code>, <code>"AVAL"</code> and <code>"BMRKR1"</code>.</p>
-<ol><li><p>Selection with just one column allowed 
-</p><div class="sourceCode"><pre><code><span></span>
-<span><span class="va">select</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
-<span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span>
-<span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span><span class="op">)</span>,</span>
-<span>  multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  label <span class="op">=</span> <span class="st">"Column"</span></span>
-<span><span class="op">)</span></span>
-<span>    </span></code></pre></div>      <img src="figures/select_spec_1.png" alt="Selection with just one column allowed"><img src="figures/select_spec_11.png" alt="Selection with just one column allowed"></li>
-<li><p>Selection with just multiple columns allowed 
-</p><div class="sourceCode"><pre><code><span></span>
-<span><span class="va">select</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
-<span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span>
-<span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span>
-<span>  multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  label <span class="op">=</span> <span class="st">"Columns"</span></span>
-<span><span class="op">)</span></span>
-<span>    </span></code></pre></div>      <img src="figures/select_spec_2.png" alt="Selection with just multiple columns allowed"><img src="figures/select_spec_21.png" alt="Selection with just multiple columns allowed"></li>
-<li><p>Selection without user access 
-</p><div class="sourceCode"><pre><code><span></span>
-<span><span class="va">select</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
-<span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span>
-<span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span>
-<span>  multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  fixed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  label <span class="op">=</span> <span class="st">"Columns"</span></span>
-<span><span class="op">)</span></span>
-<span>    </span></code></pre></div>      <img src="figures/select_spec_3.png" alt="Selection without user access"></li>
-<li><p>Delayed version
-</p><div class="sourceCode"><pre><code><span></span>
-<span>      <span class="va">adsl_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
-<span>        label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span>
-<span>        choices <span class="op">=</span> <span class="fu"><a href="../reference/variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        selected <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span>
-<span>        multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>        fixed <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>      <span class="op">)</span></span>
-<span>    </span></code></pre></div></li>
-<li><p>all_choices passed to selected
-</p><div class="sourceCode"><pre><code><span></span>
-<span>      <span class="va">adsl_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
-<span>        label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span>
-<span>        choices <span class="op">=</span> <span class="fu"><a href="../reference/variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        selected <span class="op">=</span> <span class="fu"><a href="../reference/all_choices.html">all_choices</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    </span></code></pre></div></li>
-</ol></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># functional form (subsetting for factor variables only) of select_spec with delayed data loading</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Selection with just one column allowed</span></span></span>
 <span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, subset <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">is.factor</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="co"># setting first factor variable as default</span></span></span>
-<span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, subset <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">is.factor</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Column"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $choices</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     AVAL   BMRKR1      AGE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "AVAL" "BMRKR1"    "AGE" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   AVAL </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "AVAL" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $multiple</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $always_selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Column"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "select_spec"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Selection with just multiple columns allowed</span></span></span>
+<span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Columns"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $choices</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     AVAL   BMRKR1      AGE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "AVAL" "BMRKR1"    "AGE" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     AVAL   BMRKR1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "AVAL" "BMRKR1" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $multiple</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $always_selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Columns"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "select_spec"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Selection without user access</span></span></span>
+<span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  fixed <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Columns"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $choices</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     AVAL   BMRKR1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "AVAL" "BMRKR1" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     AVAL   BMRKR1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "AVAL" "BMRKR1" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $multiple</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $always_selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Columns"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "select_spec"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Delayed version</span></span></span>
+<span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span></span>
+<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  fixed <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> select_spec with delayed data: ADSL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ choices</span>
@@ -233,11 +269,35 @@ start by a data set containing the columns <code>"AGE"</code>, <code>"AVAL"</cod
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "ADSL"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   function(data) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     idx &lt;- vapply(data, is.factor, logical(1))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     return(names(data)[idx])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55be09e3be70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "BMRKR1" "BMRKR2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "BMRKR1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ multiple</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ fixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ always_selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Select variable:"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># all_choices passed to selected</span></span></span>
+<span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="all_choices.html">all_choices</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> select_spec with delayed data: ADSL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ choices</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable_choices with delayed data: ADSL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   $ data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "ADSL"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   $ subset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "BMRKR1" "BMRKR2"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ selected</span>
@@ -245,11 +305,7 @@ start by a data set containing the columns <code>"AGE"</code>, <code>"AVAL"</cod
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "ADSL"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   function(data) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     idx &lt;- vapply(data, is.factor, logical(1))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     return(names(data)[idx][1])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55be09e3be70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "BMRKR1" "BMRKR2"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ multiple</span>
@@ -261,7 +317,7 @@ start by a data set containing the columns <code>"AGE"</code>, <code>"AVAL"</cod
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ ordered</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Select"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Select variable:"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Both below objects are semantically the same</span></span></span>
 <span class="r-in"><span><span class="fu">select_spec</span><span class="op">(</span>choices <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span><span class="op">)</span>, selected <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span><span class="op">)</span><span class="op">)</span></span></span>
