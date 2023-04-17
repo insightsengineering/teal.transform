@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the `teal` Framework
-Version: 0.2.0.9011
-Date: 2023-02-13
+Version: 0.2.0.9012
+Date: 2023-04-17
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
