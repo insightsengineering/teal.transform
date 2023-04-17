@@ -46,10 +46,9 @@ to teal module variables being filtered data from \code{CDISC} datasets. You can
 \href{https://shiny.rstudio.com/articles/modules.html}{shiny module} UI. The corresponding server module
 can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
 }
-\section{UI examples}{
+\examples{
+library(shiny)
 
-\describe{
-\preformatted{
 adtte_filters <- filter_spec(
   vars = c("PARAMCD", "CNSR"),
   sep = "-",
@@ -64,28 +63,22 @@ response_spec <- data_extract_spec(
   filter = adtte_filters,
   select = select_spec(
     choices = c("AVAL", "BMRKR1", "AGE"),
-        selected = c("AVAL", "BMRKR1"),
-        multiple = TRUE,
-        fixed = FALSE,
-        label = "Column"
-    )
+    selected = c("AVAL", "BMRKR1"),
+    multiple = TRUE,
+    fixed = FALSE,
+    label = "Column"
+  )
 )
 # Call to use inside your teal module UI function
 teal.widgets::standard_layout(
+  output = tableOutput("table"),
   encoding = div(
-    data_extract_ui(id = "regressor", label = "Regressor Variable", data_extract_spec = response_spec)
+    data_extract_ui(
+      id = "regressor",
+      label = "Regressor Variable",
+      data_extract_spec = response_spec
+    )
   )
 )
-    }
-\if{html}{
-      \figure{data_extract_spec_13.png}{options: alt="Dataset with multiple filters and column selection"}
-    }
-\if{html}{
-      \figure{data_extract_spec_12.png}{options: alt="Dataset with multiple filters and column selection"}
-    }
-\if{html}{
-      \figure{data_extract_spec_11.png}{options: alt="Dataset with multiple filters and column selection"}
-    }
-}
-}
 
+}
