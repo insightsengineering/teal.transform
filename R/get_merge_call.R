@@ -301,7 +301,8 @@ parse_merge_key_i <- function(selector_list,
 
 #' Names of filtered-out filters dropped from selection
 #'
-#' @details Names of filtered-out filters dropped from automatic selection (key vars are automatically included in select).
+#' @details Names of filtered-out filters dropped from automatic selection
+#' (key vars are automatically included in select).
 #' Dropped filter is filter which became not unique for all observations.
 #' This means that if variable is filtered to just one level,
 #' it's not a key anymore. Other variables used in filter should also be dropped from automatic

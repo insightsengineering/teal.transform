@@ -30,18 +30,14 @@
 #'  whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
 #'  keys selected in filter part.
 #'
-#' @section Examples:
-#' \describe{
-#' \enumerate{
-#'   \item{`TealDataset` with multiple filters and column selection}{
-#'     \preformatted{
+#' @examples
 #' adtte_filters <- filter_spec(
-#' vars = c("PARAMCD", "CNSR"),
-#' sep = "-",
-#' choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
-#' selected = "OS-1",
-#' multiple = FALSE,
-#' label = "Choose endpoint and Censor"
+#'   vars = c("PARAMCD", "CNSR"),
+#'   sep = "-",
+#'   choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
+#'   selected = "OS-1",
+#'   multiple = FALSE,
+#'   label = "Choose endpoint and Censor"
 #' )
 #'
 #' data_extract_spec(
@@ -49,68 +45,38 @@
 #'   filter = adtte_filters,
 #'   select = select_spec(
 #'     choices = c("AVAL", "BMRKR1", "AGE"),
-#'         selected = c("AVAL", "BMRKR1"),
-#'         multiple = TRUE,
-#'         fixed = FALSE,
-#'         label = "Column"
-#'     )
+#'     selected = c("AVAL", "BMRKR1"),
+#'     multiple = TRUE,
+#'     fixed = FALSE,
+#'     label = "Column"
+#'   )
 #' )
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_1.png}{options: alt="TealDataset with multiple filters and column selection"}
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_12.png}{options: alt="TealDataset with multiple filters and column selection"}
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_11.png}{options: alt="TealDataset with multiple filters and column selection"}
-#'     }
-#'   }
-#'   \item{Data extract without filtering}{
-#'   \preformatted{
 #'
 #' data_extract_spec(
 #'   dataname = "ADSL",
 #'   filter = NULL,
 #'   select = select_spec(
 #'     choices = c("AGE", "SEX", "USUBJID"),
-#'         selected = c("SEX"),
-#'         multiple = FALSE,
-#'         fixed = FALSE
-#'     )
-#' )
-#'   }
-#'   }
-#'   \if{html}{
-#'       \figure{data_extract_spec_2.png}{options: alt="Data extract without filtering"}
-#'     }
-#'
-#'   \item{Data extract with a single filter}{
-#'     \preformatted{
-#'  data_extract_spec(
-#'    dataname = "ADSL",
-#'    filter = filter_spec(
-#'      vars = variable_choices("ADSL", subset = c("AGE"))
-#'    )
-#'  )
-#'     }
-#'   }
-#'
-#'   \item{Data extract with a filter that also selects columns due to no select_spec}{
-#'     \preformatted{
-#'
-#'  dynamic_filter <- filter_spec(
-#'    vars = choices_selected(variable_choices(ADSL), "COUNTRY"),
-#'    multiple = TRUE
+#'     selected = c("SEX"),
+#'     multiple = FALSE,
+#'     fixed = FALSE
 #'   )
-#'  data_extract_spec(
-#'    dataname = "ADSL",
-#'    filter = dynamic_filter
-#'  )
-#'     }
-#'   }
-#' }
-#' }
+#' )
+#' data_extract_spec(
+#'   dataname = "ADSL",
+#'   filter = filter_spec(
+#'     vars = variable_choices("ADSL", subset = c("AGE"))
+#'   )
+#' )
+#'
+#' dynamic_filter <- filter_spec(
+#'   vars = choices_selected(variable_choices("ADSL"), "COUNTRY"),
+#'   multiple = TRUE
+#' )
+#' data_extract_spec(
+#'   dataname = "ADSL",
+#'   filter = dynamic_filter
+#' )
 #'
 #' @references [select_spec] [filter_spec]
 data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
