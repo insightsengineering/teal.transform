@@ -72,9 +72,9 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'
 #' The output can be analyzed using `data_extract_srv(...)`.
 #'
-#' @section UI examples:
-#' \describe{
-#'   \preformatted{
+#' @examples
+#' library(shiny)
+#'
 #' adtte_filters <- filter_spec(
 #'   vars = c("PARAMCD", "CNSR"),
 #'   sep = "-",
@@ -89,29 +89,23 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'   filter = adtte_filters,
 #'   select = select_spec(
 #'     choices = c("AVAL", "BMRKR1", "AGE"),
-#'         selected = c("AVAL", "BMRKR1"),
-#'         multiple = TRUE,
-#'         fixed = FALSE,
-#'         label = "Column"
-#'     )
+#'     selected = c("AVAL", "BMRKR1"),
+#'     multiple = TRUE,
+#'     fixed = FALSE,
+#'     label = "Column"
+#'   )
 #' )
 #' # Call to use inside your teal module UI function
 #' teal.widgets::standard_layout(
+#'   output = tableOutput("table"),
 #'   encoding = div(
-#'     data_extract_ui(id = "regressor", label = "Regressor Variable", data_extract_spec = response_spec)
+#'     data_extract_ui(
+#'       id = "regressor",
+#'       label = "Regressor Variable",
+#'       data_extract_spec = response_spec
+#'     )
 #'   )
 #' )
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_13.png}{options: alt="Dataset with multiple filters and column selection"}
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_12.png}{options: alt="Dataset with multiple filters and column selection"}
-#'     }
-#'     \if{html}{
-#'       \figure{data_extract_spec_11.png}{options: alt="Dataset with multiple filters and column selection"}
-#'     }
-#' }
 #'
 #' @export
 data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FALSE) {
