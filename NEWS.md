@@ -1,4 +1,4 @@
-# teal.transform 0.2.0.9013
+# teal.transform 0.3.0
 
 ### New Features
 
@@ -7,8 +7,8 @@
 ### Enhancements
 
 * Updated error messages for `choices_labeled()`, `variable_choices()` and `value_choices()` to be more informative.
-* Updated `data_extract` to be compatible with `shinyvalidate`: `data_extract_srv` and `data_extract_multiple_srv` accept `shinyvalidate` validation rules and their return objects now include `shinyvalidate::InputValidator`(s). 
-* Added helper function `compose_and_enable_validators` to simplify enabling `shinyvalidate::InputValidator`s returned from `data_extract_multiple_srv`. 
+* Updated `data_extract` to be compatible with `shinyvalidate`: `data_extract_srv` and `data_extract_multiple_srv` accept `shinyvalidate` validation rules and their return objects now include `shinyvalidate::InputValidator`(s).
+* Added helper function `compose_and_enable_validators` to simplify enabling `shinyvalidate::InputValidator`s returned from `data_extract_multiple_srv`.
 
 ### Bug fixes
 
@@ -28,7 +28,7 @@
 ### New features
 
 * `data_extract_ui`, `data_extract_srv`, `data_extract_multiple_srv` can be initialized by a list of (optionally `reactive`) `data.frame` objects.
-* Added new modules `merge_expression_srv` and `merge_expression_module`, updates of `data_merge_srv` and `data_merge_module` 
+* Added new modules `merge_expression_srv` and `merge_expression_module`, updates of `data_merge_srv` and `data_merge_module`
 (which will be deprecated in future releases) respectively, where `datasets` argument takes a list of (optionally `reactive`) `data.frame` objects and a new argument `join_keys` that accepts a `joinKeys` object.
 
 ### Enhancements
