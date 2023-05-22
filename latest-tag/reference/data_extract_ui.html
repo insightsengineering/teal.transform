@@ -4,7 +4,7 @@ This functionality should be used in the encoding panel of your teal app. It wil
 allow app-developers to specify a data_extract_spec object. This object should be used
 to teal module variables being filtered data from CDISC datasets. You can use this function in the same way as any
 shiny module UI. The corresponding server module
-can be found in data_extract_srv()."><title>teal data extraction module user-interface — data_extract_ui • teal.transform</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="teal data extraction module user-interface — data_extract_ui"><meta property="og:description" content="
+can be found in data_extract_srv()."><title>teal data extraction module user-interface — data_extract_ui • teal.transform</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="teal data extraction module user-interface — data_extract_ui"><meta property="og:description" content="
 This functionality should be used in the encoding panel of your teal app. It will
 allow app-developers to specify a data_extract_spec object. This object should be used
 to teal module variables being filtered data from CDISC datasets. You can use this function in the same way as any
@@ -20,7 +20,7 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,7 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
           aria-expanded="false" aria-haspopup="true"
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
 <!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -126,48 +127,122 @@ filter the dataset.</p></li>
 go into the analysis.</p></li>
 </ol><p>The output can be analyzed using <code>data_extract_srv(...)</code>.</p>
     </div>
+
     <div class="section level2">
-    <h2 id="ui-examples">UI examples<a class="anchor" aria-label="anchor" href="#ui-examples"></a></h2>
-    
-
-<dl>
-
-adtte_filters &lt;- filter_spec(
-  vars = c("PARAMCD", "CNSR"),
-  sep = "-",
-  choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
-  selected = "OS-1",
-  multiple = FALSE,
-  label = "Choose endpoint and Censor"
-)
-
-response_spec &lt;- data_extract_spec(
-  dataname = "ADTTE",
-  filter = adtte_filters,
-  select = select_spec(
-    choices = c("AVAL", "BMRKR1", "AGE"),
-        selected = c("AVAL", "BMRKR1"),
-        multiple = TRUE,
-        fixed = FALSE,
-        label = "Column"
-    )
-)
-# Call to use inside your teal module UI function
-teal.widgets::standard_layout(
-  encoding = div(
-    data_extract_ui(id = "regressor", label = "Regressor Variable", data_extract_spec = response_spec)
-  )
-)
-    
-html
-      <img src="figures/data_extract_spec_13.png" alt="Dataset with multiple filters and column selection">
-    
-html
-      <img src="figures/data_extract_spec_12.png" alt="Dataset with multiple filters and column selection">
-    
-html
-      <img src="figures/data_extract_spec_11.png" alt="Dataset with multiple filters and column selection"></dl></div>
-
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">adtte_filters</span> <span class="op">&lt;-</span> <span class="fu"><a href="filter_spec.html">filter_spec</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAMCD"</span>, <span class="st">"CNSR"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  sep <span class="op">=</span> <span class="st">"-"</span>,</span></span>
+<span class="r-in"><span>  choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"OS-1"</span> <span class="op">=</span> <span class="st">"OS-1"</span>, <span class="st">"OS-0"</span> <span class="op">=</span> <span class="st">"OS-0"</span>, <span class="st">"PFS-1"</span> <span class="op">=</span> <span class="st">"PFS-1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  selected <span class="op">=</span> <span class="st">"OS-1"</span>,</span></span>
+<span class="r-in"><span>  multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"Choose endpoint and Censor"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">response_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  dataname <span class="op">=</span> <span class="st">"ADTTE"</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="va">adtte_filters</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="select_spec.html">select_spec</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Column"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Call to use inside your teal module UI function</span></span></span>
+<span class="r-in"><span><span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">tableOutput</a></span><span class="op">(</span><span class="st">"table"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html" class="external-link">div</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu">data_extract_ui</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      id <span class="op">=</span> <span class="st">"regressor"</span>,</span></span>
+<span class="r-in"><span>      label <span class="op">=</span> <span class="st">"Regressor Variable"</span>,</span></span>
+<span class="r-in"><span>      data_extract_spec <span class="op">=</span> <span class="va">response_spec</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;div class="row"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div class="col-md-3"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div class="well"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;style type="text/css"&gt;/* teal.transform data_extract css */</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> .data-extract {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   border-left: 3px solid #e3e3e3;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   padding-left: 0.6em;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   border-radius: 5px;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   margin-left: -0.6em;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   margin-bottom: 1em;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> .data-extract label.control-label {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   font-weight: normal;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   color: grey;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> .data-extract .filter_spec &gt; div:first-child {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   margin-bottom: 5px;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }&lt;/style&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div class="data-extract"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;label&gt;Regressor Variable&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;span class="help-block"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;code&gt;ADTTE&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;/span&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="filter_spec"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="shinyjs-hide"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="form-group shiny-input-container shinyjs-hide"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;label class="control-label shiny-label-null" for="regressor-dataset_ADTTE_singleextract-filter1-col"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-filter1-col" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="PARAMCD" selected&gt;PARAMCD&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="CNSR" selected&gt;CNSR&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label id="regressor-dataset_ADTTE_singleextract-filter1-col_textonly" class="control-label"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-col_valueonly"&gt;PARAMCD, CNSR&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label class="control-label" for="regressor-dataset_ADTTE_singleextract-filter1-vals"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-filter1-vals" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="OS-1" selected&gt;OS-1&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="OS-0"&gt;OS-0&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="PFS-1"&gt;PFS-1&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;label class="control-label" for="regressor-dataset_ADTTE_singleextract-select"&gt;Column&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-select" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="AVAL" selected&gt;AVAL&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="BMRKR1" selected&gt;BMRKR1&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="AGE"&gt;AGE&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div class="form-group shiny-input-container shinyjs-disabled shinyjs-hide"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="checkbox"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;input id="regressor-dataset_ADTTE_singleextract-reshape" type="checkbox"/&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;span&gt;Reshape long to wide format&lt;/span&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div class="col-md-9"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div class="well"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="pre-output"&gt;&lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="output"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div id="table" class="shiny-html-output"&gt;&lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="post-output"&gt;&lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/div&gt;</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

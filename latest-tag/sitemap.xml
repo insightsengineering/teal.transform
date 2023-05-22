@@ -1,273 +1,279 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/404.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/404.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/CODE_OF_CONDUCT.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/CONTRIBUTING.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/LICENSE-text.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/SECURITY.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/SECURITY.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/articles/data-extract-merge.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/articles/data-extract-merge.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/articles/data-extract.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/articles/data-extract.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/articles/data-merge.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/articles/data-merge.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/articles/index.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/articles/teal-transform.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/articles/teal-transform.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/authors.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/authors.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/index.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/news/index.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/news/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/pull_request_template.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/add_no_selected_choices.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/Queue.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/all_choices.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/add_no_selected_choices.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/are_needed_keys_provided.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/all_choices.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_check_parse_varname.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/are_needed_keys_provided.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_condition_choice.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_check_parse_varname.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_condition_logical.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_condition_choice.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_condition_range.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_condition_logical.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_condition_range_date.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_condition_range.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_condition_range_posixct.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_condition_range_date.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_extract_array.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_condition_range_posixct.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_extract_list.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_extract_array.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_extract_matrix.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_extract_list.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/call_with_colon.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_extract_matrix.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/calls_combine_by.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/call_with_colon.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/check_data_extract_spec_react.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/calls_combine_by.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/check_data_merge_selectors.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/check_data_extract_spec_react.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/check_no_multiple_selection.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/check_data_merge_selectors.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/choices_labeled.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/check_no_multiple_selection.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/choices_selected.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/choices_labeled.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/cond_data_extract_single_ui.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/choices_selected.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_filter_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/compose_and_enable_validators.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_filter_ui.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/cond_data_extract_single_ui.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_multiple_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_filter_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_read_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_filter_ui.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_select_ui.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_multiple_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_single_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_read_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_single_ui.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_select_ui.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_spec.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_single_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_single_ui.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_extract_ui.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_spec.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_merge_module.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/data_merge_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_extract_ui.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/datanames_input.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_merge_module.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/extract_choices_labels.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/data_merge_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/filter_spec.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/datanames_input.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/filter_spec_internal.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/extract_choices_labels.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/format_data_extract.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/filter_spec.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_anl_relabel_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/filter_spec_internal.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_dataset_prefixed_col_names.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/format_data_extract.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_dplyr_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_anl_relabel_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_dplyr_call_data.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_dataset_prefixed_col_names.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_dropped_filters.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_dplyr_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_extract_datanames.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_dplyr_call_data.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_filter_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_dropped_filters.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_initial_filter_values.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_extract_datanames.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_merge_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_filter_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_merge_key_grid.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_initial_filter_values.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_merge_key_i.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_merge_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_merge_key_pair.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_merge_key_grid.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_pivot_longer_col.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_merge_key_i.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_relabel_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_merge_key_pair.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_relabel_cols.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_pivot_longer_col.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_rename_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_relabel_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_reshape_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_relabel_cols.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_reshape_unite_col.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_rename_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_reshape_unite_vals.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_reshape_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/get_select_call.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_reshape_unite_col.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/include_css_files.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_reshape_unite_vals.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/index.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/get_select_call.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/is_single_dataset.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/include_css_files.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/list_extract_spec.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/merge_datasets.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/is_single_dataset.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/merge_expression_module.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/list_extract_spec.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/merge_expression_srv.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/merge_datasets.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/merge_selectors.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/merge_expression_module.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/no_selected_as_NULL.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/merge_expression_srv.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/parse_merge_key_i.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/merge_selectors.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/resolve.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/no_selected_as_NULL.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/resolve_delayed.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/parse_merge_key_i.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/resolve_delayed_expr.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/resolve.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/select_spec.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/resolve_delayed.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/split_by_sep.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/resolve_delayed_expr.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/teal.transform-package.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/select_spec.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/validate_keys_sufficient.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/split_by_sep.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/value_choices.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/teal.transform-package.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/teal.transform/v0.2.0/reference/variable_choices.html</loc>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/validate_keys_sufficient.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/value_choices.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/v0.3.0/reference/variable_choices.html</loc>
   </url>
 </urlset>
