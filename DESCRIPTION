@@ -19,7 +19,7 @@ Depends:
     magrittr,
     R (>= 3.6)
 Imports:
-    checkmate,
+    checkmate (>= 2.0.0),
     dplyr,
     formatters (>= 0.3.1),
     lifecycle,
@@ -56,6 +56,30 @@ Remotes:
     insightsengineering/teal.logger@*release,
     insightsengineering/teal.slice@*release,
     insightsengineering/teal.widgets@*release
+Config/Needs/verdepcheck:
+    tidyverse/magrittr,
+    mllg/checkmate,
+    tidyverse/dplyr,
+    insightsengineering/formatters,
+    r-lib/lifecycle,
+    daroczig/logger,
+    r-lib/rlang,
+    rstudio/shiny,
+    daattali/shinyjs,
+    rstudio/shinyvalidate,
+    insightsengineering/teal.code,
+    insightsengineering/teal.data,
+    insightsengineering/teal.logger,
+    insightsengineering/teal.slice,
+    insightsengineering/teal.widgets,
+    tidyverse/tidyr,
+    r-lib/tidyselect,
+    yihui/knitr,
+    rstudio/rmarkdown,
+    insightsengineering/scda,
+    insightsengineering/scda.2022,
+    rstudio/shinytest,
+    r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
