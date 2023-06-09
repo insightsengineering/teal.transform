@@ -2,7 +2,7 @@
 % Please edit documentation in R/merge_datasets.R
 \name{merge_selectors}
 \alias{merge_selectors}
-\title{Merge selectors - select item if all of dataname, reshape, filters and keys items are identical}
+\title{Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical}
 \usage{
 merge_selectors(selector_list)
 }
@@ -16,7 +16,7 @@ When using a reactive named list, the names must be identical to the shiny ids o
 error or nothing
 }
 \description{
-Merge selectors - select item if all of dataname, reshape, filters and keys items are identical
+Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical
 }
 \examples{
 selector_list <- list(

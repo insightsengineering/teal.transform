@@ -184,7 +184,7 @@ data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FA
 
 #' Function to check data_extract_specs
 #'
-#' Checks if dataname argument exists as a dataset.
+#' Checks if `dataname` argument exists as a dataset.
 #' Checks if selected or filter columns exist within the datasets. Throws a `shiny`
 #' validation error if the above requirements are not met.
 #'
@@ -270,7 +270,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   \item{`dataname`: }{The name of the data set.}
 #'   \item{`internal_id`: }{The `id` of the corresponding shiny input element.}
 #'   \item{`keys`: }{The names of the columns that can be used to merge the data set.}
-#'   \item{`iv`:}{A `shinyvalidate::InputValidator` containing validator for this `data_extract`}
+#'   \item{`iv`:}{A `shinyvalidate::InputValidator` containing `validator` for this `data_extract`}
 #' }
 #'
 #' @references [data_extract_srv]

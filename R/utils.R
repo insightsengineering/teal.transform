@@ -40,21 +40,21 @@ extract_choices_labels <- function(choices, values = NULL) {
 }
 
 
-#' Function to compose validators from `data_extract_multiple_srv`
+#' Function to compose `validators` from `data_extract_multiple_srv`
 #'
 #' This function takes the output from `data_extract_multiple_srv` and
 #' collates the `shinyvalidate::InputValidator`s returned into a single
-#' validator and enables this
+#' `validator` and enables this
 #'
-#' @param iv (`shinyvalidate::InputValidator`) A validator.
+#' @param iv (`shinyvalidate::InputValidator`) A `validator`.
 #' @param selector_list (`reactive` named list of `reactives`).
 #'   Typically this is the output from `data_extract_multiple_srv`.
-#'   The validators in this list (specifically `selector_list()[[validator_names]]()iv`)
+#'   The `validators` in this list (specifically `selector_list()[[validator_names]]()iv`)
 #'   will be added into `iv`.
-#' @param validator_names (`character` or `NULL`). If `character` then only validators
+#' @param validator_names (`character` or `NULL`). If `character` then only `validators`
 #'   in the elements of `selector_list()` whose name is in this list will be added. If `NULL`
-#'   all validators will be added
-#' @return (`shinyvalidate::InputValidator`) enabled `iv` with appropriate validators added into it.
+#'   all `validators` will be added
+#' @return (`shinyvalidate::InputValidator`) enabled `iv` with appropriate `validators` added into it.
 #' @export
 #' @examples
 #' library(shiny)

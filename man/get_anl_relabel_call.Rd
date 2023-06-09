@@ -8,7 +8,7 @@ get_anl_relabel_call(columns_source, datasets, anl_name = "ANL")
 }
 \arguments{
 \item{columns_source}{\code{named list}\cr
-where names are column names, values are labels + additional attribute dataname}
+where names are column names, values are labels + additional attribute \code{dataname}}
 
 \item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
 object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are

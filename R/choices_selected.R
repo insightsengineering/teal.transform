@@ -10,7 +10,7 @@ no_select_keyword <- "-- no selection --"
 #'
 #' @param choices (`character`) vector of possible choices or `delayed_data` object\cr
 #'   See [variable_choices()] and [value_choices()].
-#' @param selected (`character`) vector of pre-selected options, (`all_choices`) object
+#' @param selected (`character`) vector of preselected options, (`all_choices`) object
 #'  or (`delayed_data`) object. If `delayed_data` object then `choices` must also be
 #'  a `delayed_data` object. If not supplied it will default to the first element of
 #'  `choices` if `choices` is a vector, or `NULL` if `choices` is a `delayed_data` object.

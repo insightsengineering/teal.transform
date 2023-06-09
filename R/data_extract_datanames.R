@@ -16,8 +16,8 @@ datanames_input <- function(data_extracts) {
 #' Gets names of the datasets from a list of `data_extract_spec` objects
 #'
 #' @description `r lifecycle::badge("stable")`
-#' Fetches dataname slot per \code{data_extract_spec} from a list of \code{data_extract_spec}
-#' and returns the unique dataname set.
+#' Fetches `dataname` slot per \code{data_extract_spec} from a list of \code{data_extract_spec}
+#' and returns the unique `dataname` set.
 #'
 #' @param data_extracts A single \code{data_extract_spec} object or a list (of lists) of \code{data_extract_spec}
 #'

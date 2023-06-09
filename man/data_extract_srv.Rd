@@ -68,7 +68,7 @@ A reactive \code{list} containing following fields:
 \item{\code{dataname}: }{The name of the data set.}
 \item{\code{internal_id}: }{The \code{id} of the corresponding shiny input element.}
 \item{\code{keys}: }{The names of the columns that can be used to merge the data set.}
-\item{\code{iv}:}{A \code{shinyvalidate::InputValidator} containing validator for this \code{data_extract}}
+\item{\code{iv}:}{A \code{shinyvalidate::InputValidator} containing \code{validator} for this \code{data_extract}}
 }
 }
 \description{
