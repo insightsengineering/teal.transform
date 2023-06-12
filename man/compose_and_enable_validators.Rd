@@ -2,29 +2,29 @@
 % Please edit documentation in R/utils.R
 \name{compose_and_enable_validators}
 \alias{compose_and_enable_validators}
-\title{Function to compose validators from \code{data_extract_multiple_srv}}
+\title{Function to compose \code{validators} from \code{data_extract_multiple_srv}}
 \usage{
 compose_and_enable_validators(iv, selector_list, validator_names = NULL)
 }
 \arguments{
-\item{iv}{(\code{shinyvalidate::InputValidator}) A validator.}
+\item{iv}{(\code{shinyvalidate::InputValidator}) A \code{validator}.}
 
 \item{selector_list}{(\code{reactive} named list of \code{reactives}).
 Typically this is the output from \code{data_extract_multiple_srv}.
-The validators in this list (specifically \verb{selector_list()[[validator_names]]()iv})
+The \code{validators} in this list (specifically \verb{selector_list()[[validator_names]]()iv})
 will be added into \code{iv}.}
 
-\item{validator_names}{(\code{character} or \code{NULL}). If \code{character} then only validators
+\item{validator_names}{(\code{character} or \code{NULL}). If \code{character} then only \code{validators}
 in the elements of \code{selector_list()} whose name is in this list will be added. If \code{NULL}
-all validators will be added}
+all \code{validators} will be added}
 }
 \value{
-(\code{shinyvalidate::InputValidator}) enabled \code{iv} with appropriate validators added into it.
+(\code{shinyvalidate::InputValidator}) enabled \code{iv} with appropriate \code{validators} added into it.
 }
 \description{
 This function takes the output from \code{data_extract_multiple_srv} and
 collates the \code{shinyvalidate::InputValidator}s returned into a single
-validator and enables this
+\code{validator} and enables this
 }
 \examples{
 library(shiny)

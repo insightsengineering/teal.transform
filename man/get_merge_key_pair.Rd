@@ -29,7 +29,7 @@ get purely filtered. This means just one value would
 be left after filtering inside this column. Then it
 can be taken out.
 }
-\item{target dataname is parent }{ foreign keys}
+\item{target \code{dataname} is parent }{ foreign keys}
 \item{any other case }{foreign keys}
 }
 }

@@ -15,7 +15,7 @@ check_data_extract_spec_react(datasets, data_extract)
 \code{NULL}
 }
 \description{
-Checks if dataname argument exists as a dataset.
+Checks if \code{dataname} argument exists as a dataset.
 Checks if selected or filter columns exist within the datasets. Throws a \code{shiny}
 validation error if the above requirements are not met.
 }

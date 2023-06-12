@@ -22,7 +22,7 @@
 
 ### Breaking changes
 
-* Updated the data merge functionality to no longer expect input datanames with the suffix `_FILTERED` following changes to the output of `teal.slice::FilteredData$get_call()`.
+* Updated the data merge functionality to no longer expect input `datanames` with the suffix `_FILTERED` following changes to the output of `teal.slice::FilteredData$get_call()`.
 * Updated the data merge downstream functions to accept a `joinKeys` object for the `join_keys` argument.
 
 ### New features
@@ -33,7 +33,7 @@
 
 ### Enhancements
 * Updated the examples and the tests to use `teal.slice::init_filtered_data` to initialize a `FilteredData` object.
-* Updated the vignettes and the README content.
+* Updated the vignettes and the `README` content.
 * Updated `data_merge_module` and `merge_expression_module` to accept `NULL` `data_extract` inputs.
 
 # teal.transform 0.1.1

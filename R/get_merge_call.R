@@ -154,7 +154,7 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
 #'    be left after filtering inside this column. Then it
 #'    can be taken out.
 #'  }
-#'  \item{target dataname is parent }{ foreign keys}
+#'  \item{target `dataname` is parent }{ foreign keys}
 #'  \item{any other case }{foreign keys}
 #' }
 #'
@@ -334,7 +334,7 @@ get_dropped_filters <- function(selector) {
 #' @description `r lifecycle::badge("stable")`
 #' @inheritParams merge_datasets
 #' @param columns_source \code{named list}\cr
-#'  where names are column names, values are labels + additional attribute dataname
+#'  where names are column names, values are labels + additional attribute `dataname`
 #'
 #' @return (`call`) to relabel `dataset` and assign to `anl_name`.
 #'

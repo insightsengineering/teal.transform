@@ -1,4 +1,4 @@
-#' Check selector dataname element
+#' Check selector `dataname` element
 #'
 #' @param dataname selector element
 #'

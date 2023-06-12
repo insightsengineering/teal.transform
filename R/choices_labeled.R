@@ -1,7 +1,7 @@
 #' Set "`<choice>:<label>`" type of Names
 #'
 #' @description `r lifecycle::badge("stable")`
-#' This is often useful for [choices_selected] as it marks up the dropdown boxes
+#' This is often useful for [choices_selected] as it marks up the drop-down boxes
 #' for [shiny::selectInput()].
 #'
 #' @param choices A character / factor / numeric / logical vector.

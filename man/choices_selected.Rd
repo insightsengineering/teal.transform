@@ -18,7 +18,7 @@ is.choices_selected(x)
 \item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object\cr
 See \code{\link[=variable_choices]{variable_choices()}} and \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(\code{character}) vector of pre-selected options, (\code{all_choices}) object
+\item{selected}{(\code{character}) vector of preselected options, (\code{all_choices}) object
 or (\code{delayed_data}) object. If \code{delayed_data} object then \code{choices} must also be
 a \code{delayed_data} object. If not supplied it will default to the first element of
 \code{choices} if \code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}

@@ -127,7 +127,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
   return(res)
 }
 
-#' Merge selectors - select item if all of dataname, reshape, filters and keys items are identical
+#' Merge selectors - select item if all of `dataname`, reshape, filters and keys items are identical
 #'
 #' @inheritParams merge_datasets
 #'
