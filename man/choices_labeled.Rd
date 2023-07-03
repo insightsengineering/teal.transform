@@ -42,10 +42,9 @@ Duplicated elements from \code{choices} get removed.
 }
 \examples{
 library(shiny)
-library(scda)
 
-ADSL <- synthetic_cdisc_data("latest")$adsl
-ADTTE <- synthetic_cdisc_data("latest")$adtte
+ADSL <- rADSL
+ADTTE <- rADTTE
 choices1 <- choices_labeled(names(ADSL), formatters::var_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 # if only a subset of variables are needed, use subset argument

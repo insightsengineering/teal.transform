@@ -21,9 +21,7 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-library(scda)
-
-ADSL <- synthetic_cdisc_data("latest")$adsl
+ADSL <- rADSL
 attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 data_list <- list(ADSL = shiny::reactive(ADSL))
 keys <- list(ADSL = attr(ADSL, "keys"))

@@ -1,7 +1,5 @@
-library(scda)
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl # nolint
-adtte <- scda_data$adtte # nolint
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", adsl),
   teal.data::cdisc_dataset("ADTTE", adtte)

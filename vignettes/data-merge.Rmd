@@ -100,8 +100,8 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
 }
 
 # Define data.frame objects
-ADSL <- scda::synthetic_cdisc_data("latest")$adsl # nolint
-ADTTE <- scda::synthetic_cdisc_data("latest")$adtte # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 
 # create a list of data.frame objects
 datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
