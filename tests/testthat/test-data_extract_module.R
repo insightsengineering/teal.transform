@@ -1,4 +1,4 @@
-adlb  <- rADLB
+adlb <- rADLB
 adtte <- rADTTE
 
 testthat::test_that("Single filter", {
