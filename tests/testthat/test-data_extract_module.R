@@ -1,7 +1,5 @@
-library(scda)
-ADSL <- synthetic_cdisc_data("rcd_2022_06_27")$adsl # nolint
-ADLB <- synthetic_cdisc_data("rcd_2022_06_27")$adlb # nolint
-ADTTE <- synthetic_cdisc_data("rcd_2022_06_27")$adtte # nolint
+adlb  <- rADLB
+adtte <- rADTTE
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(
@@ -15,7 +13,7 @@ testthat::test_that("Single filter", {
     ),
     filter = filter_spec(
       vars = "PARAMCD",
-      choices = levels(ADTTE$PARAMCD),
+      choices = levels(adtte$PARAMCD),
       selected = "OS",
       multiple = TRUE,
       label = "Choose endpoint"
@@ -48,14 +46,14 @@ testthat::test_that("Multiple filters", {
     filter = list(
       filter_spec(
         vars = "AVISIT",
-        choices = levels(ADLB$AVISIT),
+        choices = levels(adlb$AVISIT),
         selected = "BASELINE",
         multiple = FALSE,
         label = "Choose endpoint"
       ),
       filter_spec(
         vars = "PARAMCD",
-        choices = levels(ADLB$PARAMCD),
+        choices = levels(adlb$PARAMCD),
         selected = "ALT",
         multiple = FALSE,
         label = "Choose endpoint"
@@ -90,7 +88,7 @@ testthat::test_that("Multiple datasets", {
     ),
     filter = filter_spec(
       vars = "PARAMCD",
-      choices = levels(ADTTE$PARAMCD),
+      choices = levels(adtte$PARAMCD),
       selected = "OS",
       multiple = TRUE,
       label = "Choose endpoint"
@@ -109,14 +107,14 @@ testthat::test_that("Multiple datasets", {
     filter = list(
       filter_spec(
         vars = "AVISIT",
-        choices = levels(ADLB$AVISIT),
+        choices = levels(adlb$AVISIT),
         selected = "BASELINE",
         multiple = FALSE,
         label = "Choose endpoint"
       ),
       filter_spec(
         vars = "PARAMCD",
-        choices = levels(ADLB$PARAMCD),
+        choices = levels(adlb$PARAMCD),
         selected = "ALT",
         multiple = FALSE,
         label = "Choose endpoint"

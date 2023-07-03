@@ -40,8 +40,6 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    scda (>= 0.1.5),
-    scda.2022 (>= 0.1.3),
     shinytest,
     testthat (>= 3.1.5)
 VignetteBuilder:
@@ -49,8 +47,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle
 Remotes:
-    insightsengineering/scda.2022@*release,
-    insightsengineering/scda@*release,
     insightsengineering/teal.code@*release,
     insightsengineering/teal.data@*release,
     insightsengineering/teal.logger@*release,

@@ -16,7 +16,7 @@
 
 ### Miscellaneous
 
-* Examples use `scda.2022` instead of `scda.2021`
+* Removed `scda` package dependency from examples.
 
 # teal.transform 0.2.0
 

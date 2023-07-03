@@ -1,7 +1,5 @@
-library(scda)
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl # nolint
-adtte <- scda_data$adtte # nolint
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 
 arm_ref_comp <- list(
   ARMCD = list(

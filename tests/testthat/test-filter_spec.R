@@ -1,5 +1,3 @@
-library(scda)
-
 choices <- c("val1", "val2", "val3")
 choices_d <- c("val1", "val1", "val2", "val3")
 choices_f <- as.factor(choices)
@@ -291,9 +289,8 @@ testthat::test_that("delayed filter_spec works", {
 })
 
 
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl
-adtte <- scda_data$adtte
+adsl <- rADSL
+adtte <- rADTTE
 
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
@@ -557,9 +554,8 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
-
-adsl <- scda_data$adsl
-adtte <- scda_data$adtte
+adsl <- rADSL
+adtte <- rADTTE
 data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", adsl),
   teal.data::cdisc_dataset("ADTTE", adtte)

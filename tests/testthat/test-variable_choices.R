@@ -1,7 +1,5 @@
-library(scda)
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl # nolint
-adtte <- scda_data$adtte # nolint
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 
 test_that("Can create variable_choices with datasets with no or missing labels", {
   example_data <- data.frame(USUBJID = 1:2, STUDYID = 1:1)
