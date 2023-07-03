@@ -56,7 +56,6 @@ named character vector with additional attributes or \code{delayed_data} object
 }
 \examples{
 ADRS <- rADRS
-
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))

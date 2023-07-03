@@ -44,7 +44,6 @@ named character vector or \code{delayed_data} object
 }
 \examples{
 ADRS <- rADRS
-
 value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),

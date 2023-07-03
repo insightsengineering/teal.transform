@@ -437,7 +437,7 @@ testthat::test_that("Delayed extract two filters - single data connector with tw
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors", {
   adsl <- teal.data::dataset(
     dataname = "ADSL",
-    synthetic_cdisc_data("latest")$adsl,
+    rADSL,
     keys = teal.data::get_cdisc_keys("ADSL"),
     code = "adsl <- synthetic_cdisc_data(\"latest\")$adsl",
     label = "ADSL"

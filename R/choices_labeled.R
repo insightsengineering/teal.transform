@@ -141,7 +141,6 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #'
 #' @examples
 #' ADRS <- rADRS
-#'
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 #' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
@@ -299,7 +298,6 @@ variable_choices.TealDatasetConnector <- function(data, # nolint
 #'
 #' @examples
 #' ADRS <- rADRS
-#'
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),
