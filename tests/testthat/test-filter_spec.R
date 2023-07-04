@@ -289,8 +289,8 @@ testthat::test_that("delayed filter_spec works", {
 })
 
 
-adsl <- rADSL
-adtte <- rADTTE
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
@@ -554,8 +554,8 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
-adsl <- rADSL
-adtte <- rADTTE
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", adsl),
   teal.data::cdisc_dataset("ADTTE", adtte)

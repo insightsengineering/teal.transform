@@ -1,5 +1,5 @@
-adlb <- rADLB
-adtte <- rADTTE
+adlb <- rADLB # nolint
+adtte <- rADTTE # nolint
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(
