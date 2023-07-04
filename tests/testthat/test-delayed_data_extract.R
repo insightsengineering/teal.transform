@@ -65,19 +65,19 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
   # test delayed data extract
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  adae_raw <- data$get_dataset("ADAE")$get_raw_data() # nolint
+  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  adae <- data$get_dataset("ADAE")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(adsl, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
       selected = NULL
     )
   )
   y_expected <- data_extract_spec(
     dataname = "ADAE",
     select = select_spec(
-      choices = variable_choices(adae_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADAE"))
+      choices = variable_choices(adae, subset = get_continuous, key = teal.data::get_cdisc_keys("ADAE"))
     )
   )
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
@@ -483,12 +483,12 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  adrs_raw <- data$get_dataset("ADRS")$get_raw_data() # nolint
+  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  adrs <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(adsl, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
       NULL
     ),
     filter = filter_spec(
@@ -502,14 +502,14 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
   y_expected <- data_extract_spec(
     dataname = "ADRS",
     select = select_spec(
-      choices = variable_choices(adrs_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADRS"))
+      choices = variable_choices(adrs, subset = get_continuous, key = teal.data::get_cdisc_keys("ADRS"))
     ),
     filter = list(
       filter_spec(
         label = "Select endpoints:",
         vars = "PARAMCD",
         choices = value_choices(
-          data = adrs_raw,
+          data = adrs,
           var_choices = "PARAMCD",
           var_label = "PARAMCD",
           subset = function(data) levels(data$PARAMCD)[2:3]
@@ -521,7 +521,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
         label = "Select endpoints:",
         vars = "AVISIT",
         choices = value_choices(
-          data = adrs_raw,
+          data = adrs,
           var_choices = "AVISIT",
           var_label = "AVISIT",
           subset = function(data) levels(data$AVISIT)[5:6]
@@ -640,18 +640,18 @@ testthat::test_that("Delayed data extract - filtered", {
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  adrs_raw <- data$get_dataset("ADRS")$get_raw_data() # nolint
+  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  adrs <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl_raw, subset = get_continuous),
+      choices = variable_choices(adsl, subset = get_continuous),
       selected = NULL
     ),
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl_raw,
+      choices = value_choices(adsl,
         var_choices = "ARMCD",
         var_label = "ARM",
         subset = function(data) levels(data$ARMCD)[1:2]
@@ -663,7 +663,7 @@ testthat::test_that("Delayed data extract - filtered", {
   y_expected <- data_extract_spec(
     dataname = "ADRS",
     select = select_spec(
-      choices = variable_choices(adrs_raw, subset = get_continuous)
+      choices = variable_choices(adrs, subset = get_continuous)
     )
   )
   x_result <- isolate(resolve_delayed(x, datasets = ds))
@@ -725,18 +725,18 @@ testthat::test_that(
 
     ds <- teal.slice::init_filtered_data(data)
 
-    adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-    adrs_raw <- data$get_dataset("ADRS")$get_raw_data() # nolint
+    adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    adrs <- data$get_dataset("ADRS")$get_raw_data() # nolint
     x_expected <- data_extract_spec(
       dataname = "ADSL",
       select = select_spec(
-        choices = variable_choices(adsl_raw, subset = get_continuous),
+        choices = variable_choices(adsl, subset = get_continuous),
         selected = NULL
       ),
       filter = filter_spec(
         label = "Select endpoints:",
         vars = "ARMCD",
-        choices = value_choices(adsl_raw,
+        choices = value_choices(adsl,
           var_choices = "ARMCD",
           var_label = "ARM",
           subset = function(data) levels(data$ARMCD)[1:2]
@@ -748,13 +748,13 @@ testthat::test_that(
     y_expected <- data_extract_spec(
       dataname = "ADRS",
       select = select_spec(
-        choices = variable_choices(adrs_raw, subset = get_continuous)
+        choices = variable_choices(adrs, subset = get_continuous)
       ),
       filter = filter_spec(
         label = "Select endpoints:",
         vars = c("PARAMCD", "AVISIT"),
         choices = value_choices(
-          data = adrs_raw,
+          data = adrs,
           var_choices = c("PARAMCD", "AVISIT"),
           var_label = c("PARAMCD", "AVISIT"),
           subset = function(data) {
@@ -837,18 +837,18 @@ testthat::test_that(
 
     ds <- teal.slice::init_filtered_data(data)
 
-    adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-    adrs_raw <- data$get_dataset("ADRS")$get_raw_data() # nolint
+    adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    adrs <- data$get_dataset("ADRS")$get_raw_data() # nolint
     x_expected <- data_extract_spec(
       dataname = "ADSL",
       select = select_spec(
-        choices = variable_choices(adsl_raw, subset = get_continuous),
+        choices = variable_choices(adsl, subset = get_continuous),
         selected = NULL
       ),
       filter = filter_spec(
         label = "Select endpoints:",
         vars = "ARMCD",
-        choices = value_choices(adsl_raw,
+        choices = value_choices(adsl,
           var_choices = "ARMCD",
           var_label = "ARM",
           subset = function(data) levels(data$ARMCD)[1:2]
@@ -860,14 +860,14 @@ testthat::test_that(
     y_expected <- data_extract_spec(
       dataname = "ADRS",
       select = select_spec(
-        choices = variable_choices(adrs_raw, subset = get_continuous)
+        choices = variable_choices(adrs, subset = get_continuous)
       ),
       filter = list(
         filter_spec(
           label = "Select endpoints:",
           vars = "PARAMCD",
           choices = value_choices(
-            data = adrs_raw,
+            data = adrs,
             var_choices = "PARAMCD",
             var_label = "PARAMCD",
             subset = function(data) levels(data$PARAMCD)[2:3]
@@ -879,7 +879,7 @@ testthat::test_that(
           label = "Select endpoints:",
           vars = "AVISIT",
           choices = value_choices(
-            data = adrs_raw,
+            data = adrs,
             var_choices = "AVISIT",
             var_label = "AVISIT",
             subset = function(data) levels(data$AVISIT)[5:6]
@@ -958,12 +958,12 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl_raw <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  adrs_raw <- data$get_dataset("ADRS")$get_raw_data() # nolint
+  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  adrs <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(adsl, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
       NULL
     ),
     filter = filter_spec(
@@ -977,14 +977,14 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
   y_expected <- data_extract_spec(
     dataname = "ADRS",
     select = select_spec(
-      choices = variable_choices(adrs_raw, subset = get_continuous, key = teal.data::get_cdisc_keys("ADRS"))
+      choices = variable_choices(adrs, subset = get_continuous, key = teal.data::get_cdisc_keys("ADRS"))
     ),
     filter = list(
       filter_spec(
         label = "Select endpoints:",
         vars = "PARAMCD",
         choices = value_choices(
-          data = adrs_raw,
+          data = adrs,
           var_choices = "PARAMCD",
           var_label = "PARAMCD",
           subset = function(data) levels(data$PARAMCD)[2:3]
@@ -996,7 +996,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
         label = "Select endpoints:",
         vars = "AVISIT",
         choices = value_choices(
-          data = adrs_raw,
+          data = adrs,
           var_choices = "AVISIT",
           var_label = "AVISIT",
           subset = function(data) levels(data$AVISIT)[5:6]
