@@ -1,10 +1,10 @@
 # Contains integration tests between delayed data loading objects and
 # the objects responsible for loading, pulling and filtering the data
-adsl <- rADSL # nolint
-adtte <- rADTTE # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
+  teal.data::cdisc_dataset("ADSL", ADSL),
+  teal.data::cdisc_dataset("ADTTE", ADTTE)
 )
 
 ds <- teal.slice::init_filtered_data(data)
@@ -41,9 +41,9 @@ get_continuous <- function(data) {
 }
 
 testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adae <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE)
-  data <- teal.data::cdisc_data(adsl, adae)
+  data <- teal.data::cdisc_data(ADSL, adae)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -95,10 +95,10 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
 # Delayed choices selected - single data connector with two scda dataset connectors ----
 
 testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adae <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE)
 
-  data <- teal.data::cdisc_data(adsl, adae)
+  data <- teal.data::cdisc_data(ADSL, adae)
 
   choices <- variable_choices("ADSL")
   for (connector in data$get_connectors()) {
@@ -106,8 +106,8 @@ testthat::test_that("Delayed choices selected - single data connector with two s
   }
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
-  choices_expected <- variable_choices(adsl, key = teal.data::get_cdisc_keys("ADSL"))
+  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
   data_list <- sapply(X = ds$datanames(), simplify = FALSE, FUN = function(x) {
     reactive(ds$get_data(dataname = x, filtered = TRUE))
   })
@@ -121,9 +121,9 @@ testthat::test_that("Delayed choices selected - single data connector with two s
 # Delayed data extract - filtered ----
 
 testthat::test_that("Delayed data extract - filtered", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  data <- teal.data::cdisc_data(adsl, adrs)
+  data <- teal.data::cdisc_data(ADSL, adrs)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -152,18 +152,18 @@ testthat::test_that("Delayed data extract - filtered", {
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl, subset = get_continuous),
+      choices = variable_choices(ADSL, subset = get_continuous),
       selected = NULL
     ),
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl,
+      choices = value_choices(ADSL,
         var_choices = "ARMCD",
         var_label = "ARM",
         subset = function(data) levels(data$ARMCD)[1:2]
@@ -192,9 +192,9 @@ testthat::test_that("Delayed data extract - filtered", {
 
 # Delayed extract filter concatenated - single data connector with two scda dataset connectors ----
 testthat::test_that("Delayed extract filter concatenated - single data connector with two scda dataset connectors", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  data <- teal.data::teal_data(adsl, adrs)
+  data <- teal.data::teal_data(ADSL, adrs)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -241,18 +241,18 @@ testthat::test_that("Delayed extract filter concatenated - single data connector
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl, subset = get_continuous),
+      choices = variable_choices(ADSL, subset = get_continuous),
       selected = NULL
     ),
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl,
+      choices = value_choices(ADSL,
         var_choices = "ARMCD",
         var_label = "ARM",
         subset = function(data) levels(data$ARMCD)[1:2]
@@ -299,9 +299,9 @@ testthat::test_that("Delayed extract filter concatenated - single data connector
 
 # Delayed extract two filters - single data connector with two scda dataset connectors ----
 testthat::test_that("Delayed extract two filters - single data connector with two scda dataset connectors", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  data <- teal.data::teal_data(adsl, adrs)
+  data <- teal.data::teal_data(ADSL, adrs)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -356,18 +356,18 @@ testthat::test_that("Delayed extract two filters - single data connector with tw
 
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADRS <- data$get_dataset("ADRS")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl, subset = get_continuous),
+      choices = variable_choices(ADSL, subset = get_continuous),
       selected = NULL
     ),
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl,
+      choices = value_choices(ADSL,
         var_choices = "ARMCD",
         var_label = "ARM",
         subset = function(data) levels(data$ARMCD)[1:2]
@@ -422,17 +422,17 @@ testthat::test_that("Delayed extract two filters - single data connector with tw
 
 # Delayed extract - dataset & connector ----
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors", {
-  adsl <- teal.data::dataset(
+  ADSL <- teal.data::dataset(
     dataname = "ADSL",
     rADSL,
     keys = teal.data::get_cdisc_keys("ADSL"),
-    code = "adsl <- rADSL",
+    code = "ADSL <- rADSL",
     label = "ADSL"
   )
 
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  adtte <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE)
-  data <- teal.data::cdisc_data(adsl, adrs, adtte)
+  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE)
+  data <- teal.data::cdisc_data(ADSL, adrs, ADTTE)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -442,7 +442,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
+      choices = value_choices(ADSL$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
       selected = "ARM A",
       multiple = TRUE
     )
@@ -494,7 +494,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
+      choices = value_choices(ADSL$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
       selected = "ARM A",
       multiple = TRUE
     )
@@ -545,10 +545,10 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
 
 # with resolve_delayed
 testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors - resolve_delayed", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adae <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE)
 
-  data <- teal.data::cdisc_data(adsl, adae)
+  data <- teal.data::cdisc_data(ADSL, adae)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -567,12 +567,12 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
   # test delayed data extract
   ds <- teal.slice::init_filtered_data(data)
 
-  adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
+  ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
   ADAE <- data$get_dataset("ADAE")$get_raw_data() # nolint
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(adsl, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
       selected = NULL
     )
   )
@@ -592,15 +592,15 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
 testthat::test_that(
   desc = "Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed",
   code = {
-    adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+    ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
     adae <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE)
-    data <- teal.data::cdisc_data(adsl, adae)
+    data <- teal.data::cdisc_data(ADSL, adae)
 
     choices <- variable_choices("ADSL")
     ds <- teal.slice::init_filtered_data(data)
 
-    adsl <- data$get_dataset("ADSL")$get_raw_data() # nolint
-    choices_expected <- variable_choices(adsl, key = teal.data::get_cdisc_keys("ADSL"))
+    ADSL <- data$get_dataset("ADSL")$get_raw_data() # nolint
+    choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
     choices_result <- isolate(resolve_delayed(choices, datasets = ds))
     testthat::expect_identical(choices_result, choices_expected)
   }
@@ -609,9 +609,9 @@ testthat::test_that(
 # Delayed data extract - filtered ----
 
 testthat::test_that("Delayed data extract - filtered", {
-  adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+  ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  data <- teal.data::cdisc_data(adsl, adrs)
+  data <- teal.data::cdisc_data(ADSL, adrs)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -676,9 +676,9 @@ testthat::test_that("Delayed data extract - filtered", {
 testthat::test_that(
   desc = "Delayed extract filter concatenated - single data connector with two scda dataset connectors - res_delayed",
   code = {
-    adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+    ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
     adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-    data <- teal.data::teal_data(adsl, adrs)
+    data <- teal.data::teal_data(ADSL, adrs)
 
     x <- data_extract_spec(
       dataname = "ADSL",
@@ -780,9 +780,9 @@ testthat::test_that(
 testthat::test_that(
   desc = "Delayed extract two filters - single data connector with two scda dataset connectors - resolve_delayed",
   code = {
-    adsl <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
+    ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL)
     adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-    data <- teal.data::teal_data(adsl, adrs)
+    data <- teal.data::teal_data(ADSL, adrs)
 
     x <- data_extract_spec(
       dataname = "ADSL",
@@ -898,16 +898,16 @@ testthat::test_that(
 
 # Delayed extract - dataset & connector ----
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors - resolve_delayed", {
-  adsl <- teal.data::dataset(
+  ADSL <- teal.data::dataset(
     dataname = "ADSL",
     rADSL,
     keys = teal.data::get_cdisc_keys("ADSL"),
-    code = "adsl <- rADSL",
+    code = "ADSL <- rADSL",
     label = "ADSL"
   )
   adrs <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS)
-  adtte <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE)
-  data <- teal.data::cdisc_data(adsl, adrs, adtte)
+  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE)
+  data <- teal.data::cdisc_data(ADSL, adrs, ADTTE)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -917,7 +917,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
+      choices = value_choices(ADSL$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
       selected = "ARM A",
       multiple = TRUE
     )
@@ -969,7 +969,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
     filter = filter_spec(
       label = "Select endpoints:",
       vars = "ARMCD",
-      choices = value_choices(adsl$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
+      choices = value_choices(ADSL$get_raw_data(), var_choices = "ARMCD", var_label = "ARM"),
       selected = "ARM A",
       multiple = TRUE
     )

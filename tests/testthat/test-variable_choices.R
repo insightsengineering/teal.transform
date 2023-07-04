@@ -1,5 +1,5 @@
-adsl <- rADSL # nolint
-adtte <- rADTTE # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 
 test_that("Can create variable_choices with datasets with no or missing labels", {
   example_data <- data.frame(USUBJID = 1:2, STUDYID = 1:1)
@@ -32,13 +32,13 @@ test_that("delayed version of variable_choices", {
     )
   )
 
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
-    variable_choices(adsl, subset = c("SEX", "ARMCD", "COUNTRY"))
+    variable_choices(ADSL, subset = c("SEX", "ARMCD", "COUNTRY"))
   )
 
   # functional subset
@@ -54,7 +54,7 @@ test_that("delayed version of variable_choices", {
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
-    variable_choices(adsl, subset = colnames(adsl)[1:2], key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(ADSL, subset = colnames(ADSL)[1:2], key = teal.data::get_cdisc_keys("ADSL"))
   )
 
   # non-null key value
@@ -70,14 +70,14 @@ test_that("delayed version of variable_choices", {
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
   expect_equal(
     res_obj,
-    variable_choices(adsl, key = c("USUBJID", "STUDYID"))
+    variable_choices(ADSL, key = c("USUBJID", "STUDYID"))
   )
 })
 
 # with resolve_delayed
 data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
+  teal.data::cdisc_dataset("ADSL", ADSL),
+  teal.data::cdisc_dataset("ADTTE", ADTTE)
 )
 
 ds <- teal.slice::init_filtered_data(data)
@@ -96,7 +96,7 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   expect_equal(
     res_obj,
-    variable_choices(adsl, subset = c("SEX", "ARMCD", "COUNTRY"))
+    variable_choices(ADSL, subset = c("SEX", "ARMCD", "COUNTRY"))
   )
 
 
@@ -113,7 +113,7 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   expect_equal(
     res_obj,
-    variable_choices(adsl, subset = colnames(adsl)[1:2], key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(ADSL, subset = colnames(ADSL)[1:2], key = teal.data::get_cdisc_keys("ADSL"))
   )
 
   # non-null key value
@@ -129,6 +129,6 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   expect_equal(
     res_obj,
-    variable_choices(adsl, key = c("USUBJID", "STUDYID"))
+    variable_choices(ADSL, key = c("USUBJID", "STUDYID"))
   )
 })

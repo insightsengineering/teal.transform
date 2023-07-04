@@ -1,5 +1,5 @@
-adsl <- rADSL # nolint
-adtte <- rADTTE # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 
 testthat::test_that("Will output warnings when value_choices applied on datasets with missing values and / or labels", {
   data <- data.frame(
@@ -40,13 +40,13 @@ testthat::test_that("delayed version of value_choices", {
       class = c("delayed_value_choices", "delayed_data", "choices_labeled")
     )
   )
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
+    value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
   )
 
   # functional subset
@@ -77,7 +77,7 @@ testthat::test_that("delayed version of value_choices", {
   res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl,
+    value_choices(ADSL,
       var_choices = "ARMCD", var_label = "ARM",
       subset = function(data) {
         levels(data$ARMCD)[1:2]
@@ -117,7 +117,7 @@ testthat::test_that("delayed version of value_choices", {
   res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl,
+    value_choices(ADSL,
       var_choices = c("ARMCD", "BMRKR2"), var_label = c("ARM", "BMRKR2"),
       subset = combine_armcd_bmrkr2
     )
@@ -127,8 +127,8 @@ testthat::test_that("delayed version of value_choices", {
 
 # With resolve_delayed
 data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
+  teal.data::cdisc_dataset("ADSL", ADSL),
+  teal.data::cdisc_dataset("ADTTE", ADTTE)
 )
 
 ds <- teal.slice::init_filtered_data(data)
@@ -153,7 +153,7 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
+    value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
   )
 
 
@@ -185,7 +185,7 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl,
+    value_choices(ADSL,
       var_choices = "ARMCD", var_label = "ARM",
       subset = function(data) {
         levels(data$ARMCD)[1:2]
@@ -226,7 +226,7 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   testthat::expect_equal(
     res_obj,
-    value_choices(adsl,
+    value_choices(ADSL,
       var_choices = c("ARMCD", "BMRKR2"), var_label = c("ARM", "BMRKR2"),
       subset = combine_armcd_bmrkr2
     )

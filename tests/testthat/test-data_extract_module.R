@@ -1,5 +1,5 @@
-adlb <- rADLB # nolint
-adtte <- rADTTE # nolint
+ADLB <- rADLB # nolint
+ADTTE <- rADTTE # nolint
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(
@@ -13,7 +13,7 @@ testthat::test_that("Single filter", {
     ),
     filter = filter_spec(
       vars = "PARAMCD",
-      choices = levels(adtte$PARAMCD),
+      choices = levels(ADTTE$PARAMCD),
       selected = "OS",
       multiple = TRUE,
       label = "Choose endpoint"
@@ -46,14 +46,14 @@ testthat::test_that("Multiple filters", {
     filter = list(
       filter_spec(
         vars = "AVISIT",
-        choices = levels(adlb$AVISIT),
+        choices = levels(ADLB$AVISIT),
         selected = "BASELINE",
         multiple = FALSE,
         label = "Choose endpoint"
       ),
       filter_spec(
         vars = "PARAMCD",
-        choices = levels(adlb$PARAMCD),
+        choices = levels(ADLB$PARAMCD),
         selected = "ALT",
         multiple = FALSE,
         label = "Choose endpoint"
@@ -77,7 +77,7 @@ testthat::test_that("Multiple filters", {
 
 
 testthat::test_that("Multiple datasets", {
-  data_extract_adtte <- data_extract_spec(
+  data_extract_ADTTE <- data_extract_spec(
     dataname = "ADTTE",
     select = select_spec(
       choices = c("AVAL", "AVALU", "BMRKR1", "SITEID"),
@@ -88,14 +88,14 @@ testthat::test_that("Multiple datasets", {
     ),
     filter = filter_spec(
       vars = "PARAMCD",
-      choices = levels(adtte$PARAMCD),
+      choices = levels(ADTTE$PARAMCD),
       selected = "OS",
       multiple = TRUE,
       label = "Choose endpoint"
     )
   )
 
-  data_extract_adlb <- data_extract_spec(
+  data_extract_ADLB <- data_extract_spec(
     dataname = "ADLB",
     select = select_spec(
       choices = c("AVAL", "AVALU", "BMRKR1", "SITEID"),
@@ -107,14 +107,14 @@ testthat::test_that("Multiple datasets", {
     filter = list(
       filter_spec(
         vars = "AVISIT",
-        choices = levels(adlb$AVISIT),
+        choices = levels(ADLB$AVISIT),
         selected = "BASELINE",
         multiple = FALSE,
         label = "Choose endpoint"
       ),
       filter_spec(
         vars = "PARAMCD",
-        choices = levels(adlb$PARAMCD),
+        choices = levels(ADLB$PARAMCD),
         selected = "ALT",
         multiple = FALSE,
         label = "Choose endpoint"
@@ -126,7 +126,7 @@ testthat::test_that("Multiple datasets", {
     input1 <- data_extract_ui(
       id = NULL,
       label = "Variable X",
-      data_extract_spec = list(data_extract_adtte, data_extract_adtte),
+      data_extract_spec = list(data_extract_ADTTE, data_extract_ADTTE),
       "list contains data_extract_spec objects with the same dataset"
     )
   )
@@ -136,7 +136,7 @@ testthat::test_that("Multiple datasets", {
     input1 <- data_extract_ui(
       id = NULL,
       label = "Variable X",
-      data_extract_spec = list(data_extract_adtte, data_extract_adlb)
+      data_extract_spec = list(data_extract_ADTTE, data_extract_ADLB)
     )
   )
 })
