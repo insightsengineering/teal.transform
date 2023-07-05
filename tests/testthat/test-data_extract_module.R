@@ -77,7 +77,7 @@ testthat::test_that("Multiple filters", {
 
 
 testthat::test_that("Multiple datasets", {
-  data_extract_ADTTE <- data_extract_spec(
+  data_extract_adtte <- data_extract_spec(
     dataname = "ADTTE",
     select = select_spec(
       choices = c("AVAL", "AVALU", "BMRKR1", "SITEID"),
@@ -95,7 +95,7 @@ testthat::test_that("Multiple datasets", {
     )
   )
 
-  data_extract_ADLB <- data_extract_spec(
+  data_extract_adlb <- data_extract_spec(
     dataname = "ADLB",
     select = select_spec(
       choices = c("AVAL", "AVALU", "BMRKR1", "SITEID"),
@@ -126,7 +126,7 @@ testthat::test_that("Multiple datasets", {
     input1 <- data_extract_ui(
       id = NULL,
       label = "Variable X",
-      data_extract_spec = list(data_extract_ADTTE, data_extract_ADTTE),
+      data_extract_spec = list(data_extract_adtte, data_extract_adtte),
       "list contains data_extract_spec objects with the same dataset"
     )
   )
@@ -136,7 +136,7 @@ testthat::test_that("Multiple datasets", {
     input1 <- data_extract_ui(
       id = NULL,
       label = "Variable X",
-      data_extract_spec = list(data_extract_ADTTE, data_extract_ADLB)
+      data_extract_spec = list(data_extract_adtte, data_extract_adlb)
     )
   )
 })
