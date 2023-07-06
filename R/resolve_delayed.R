@@ -12,9 +12,7 @@
 #' @export
 #'
 #' @examples
-#' library(scda)
-#'
-#' ADSL <- synthetic_cdisc_data("latest")$adsl
+#' ADSL <- rADSL
 #' shiny::isolate({
 #'   ds <- teal.slice::init_filtered_data(
 #'     list(ADSL = list(

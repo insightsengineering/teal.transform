@@ -1,15 +1,13 @@
-library(scda)
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl # nolint
-adtte <- scda_data$adtte # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 
 arm_ref_comp <- list(
   ARMCD = list(
-    ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
-    comp = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
+    ref = value_choices(ADTTE, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    comp = value_choices(ADTTE, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM B", "ARM C"))
   ),
   ARM = list(
-    ref = variable_choices(adsl, subset = "ARM"), comp = variable_choices(adsl, subset = "ARMCD")
+    ref = variable_choices(ADSL, subset = "ARM"), comp = variable_choices(ADSL, subset = "ARMCD")
   ),
   ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
 )
@@ -28,17 +26,17 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
   # 1) single argument called "data"
   testthat::expect_error(
-    resolve_delayed_expr(function() {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function() {}, ds = ADSL, is_value_choices = FALSE), # nolint
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(a) {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(a) {}, ds = ADSL, is_value_choices = FALSE), # nolint
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(data, a) {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(data, a) {}, ds = ADSL, is_value_choices = FALSE), # nolint
     regexp = "Assertion on 'x' failed: Must have exactly 1 formal arg",
     fixed = TRUE
   )
@@ -46,35 +44,35 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
   # 2a) returning character unique vector of length <= ncol(ds)
   testthat::expect_error(
-    resolve_delayed_expr(function(data) 1, ds = adsl, is_value_choices = FALSE),
+    resolve_delayed_expr(function(data) 1, ds = ADSL, is_value_choices = FALSE),
     regexp = "must return a character vector with unique names from the available columns of the dataset"
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(data) c("a", "a"), ds = adsl, is_value_choices = FALSE),
+    resolve_delayed_expr(function(data) c("a", "a"), ds = ADSL, is_value_choices = FALSE),
     regexp = "must return a character vector with unique names from the available columns of the dataset"
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(data) c("a", "b"), ds = adsl[1], is_value_choices = FALSE),
+    resolve_delayed_expr(function(data) c("a", "b"), ds = ADSL[1], is_value_choices = FALSE),
     regexp = "must return a character vector with unique names from the available columns of the dataset"
   )
 
   # function assumptions check
   # 2b) returning unique vector
   testthat::expect_error(
-    resolve_delayed_expr(function(data) c(1, 1), ds = adsl, is_value_choices = TRUE),
+    resolve_delayed_expr(function(data) c(1, 1), ds = ADSL, is_value_choices = TRUE),
     regexp = "must return a vector with unique values from the respective columns of the dataset"
   )
 
   # function return value check
   testthat::expect_equal(
-    resolve_delayed_expr(function(data) c("a", "b"), ds = adsl, is_value_choices = FALSE),
+    resolve_delayed_expr(function(data) c("a", "b"), ds = ADSL, is_value_choices = FALSE),
     c("a", "b")
   )
-  testthat::expect_equal(resolve_delayed_expr(function(data) 1:2, ds = adsl, is_value_choices = TRUE), 1:2)
+  testthat::expect_equal(resolve_delayed_expr(function(data) 1:2, ds = ADSL, is_value_choices = TRUE), 1:2)
 })
 
 testthat::test_that("resolve.list works correctly", {
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   ddl_resolved <- isolate(resolve(arm_ref_comp_ddl, data_list, key_list))
@@ -103,7 +101,7 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
 })
 
 testthat::test_that("resolve throws error with non-reactive data.frames or unnamed list as input to datasets", {
-  data_list <- list(ADSL = adsl, ADTTE = adtte)
+  data_list <- list(ADSL = ADSL, ADTTE = ADTTE)
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   testthat::expect_error(
@@ -112,7 +110,7 @@ testthat::test_that("resolve throws error with non-reactive data.frames or unnam
     fixed = TRUE
   )
 
-  data_list2 <- list(reactive(adsl), reactive(adtte))
+  data_list2 <- list(reactive(ADSL), reactive(ADTTE))
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list2, key_list)),
     "Assertion on 'datasets' failed: Must have names."
@@ -120,7 +118,7 @@ testthat::test_that("resolve throws error with non-reactive data.frames or unnam
 })
 
 testthat::test_that("resolve throws error with unnamed list or wrong names as input to keys", {
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
   key_list <- list(teal.data::get_cdisc_keys("ADSL"), teal.data::get_cdisc_keys("ADTTE"))
 
   testthat::expect_error(
@@ -138,7 +136,7 @@ testthat::test_that("resolve throws error with unnamed list or wrong names as in
 })
 
 testthat::test_that("resolve throws error with missing arguments", {
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
   key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
   testthat::expect_error(

@@ -1,5 +1,3 @@
-library(scda)
-
 choices <- c("val1", "val2", "val3")
 choices_d <- c("val1", "val1", "val2", "val3")
 choices_f <- as.factor(choices)
@@ -214,7 +212,7 @@ testthat::test_that("filter_spec_internal", {
 })
 
 testthat::test_that("filter_spec_internal contains dataname", {
-  ADSL <- synthetic_cdisc_data("latest")$adsl # nolint
+  ADSL <- rADSL # nolint
 
   x_filter <- filter_spec_internal(
     vars_choices = variable_choices(ADSL)
@@ -291,11 +289,10 @@ testthat::test_that("delayed filter_spec works", {
 })
 
 
-scda_data <- synthetic_cdisc_data("latest")
-adsl <- scda_data$adsl
-adtte <- scda_data$adtte
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 
-data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
@@ -360,9 +357,9 @@ testthat::test_that("delayed version of filter_spec", {
 
   res_obj <- isolate(resolve(obj, datasets = data_list, key_list))
   exp_obj <- filter_spec(
-    vars = variable_choices(adsl, subset = "ARMCD"),
-    choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
-    selected = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    vars = variable_choices(ADSL, subset = "ARMCD"),
+    choices = value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
+    selected = value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
     multiple = FALSE
   )
 
@@ -557,12 +554,11 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
-
-adsl <- scda_data$adsl
-adtte <- scda_data$adtte
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
+  teal.data::cdisc_dataset("ADSL", ADSL),
+  teal.data::cdisc_dataset("ADTTE", ADTTE)
 )
 ds <- teal.slice::init_filtered_data(data)
 
@@ -604,9 +600,9 @@ testthat::test_that("delayed version of filter_spec - resolve_delayed", {
 
   res_obj <- isolate(resolve_delayed(obj, datasets = ds))
   exp_obj <- filter_spec(
-    vars = variable_choices(adsl, subset = "ARMCD"),
-    choices = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
-    selected = value_choices(adsl, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
+    vars = variable_choices(ADSL, subset = "ARMCD"),
+    choices = value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
+    selected = value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
     multiple = FALSE
   )
 

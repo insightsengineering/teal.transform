@@ -21,10 +21,9 @@
 #'
 #' @examples
 #' library(shiny)
-#' library(scda)
 #'
-#' ADSL <- synthetic_cdisc_data("latest")$adsl
-#' ADTTE <- synthetic_cdisc_data("latest")$adtte
+#' ADSL <- rADSL
+#' ADTTE <- rADTTE
 #' choices1 <- choices_labeled(names(ADSL), formatters::var_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 #' # if only a subset of variables are needed, use subset argument
@@ -141,9 +140,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' ADRS <- synthetic_cdisc_data("latest")$adrs
-#'
+#' ADRS <- rADRS
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 #' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
@@ -300,9 +297,7 @@ variable_choices.TealDatasetConnector <- function(data, # nolint
 #' @export
 #'
 #' @examples
-#' library(scda)
-#' ADRS <- synthetic_cdisc_data("latest")$adrs
-#'
+#' ADRS <- rADRS
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),
