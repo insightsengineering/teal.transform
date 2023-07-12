@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' ADSL <- rADSL
+#' ADSL <- teal.transform::rADSL
 #' shiny::isolate({
 #'   ds <- teal.slice::init_filtered_data(
 #'     list(ADSL = list(

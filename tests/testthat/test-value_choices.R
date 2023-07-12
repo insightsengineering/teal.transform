@@ -1,5 +1,5 @@
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
 testthat::test_that("Will output warnings when value_choices applied on datasets with missing values and / or labels", {
   data <- data.frame(

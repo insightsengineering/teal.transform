@@ -135,7 +135,7 @@ teal.transform:::filter_spec_internal(
   vars_multiple = TRUE
 )
 
-ADRS <- rADRS
+ADRS <- teal.transform::rADRS
 teal.transform:::filter_spec_internal(
   vars_choices = variable_choices(ADRS),
   vars_selected = "PARAMCD",

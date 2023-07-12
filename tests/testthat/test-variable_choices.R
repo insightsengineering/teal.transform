@@ -1,5 +1,5 @@
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
 test_that("Can create variable_choices with datasets with no or missing labels", {
   example_data <- data.frame(USUBJID = 1:2, STUDYID = 1:1)
