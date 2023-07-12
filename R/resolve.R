@@ -10,7 +10,7 @@
 #' @return Resolved object.
 #'
 #' @examples
-#' ADSL <- rADSL
+#' ADSL <- teal.transform::rADSL
 #' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
 #' data_list <- list(ADSL = shiny::reactive(ADSL))
 #' keys <- list(ADSL = attr(ADSL, "keys"))

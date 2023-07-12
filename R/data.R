@@ -3,7 +3,7 @@
 #' @description Random adverse events
 #' @docType data
 #'
-#' @usage data(rADAE)
+#' @usage rADAE
 #'
 #' @keywords datasets internal
 #'
@@ -16,7 +16,7 @@
 #' @description Random lab analysis
 #' @docType data
 #'
-#' @usage data(rADLB)
+#' @usage rADLB
 #'
 #' @keywords datasets internal
 #'
@@ -29,7 +29,7 @@
 #' @description Random response
 #' @docType data
 #'
-#' @usage data(rADRS)
+#' @usage rADRS
 #'
 #' @keywords datasets internal
 #'
@@ -42,9 +42,9 @@
 #' @description Random patient listing
 #' @docType data
 #'
-#' @keywords datasets internal
+#' @usage rADSL
 #'
-#' @usage data(rADSL)
+#' @keywords datasets internal
 #'
 #' @source internal
 #' @name rADSL
@@ -55,9 +55,9 @@
 #' @description Random Time to Event Analysis Dataset
 #' @docType data
 #'
-#' @keywords datasets internal
+#' @usage rADTTE
 #'
-#' @usage data(rADTTE)
+#' @keywords datasets internal
 #'
 #' @source internal
 #' @name rADTTE

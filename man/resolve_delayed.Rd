@@ -21,7 +21,7 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-ADSL <- rADSL
+ADSL <- teal.transform::rADSL
 shiny::isolate({
   ds <- teal.slice::init_filtered_data(
     list(ADSL = list(

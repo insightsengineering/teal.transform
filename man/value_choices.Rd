@@ -43,7 +43,7 @@ named character vector or \code{delayed_data} object
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-ADRS <- rADRS
+ADRS <- teal.transform::rADRS
 value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),

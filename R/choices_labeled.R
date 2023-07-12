@@ -22,8 +22,8 @@
 #' @examples
 #' library(shiny)
 #'
-#' ADSL <- rADSL
-#' ADTTE <- rADTTE
+#' ADSL <- teal.transform::rADSL
+#' ADTTE <- teal.transform::rADTTE
 #' choices1 <- choices_labeled(names(ADSL), formatters::var_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 #' # if only a subset of variables are needed, use subset argument
@@ -140,7 +140,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' @export
 #'
 #' @examples
-#' ADRS <- rADRS
+#' ADRS <- teal.transform::rADRS
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 #' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
@@ -297,7 +297,7 @@ variable_choices.TealDatasetConnector <- function(data, # nolint
 #' @export
 #'
 #' @examples
-#' ADRS <- rADRS
+#' ADRS <- teal.transform::rADRS
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),

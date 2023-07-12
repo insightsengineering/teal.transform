@@ -1,7 +1,7 @@
 # Contains integration tests between delayed data loading objects and
 # the objects responsible for loading, pulling and filtering the data
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", ADSL),
   teal.data::cdisc_dataset("ADTTE", ADTTE)
@@ -42,7 +42,7 @@ get_continuous <- function(data) {
 
 testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors", {
   ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL) # nolint
-  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE) # nolint
+  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = teal.transform::rADAE) # nolint
   data <- teal.data::cdisc_data(ADSL, ADAE)
 
   x <- data_extract_spec(
@@ -93,7 +93,7 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
 
 testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors", {
   ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL) # nolint
-  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE) # nolint
+  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = teal.transform::rADAE) # nolint
 
   data <- teal.data::cdisc_data(ADSL, ADAE)
 
@@ -418,14 +418,14 @@ testthat::test_that("Delayed extract two filters - single data connector with tw
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors", {
   ADSL <- teal.data::dataset( # nolint
     dataname = "ADSL",
-    rADSL,
+    teal.transform::rADSL,
     keys = teal.data::get_cdisc_keys("ADSL"),
-    code = "ADSL <- rADSL",
+    code = "ADSL <- teal.transform::rADSL",
     label = "ADSL"
   )
 
-  ADRS <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS) # nolint
-  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE) # nolint
+  ADRS <- teal.data::cdisc_dataset(dataname = "ADRS", x = teal.transform::rADRS) # nolint
+  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = teal.transform::rADTTE) # nolint
   data <- teal.data::cdisc_data(ADSL, ADRS, ADTTE)
 
   x <- data_extract_spec(
@@ -540,7 +540,7 @@ testthat::test_that("Delayed extract - TealData with single dataset and multiple
 # with resolve_delayed
 testthat::test_that("Delayed data extract - single data connector with two scda dataset connectors - resolve_delayed", {
   ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL) # nolint
-  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE) # nolint
+  ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = teal.transform::rADAE) # nolint
 
   data <- teal.data::cdisc_data(ADSL, ADAE)
 
@@ -587,7 +587,7 @@ testthat::test_that(
   desc = "Delayed choices selected - single data connector with two scda dataset connectors - resolve_delayed",
   code = {
     ADSL <- teal.data::cdisc_dataset(dataname = "ADSL", x = rADSL) # nolint
-    ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = rADAE) # nolint
+    ADAE <- teal.data::cdisc_dataset(dataname = "ADAE", x = teal.transform::rADAE) # nolint
     data <- teal.data::cdisc_data(ADSL, ADAE)
 
     choices <- variable_choices("ADSL")
@@ -894,13 +894,13 @@ testthat::test_that(
 testthat::test_that("Delayed extract - TealData with single dataset and multiple connectors - resolve_delayed", {
   ADSL <- teal.data::dataset( # nolint
     dataname = "ADSL",
-    rADSL,
+    teal.transform::rADSL,
     keys = teal.data::get_cdisc_keys("ADSL"),
-    code = "ADSL <- rADSL",
+    code = "ADSL <- teal.transform::rADSL",
     label = "ADSL"
   )
-  ADRS <- teal.data::cdisc_dataset(dataname = "ADRS", x = rADRS) # nolint
-  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = rADTTE) # nolint
+  ADRS <- teal.data::cdisc_dataset(dataname = "ADRS", x = teal.transform::rADRS) # nolint
+  ADTTE <- teal.data::cdisc_dataset(dataname = "ADTTE", x = teal.transform::rADTTE) # nolint
   data <- teal.data::cdisc_data(ADSL, ADRS, ADTTE)
 
   x <- data_extract_spec(

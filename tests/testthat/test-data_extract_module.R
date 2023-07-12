@@ -1,5 +1,5 @@
-ADLB <- rADLB # nolint
-ADTTE <- rADTTE # nolint
+ADLB <- teal.transform::rADLB # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(

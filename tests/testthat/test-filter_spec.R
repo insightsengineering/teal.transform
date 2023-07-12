@@ -212,7 +212,7 @@ testthat::test_that("filter_spec_internal", {
 })
 
 testthat::test_that("filter_spec_internal contains dataname", {
-  ADSL <- rADSL # nolint
+  ADSL <- teal.transform::rADSL # nolint
 
   x_filter <- filter_spec_internal(
     vars_choices = variable_choices(ADSL)
@@ -289,8 +289,8 @@ testthat::test_that("delayed filter_spec works", {
 })
 
 
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
@@ -554,8 +554,8 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
 })
 
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 data <- teal.data::cdisc_data(
   teal.data::cdisc_dataset("ADSL", ADSL),
   teal.data::cdisc_dataset("ADTTE", ADTTE)

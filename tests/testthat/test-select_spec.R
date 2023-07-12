@@ -113,8 +113,8 @@ testthat::test_that("resolve select_spec works", {
   testthat::expect_identical(expected_spec, isolate(resolve(delayed_spec, datasets = data_list, keys = key_list)))
 })
 
-adsl <- rADSL # nolint
-adtte <- rADTTE # nolint
+adsl <- teal.transform::rADSL # nolint
+adtte <- teal.transform::rADTTE # nolint
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
