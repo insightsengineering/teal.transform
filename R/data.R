@@ -42,9 +42,9 @@
 #' @description Random patient listing
 #' @docType data
 #'
-#' @keywords datasets internal
-#'
 #' @usage rADSL
+#'
+#' @keywords datasets internal
 #'
 #' @source internal
 #' @name rADSL
@@ -55,9 +55,9 @@
 #' @description Random Time to Event Analysis Dataset
 #' @docType data
 #'
-#' @keywords datasets internal
-#'
 #' @usage rADTTE
+#'
+#' @keywords datasets internal
 #'
 #' @source internal
 #' @name rADTTE
