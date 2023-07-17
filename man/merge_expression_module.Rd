@@ -112,7 +112,8 @@ app <- shinyApp(
   server = function(input, output, session) {
     data_q <- teal.code::new_qenv()
 
-    data_q <- teal.code::eval_code(data_q,
+    data_q <- teal.code::eval_code(
+      data_q,
       "ADSL <- data.frame(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
@@ -122,7 +123,8 @@ app <- shinyApp(
       )"
     )
 
-    data_q <- teal.code::eval_code(data_q,
+    data_q <- teal.code::eval_code(
+      data_q,
       "ADLB <- expand.grid(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
