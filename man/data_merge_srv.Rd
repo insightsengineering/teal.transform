@@ -35,90 +35,11 @@ Name of the analysis dataset.}
 reactive expression with output from \link{merge_datasets}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \details{
-When additional processing of the \code{data_extract} list input is required, \code{data_merge_srv()} can be combined
+When additional processing of the \code{data_extract} list input was required, \code{data_merge_srv()} could be combined
 with \code{data_extract_multiple_srv()} or \code{data_extract_srv()} to influence the \code{selector_list} input.
-Compare the example below with that found in \code{\link[=data_merge_module]{data_merge_module()}}.
-}
-\examples{
-library(shiny)
-
-ADSL <- data.frame(
-  STUDYID = "A",
-  USUBJID = LETTERS[1:10],
-  SEX = rep(c("F", "M"), 5),
-  AGE = rpois(10, 30),
-  BMRKR1 = rlnorm(10)
-)
-ADLB <- expand.grid(
-  STUDYID = "A",
-  USUBJID = LETTERS[1:10],
-  PARAMCD = c("ALT", "CRP", "IGA"),
-  AVISIT = c("SCREENING", "BASELINE", "WEEK 1 DAY 8", "WEEK 2 DAY 15")
-)
-ADLB$AVAL <- rlnorm(120)
-ADLB$CHG <- rnorm(120)
-
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", ADSL),
-  teal.data::cdisc_dataset("ADLB", ADLB)
-)
-datasets <- teal.slice::init_filtered_data(data)
-
-adsl_extract <- data_extract_spec(
-  dataname = "ADSL",
-  select = select_spec(
-    label = "Select variable:",
-    choices = c("AGE", "BMRKR1"),
-    selected = "AGE",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-adlb_extract <- data_extract_spec(
-  dataname = "ADLB",
-  filter = filter_spec(vars = "PARAMCD", choices = c("ALT", "CRP", "IGA"), selected = "ALT"),
-  select = select_spec(
-    label = "Select variable:",
-    choices = c("AVAL", "CHG"),
-    selected = "AVAL",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = div(
-        verbatimTextOutput("expr"),
-        dataTableOutput("data")
-      ),
-      encoding = tagList(
-        data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
-        data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    selector_list <- data_extract_multiple_srv(
-      list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      datasets
-    )
-    merged_data <- data_merge_srv(
-      selector_list = selector_list,
-      datasets = datasets,
-      merge_function = "dplyr::left_join"
-    )
-    output$expr <- renderText(merged_data()$expr)
-    output$data <- renderDataTable(merged_data()$data())
-  }
-)
-\dontrun{
-runApp(app)
-}
 }
 \seealso{
 \code{\link[=data_extract_srv]{data_extract_srv()}}

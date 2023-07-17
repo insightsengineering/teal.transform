@@ -32,85 +32,11 @@ UI function.}
 reactive expression with output from \code{\link[=data_merge_srv]{data_merge_srv()}}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \details{
-This function is a convenient wrapper to combine \code{data_extract_multiple_srv()} and
+This function was a convenient wrapper to combine \code{data_extract_multiple_srv()} and
 \code{data_merge_srv()} when no additional processing is required.
-Compare the example below with that found in \code{\link[=data_merge_srv]{data_merge_srv()}}.
-}
-\examples{
-library(shiny)
-
-ADSL <- data.frame(
-  STUDYID = "A",
-  USUBJID = LETTERS[1:10],
-  SEX = rep(c("F", "M"), 5),
-  AGE = rpois(10, 30),
-  BMRKR1 = rlnorm(10)
-)
-ADLB <- expand.grid(
-  STUDYID = "A",
-  USUBJID = LETTERS[1:10],
-  PARAMCD = c("ALT", "CRP", "IGA"),
-  AVISIT = c("SCREENING", "BASELINE", "WEEK 1 DAY 8", "WEEK 2 DAY 15")
-)
-ADLB$AVAL <- rlnorm(120)
-ADLB$CHG <- rnorm(120)
-
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", ADSL),
-  teal.data::cdisc_dataset("ADLB", ADLB)
-)
-datasets <- teal.slice::init_filtered_data(data)
-
-adsl_extract <- data_extract_spec(
-  dataname = "ADSL",
-  select = select_spec(
-    label = "Select variable:",
-    choices = c("AGE", "BMRKR1"),
-    selected = "AGE",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-adlb_extract <- data_extract_spec(
-  dataname = "ADLB",
-  filter = filter_spec(vars = "PARAMCD", choices = c("ALT", "CRP", "IGA"), selected = "ALT"),
-  select = select_spec(
-    label = "Select variable:",
-    choices = c("AVAL", "CHG"),
-    selected = "AVAL",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = div(
-        verbatimTextOutput("expr"),
-        dataTableOutput("data")
-      ),
-      encoding = tagList(
-        data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
-        data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    merged_data <- data_merge_module(
-      data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      datasets = datasets,
-      merge_function = "dplyr::left_join"
-    )
-    output$expr <- renderText(merged_data()$expr)
-    output$data <- renderDataTable(merged_data()$data())
-  }
-)
-\dontrun{
-runApp(app)
-}
 }
 \seealso{
 \code{\link[=data_merge_srv]{data_merge_srv()}}
