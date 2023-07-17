@@ -57,5 +57,5 @@ data_merge_srv <- function(id = "merge_id",
                            datasets,
                            merge_function = "dplyr::full_join",
                            anl_name = "ANL") {
-  lifecycle::deprecate_stop("0.3.1", "data_merge_module()")
+  lifecycle::deprecate_stop("0.3.1", "data_merge_srv()")
 }
