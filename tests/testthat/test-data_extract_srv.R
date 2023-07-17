@@ -5,11 +5,10 @@ adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
 adlb <- teal.data::cdisc_dataset("ADLB", adlb_df)
 
 datasets <- teal.slice::init_filtered_data(
-  list(ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0))),
+  list(ADSL = list(dataset = adsl_df)),
   join_keys = teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  ),
-  cdisc = TRUE
+  )
 )
 
 data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
@@ -338,10 +337,13 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
 
 datasets <- teal.slice::init_filtered_data(
   list(
-    ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0)),
-    ADLB = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADLB"), parent = character(0))
+    ADSL = list(dataset = adsl_df),
+    ADLB = list(dataset = adsl_df)
   ),
-  cdisc = TRUE
+  join_keys = teal.data::join_keys(
+    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
+    teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADLB"))
+  )
 )
 testthat::test_that("data_extract_srv with a list of multiple data_extract_spec", {
   extract_list <- list(adsl_extract = adsl_extract, adlb_extract = adlb_extract)
