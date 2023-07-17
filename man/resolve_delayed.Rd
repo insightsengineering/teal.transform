@@ -24,9 +24,7 @@ Resolved object.
 ADSL <- teal.transform::rADSL
 shiny::isolate({
   ds <- teal.slice::init_filtered_data(
-    list(ADSL = list(
-      dataset = ADSL, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0)
-    ))
+    list(ADSL = list(dataset = ADSL))
   )
 
   # value_choices example

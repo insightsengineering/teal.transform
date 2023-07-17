@@ -243,7 +243,10 @@ testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
   testthat::expect_equal(names(expected_spec), names(delayed_spec))
 
   ds <- teal.slice::init_filtered_data(
-    list(ADSL = list(dataset = ADSL, parent = character(0), keys = c("USUBJID", "SUBJID")))
+    list(ADSL = list(dataset = ADSL)),
+    join_keys = teal.data::join_keys(
+      teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    )
   )
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed_spec, ds)))
 })
