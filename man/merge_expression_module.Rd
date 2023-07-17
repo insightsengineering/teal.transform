@@ -110,27 +110,27 @@ app <- shinyApp(
     )
   ),
   server = function(input, output, session) {
-    chunks_h <- teal.code::chunks_new()
+    data_q <- teal.code::new_qenv()
 
-    teal.code::chunks_push(
-      str2lang("ADSL <- data.frame(
-      STUDYID = 'A',
-      USUBJID = LETTERS[1:10],
-      SEX = rep(c('F', 'M'), 5),
-      AGE = rpois(10, 30),
-      BMRKR1 = rlnorm(10))"),
-      chunks = chunks_h
+    data_q <- teal.code::eval_code(data_q,
+      "ADSL <- data.frame(
+        STUDYID = 'A',
+        USUBJID = LETTERS[1:10],
+        SEX = rep(c('F', 'M'), 5),
+        AGE = rpois(10, 30),
+        BMRKR1 = rlnorm(10)
+      )"
     )
 
-    teal.code::chunks_push(
-      str2lang("ADLB <- expand.grid(
-      STUDYID = 'A',
-      USUBJID = LETTERS[1:10],
-      PARAMCD = c('ALT', 'CRP', 'IGA'),
-      AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),
-      AVAL = rlnorm(120),
-      CHG = rlnorm(120))"),
-      chunks = chunks_h
+    data_q <- teal.code::eval_code(data_q,
+      "ADLB <- expand.grid(
+        STUDYID = 'A',
+        USUBJID = LETTERS[1:10],
+        PARAMCD = c('ALT', 'CRP', 'IGA'),
+        AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),
+        AVAL = rlnorm(120),
+        CHG = rlnorm(120)
+       )"
     )
 
     merged_data <- merge_expression_module(
@@ -140,15 +140,13 @@ app <- shinyApp(
       merge_function = "dplyr::left_join"
     )
 
-    ch_merge <- reactive({
-      ch <- teal.code::chunks_deep_clone(chunks_h)
-      for (chunk in merged_data()$expr) teal.code::chunks_push(chunks = ch, expression = chunk)
-      ch$eval()
-      ch
+    code_merge <- reactive({
+      for (exp in merged_data()$expr) data_q <- teal.code::eval_code(data_q, exp)
+      data_q
     })
 
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(ch_merge()$get("ANL"))
+    output$data <- renderDataTable(code_merge()@env$ANL)
   }
 )
 \dontrun{
