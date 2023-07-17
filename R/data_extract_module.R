@@ -354,8 +354,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   list(ADSL = list(dataset = ADSL, keys = c("STUDYID", "USUBJID"), parent = character(0))),
 #'   join_keys = teal.data::join_keys(
 #'     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
-#'   ),
-#'   cdisc = TRUE
+#'   )
 #' )
 #'
 #' app <- shinyApp(

@@ -475,8 +475,7 @@ testthat::test_that("delayed filter_spec - resolve_delayed", {
   testthat::expect_equal(names(expected_spec), names(delayed))
 
   ds <- teal.slice::init_filtered_data(
-    list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0))),
-    cdisc = TRUE
+    list(ADSL = list(dataset = ADSL, keys = c("USUBJID", "STUDYID"), parent = character(0)))
   )
   result_spec <- isolate(resolve_delayed(delayed, ds))
   testthat::expect_identical(expected_spec, isolate(resolve_delayed(delayed, ds)))
@@ -524,8 +523,7 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
 
   testthat::expect_equal(names(expected_spec), names(delayed))
   ds <- teal.slice::init_filtered_data(
-    list(ADSL = list(dataset = ADSL)),
-    cdisc = TRUE
+    list(ADSL = list(dataset = ADSL))
   )
 
   delayed$dataname <- "ADSL"

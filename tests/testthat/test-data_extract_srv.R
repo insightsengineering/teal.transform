@@ -8,8 +8,7 @@ datasets <- teal.slice::init_filtered_data(
   list(ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0))),
   join_keys = teal.data::join_keys(
     teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  ),
-  cdisc = TRUE
+  )
 )
 
 data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
@@ -340,8 +339,7 @@ datasets <- teal.slice::init_filtered_data(
   list(
     ADSL = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADSL"), parent = character(0)),
     ADLB = list(dataset = adsl_df, keys = teal.data::get_cdisc_keys("ADLB"), parent = character(0))
-  ),
-  cdisc = TRUE
+  )
 )
 testthat::test_that("data_extract_srv with a list of multiple data_extract_spec", {
   extract_list <- list(adsl_extract = adsl_extract, adlb_extract = adlb_extract)
