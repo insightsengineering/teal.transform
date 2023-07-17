@@ -552,7 +552,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #' @description `r lifecycle::badge("experimental")`
 #' `data_extract_multiple_srv` loops over the list of `data_extract` given and
 #' runs `data_extract_srv` for each one returning a list of reactive objects.
-#' This is suitable as input for [data_merge_srv()].
+#' This was suitable as input for (deprecated) [data_merge_srv()].
 #'
 #' @inheritParams data_extract_srv
 #' @param data_extract (named `list` of `data_extract_spec` objects) the list `data_extract_spec` objects.
