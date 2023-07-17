@@ -31,8 +31,8 @@ data_merge_module <- function(datasets,
 #' Data merge module server
 #'
 #' @description `r lifecycle::badge("deprecated")`
-#' @details When additional processing of the `data_extract` list input was required, `data_merge_srv()` could be combined
-#'   with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
+#' @details When additional processing of the `data_extract` list input was required, `data_merge_srv()` could be
+#'   combined with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
 #'
 #' @inheritParams shiny::moduleServer
 #' @param selector_list (`reactive`)\cr

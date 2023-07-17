@@ -38,8 +38,8 @@ reactive expression with output from \link{merge_datasets}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \details{
-When additional processing of the \code{data_extract} list input was required, \code{data_merge_srv()} could be combined
-with \code{data_extract_multiple_srv()} or \code{data_extract_srv()} to influence the \code{selector_list} input.
+When additional processing of the \code{data_extract} list input was required, \code{data_merge_srv()} could be
+combined with \code{data_extract_multiple_srv()} or \code{data_extract_srv()} to influence the \code{selector_list} input.
 }
 \seealso{
 \code{\link[=data_extract_srv]{data_extract_srv()}}
