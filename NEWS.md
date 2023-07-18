@@ -17,6 +17,7 @@
 ### Miscellaneous
 
 * Removed `scda` package dependency from examples.
+* Deprecated `data_merge_module()` and `data_merge_srv()`.
 
 # teal.transform 0.2.0
 

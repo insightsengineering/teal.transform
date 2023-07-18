@@ -30,7 +30,6 @@ Imports:
     shinyjs,
     shinyvalidate,
     stats,
-    teal.code (>= 0.2.0),
     teal.data (>= 0.1.2),
     teal.logger (>= 0.1.1),
     teal.slice (>= 0.2.0),
@@ -41,6 +40,7 @@ Suggests:
     knitr,
     rmarkdown,
     shinytest,
+    teal.code (>= 0.3.0),
     testthat (>= 3.1.5)
 VignetteBuilder:
     knitr
