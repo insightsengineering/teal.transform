@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9005</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,15 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -205,27 +196,29 @@ Compare the example below with that found in <code><a href="merge_expression_srv
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">chunks_h</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/chunks_new.html" class="external-link">chunks_new</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">data_q</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/new_qenv.html" class="external-link">new_qenv</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/chunks_push.html" class="external-link">chunks_push</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">str2lang</a></span><span class="op">(</span><span class="st">"ADSL &lt;- data.frame(</span></span></span>
-<span class="r-in"><span><span class="st">      STUDYID = 'A',</span></span></span>
-<span class="r-in"><span><span class="st">      USUBJID = LETTERS[1:10],</span></span></span>
-<span class="r-in"><span><span class="st">      SEX = rep(c('F', 'M'), 5),</span></span></span>
-<span class="r-in"><span><span class="st">      AGE = rpois(10, 30),</span></span></span>
-<span class="r-in"><span><span class="st">      BMRKR1 = rlnorm(10))"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      chunks <span class="op">=</span> <span class="va">chunks_h</span></span></span>
+<span class="r-in"><span>    <span class="va">data_q</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/eval_code.html" class="external-link">eval_code</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">data_q</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"ADSL &lt;- data.frame(</span></span></span>
+<span class="r-in"><span><span class="st">        STUDYID = 'A',</span></span></span>
+<span class="r-in"><span><span class="st">        USUBJID = LETTERS[1:10],</span></span></span>
+<span class="r-in"><span><span class="st">        SEX = rep(c('F', 'M'), 5),</span></span></span>
+<span class="r-in"><span><span class="st">        AGE = rpois(10, 30),</span></span></span>
+<span class="r-in"><span><span class="st">        BMRKR1 = rlnorm(10)</span></span></span>
+<span class="r-in"><span><span class="st">      )"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/chunks_push.html" class="external-link">chunks_push</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">str2lang</a></span><span class="op">(</span><span class="st">"ADLB &lt;- expand.grid(</span></span></span>
-<span class="r-in"><span><span class="st">      STUDYID = 'A',</span></span></span>
-<span class="r-in"><span><span class="st">      USUBJID = LETTERS[1:10],</span></span></span>
-<span class="r-in"><span><span class="st">      PARAMCD = c('ALT', 'CRP', 'IGA'),</span></span></span>
-<span class="r-in"><span><span class="st">      AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),</span></span></span>
-<span class="r-in"><span><span class="st">      AVAL = rlnorm(120),</span></span></span>
-<span class="r-in"><span><span class="st">      CHG = rlnorm(120))"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      chunks <span class="op">=</span> <span class="va">chunks_h</span></span></span>
+<span class="r-in"><span>    <span class="va">data_q</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/eval_code.html" class="external-link">eval_code</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">data_q</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"ADLB &lt;- expand.grid(</span></span></span>
+<span class="r-in"><span><span class="st">        STUDYID = 'A',</span></span></span>
+<span class="r-in"><span><span class="st">        USUBJID = LETTERS[1:10],</span></span></span>
+<span class="r-in"><span><span class="st">        PARAMCD = c('ALT', 'CRP', 'IGA'),</span></span></span>
+<span class="r-in"><span><span class="st">        AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),</span></span></span>
+<span class="r-in"><span><span class="st">        AVAL = rlnorm(120),</span></span></span>
+<span class="r-in"><span><span class="st">        CHG = rlnorm(120)</span></span></span>
+<span class="r-in"><span><span class="st">       )"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu">merge_expression_module</span><span class="op">(</span></span></span>
@@ -235,15 +228,13 @@ Compare the example below with that found in <code><a href="merge_expression_srv
 <span class="r-in"><span>      merge_function <span class="op">=</span> <span class="st">"dplyr::left_join"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">ch_merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span>      <span class="va">ch</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/chunks_deep_clone.html" class="external-link">chunks_deep_clone</a></span><span class="op">(</span><span class="va">chunks_h</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="kw">for</span> <span class="op">(</span><span class="va">chunk</span> <span class="kw">in</span> <span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/chunks_push.html" class="external-link">chunks_push</a></span><span class="op">(</span>chunks <span class="op">=</span> <span class="va">ch</span>, expression <span class="op">=</span> <span class="va">chunk</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="va">ch</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="va">ch</span></span></span>
+<span class="r-in"><span>    <span class="va">code_merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="kw">for</span> <span class="op">(</span><span class="va">exp</span> <span class="kw">in</span> <span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span> <span class="va">data_q</span> <span class="op">&lt;-</span> <span class="fu">teal.code</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.code/man/eval_code.html" class="external-link">eval_code</a></span><span class="op">(</span><span class="va">data_q</span>, <span class="va">exp</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="va">data_q</span></span></span>
 <span class="r-in"><span>    <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderText</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">ch_merge</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"ANL"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">code_merge</span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"ANL"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
