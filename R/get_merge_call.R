@@ -360,7 +360,7 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
         }
 
         data_used <- datasets[[attr(selector, "dataname")]]
-        labels <- formatters::var_labels(data_used(), fill = FALSE)
+        labels <- teal.widgets::formatters_var_labels(data_used(), fill = FALSE)
         column_labels <- labels[intersect(colnames(data_used()), column_names)]
 
         # NULL for no labels at all, character(0) for no labels for a given columns
@@ -432,7 +432,7 @@ get_relabel_call <- function(labels) {
   return(
     as.call(
       append(
-        quote(formatters::var_relabel),
+        quote(teal.widgets::formatters_var_relabel),
         labels
       )
     )
