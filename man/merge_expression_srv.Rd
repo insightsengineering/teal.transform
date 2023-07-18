@@ -157,7 +157,7 @@ app <- shinyApp(
     })
 
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(code_merge()@env$ANL)
+    output$data <- renderDataTable(code_merge()[["ANL"]])
   }
 )
 \dontrun{

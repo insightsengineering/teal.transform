@@ -126,7 +126,7 @@
 #'     })
 #'
 #'     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-#'     output$data <- renderDataTable(code_merge()@env$ANL)
+#'     output$data <- renderDataTable(code_merge()[["ANL"]])
 #'   }
 #' )
 #' \dontrun{
@@ -299,7 +299,7 @@ merge_expression_module <- function(datasets,
 #'     })
 #'
 #'     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-#'     output$data <- renderDataTable(code_merge()@env$ANL)
+#'     output$data <- renderDataTable(code_merge()[["ANL"]])
 #'   }
 #' )
 #' \dontrun{
