@@ -1,5 +1,9 @@
 # teal.transform 0.4.0.9002
 
+### Miscellaneous
+
+* Specify minimal version of dependent packages.
+
 # teal.transform 0.4.0
 
 ### Miscellaneous
