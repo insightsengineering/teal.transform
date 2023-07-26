@@ -38,7 +38,7 @@ Imports:
 Suggests:
     knitr (>= 1.34),
     rmarkdown (>= 2.19),
-    shinytest,
+    shinytest (>= 1.5.1),
     teal.code (>= 0.4.0),
     testthat (>= 3.1.5)
 VignetteBuilder:
