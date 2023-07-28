@@ -45,12 +45,12 @@ library(shiny)
 
 ADSL <- teal.transform::rADSL
 ADTTE <- teal.transform::rADTTE
-choices1 <- choices_labeled(names(ADSL), teal.widgets::formatters_var_labels(ADSL, fill = FALSE))
+choices1 <- choices_labeled(names(ADSL), teal.data::formatters_var_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 # if only a subset of variables are needed, use subset argument
 choices3 <- choices_labeled(
   names(ADSL),
-  teal.widgets::formatters_var_labels(ADSL, fill = FALSE),
+  teal.data::formatters_var_labels(ADSL, fill = FALSE),
   subset = c("ARMCD", "ARM")
 )
 \dontrun{
