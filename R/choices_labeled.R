@@ -179,10 +179,9 @@ variable_choices <- function(data, subset = NULL, fill = FALSE, key = NULL) {
 #' @rdname variable_choices
 #' @export
 variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = NULL) {
-  out <- structure(list(data = data, subset = subset, key = key),
+  structure(list(data = data, subset = subset, key = key),
     class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
   )
-  return(out)
 }
 
 #' @rdname variable_choices
