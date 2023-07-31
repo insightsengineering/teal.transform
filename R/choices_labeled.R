@@ -24,12 +24,12 @@
 #'
 #' ADSL <- teal.transform::rADSL
 #' ADTTE <- teal.transform::rADTTE
-#' choices1 <- choices_labeled(names(ADSL), formatters::var_labels(ADSL, fill = FALSE))
+#' choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 #' # if only a subset of variables are needed, use subset argument
 #' choices3 <- choices_labeled(
 #'   names(ADSL),
-#'   formatters::var_labels(ADSL, fill = FALSE),
+#'   teal.data::col_labels(ADSL, fill = FALSE),
 #'   subset = c("ARMCD", "ARM")
 #' )
 #' \dontrun{
@@ -221,14 +221,14 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
   res <- if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
-      labels = c("", unname(formatters::var_labels(data, fill = fill))),
+      labels = c("", unname(teal.data::col_labels(data, fill = fill))),
       subset = subset,
       types = c("", var_types)
     )
   } else {
     choices_labeled(
       choices = names(data),
-      labels = unname(formatters::var_labels(data, fill = fill)),
+      labels = unname(teal.data::col_labels(data, fill = fill)),
       subset = subset,
       types = var_types
     )
