@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +41,17 @@
           aria-expanded="false" aria-haspopup="true"
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -66,7 +74,7 @@
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
     </div>
 
     <div class="section level2">
@@ -115,90 +123,14 @@ UI function.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function is a convenient wrapper to combine <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> and
-<code><a href="data_merge_srv.html">data_merge_srv()</a></code> when no additional processing is required.
-Compare the example below with that found in <code><a href="data_merge_srv.html">data_merge_srv()</a></code>.</p>
+    <p>This function was a convenient wrapper to combine <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> and
+<code><a href="data_merge_srv.html">data_merge_srv()</a></code> when no additional processing is required.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="data_merge_srv.html">data_merge_srv()</a></code></p></div>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  STUDYID <span class="op">=</span> <span class="st">"A"</span>,</span></span>
-<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  SEX <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F"</span>, <span class="st">"M"</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  AGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  BMRKR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ADLB</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  STUDYID <span class="op">=</span> <span class="st">"A"</span>,</span></span>
-<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>  PARAMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALT"</span>, <span class="st">"CRP"</span>, <span class="st">"IGA"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  AVISIT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span>, <span class="st">"BASELINE"</span>, <span class="st">"WEEK 1 DAY 8"</span>, <span class="st">"WEEK 2 DAY 15"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ADLB</span><span class="op">$</span><span class="va">AVAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fl">120</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ADLB</span><span class="op">$</span><span class="va">CHG</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">120</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.data/man/cdisc_data.html" class="external-link">cdisc_data</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.data/man/cdisc_dataset.html" class="external-link">cdisc_dataset</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="va">ADSL</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.data/man/cdisc_dataset.html" class="external-link">cdisc_dataset</a></span><span class="op">(</span><span class="st">"ADLB"</span>, <span class="va">ADLB</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu">teal.slice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.slice/man/init_filtered_data.html" class="external-link">init_filtered_data</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adsl_extract</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  dataname <span class="op">=</span> <span class="st">"ADSL"</span>,</span></span>
-<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="select_spec.html">select_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span></span>
-<span class="r-in"><span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"BMRKR1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    selected <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
-<span class="r-in"><span>    multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>    fixed <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">adlb_extract</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  dataname <span class="op">=</span> <span class="st">"ADLB"</span>,</span></span>
-<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="filter_spec.html">filter_spec</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"PARAMCD"</span>, choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALT"</span>, <span class="st">"CRP"</span>, <span class="st">"IGA"</span><span class="op">)</span>, selected <span class="op">=</span> <span class="st">"ALT"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="select_spec.html">select_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span></span>
-<span class="r-in"><span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    selected <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>    multiple <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>    fixed <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  ui <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      output <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html" class="external-link">div</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"expr"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">dataTableOutput</a></span><span class="op">(</span><span class="st">"data"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">)</span>,</span></span>
-<span class="r-in"><span>      encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span><span class="st">"adsl_var"</span>, label <span class="op">=</span> <span class="st">"ADSL selection"</span>, <span class="va">adsl_extract</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span><span class="st">"adlb_var"</span>, label <span class="op">=</span> <span class="st">"ADLB selection"</span>, <span class="va">adlb_extract</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu">data_merge_module</span><span class="op">(</span></span></span>
-<span class="r-in"><span>      data_extract <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adsl_var <span class="op">=</span> <span class="va">adsl_extract</span>, adlb_var <span class="op">=</span> <span class="va">adlb_extract</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      datasets <span class="op">=</span> <span class="va">datasets</span>,</span></span>
-<span class="r-in"><span>      merge_function <span class="op">=</span> <span class="st">"dplyr::left_join"</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderText</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
