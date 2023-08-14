@@ -1,4 +1,13 @@
-# teal.transform 0.3.0.9009
+# teal.transform 0.4.0
+
+### Miscellaneous
+
+* Removed `scda` package dependency from examples.
+* Deprecated `data_merge_module()` and `data_merge_srv()`.
+* The `get_relabel_call` function now returns a call to `teal.data::col_relabel` instead of one to `formatters::var_relabel`.
+* Update installation instruction
+
+# teal.transform 0.3.0
 
 ### New Features
 
@@ -16,9 +25,7 @@
 
 ### Miscellaneous
 
-* Removed `scda` package dependency from examples.
-* Deprecated `data_merge_module()` and `data_merge_srv()`.
-* The `get_relabel_call` function now returns a call to `teal.data::col_relabel` instead of one to `formatters::var_relabel`.
+* Examples use `scda.2022` instead of `scda.2021`
 
 # teal.transform 0.2.0
 
