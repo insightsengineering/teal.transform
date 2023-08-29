@@ -16,25 +16,22 @@ repos:
         name: Regenerate package documentation
         additional_dependencies:
           - checkmate
-          - digest
           - dplyr
-          - ggplot2
-          - glue
-          - grDevices
           - lifecycle
           - logger
           - magrittr
           - methods
-          - bioc::MultiAssayExperiment
-          - R6
           - rlang
-          - rtables
+          - shiny
           - shinyjs
-          - shinyWidgets
+          - shinyvalidate
           - stats
-          - bioc::SummarizedExperiment
-          - utils
-          - yaml
+          - insightsengineering/teal.data
+          - insightsengineering/teal.logger
+          - insightsengineering/teal.slice
+          - insightsengineering/teal.widgets
+          - tidyr
+          - tidyselect
       - id: spell-check
         name: Check spelling with `spelling`
         exclude: >
