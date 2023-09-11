@@ -187,6 +187,6 @@ These elements can be further used inside the server to retrieve and use informa
 
 ## Merging of non `CDISC` datasets
 
-General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/articles/join-keys).
+General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/latest-tag/articles/join-keys).
 
 The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.

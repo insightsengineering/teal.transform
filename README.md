@@ -2,7 +2,7 @@
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/teal.transform/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/main/unit-test-report/)
-[![Docs 📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/)
+[![Docs 📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/latest-tag/)
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/teal.transform/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/teal.transform?style=social)
@@ -23,17 +23,31 @@ This package contains functions and shiny modules for extracting and merging dat
 
 ## Installation
 
-From July 2023 `insightsengineering` packages are available on [r-universe](https://r-universe.dev/).
-
 ```r
 # stable versions
 install.packages('teal.transform', repos = c('https://insightsengineering.r-universe.dev', 'https://cloud.r-project.org'))
 
-# beta versions
-install.packages('teal.transform', repos = c('https://pharmaverse.r-universe.dev', 'https://cloud.r-project.org'))
+# install.packages("pak")
+pak::pak("insightsengineering/teal.transform@*release")
 ```
 
-See package vignettes `browseVignettes(package = "teal.transform")` for usage of this package.
+Alternatively, you might want to use the development version available on [r-universe](https://r-universe.dev/).
+
+```r
+# beta versions
+install.packages('teal.transform', repos = c('https://pharmaverse.r-universe.dev', 'https://cloud.r-project.org'))
+
+# install.packages("pak")
+pak::pak("insightsengineering/teal.transform")
+```
+
+## Usage
+
+To understand how to use this package, please refer to the [Getting Started](https://insightsengineering.github.io/teal.transform/latest-tag/articles/teal-transform.html) article, which provides multiple examples of code implementation.
+
+## Getting help
+
+If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
 
 ## Stargazers and Forkers
 

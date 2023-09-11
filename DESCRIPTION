@@ -1,5 +1,5 @@
 Package: teal.transform
-Title: Functions for Extracting and Merging Data in the `teal` Framework
+Title: Functions for Extracting and Merging Data in the 'teal' Framework
 Version: 0.4.0.9003
 Date: 2023-09-05
 Authors@R: c(
@@ -12,9 +12,11 @@ Authors@R: c(
     person("Junlue", "Zhao", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: Functions for extracting and merging data in the teal
-    framework.
-License: Apache License 2.0 | file LICENSE
+Description: A standardized user interface for column selection, that faciliates dataset merging in 'teal' framework.
+License: Apache License 2.0
+URL: https://insightsengineering.github.io/teal.transform/,
+    https://github.com/insightsengineering/teal.transform/
+BugReports: https://github.com/insightsengineering/teal.transform/issues
 Depends:
     magrittr (>= 1.5),
     R (>= 3.6)

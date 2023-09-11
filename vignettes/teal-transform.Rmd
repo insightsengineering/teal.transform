@@ -1,10 +1,9 @@
 ---
-title: "Getting started with `teal.transform`"
+title: "Getting started with teal.transform"
 author: "NEST coreDev"
-date: "2022-05-12"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with `teal.transform`}
+  %\VignetteIndexEntry{Getting started with teal.transform}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -20,17 +19,15 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-`teal.transform` is a package in the `teal` framework which provides:
+The `teal.transform` package is an integral component of the `teal` framework. It serves a dual purpose:
 
-- `teal` module developers a way to standardize the UI for selecting columns from datasets and to merge datasets
-to create an analysis dataset to be used inside their module
-- `teal` application developers a way to specify which columns of their datasets can be used in the UI for selecting
-columns in their applications
+- For `teal` module developers, it offers a standardized user interface for column selection from datasets and facilitates dataset merging, resulting in the creation of analysis datasets for use within their modules.
+- For `teal` application developers, it provides a means to specify which dataset columns can be accessed through the user interface, streamlining column selection within their applications.
 
-## Data Extract and Data Merge
+## Data Extraction and Data Merging
 
-For information about selecting columns of data see the [data extract](data-extract.html) vignette.
+To delve into the process of selecting specific data columns, please consult the [Data Extraction](data-extract.html)  vignette.
 
-For more information about merging data see the [data merge](data-merge.html) vignette.
+For comprehensive information regarding data merging, please refer to the [Data Merge](data-merge.html) vignette.
 
-For more information about using the extraction and merge together see the [Combining data-extract with data-merge](data-extract-merge.html) vignette.
+To explore the combined use of data extraction and merging, please explore the [Combining data-extract with data-merge](data-extract-merge.html) vignette.
