@@ -45,10 +45,6 @@ pak::pak("insightsengineering/teal.transform")
 
 To understand how to use this package, please refer to the [Getting Started](https://insightsengineering.github.io/teal.transform/latest-tag/articles/teal-transform.html) article, which provides multiple examples of code implementation.
 
-## Getting help
-
-If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
-
 Below is a small example usage:
 
 ```r
@@ -63,6 +59,10 @@ data_extract_spec(
   select = select_spec(choices = c("BMRKR1", "AGE"))
 )
 ```
+
+## Getting help
+
+If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
 
 ## Stargazers and Forkers
 
