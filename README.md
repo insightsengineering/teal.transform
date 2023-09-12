@@ -49,6 +49,21 @@ To understand how to use this package, please refer to the [Getting Started](htt
 
 If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
 
+Below is a small example usage:
+
+```r
+library(teal.transform)
+```
+
+```r
+ADSL <- teal.transform::rADSL
+data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M")),
+  select = select_spec(choices = c("BMRKR1", "AGE"))
+)
+```
+
 ## Stargazers and Forkers
 
 ### Stargazers over time
