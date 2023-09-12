@@ -6,7 +6,7 @@
 \alias{teal.transform-package}
 \title{teal.transform: Functions for extracting and merging data in the \code{teal} framework}
 \description{
-A standardized user interface for column selection, that faciliates dataset merging in 'teal' framework.
+A standardized user interface for column selection, that facilitates dataset merging in 'teal' framework.
 }
 \seealso{
 Useful links:
