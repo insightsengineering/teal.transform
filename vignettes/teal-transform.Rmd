@@ -1,5 +1,5 @@
 ---
-title: "Getting started with teal.transform"
+title: "Getting Started with teal.transform"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >

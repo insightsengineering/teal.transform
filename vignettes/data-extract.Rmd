@@ -1,5 +1,5 @@
 ---
-title: "Data extract"
+title: "Data Extract"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >

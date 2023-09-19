@@ -1,5 +1,5 @@
 ---
-title: "Data merge"
+title: "Data Merge"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >

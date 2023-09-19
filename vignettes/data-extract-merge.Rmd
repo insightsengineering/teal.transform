@@ -1,9 +1,9 @@
 ---
-title: "Combining data-extract with data-merge"
+title: "Combining Data Extract with Data Merge"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Combining data-extract with data-merge}
+  %\VignetteIndexEntry{Combining Data Extract with Data Merge}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-#### Combining data-extract with data-merge
 
 `teal.transform` provides `merge_expression_srv` which converts `data_extract_srv` into R expression to transform data
 for analytical purposes. For example, we may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE` filtered
