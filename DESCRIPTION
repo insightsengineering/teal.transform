@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.4.0.9003
-Date: 2023-09-05
+Version: 0.4.0.9004
+Date: 2023-09-19
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -12,7 +12,8 @@ Authors@R: c(
     person("Junlue", "Zhao", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: A standardized user interface for column selection, that facilitates dataset merging in 'teal' framework.
+Description: A standardized user interface for column selection, that
+    facilitates dataset merging in 'teal' framework.
 License: Apache License 2.0
 URL: https://insightsengineering.github.io/teal.transform/,
     https://github.com/insightsengineering/teal.transform/
