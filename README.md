@@ -54,11 +54,25 @@ library(teal.transform)
 ```r
 library(teal.transform)
 ADSL <- teal.transform::rADSL
-data_extract_spec(
+library(teal.transform)
+ADSL <- teal.transform::rADSL
+
+adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   filter = filter_spec(vars = "SEX", choices = c("F", "M")),
   select = select_spec(choices = c("BMRKR1", "AGE"))
 )
+
+ui <- data_extract_ui(
+  id = "adsl_ui",
+  label = "ADSL UI",
+  data_extract_spec = adsl_extract
+)
+
+library(shiny)
+ui <- fluidPage(ui)
+server <- function(input, output, session) {}
+shinyApp(ui, server)
 ```
 
 ## Getting help
