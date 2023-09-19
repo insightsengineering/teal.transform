@@ -52,6 +52,7 @@ library(teal.transform)
 ```
 
 ```r
+library(teal.transform)
 ADSL <- teal.transform::rADSL
 data_extract_spec(
   dataname = "ADSL",
