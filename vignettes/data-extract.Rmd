@@ -3,7 +3,7 @@ title: "Data Extract"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data extract}
+  %\VignetteIndexEntry{Data Extract}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -66,7 +66,7 @@ extract_srv <- function(id, datasets, data_extract, join_keys) {
 
 #### Example data
 
-`data_extract_srv` module depends on either a list of reactive or non-reactive `data.frame` objects. Here, we show the 
+`data_extract_srv` module depends on either a list of reactive or non-reactive `data.frame` objects. Here, we show the
 usage of a list of `data.frame` objects as input to `datasets`
 where a list of necessary join keys per `data.frame` object is required:
 

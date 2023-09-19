@@ -3,7 +3,7 @@ title: "Getting Started with teal.transform"
 author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with teal.transform}
+  %\VignetteIndexEntry{Getting Started with teal.transform}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
