@@ -1,7 +1,6 @@
 ---
 title: "Data extract"
-author: "NEST coreDev"
-date: "2022-05-03"
+author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data extract}
