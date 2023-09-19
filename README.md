@@ -49,12 +49,6 @@ Below is a small example usage:
 
 ```r
 library(teal.transform)
-```
-
-```r
-library(teal.transform)
-ADSL <- teal.transform::rADSL
-library(teal.transform)
 ADSL <- teal.transform::rADSL
 
 adsl_extract <- data_extract_spec(
@@ -74,6 +68,8 @@ ui <- fluidPage(ui)
 server <- function(input, output, session) {}
 shinyApp(ui, server)
 ```
+
+![Showcase](https://github.com/insightsengineering/teal.transform/blob/main/assets/img/showcase.jpg)
 
 ## Getting help
 
