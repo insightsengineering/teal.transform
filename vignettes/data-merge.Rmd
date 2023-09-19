@@ -1,10 +1,9 @@
 ---
-title: "Data merge"
-author: "NEST coreDev"
-date: "2022-05-11"
+title: "Data Merge"
+author: "NEST CoreDev"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data merge}
+  %\VignetteIndexEntry{Data Merge}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -18,17 +17,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-Combining datasets is a crucial step when using modules with more than one dataset. In the context of `teal`, we use 
-the term "merge" to combine datasets where two functions are offered `merge_expression_module` and `merge_expression_srv`. Depending on the specific scenario, one or the other shall be used. 
+Combining datasets is a crucial step when using modules with more than one dataset. In the context of `teal`, we use
+the term "merge" to combine datasets where two functions are offered `merge_expression_module` and `merge_expression_srv`. Depending on the specific scenario, one or the other shall be used.
 
 When no processing of the `data_extract` list is required, the `merge_expression_module` function is used to read the data and the `data_extract_spec`'s list and apply the merging. It is a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()` see below for more details.
-With additional processing of the `data_extract` list input, `merge_expression_srv()` can be combined with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input. 
+With additional processing of the `data_extract` list input, `merge_expression_srv()` can be combined with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
 
 In the coming sections, we will show examples of both scenarios.
 
 ### `merge_expression_module`
 
-With `merge_expression_module` solely, all you would need is a list of `data_extract_spec` objects for the `data_extract` argument, a list of reactive or non-reactive `data.frame` objects and a list of join keys 
+With `merge_expression_module` solely, all you would need is a list of `data_extract_spec` objects for the `data_extract` argument, a list of reactive or non-reactive `data.frame` objects and a list of join keys
 corresponding to every `data.frame` object.
 
 #### App code
@@ -187,6 +186,5 @@ These elements can be further used inside the server to retrieve and use informa
 
 ## Merging of non `CDISC` datasets
 
-General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal/articles/join-keys).
-
+General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys).
 The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.

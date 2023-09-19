@@ -2,7 +2,7 @@
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/teal.transform/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/main/unit-test-report/)
-[![Docs 📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/)
+[![Docs 📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/latest-tag/)
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/teal.transform/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/teal.transform?style=social)
@@ -23,17 +23,57 @@ This package contains functions and shiny modules for extracting and merging dat
 
 ## Installation
 
-From July 2023 `insightsengineering` packages are available on [r-universe](https://r-universe.dev/).
-
 ```r
 # stable versions
-install.packages('teal.transform', repos = c('https://insightsengineering.r-universe.dev', 'https://cloud.r-project.org'))
+install.packages('teal.transform', repos = c('https://insightsengineering.r-universe.dev', getOption('repos')))
 
-# beta versions
-install.packages('teal.transform', repos = c('https://pharmaverse.r-universe.dev', 'https://cloud.r-project.org'))
+# install.packages("pak")
+pak::pak("insightsengineering/teal.transform@*release")
 ```
 
-See package vignettes `browseVignettes(package = "teal.transform")` for usage of this package.
+Alternatively, you might want to use the development version available on [r-universe](https://r-universe.dev/).
+
+```r
+# beta versions
+install.packages('teal.transform', repos = c('https://pharmaverse.r-universe.dev', getOption('repos')))
+
+# install.packages("pak")
+pak::pak("insightsengineering/teal.transform")
+```
+
+## Usage
+
+To understand how to use this package, please refer to the [Getting Started](https://insightsengineering.github.io/teal.transform/latest-tag/articles/teal-transform.html) article, which provides multiple examples of code implementation.
+
+Below is a small example usage:
+
+```r
+library(teal.transform)
+ADSL <- teal.transform::rADSL
+
+adsl_extract <- data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M")),
+  select = select_spec(choices = c("BMRKR1", "AGE"))
+)
+
+ui <- data_extract_ui(
+  id = "adsl_ui",
+  label = "ADSL UI",
+  data_extract_spec = adsl_extract
+)
+
+library(shiny)
+ui <- fluidPage(ui)
+server <- function(input, output, session) {}
+shinyApp(ui, server)
+```
+
+![Showcase](https://github.com/insightsengineering/teal.transform/blob/main/assets/img/showcase.jpg)
+
+## Getting help
+
+If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
 
 ## Stargazers and Forkers
 

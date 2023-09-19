@@ -6,7 +6,16 @@
 \alias{teal.transform-package}
 \title{teal.transform: Functions for extracting and merging data in the \code{teal} framework}
 \description{
-Functions for extracting and merging data in the teal framework.
+A standardized user interface for column selection, that facilitates dataset merging in 'teal' framework.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://insightsengineering.github.io/teal.transform/}
+  \item \url{https://github.com/insightsengineering/teal.transform/}
+  \item Report bugs at \url{https://github.com/insightsengineering/teal.transform/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Dawid Kaledkowski \email{dawid.kaledkowski@roche.com}
