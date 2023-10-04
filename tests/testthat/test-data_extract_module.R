@@ -23,10 +23,9 @@ testthat::test_that("Single filter", {
 
   testthat::expect_silent(input <- data_extract_single_ui(id = NULL, data_extract))
   testthat::expect_silent(filter <- input$children[[1]])
-  testthat::expect_equal(filter$children[[1]]$children[[1]][[2]]$attribs, list(class = "shinyjs-hide"))
+  testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide"))
 
-
-  testthat::expect_equal(filter$children[[1]]$children[[2]][[2]]$children[[2]]$attribs$multiple, "multiple")
+  testthat::expect_equal(filter$children[[1]]$children[[2]]$children[[4]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple, "multiple")
 
   # more tests - check levels of filtered variables
   # check also colummns selected
