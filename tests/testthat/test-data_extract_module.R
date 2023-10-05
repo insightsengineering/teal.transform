@@ -23,10 +23,9 @@ testthat::test_that("Single filter", {
 
   testthat::expect_silent(input <- data_extract_single_ui(id = NULL, data_extract))
   testthat::expect_silent(filter <- input$children[[1]])
-  testthat::expect_equal(filter$children[[1]]$children[[1]][[2]]$attribs, list(class = "shinyjs-hide"))
+  testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide")) # nolint
 
-
-  testthat::expect_equal(filter$children[[1]]$children[[2]][[2]]$children[[2]]$attribs$multiple, "multiple")
+  testthat::expect_equal(filter$children[[1]]$children[[2]]$children[[4]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple, "multiple") # nolint
 
   # more tests - check levels of filtered variables
   # check also colummns selected
@@ -151,8 +150,7 @@ testthat::test_that("get_initial_filters_values returns empty strings if vars_se
   )
 })
 
-testthat::test_that("get_initial_filters_values returns all column values and the selected option
-  if choices is NULL", {
+testthat::test_that("get_initial_filters_values returns all column values and the selected option if choices is NULL", { # nolint
   data_list <- list(iris = reactive(utils::head(iris)))
 
   filter <- filter_spec(vars = colnames(iris)[1])
