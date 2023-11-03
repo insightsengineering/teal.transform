@@ -457,7 +457,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 
       # get keys out of join_keys
       if (!is.null(join_keys)) {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys$get(x, x))
+        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[x, x])
       } else {
         keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
       }

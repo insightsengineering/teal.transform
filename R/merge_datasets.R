@@ -278,7 +278,7 @@ are_needed_keys_provided <- function(join_keys, merged_selector_list) {
   }
 
   do_join_keys_exist <- function(dataset_name1, dataset_name2, join_keys) {
-    length(join_keys$get(dataset_name1, dataset_name2) > 0)
+    length(join_keys[dataset_name1, dataset_name2] > 0)
   }
 
   datasets_names <- vapply(merged_selector_list, function(slice) slice[["dataname"]], FUN.VALUE = character(1))
