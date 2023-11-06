@@ -83,7 +83,7 @@ resolve_delayed.FilteredData <- function(x,
 
 #' @export
 resolve_delayed.list <- function(x, datasets, keys = NULL) {
-  checkmate::assert_list(datasets, type = c("reactive", "data.frame"), min.len = 1, names = "named")
+  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), min.len = 1, names = "named")
   checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
   checkmate::assert(
     .var.name = "keys",
