@@ -20,7 +20,7 @@ adsl_data_extract_srv_output <-
     dataname = "ADSL",
     filters = NULL,
     select = "AGE",
-    keys = join_keys[["ADSL", "ADSL"]],
+    keys = join_keys[["ADSL"]][["ADSL"]],
     reshape = FALSE,
     internal_id = "adsl_extract"
   )
