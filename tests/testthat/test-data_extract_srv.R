@@ -110,7 +110,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv accepts throws error when join_keys argument is not a JoinKeys object",
+  desc = "data_extract_srv accepts throws error when join_keys argument is not a join_keys object",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),

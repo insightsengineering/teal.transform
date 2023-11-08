@@ -4,7 +4,7 @@
 #' Returns list of calls depending on selector(s) and type of the merge
 #' Order of merge is the same as in selectors passed to the function.
 #' @inheritParams merge_datasets
-#' @param join_keys (`JoinKeys`) nested list of keys used for joining
+#' @param join_keys (`join_keys`) nested list of keys used for joining
 #' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
 #'
 #' @return (`list` with `call` elements)
