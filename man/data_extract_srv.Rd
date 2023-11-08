@@ -42,7 +42,7 @@ A list of data filter and select information constructed by \link{data_extract_s
 \item{...}{an additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(\code{JoinKeys} or \code{NULL}) of keys per dataset in \code{datasets}}
+\item{join_keys}{(\code{join_keys} or \code{NULL}) of keys per dataset in \code{datasets}}
 
 \item{select_validation_rule}{(\code{NULL} or \code{function})
 Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}.

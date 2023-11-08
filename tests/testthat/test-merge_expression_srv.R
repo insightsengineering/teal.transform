@@ -242,14 +242,14 @@ testthat::test_that("merge_expression_srv throws error if datasets is not a name
   )
 })
 
-testthat::test_that("merge_expression_srv throws error if join_keys is not a JoinKeys object", {
+testthat::test_that("merge_expression_srv throws error if join_keys is not a join_keys object", {
   testthat::expect_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = list("USUBJID")),
       expr = NULL
     ),
-    "class 'JoinKeys', but has class 'list'"
+    "class 'join_keys', but has class 'list'"
   )
 })
 

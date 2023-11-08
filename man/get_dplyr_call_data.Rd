@@ -12,7 +12,7 @@ output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}
 When using a reactive named list, the names must be identical to the shiny ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{join_keys}{(\code{JoinKeys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 }
 \value{
 (\code{list}) simplified selectors with aggregated set of filters,
