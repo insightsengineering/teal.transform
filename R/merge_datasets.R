@@ -177,10 +177,12 @@ merge_selectors <- function(selector_list) {
         next
       }
       selector_idx2 <- selector_list[[idx2]]
-      if (identical(selector_idx1$dataname, selector_idx2$dataname) &&
-        identical(selector_idx1$reshape, selector_idx2$reshape) &&
-        identical(selector_idx1$filters, selector_idx2$filters) &&
-        identical(selector_idx1$keys, selector_idx2$keys)) {
+      if (
+        identical(selector_idx1$dataname, selector_idx2$dataname) &&
+          identical(selector_idx1$reshape, selector_idx2$reshape) &&
+          identical(selector_idx1$filters, selector_idx2$filters) &&
+          identical(selector_idx1$keys, selector_idx2$keys)
+      ) {
         res_map_idx[idx2] <- idx1
       }
     }
