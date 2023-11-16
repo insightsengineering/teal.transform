@@ -100,9 +100,9 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData 
 
   mixed_data_list <- list(IRIS = reactive(iris), IRIS2 = iris)
   mixed_join_keys_list <- teal.data::join_keys(
-    teal.data::join_key("IRIS", "IRIS", character(0)),
-    teal.data::join_key("IRIS2", "IRIS2", character(0)),
-    teal.data::join_key("IRIS", "IRIS2", character(0))
+    teal.data::join_key("IRIS", "IRIS", "id"),
+    teal.data::join_key("IRIS2", "IRIS2", "id"),
+    teal.data::join_key("IRIS", "IRIS2", "id")
   )
 
   shiny::withReactiveDomain(
