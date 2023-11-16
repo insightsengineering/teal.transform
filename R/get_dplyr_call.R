@@ -291,9 +291,11 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
     return(NULL)
   }
 
-  stopifnot((!is.null(dataname) && is.null(datasets)) ||
-    (is.null(dataname) && is.null(datasets)) ||
-    (!is.null(datasets) && isTRUE(dataname %in% names(datasets))))
+  stopifnot(
+    (!is.null(dataname) && is.null(datasets)) ||
+      (is.null(dataname) && is.null(datasets)) ||
+      (!is.null(datasets) && isTRUE(dataname %in% names(datasets)))
+  )
 
   get_filter_call_internal <- function(filter, dataname, datasets) {
     if (rlang::is_empty(filter$selected)) {
