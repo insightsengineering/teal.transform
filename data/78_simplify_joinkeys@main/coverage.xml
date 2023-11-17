@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.823952602623783" branch-rate="0" lines-covered="1947" lines-valid="2363" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-16 13:23:26.044044">
+<coverage line-rate="0.823952602623783" branch-rate="0" lines-covered="1947" lines-valid="2363" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-17 06:00:58.338829">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
@@ -1621,9 +1621,9 @@
                 <line number="455" hits="20" branch="false"/>
                 <line number="456" hits="20" branch="false"/>
                 <line number="459" hits="20" branch="false"/>
-                <line number="460" hits="16" branch="false"/>
+                <line number="460" hits="15" branch="false"/>
                 <line number="461" hits="20" branch="false"/>
-                <line number="462" hits="4" branch="false"/>
+                <line number="462" hits="5" branch="false"/>
                 <line number="463" hits="20" branch="false"/>
                 <line number="466" hits="20" branch="false"/>
                 <line number="467" hits="5" branch="false"/>
@@ -1935,9 +1935,9 @@
             <line number="455" hits="20" branch="false"/>
             <line number="456" hits="20" branch="false"/>
             <line number="459" hits="20" branch="false"/>
-            <line number="460" hits="16" branch="false"/>
+            <line number="460" hits="15" branch="false"/>
             <line number="461" hits="20" branch="false"/>
-            <line number="462" hits="4" branch="false"/>
+            <line number="462" hits="5" branch="false"/>
             <line number="463" hits="20" branch="false"/>
             <line number="466" hits="20" branch="false"/>
             <line number="467" hits="5" branch="false"/>
@@ -4553,7 +4553,7 @@
                 <line number="292" hits="7" branch="false"/>
                 <line number="293" hits="7" branch="false"/>
                 <line number="294" hits="7" branch="false"/>
-                <line number="296" hits="7" branch="false"/>
+                <line number="296" hits="6" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -4692,7 +4692,7 @@
             <line number="292" hits="7" branch="false"/>
             <line number="293" hits="7" branch="false"/>
             <line number="294" hits="7" branch="false"/>
-            <line number="296" hits="7" branch="false"/>
+            <line number="296" hits="6" branch="false"/>
           </lines>
         </class>
         <class name="merge_expression_module.R" filename="R/merge_expression_module.R" line-rate="0.979591836734694" branch-rate="0" complexity="0">
