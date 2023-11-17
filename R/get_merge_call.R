@@ -130,7 +130,7 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
           get_merge_key_pair(
             selector_from,
             selector_to,
-            join_keys[[selector_from$dataname]][[selector_to$dataname]]
+            join_keys[selector_from$dataname, selector_to$dataname]
           )
         }
       )
