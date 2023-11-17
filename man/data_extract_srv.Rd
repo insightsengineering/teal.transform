@@ -144,7 +144,7 @@ app <- shinyApp(
   }
 )
 if (interactive()) {
-  runApp(app)
+  shinyApp(app$ui, app$server)
 }
 
 # Using FilteredData - Note this method will be deprecated
@@ -179,7 +179,7 @@ app <- shinyApp(
   }
 )
 if (interactive()) {
-  runApp(app)
+  shinyApp(app$ui, app$server)
 }
 }
 \references{

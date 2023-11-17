@@ -152,7 +152,7 @@ app <- shinyApp(
   }
 )
 \dontrun{
-runApp(app)
+shinyApp(app$ui, app$server)
 }
 }
 \seealso{

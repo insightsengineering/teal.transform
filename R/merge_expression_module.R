@@ -130,7 +130,7 @@
 #'   }
 #' )
 #' \dontrun{
-#' runApp(app)
+#' shinyApp(app$ui, app$server)
 #' }
 #' @export
 merge_expression_module <- function(datasets,
@@ -303,7 +303,7 @@ merge_expression_module <- function(datasets,
 #'   }
 #' )
 #' \dontrun{
-#' runApp(app)
+#' shinyApp(app$ui, app$server)
 #' }
 merge_expression_srv <- function(id = "merge_id",
                                  selector_list,

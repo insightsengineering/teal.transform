@@ -139,7 +139,7 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {
   if (is.null(validator_names)) {

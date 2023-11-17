@@ -346,7 +346,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 #'
 #' # Using FilteredData - Note this method will be deprecated
@@ -381,7 +381,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
   checkmate::assert_multi_class(datasets, c("FilteredData", "list"))
@@ -651,7 +651,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
