@@ -18,7 +18,7 @@ merge_expression_module(
 object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(\code{JoinKeys})\cr
+\item{join_keys}{(\code{join_keys})\cr
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
@@ -152,7 +152,7 @@ app <- shinyApp(
   }
 )
 \dontrun{
-runApp(app)
+shinyApp(app$ui, app$server)
 }
 }
 \seealso{

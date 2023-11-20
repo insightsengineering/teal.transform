@@ -9,7 +9,7 @@
 #' @keywords internal
 get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
-  checkmate::assert_class(join_keys, "JoinKeys")
+  checkmate::assert_class(join_keys, "join_keys")
   lapply(selector_list, check_selector)
 
   all_merge_key_list <- get_merge_key_grid(selector_list, join_keys)
@@ -211,7 +211,7 @@ get_dplyr_call <- function(selector_list,
     )
   )
   lapply(selector_list, check_selector)
-  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  checkmate::assert_class(join_keys, "join_keys", null.ok = TRUE)
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
 
   n_selectors <- length(selector_list)
@@ -291,9 +291,11 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
     return(NULL)
   }
 
-  stopifnot((!is.null(dataname) && is.null(datasets)) ||
-    (is.null(dataname) && is.null(datasets)) ||
-    (!is.null(datasets) && isTRUE(dataname %in% names(datasets))))
+  stopifnot(
+    (!is.null(dataname) && is.null(datasets)) ||
+      (is.null(dataname) && is.null(datasets)) ||
+      (!is.null(datasets) && isTRUE(dataname %in% names(datasets)))
+  )
 
   get_filter_call_internal <- function(filter, dataname, datasets) {
     if (rlang::is_empty(filter$selected)) {

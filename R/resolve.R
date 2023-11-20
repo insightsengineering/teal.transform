@@ -64,7 +64,7 @@
 #'   teal.transform:::resolve(arm_ref_comp, data_list, keys)
 #' })
 resolve <- function(x, datasets, keys = NULL) {
-  checkmate::assert_list(datasets, type = "reactive", min.len = 1, names = "named")
+  checkmate::assert_list(datasets, types = "reactive", min.len = 1, names = "named")
   checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
   checkmate::assert(
     .var.name = "keys",

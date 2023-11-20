@@ -51,7 +51,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
   checkmate::assert_list(selector_list, min.len = 1)
   checkmate::assert_string(anl_name)
   checkmate::assert_list(datasets, names = "named")
-  checkmate::assert_class(join_keys, "JoinKeys")
+  checkmate::assert_class(join_keys, "join_keys")
   stopifnot(attr(regexec("[A-Za-z0-9\\_]*", anl_name)[[1]], "match.length") == nchar(anl_name))
   lapply(selector_list, check_selector)
   merge_selectors_out <- merge_selectors(selector_list)
@@ -177,10 +177,12 @@ merge_selectors <- function(selector_list) {
         next
       }
       selector_idx2 <- selector_list[[idx2]]
-      if (identical(selector_idx1$dataname, selector_idx2$dataname) &&
-        identical(selector_idx1$reshape, selector_idx2$reshape) &&
-        identical(selector_idx1$filters, selector_idx2$filters) &&
-        identical(selector_idx1$keys, selector_idx2$keys)) {
+      if (
+        identical(selector_idx1$dataname, selector_idx2$dataname) &&
+          identical(selector_idx1$reshape, selector_idx2$reshape) &&
+          identical(selector_idx1$filters, selector_idx2$filters) &&
+          identical(selector_idx1$keys, selector_idx2$keys)
+      ) {
         res_map_idx[idx2] <- idx1
       }
     }
@@ -239,7 +241,7 @@ check_data_merge_selectors <- function(selector_list) {
 #' `merged_selector_list` come from datasets, which don't have the
 #' appropriate join keys in `join_keys`.
 #'
-#' @param join_keys (`JoinKeys`) the provided join keys
+#' @param join_keys (`join_keys`) the provided join keys
 #' @param merged_selector_list (`list`) the specification of datasets' slices to merge
 #'
 #' @return `TRUE` if the provided keys meet the requirements; the `shiny`
@@ -278,7 +280,7 @@ are_needed_keys_provided <- function(join_keys, merged_selector_list) {
   }
 
   do_join_keys_exist <- function(dataset_name1, dataset_name2, join_keys) {
-    length(join_keys$get(dataset_name1, dataset_name2) > 0)
+    length(join_keys[dataset_name1, dataset_name2] > 0)
   }
 
   datasets_names <- vapply(merged_selector_list, function(slice) slice[["dataname"]], FUN.VALUE = character(1))

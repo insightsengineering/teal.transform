@@ -378,7 +378,7 @@ value_choices.data.frame <- function(data, # nolint
     df_choices <- dplyr::mutate_if(
       df_choices,
       .predicate = function(col) inherits(col, c("POSIXct", "POSIXlt", "POSIXt")),
-      .fun = function(col) {
+      .funs = function(col) {
         if (is.null(attr(col, "tzone")) || all(attr(col, "tzone") == "")) {
           format(trunc(col), "%Y-%m-%d %H:%M:%S")
         } else {

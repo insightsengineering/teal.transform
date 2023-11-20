@@ -9,7 +9,7 @@
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
 #'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (`JoinKeys`)\cr
+#' @param join_keys (`join_keys`)\cr
 #'  of variables used as join keys for each of the datasets in `datasets`.
 #'  This will be used to extract the `keys` of every dataset.
 #' @param data_extract (named `list` of `data_extract_spec`)\cr
@@ -130,7 +130,7 @@
 #'   }
 #' )
 #' \dontrun{
-#' runApp(app)
+#' shinyApp(app$ui, app$server)
 #' }
 #' @export
 merge_expression_module <- function(datasets,
@@ -171,7 +171,7 @@ merge_expression_module <- function(datasets,
 #' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
 #'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
 #'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (`JoinKeys`)\cr
+#' @param join_keys (`join_keys`)\cr
 #'  of variables used as join keys for each of the datasets in `datasets`.
 #'  This will be used to extract the `keys` of every dataset.
 #' @param selector_list (`reactive`)\cr
@@ -303,7 +303,7 @@ merge_expression_module <- function(datasets,
 #'   }
 #' )
 #' \dontrun{
-#' runApp(app)
+#' shinyApp(app$ui, app$server)
 #' }
 merge_expression_srv <- function(id = "merge_id",
                                  selector_list,
@@ -315,7 +315,7 @@ merge_expression_srv <- function(id = "merge_id",
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_class(join_keys, "JoinKeys")
+  checkmate::assert_class(join_keys, "join_keys")
 
   moduleServer(
     id,

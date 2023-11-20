@@ -19,7 +19,7 @@ When using a reactive named list, the names must be identical to the shiny ids o
 
 \item{idx}{optional (\code{integer}) current selector index in all selectors list}
 
-\item{join_keys}{(\code{JoinKeys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
 selections, reshapes etc. All necessary data for merging}

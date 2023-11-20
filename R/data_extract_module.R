@@ -346,7 +346,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 #'
 #' # Using FilteredData - Note this method will be deprecated
@@ -381,7 +381,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
   checkmate::assert_multi_class(datasets, c("FilteredData", "list"))
@@ -421,7 +421,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 }
 
 #' @rdname data_extract_srv
-#' @param join_keys (`JoinKeys` or `NULL`) of keys per dataset in `datasets`
+#' @param join_keys (`join_keys` or `NULL`) of keys per dataset in `datasets`
 #' @param select_validation_rule (`NULL` or `function`)
 #'   Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`.
 #'   You can use a validation function directly (i.e. `select_validation_rule = shinyvalidate::sv_required()`)
@@ -443,7 +443,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
                                   },
                                   ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  checkmate::assert_class(join_keys, "join_keys", null.ok = TRUE)
   checkmate::assert_multi_class(select_validation_rule, classes = c("function", "formula"), null.ok = TRUE)
   checkmate::assert_multi_class(filter_validation_rule, classes = c("function", "formula"), null.ok = TRUE)
   checkmate::assert_multi_class(dataset_validation_rule, classes = c("function", "formula"), null.ok = TRUE)
@@ -456,8 +456,8 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
       )
 
       # get keys out of join_keys
-      if (!is.null(join_keys)) {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys$get(x, x))
+      if (length(join_keys)) {
+        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[x, x])
       } else {
         keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
       }
@@ -651,7 +651,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'   }
 #' )
 #' if (interactive()) {
-#'   runApp(app)
+#'   shinyApp(app$ui, app$server)
 #' }
 data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
@@ -681,7 +681,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 }
 
 #' @rdname data_extract_multiple_srv
-#' @param join_keys (`JoinKeys` or `NULL`) of join keys per dataset in `datasets`.
+#' @param join_keys (`join_keys` or `NULL`) of join keys per dataset in `datasets`.
 #' @param select_validation_rule (`NULL`, `function` or `named list` of `function`)
 #'   Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`
 #'   If all `data_extract` require the same validation function then this can be used directly (
@@ -702,17 +702,17 @@ data_extract_multiple_srv.list <- function(data_extract, datasets, join_keys = N
                                              shinyvalidate::sv_required("Please select a dataset")
                                            }, ...) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_class(join_keys, "JoinKeys", null.ok = TRUE)
+  checkmate::assert_class(join_keys, "join_keys", null.ok = TRUE)
   checkmate::assert(
-    checkmate::check_multi_class(select_validation_rule, class = c("function", "formula"), null.ok = TRUE),
+    checkmate::check_multi_class(select_validation_rule, classes = c("function", "formula"), null.ok = TRUE),
     checkmate::check_list(select_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
   checkmate::assert(
-    checkmate::check_multi_class(filter_validation_rule, class = c("function", "formula"), null.ok = TRUE),
+    checkmate::check_multi_class(filter_validation_rule, classes = c("function", "formula"), null.ok = TRUE),
     checkmate::check_list(filter_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
   checkmate::assert(
-    checkmate::check_multi_class(dataset_validation_rule, class = c("function", "formula"), null.ok = TRUE),
+    checkmate::check_multi_class(dataset_validation_rule, classes = c("function", "formula"), null.ok = TRUE),
     checkmate::check_list(dataset_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
 

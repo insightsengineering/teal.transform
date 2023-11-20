@@ -39,7 +39,7 @@ When passing a list of reactive or non-reactive \code{data.frame} objects, the a
 \item{...}{an additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(\code{JoinKeys} or \code{NULL}) of join keys per dataset in \code{datasets}.}
+\item{join_keys}{(\code{join_keys} or \code{NULL}) of join keys per dataset in \code{datasets}.}
 
 \item{select_validation_rule}{(\code{NULL}, \code{function} or \verb{named list} of \code{function})
 Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}
@@ -152,6 +152,6 @@ app <- shinyApp(
   }
 )
 if (interactive()) {
-  runApp(app)
+  shinyApp(app$ui, app$server)
 }
 }
