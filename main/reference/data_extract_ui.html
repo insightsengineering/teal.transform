@@ -20,7 +20,7 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9006</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,16 +45,6 @@ can be found in data_extract_srv()."><!-- mathjax --><script src="https://cdnjs.
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -203,27 +193,74 @@ go into the analysis.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="filter_spec"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="shinyjs-hide"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="form-group shiny-input-container shinyjs-hide"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;label class="control-label shiny-label-null" for="regressor-dataset_ADTTE_singleextract-filter1-col"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-filter1-col" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="PARAMCD" selected&gt;PARAMCD&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-filter1-col').on('change', function(e) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-filter1-col_selected_text').html(select_concat);</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_input" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;label class="control-label shiny-label-null" for="regressor-dataset_ADTTE_singleextract-filter1-col" id="regressor-dataset_ADTTE_singleextract-filter1-col-label"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-col" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="PARAMCD" selected&gt;PARAMCD&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="CNSR" selected&gt;CNSR&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_fixed" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;label class="control-label"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-col_selected_text"&gt;PARAMCD, CNSR&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label id="regressor-dataset_ADTTE_singleextract-filter1-col_textonly" class="control-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-col_valueonly"&gt;PARAMCD, CNSR&lt;/code&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label class="control-label" for="regressor-dataset_ADTTE_singleextract-filter1-vals"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-filter1-vals" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="OS-1" selected&gt;OS-1&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-filter1-vals').on('change', function(e) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-filter1-vals_selected_text').html(select_concat);</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_input" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-filter1-vals-label" for="regressor-dataset_ADTTE_singleextract-filter1-vals"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-vals" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="OS-1" selected&gt;OS-1&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="OS-0"&gt;OS-0&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="PFS-1"&gt;PFS-1&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_fixed" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;label class="control-label"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-vals_selected_text"&gt;OS-1&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;label class="control-label" for="regressor-dataset_ADTTE_singleextract-select"&gt;Column&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" id="regressor-dataset_ADTTE_singleextract-select" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="AVAL" selected&gt;AVAL&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-select').on('change', function(e) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-select_selected_text').html(select_concat);</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div id="regressor-dataset_ADTTE_singleextract-select_input" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-select-label" for="regressor-dataset_ADTTE_singleextract-select"&gt;Column&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-select" class="selectpicker form-control" multiple="multiple"&gt;&lt;option value="AVAL" selected&gt;AVAL&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="BMRKR1" selected&gt;BMRKR1&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="AGE"&gt;AGE&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div id="regressor-dataset_ADTTE_singleextract-select_fixed" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label class="control-label"&gt;Column&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;code id="regressor-dataset_ADTTE_singleextract-select_selected_text"&gt;AVAL, BMRKR1&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div class="form-group shiny-input-container shinyjs-disabled shinyjs-hide"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="checkbox"&gt;</span>
