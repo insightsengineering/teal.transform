@@ -156,3 +156,21 @@ compose_and_enable_validators <- function(iv, selector_list, validator_names = N
   iv$enable()
   iv
 }
+
+convert_teal_data <- function(datasets) {
+  if (is.list(datasets)) {
+    datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+      if (is.reactive(x)) x else reactive(x)
+    })
+  } else if (is.reactive(datasets) && inherits(isolate(datasets()), "teal_data")) {
+    datasets_new <- sapply(
+      isolate(teal.data::datanames(datasets())),
+      function(dataname) {
+        reactive(datasets()[[dataname]])
+      },
+      simplify = FALSE
+    )
+  } else {
+    stop("datasets must be a list of reactive dataframes or a teal_data object")
+  }
+}

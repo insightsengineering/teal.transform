@@ -2,9 +2,29 @@
 % Please edit documentation in R/merge_expression_module.R
 \name{merge_expression_module}
 \alias{merge_expression_module}
+\alias{merge_expression_module.reactive}
+\alias{merge_expression_module.list}
 \title{Merge expression module}
 \usage{
 merge_expression_module(
+  datasets,
+  join_keys = NULL,
+  data_extract,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL",
+  id = "merge_id"
+)
+
+\method{merge_expression_module}{reactive}(
+  datasets,
+  join_keys = NULL,
+  data_extract,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL",
+  id = "merge_id"
+)
+
+\method{merge_expression_module}{list}(
   datasets,
   join_keys = NULL,
   data_extract,

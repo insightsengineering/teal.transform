@@ -551,7 +551,6 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #' @description `r lifecycle::badge("experimental")`
 #' `data_extract_multiple_srv` loops over the list of `data_extract` given and
 #' runs `data_extract_srv` for each one returning a list of reactive objects.
-#' This was suitable as input for (deprecated) [data_merge_srv()].
 #'
 #' @inheritParams data_extract_srv
 #' @param data_extract (named `list` of `data_extract_spec` objects) the list `data_extract_spec` objects.
@@ -666,23 +665,8 @@ data_extract_multiple_srv <- function(data_extract, datasets, ...) {
 #' @rdname data_extract_multiple_srv
 #' @export
 data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
-  # todo: convert to list of reactives
-  if (is.list(datasets)) {
-    checkmate::assert_class(join_keys, "join_keys")
-    datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-      if (is.reactive(x)) x else reactive(x)
-    })
-  } else if (inherits(isolate(datasets()), "teal_data")) {
-    datasets_new <- sapply(
-      isolate(teal.data::datanames(datasets())),
-      function(dataname) {
-        reactive(datasets()[[dataname]])
-      },
-      simplify = FALSE
-    )
-  } else {
-    stop("datasets must be a list of reactive dataframes or a teal_data object")
-  }
+  # convert teal_data to list of reactives
+  datasets_new <- convert_teal_data(datasets)
   data_extract_multiple_srv.list(data_extract, datasets_new, ...)
 }
 
