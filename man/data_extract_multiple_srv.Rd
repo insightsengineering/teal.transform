@@ -2,11 +2,14 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_multiple_srv}
 \alias{data_extract_multiple_srv}
+\alias{data_extract_multiple_srv.reactive}
 \alias{data_extract_multiple_srv.FilteredData}
 \alias{data_extract_multiple_srv.list}
 \title{Creates a named list of \code{data_extract_srv} output}
 \usage{
 data_extract_multiple_srv(data_extract, datasets, ...)
+
+\method{data_extract_multiple_srv}{reactive}(data_extract, datasets, ...)
 
 \method{data_extract_multiple_srv}{FilteredData}(data_extract, datasets, ...)
 

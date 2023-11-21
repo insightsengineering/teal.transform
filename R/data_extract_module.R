@@ -660,8 +660,30 @@ data_extract_multiple_srv <- function(data_extract, datasets, ...) {
       checkmate::assert_list(x, "data_extract_spec")
     }
   })
-  checkmate::assert_multi_class(datasets, classes = c("FilteredData", "list"))
   UseMethod("data_extract_multiple_srv", datasets)
+}
+
+#' @rdname data_extract_multiple_srv
+#' @export
+data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
+  # todo: convert to list of reactives
+  if (is.list(datasets)) {
+    checkmate::assert_class(join_keys, "join_keys")
+    datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+      if (is.reactive(x)) x else reactive(x)
+    })
+  } else if (inherits(isolate(datasets()), "teal_data")) {
+    datasets_new <- sapply(
+      isolate(teal.data::datanames(datasets())),
+      function(dataname) {
+        reactive(datasets()[[dataname]])
+      },
+      simplify = FALSE
+    )
+  } else {
+    stop("datasets must be a list of reactive dataframes or a teal_data object")
+  }
+  data_extract_multiple_srv.list(data_extract, datasets_new, ...)
 }
 
 #' @rdname data_extract_multiple_srv

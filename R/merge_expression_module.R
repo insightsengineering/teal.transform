@@ -147,12 +147,31 @@ merge_expression_module <- function(datasets,
     }
   })
 
-  selector_list <- data_extract_multiple_srv(data_extract, datasets, join_keys)
+  # todo: convert to list of reactives
+  if (is.list(datasets)) {
+    checkmate::assert_class(join_keys, "join_keys")
+    datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+      if (is.reactive(x)) x else reactive(x)
+    })
+  } else if (inherits(isolate(datasets()), "teal_data")) {
+    join_keys <- isolate(teal.data::join_keys(datasets()))
+    datasets_new <- sapply(
+      isolate(teal.data::datanames(datasets())),
+      function(dataname) {
+        reactive(datasets()[[dataname]])
+      },
+      simplify = FALSE
+    )
+  } else {
+    stop("datasets must be a list of reactive dataframes or a teal_data object")
+  }
+
+  selector_list <- data_extract_multiple_srv(data_extract, datasets_new, join_keys)
 
   merge_expression_srv(
     id = id,
     selector_list = selector_list,
-    datasets = datasets,
+    datasets = datasets_new,
     join_keys = join_keys,
     merge_function = merge_function,
     anl_name = anl_name
@@ -314,18 +333,36 @@ merge_expression_srv <- function(id = "merge_id",
   checkmate::assert_string(anl_name)
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
-  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
-  checkmate::assert_class(join_keys, "join_keys")
+
+  # todo: convert to list of reactives
+  if (is.list(datasets)) {
+    checkmate::assert_class(join_keys, "join_keys")
+    datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+      if (is.reactive(x)) x else reactive(x)
+    })
+  } else if (is.reactive(datasets) && inherits(isolate(datasets()), "teal_data")) {
+    join_keys <- isolate(teal.data::join_keys(datasets()))
+    datasets_new <- sapply(
+      isolate(teal.data::datanames(datasets())),
+      function(dataname) {
+        reactive(datasets()[[dataname]])
+      },
+      simplify = FALSE
+    )
+  } else {
+    stop("datasets must be a list of reactive dataframes or a teal_data object")
+  }
+
 
   moduleServer(
     id,
     function(input, output, session) {
       logger::log_trace(
-        "merge_expression_srv initialized with: { paste(names(datasets), collapse = ', ') } datasets."
+        "merge_expression_srv initialized with: { paste(names(datasets_new), collapse = ', ') } datasets."
       )
 
       # convert to list of reactives
-      datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
+      datasets_new <- sapply(X = datasets_new, simplify = FALSE, FUN = function(x) {
         if (is.reactive(x)) x else reactive(x)
       })
 
@@ -343,7 +380,7 @@ merge_expression_srv <- function(id = "merge_id",
         validate(need(length(ds) > 0, "At least one dataset needs to be selected"))
         merge_datasets(
           selector_list = ds,
-          datasets = datasets,
+          datasets = datasets_new,
           join_keys = join_keys,
           merge_function = merge_fun_name,
           anl_name = anl_name
