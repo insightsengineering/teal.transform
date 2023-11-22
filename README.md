@@ -83,8 +83,8 @@ If you encounter a bug or you have a feature request - please file an issue. For
 
 ### Stargazers
 
-[![Stargazers repo roster for @insightsengineering/teal.transform](https://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
+[![Stargazers repo roster for @insightsengineering/teal.transform](http://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
 
 ### Forkers
 
-[![Forkers repo roster for @insightsengineering/teal.transform](https://reporoster.com/forks/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/network/members)
+[![Forkers repo roster for @insightsengineering/teal.transform](http://reporoster.com/forks/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/network/members)
