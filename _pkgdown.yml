@@ -46,7 +46,6 @@ reference:
       - data_extract_multiple_srv
       - data_extract_ui
       - data_extract_srv
-      - data_merge_srv
       - data_merge_module
       - datanames_input
       - merge_expression_module

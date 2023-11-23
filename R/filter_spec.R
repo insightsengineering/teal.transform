@@ -391,7 +391,6 @@ filter_spec_internal.default <- function(vars_choices,
     )
     stopifnot(all(!duplicated(vars_selected)))
     checkmate::assert_subset(vars_selected, vars_choices)
-    # stopifnot(all(vars_selected %in% vars_choices))
   }
 
   if (!is.null(choices)) {
@@ -409,7 +408,6 @@ filter_spec_internal.default <- function(vars_choices,
     )
     stopifnot(all(!duplicated(selected)))
     checkmate::assert_subset(selected, choices)
-    # stopifnot(all(selected %in% choices))
   }
 
   res <- list(
