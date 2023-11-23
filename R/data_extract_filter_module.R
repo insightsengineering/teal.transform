@@ -18,9 +18,9 @@ data_extract_filter_ui <- function(filter, id = "filter") {
 
   html_col <- teal.widgets::optionalSelectInput(
     inputId = ns("col"),
-    label = filter$vars_label,
-    choices = filter$vars_choices,
-    selected = filter$vars_selected,
+    label = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_label),
+    choices = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_choices),
+    selected = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_selected),
     multiple = filter$vars_multiple,
     fixed = filter$vars_fixed
   )
@@ -28,8 +28,8 @@ data_extract_filter_ui <- function(filter, id = "filter") {
   html_vals <- teal.widgets::optionalSelectInput(
     inputId = ns("vals"),
     label = filter$label,
-    choices = filter$choices,
-    selected = filter$selected,
+    choices = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$choices),
+    selected = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$selected),
     multiple = filter$multiple,
     fixed = filter$fixed
   )
@@ -60,12 +60,12 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       # We force the evaluation of filter, otherwise the observers are set up with the last element
       # of the list in data_extract_single_srv and not all of them (due to R lazy evaluation)
       force(filter)
-      logger::log_trace(
-        "data_extract_filter_srv initialized with: { filter$dataname } dataset."
-      )
+      logger::log_trace("data_extract_filter_srv initialized with: { filter$dataname } dataset.")
+
 
       observeEvent(input$col,
         handlerExpr = {
+          browser()
           if (!filter$initialized) {
             initial_inputs <- get_initial_filter_values(filter, datasets)
             choices <- initial_inputs$choices
