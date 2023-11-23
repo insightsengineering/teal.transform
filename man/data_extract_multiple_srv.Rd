@@ -35,7 +35,7 @@ The names of the elements in the list need to correspond to the \code{ids} passe
 See example for details.}
 
 \item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
-object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
+object containing data either in the form of \code{FilteredData} or as a list of \code{data.frame}.
 When passing a list of non-reactive \code{data.frame} objects, they are converted to reactive \code{data.frame}s internally.
 When passing a list of reactive or non-reactive \code{data.frame} objects, the argument \code{join_keys} is required also.}
 

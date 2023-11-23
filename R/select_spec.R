@@ -156,7 +156,8 @@ select_spec.default <- function(choices, # nolint
   # Deal with selected
   if (length(selected) > 0) {
     stopifnot(is.atomic(selected))
-    stopifnot(all(selected %in% choices))
+    # stopifnot(all(selected %in% choices))
+    checkmate::assert_subset(selected, choices)
     stopifnot(multiple || length(selected) == 1)
     if (is.null(names(selected))) {
       names(selected) <- as.character(selected)

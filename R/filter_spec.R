@@ -390,7 +390,8 @@ filter_spec_internal.default <- function(vars_choices,
       checkmate::check_logical(vars_selected, min.len = 1, any.missing = FALSE)
     )
     stopifnot(all(!duplicated(vars_selected)))
-    stopifnot(all(vars_selected %in% vars_choices))
+    checkmate::assert_subset(vars_selected, vars_choices)
+    # stopifnot(all(vars_selected %in% vars_choices))
   }
 
   if (!is.null(choices)) {
@@ -407,7 +408,8 @@ filter_spec_internal.default <- function(vars_choices,
       checkmate::check_logical(selected, min.len = 1, any.missing = FALSE)
     )
     stopifnot(all(!duplicated(selected)))
-    stopifnot(all(selected %in% choices))
+    checkmate::assert_subset(selected, choices)
+    # stopifnot(all(selected %in% choices))
   }
 
   res <- list(

@@ -250,7 +250,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'
 #' @inheritParams shiny::moduleServer
 #' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data either in the form of [teal.slice::FilteredData] or as a list of `data.frame`.
+#'  object containing data either in the form of `FilteredData` or as a list of `data.frame`.
 #'  When passing a list of non-reactive `data.frame` objects, they are converted to reactive `data.frame`s internally.
 #'  When passing a list of reactive or non-reactive `data.frame` objects, the argument `join_keys` is required also.
 #' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
@@ -349,13 +349,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   shinyApp(app$ui, app$server)
 #' }
 #'
-#' # Using FilteredData - Note this method will be deprecated
-#' datasets <- teal.slice::init_filtered_data(
-#'   list(ADSL = list(dataset = ADSL)),
-#'   join_keys = teal.data::join_keys(
-#'     teal.data::join_key("ADSL", "ADSL", c("USUBJID", "STUDYID"))
-#'   )
-#' )
 #'
 #' app <- shinyApp(
 #'   ui = fluidPage(
@@ -654,6 +647,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #' }
 data_extract_multiple_srv <- function(data_extract, datasets, ...) {
   checkmate::assert_list(data_extract, names = "named")
+  checkmate::assert_multi_class(datasets, c("reactive", "FilteredData", "list"))
   lapply(data_extract, function(x) {
     if (is.list(x) && !inherits(x, "data_extract_spec")) {
       checkmate::assert_list(x, "data_extract_spec")

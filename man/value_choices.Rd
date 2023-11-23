@@ -4,8 +4,6 @@
 \alias{value_choices}
 \alias{value_choices.character}
 \alias{value_choices.data.frame}
-\alias{value_choices.TealDataset}
-\alias{value_choices.TealDatasetConnector}
 \title{Wrapper on \link{choices_labeled} to label variable values basing on other variable values}
 \usage{
 value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
@@ -13,10 +11,6 @@ value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 \method{value_choices}{character}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 
 \method{value_choices}{data.frame}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{TealDataset}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{TealDatasetConnector}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 }
 \arguments{
 \item{data}{(\code{data.frame}, \code{character}, \code{TealDataset}, \code{TealDatasetConnector})
