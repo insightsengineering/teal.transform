@@ -65,7 +65,6 @@ names are the same as \code{data_extract} input argument.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{data_extract_multiple_srv} loops over the list of \code{data_extract} given and
 runs \code{data_extract_srv} for each one returning a list of reactive objects.
-This was suitable as input for (deprecated) \code{\link[=data_merge_srv]{data_merge_srv()}}.
 }
 \examples{
 library(shiny)
