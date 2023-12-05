@@ -62,16 +62,29 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       force(filter)
       logger::log_trace("data_extract_filter_srv initialized with: { filter$dataname } dataset.")
 
+      isolate({
+        # when the filter is initialized with a delayed spec, the choices and selected are NULL
+        # here delayed are resolved and the values are set up
+        teal.widgets::updateOptionalSelectInput(
+          session = session,
+          inputId = "col",
+          choices = filter$vars_choices,
+          selected = filter$vars_selected
+        )
+        teal.widgets::updateOptionalSelectInput(
+          session = session,
+          inputId = "vals",
+          choices = filter$choices,
+          selected = filter$selected
+        )
+      })
 
-      observeEvent(input$col,
+      observeEvent(
+        input$col,
+        ignoreInit = TRUE, # When observeEvent is initialized input$col is still NULL as it is set few lines above
+        ignoreNULL = FALSE, # columns could be NULL, then vals should be set to NULL also
         handlerExpr = {
-          if (!filter$initialized) {
-            initial_inputs <- get_initial_filter_values(filter, datasets)
-            choices <- initial_inputs$choices
-            selected <- initial_inputs$selected
-            filter$initialized <- TRUE
-            filter <<- filter
-          } else if (!rlang::is_empty(input$col)) {
+          if (!rlang::is_empty(input$col)) {
             choices <- value_choices(
               datasets[[filter$dataname]](),
               input$col,
@@ -107,9 +120,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             choices = choices,
             selected = selected
           )
-        },
-        ignoreInit = FALSE,
-        ignoreNULL = FALSE
+        }
       )
     }
   )
