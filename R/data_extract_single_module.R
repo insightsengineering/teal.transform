@@ -73,11 +73,22 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace(
-        "data_extract_single_srv initialized with dataset: { single_data_extract_spec$dataname }."
-      )
-      for (idx in seq_along(single_data_extract_spec$filter)) {
-        x <- single_data_extract_spec$filter[[idx]]
+      logger::log_trace("data_extract_single_srv initialized with dataset: { single_data_extract_spec$dataname }.")
+
+      # ui could be initialized with a delayed select spec so the choices and selected are NULL
+      # here delayed are resolved
+      isolate({
+        resolved <- resolve_delayed(single_data_extract_spec, datasets)
+        teal.widgets::updateOptionalSelectInput(
+          session = session,
+          inputId = "select",
+          choices = resolved$select$choices,
+          selected = resolved$select$selected
+        )
+      })
+
+      for (idx in seq_along(resolved$filter)) {
+        x <- resolved$filter[[idx]]
         if (inherits(x, "filter_spec")) {
           data_extract_filter_srv(
             id = paste0("filter", idx),
