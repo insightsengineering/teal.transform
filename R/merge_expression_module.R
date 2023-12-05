@@ -88,7 +88,7 @@
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     data_q <- teal.code::new_qenv()
+#'     data_q <- teal.code::qenv()
 #'
 #'     data_q <- teal.code::eval_code(
 #'       data_q,
@@ -286,7 +286,7 @@ merge_expression_module.list <- function(datasets,
 #'     )
 #'   ),
 #'   server = function(input, output, session) {
-#'     data_q <- teal.code::new_qenv()
+#'     data_q <- teal.code::qenv()
 #'
 #'     data_q <- teal.code::eval_code(
 #'       data_q,
