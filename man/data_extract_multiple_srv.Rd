@@ -2,11 +2,14 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_multiple_srv}
 \alias{data_extract_multiple_srv}
+\alias{data_extract_multiple_srv.reactive}
 \alias{data_extract_multiple_srv.FilteredData}
 \alias{data_extract_multiple_srv.list}
 \title{Creates a named list of \code{data_extract_srv} output}
 \usage{
 data_extract_multiple_srv(data_extract, datasets, ...)
+
+\method{data_extract_multiple_srv}{reactive}(data_extract, datasets, ...)
 
 \method{data_extract_multiple_srv}{FilteredData}(data_extract, datasets, ...)
 
@@ -32,7 +35,7 @@ The names of the elements in the list need to correspond to the \code{ids} passe
 See example for details.}
 
 \item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
-object containing data either in the form of \link[teal.slice:FilteredData]{teal.slice::FilteredData} or as a list of \code{data.frame}.
+object containing data either in the form of \code{FilteredData} or as a list of \code{data.frame}.
 When passing a list of non-reactive \code{data.frame} objects, they are converted to reactive \code{data.frame}s internally.
 When passing a list of reactive or non-reactive \code{data.frame} objects, the argument \code{join_keys} is required also.}
 
@@ -62,7 +65,6 @@ names are the same as \code{data_extract} input argument.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{data_extract_multiple_srv} loops over the list of \code{data_extract} given and
 runs \code{data_extract_srv} for each one returning a list of reactive objects.
-This was suitable as input for (deprecated) \code{\link[=data_merge_srv]{data_merge_srv()}}.
 }
 \examples{
 library(shiny)

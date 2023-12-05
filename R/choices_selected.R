@@ -148,16 +148,7 @@ choices_selected <- function(choices,
   # remove duplicates
   choices <- vector_remove_dups(choices)
   selected <- vector_remove_dups(selected)
-
-  if (!all(selected %in% choices)) {
-    stop(paste(
-      paste(
-        selected[which(!selected %in% choices)],
-        collapse = ", "
-      ),
-      "'selected' but not in 'choices'"
-    ))
-  }
+  checkmate::assert_subset(selected, choices)
 
   if (!keep_order && length(choices) > 0) {
     choices_in_selected <- which(choices %in% selected)

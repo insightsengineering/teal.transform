@@ -1,39 +1,32 @@
-datasets <- teal.slice::init_filtered_data(
-  list(iris = list(dataset = iris))
-)
+ADSL <- teal.transform::rADSL # nolint
+ADLB <- teal.transform::rADLB # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
-data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  shiny::reactive(datasets$get_data(dataname = x, filtered = FALSE))
-})
-
-nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  shiny::isolate(datasets$get_data(dataname = x, filtered = FALSE))
-})
-
-key_list <- datasets$get_join_keys()
+data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
+join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 
 testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
+    expr = testthat::expect_no_error(
       data_extract_multiple_srv(
         data_extract = list(test = data_extract_spec(dataname = "iris")),
         datasets = data_list,
-        join_keys = key_list
-      ),
-      NA
+        join_keys = teal.data::join_keys()
+      )
     )
   )
 })
 
 testthat::test_that("data_extract_multiple_srv returns a named reactive list with reactives", {
+  data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = {
       selector_list <- data_extract_multiple_srv(
         list(test = data_extract_spec(dataname = "iris")),
         datasets = data_list,
-        join_keys = key_list
+        join_keys = teal.data::join_keys()
       )
       testthat::expect_equal(names(isolate(selector_list())), "test")
       testthat::expect_true(inherits(selector_list, "reactive"))
@@ -45,7 +38,7 @@ testthat::test_that("data_extract_multiple_srv returns a named reactive list wit
 testthat::test_that("data_extract_multiple_srv accepts an empty list", {
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(data_extract_multiple_srv(list(), datasets = data_list, join_keys = key_list), NA)
+    expr = testthat::expect_no_error(data_extract_multiple_srv(list(), datasets = data_list, join_keys = join_keys))
   )
 })
 
@@ -53,52 +46,55 @@ testthat::test_that("data_extract_multiple_srv returns an empty list if passed a
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = {
-      selector_list <- data_extract_multiple_srv(list(), datasets = data_list, join_keys = key_list)
+      selector_list <- data_extract_multiple_srv(list(), datasets = data_list, join_keys = join_keys)
       testthat::expect_equal(isolate(selector_list()), list())
     }
   )
 })
 
 testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
+  data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_equal(
       length(data_extract_multiple_srv(
         list(test = data_extract_spec(dataname = "iris"), test2 = NULL),
-        datasets = data_list,
-        join_keys = key_list
+        datasets = data_list
       )),
       1
     )
   )
 })
 
-testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData or list of (reactive) data.frame", {
+testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData", {
+  mock_datasets <- structure(
+    list(
+      datanames = function() names(data_list),
+      get_data = function(dataname, ...) data_list[[dataname]](),
+      get_join_keys = function(dataname, ...) join_keys
+    ),
+    class = "FilteredData"
+  )
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_error(
-      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = datasets),
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = mock_datasets),
       regexp = NA
     )
   )
+})
 
+testthat::test_that("data_extract_multiple_srv accepts datasets list of reactive data.frame", {
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = nr_data_list, join_keys = key_list),
-      regexp = NA
+    expr = testthat::expect_no_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = data_list, join_keys = join_keys)
     )
   )
+})
 
-  shiny::withReactiveDomain(
-    domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = data_list, join_keys = key_list),
-      regexp = NA
-    )
-  )
-
-  mixed_data_list <- list(IRIS = reactive(iris), IRIS2 = iris)
+testthat::test_that("data_extract_multiple_srv accepts datasets as list of data.frame", {
+  mixed_data_list <- list(IRIS = iris, IRIS2 = iris)
   mixed_join_keys_list <- teal.data::join_keys(
     teal.data::join_key("IRIS", "IRIS", "id"),
     teal.data::join_key("IRIS2", "IRIS2", "id"),
@@ -107,13 +103,12 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData 
 
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
+    expr = testthat::expect_no_error(
       data_extract_multiple_srv(
         data_extract = list(test = NULL),
         datasets = mixed_data_list,
         join_keys = mixed_join_keys_list
-      ),
-      NA
+      )
     )
   )
 })
@@ -135,7 +130,7 @@ testthat::test_that("data_extract_multiple_srv throws if data_extract is not a n
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_error(
-      data_extract_multiple_srv(list(1), datasets = teal.slice::init_filtered_data(list(iris = list(dataset = iris)))),
+      data_extract_multiple_srv(list(1), datasets = data_list),
       regexp = "Assertion on 'data_extract' failed: Must have names"
     )
   )

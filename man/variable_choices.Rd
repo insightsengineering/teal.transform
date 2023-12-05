@@ -4,8 +4,6 @@
 \alias{variable_choices}
 \alias{variable_choices.character}
 \alias{variable_choices.data.frame}
-\alias{variable_choices.TealDataset}
-\alias{variable_choices.TealDatasetConnector}
 \title{Wrapper on \link{choices_labeled} to label variables basing on existing labels in data}
 \usage{
 variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
@@ -13,20 +11,6 @@ variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
 \method{variable_choices}{character}(data, subset = NULL, fill = FALSE, key = NULL)
 
 \method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
-
-\method{variable_choices}{TealDataset}(
-  data,
-  subset = NULL,
-  fill = FALSE,
-  key = teal.data::get_keys(data)
-)
-
-\method{variable_choices}{TealDatasetConnector}(
-  data,
-  subset = NULL,
-  fill = FALSE,
-  key = teal.data::get_keys(data)
-)
 }
 \arguments{
 \item{data}{(\code{data.frame}, \code{character}, \code{TealDataset}, \code{TealDatasetConnector})
@@ -59,21 +43,14 @@ ADRS <- teal.transform::rADRS
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
-variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"), key = teal.data::get_cdisc_keys("ADRS"))
+variable_choices(
+  ADRS,
+  subset = c("", "PARAM", "PARAMCD"),
+  key = teal.data::default_cdisc_join_keys["ADRS", "ADRS"]
+)
 
 # delayed version
 variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
-
-# also works with [teal.data::TealDataset] and [teal.data::TealDatasetConnector]
-ADRS_dataset <- teal.data::dataset("ADRS", ADRS, key = teal.data::get_cdisc_keys("ADRS"))
-variable_choices(ADRS_dataset)
-
-ADRS_conn <- teal.data::dataset_connector(
-  "ADRS",
-  pull_callable = teal.data::callable_code("radrs(cached = TRUE)"),
-  key = teal.data::get_cdisc_keys("ADRS")
-)
-variable_choices(ADRS_conn)
 
 # functional subset (with delayed data) - return only factor variables
 variable_choices("ADRS", subset = function(data) {

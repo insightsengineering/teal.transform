@@ -23,19 +23,17 @@ Resolved object.
 \examples{
 ADSL <- teal.transform::rADSL
 shiny::isolate({
-  ds <- teal.slice::init_filtered_data(
-    list(ADSL = list(dataset = ADSL))
-  )
+  data_list <- list(ADSL = shiny::reactive(ADSL))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1
-  resolve_delayed(v1, ds)
+  resolve_delayed(v1, data_list)
 
   # variable_choices example
   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
   v2
-  resolve_delayed(v2, ds)
+  resolve_delayed(v2, data_list)
 
   # data_extract_spec example
   adsl_filter <- filter_spec(
@@ -61,9 +59,9 @@ shiny::isolate({
     filter = adsl_filter
   )
 
-  resolve_delayed(adsl_filter, ds)
-  resolve_delayed(adsl_select, ds)
-  resolve_delayed(adsl_de, ds)
+  resolve_delayed(adsl_filter, datasets = data_list)
+  resolve_delayed(adsl_select, datasets = data_list)
+  resolve_delayed(adsl_de, datasets = data_list)
 
   # nested list (arm_ref_comp)
   arm_ref_comp <- list(
@@ -73,6 +71,6 @@ shiny::isolate({
     )
   )
 
-  resolve_delayed(arm_ref_comp, ds)
+  resolve_delayed(arm_ref_comp, datasets = data_list)
 })
 }

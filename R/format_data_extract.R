@@ -13,12 +13,6 @@
 #'   select = select_spec(choices = c("Petal.Length", "Species"))
 #' )
 #'
-#' sample_filtered_data <- {
-#'   teal.slice::init_filtered_data(
-#'     list(iris = list(dataset = iris))
-#'   )
-#' }
-#'
 #' if (interactive()) {
 #'   shiny::shinyApp(
 #'     ui = shiny::fluidPage(
@@ -33,7 +27,7 @@
 #'     server = function(input, output, session) {
 #'       extracted_input <- data_extract_srv(
 #'         id = "extract",
-#'         datasets = sample_filtered_data,
+#'         datasets = list(iris = iris),
 #'         data_extract_spec = simple_des
 #'       )
 #'       output$formatted_extract <- shiny::renderPrint({

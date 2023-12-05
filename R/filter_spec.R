@@ -259,9 +259,9 @@ filter_spec_internal <- function(vars_choices,
   checkmate::assert_flag(drop_keys)
 
   if (inherits(vars_choices, "delayed_data") ||
-    inherits(vars_selected, "delayed_data") ||
-    inherits(choices, "delayed_data") ||
-    inherits(selected, "delayed_data")) {
+        inherits(vars_selected, "delayed_data") ||
+        inherits(choices, "delayed_data") ||
+        inherits(selected, "delayed_data")) {
     filter_spec_internal.delayed_data(
       vars_choices = vars_choices,
       vars_selected = vars_selected,
@@ -390,7 +390,7 @@ filter_spec_internal.default <- function(vars_choices,
       checkmate::check_logical(vars_selected, min.len = 1, any.missing = FALSE)
     )
     stopifnot(all(!duplicated(vars_selected)))
-    stopifnot(all(vars_selected %in% vars_choices))
+    checkmate::assert_subset(vars_selected, vars_choices)
   }
 
   if (!is.null(choices)) {
@@ -407,7 +407,7 @@ filter_spec_internal.default <- function(vars_choices,
       checkmate::check_logical(selected, min.len = 1, any.missing = FALSE)
     )
     stopifnot(all(!duplicated(selected)))
-    stopifnot(all(selected %in% choices))
+    checkmate::assert_subset(selected, choices)
   }
 
   res <- list(

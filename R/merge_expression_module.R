@@ -139,8 +139,37 @@ merge_expression_module <- function(datasets,
                                     merge_function = "dplyr::full_join",
                                     anl_name = "ANL",
                                     id = "merge_id") {
+  UseMethod("merge_expression_module", datasets)
+}
+
+#' @rdname merge_expression_module
+#' @export
+merge_expression_module.reactive <- function(datasets,
+                                             join_keys = NULL,
+                                             data_extract,
+                                             merge_function = "dplyr::full_join",
+                                             anl_name = "ANL",
+                                             id = "merge_id") {
+  checkmate::assert_class(isolate(datasets()), "teal_data")
+  datasets_new <- convert_teal_data(datasets)
+  if (is.reactive(datasets) && inherits(isolate(datasets()), "teal_data")) {
+    join_keys <- isolate(teal.data::join_keys(datasets()))
+  }
+  merge_expression_module(datasets_new, join_keys, data_extract, merge_function, anl_name, id)
+}
+
+#' @rdname merge_expression_module
+#' @export
+merge_expression_module.list <- function(datasets,
+                                         join_keys = NULL,
+                                         data_extract,
+                                         merge_function = "dplyr::full_join",
+                                         anl_name = "ANL",
+                                         id = "merge_id") {
   logger::log_trace("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
+  checkmate::assert_list(datasets, names = "named")
   checkmate::assert_list(data_extract, names = "named", types = c("list", "data_extract_spec", "NULL"))
+  checkmate::assert_class(join_keys, "join_keys")
   lapply(data_extract, function(x) {
     if (is.list(x) && !inherits(x, "data_extract_spec")) {
       checkmate::assert_list(x, "data_extract_spec")
@@ -311,10 +340,37 @@ merge_expression_srv <- function(id = "merge_id",
                                  join_keys,
                                  merge_function = "dplyr::full_join",
                                  anl_name = "ANL") {
+  UseMethod("merge_expression_srv", datasets)
+}
+
+#' @rdname merge_expression_srv
+#' @export
+merge_expression_srv.reactive <- function(id = "merge_id",
+                                          selector_list,
+                                          datasets,
+                                          join_keys,
+                                          merge_function = "dplyr::full_join",
+                                          anl_name = "ANL") {
+  checkmate::assert_class(isolate(datasets()), "teal_data")
+  datasets_new <- convert_teal_data(datasets)
+  if (is.reactive(datasets) && inherits(isolate(datasets()), "teal_data")) {
+    join_keys <- isolate(teal.data::join_keys(datasets()))
+  }
+  merge_expression_srv(id, selector_list, datasets_new, join_keys, merge_function, anl_name)
+}
+
+#' @rdname merge_expression_srv
+#' @export
+merge_expression_srv.list <- function(id = "merge_id",
+                                      selector_list,
+                                      datasets,
+                                      join_keys,
+                                      merge_function = "dplyr::full_join",
+                                      anl_name = "ANL") {
+  checkmate::assert_list(datasets, names = "named")
   checkmate::assert_string(anl_name)
   stopifnot(make.names(anl_name) == anl_name)
   checkmate::assert_class(selector_list, "reactive")
-  checkmate::assert_list(datasets, types = c("reactive", "data.frame"), names = "named")
   checkmate::assert_class(join_keys, "join_keys")
 
   moduleServer(
@@ -323,11 +379,6 @@ merge_expression_srv <- function(id = "merge_id",
       logger::log_trace(
         "merge_expression_srv initialized with: { paste(names(datasets), collapse = ', ') } datasets."
       )
-
-      # convert to list of reactives
-      datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-        if (is.reactive(x)) x else reactive(x)
-      })
 
       reactive({
         checkmate::assert_list(selector_list(), names = "named", types = "reactive")

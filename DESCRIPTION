@@ -34,13 +34,11 @@ Imports:
     stats,
     teal.data (>= 0.3.0.9010),
     teal.logger (>= 0.1.1),
-    teal.slice (>= 0.4.0.9023),
     teal.widgets (>= 0.4.0),
     tidyr (>= 0.8.3),
     tidyselect
 Suggests:
     knitr (>= 1.42),
-    shinytest (>= 1.5.1),
     teal.code (>= 0.4.0),
     testthat (>= 3.1.5)
 VignetteBuilder:

@@ -1,11 +1,9 @@
 adsl <- teal.transform::rADSL # nolint
 adtte <- teal.transform::rADTTE # nolint
-data <- teal.data::cdisc_data(
-  teal.data::cdisc_dataset("ADSL", adsl),
-  teal.data::cdisc_dataset("ADTTE", adtte)
-)
 
-ds <- teal.slice::init_filtered_data(data)
+data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE")]
+primary_keys_list <- lapply(join_keys, function(keys) keys[[1]])
 
 testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
@@ -77,13 +75,12 @@ testthat::test_that("resolve_delayed.FilteredData works correctly", {
     ),
     ARM2 = list(ref = "A: Drug X", comp = c("B: Placebo", "C: Combination"))
   )
-  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, ds))
+  ddl_resolved <- isolate(resolve_delayed(arm_ref_comp_ddl, datasets = data_list, keys = primary_keys_list))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
 
 testthat::test_that("resolve_delayed.list works correctly with reactive objects", {
-  data <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   arm_ref_comp <- list(
     ARMCD = list(
       ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
@@ -107,8 +104,8 @@ testthat::test_that("resolve_delayed.list works correctly with reactive objects"
   ddl_resolved <- isolate(
     resolve_delayed(
       arm_ref_comp_ddl,
-      data,
-      keys = list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+      data_list,
+      keys = primary_keys_list
     )
   )
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
@@ -155,8 +152,7 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
 
   output <- testthat::capture_output({
     shiny::isolate({
-      ds <- teal.slice::init_filtered_data(list(IRIS = list(dataset = head(iris))))
-      resolved_cs <- resolve_delayed(c_s, ds)
+      resolved_cs <- resolve_delayed(c_s, datasets = list(IRIS = reactive(iris)))
     })
   })
 
