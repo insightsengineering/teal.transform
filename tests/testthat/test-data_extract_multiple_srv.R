@@ -12,20 +12,21 @@ testthat::test_that("data_extract_multiple_srv accepts a named list of `data_ext
       data_extract_multiple_srv(
         data_extract = list(test = data_extract_spec(dataname = "iris")),
         datasets = data_list,
-        join_keys = join_keys
+        join_keys = teal.data::join_keys()
       )
     )
   )
 })
 
 testthat::test_that("data_extract_multiple_srv returns a named reactive list with reactives", {
+  data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = {
       selector_list <- data_extract_multiple_srv(
         list(test = data_extract_spec(dataname = "iris")),
         datasets = data_list,
-        join_keys = join_keys
+        join_keys = teal.data::join_keys()
       )
       testthat::expect_equal(names(isolate(selector_list())), "test")
       testthat::expect_true(inherits(selector_list, "reactive"))
@@ -52,13 +53,13 @@ testthat::test_that("data_extract_multiple_srv returns an empty list if passed a
 })
 
 testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
+  data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_equal(
       length(data_extract_multiple_srv(
         list(test = data_extract_spec(dataname = "iris"), test2 = NULL),
-        datasets = data_list,
-        join_keys = join_keys
+        datasets = data_list
       )),
       1
     )

@@ -65,7 +65,6 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 
       observeEvent(input$col,
         handlerExpr = {
-          browser()
           if (!filter$initialized) {
             initial_inputs <- get_initial_filter_values(filter, datasets)
             choices <- initial_inputs$choices

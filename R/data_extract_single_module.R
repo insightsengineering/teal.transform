@@ -56,11 +56,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   if (!extract_spec_reshape) reshape_display <- shinyjs::hidden(reshape_display)
 
   ## all combined
-  div(
-    filter_display,
-    data_extract_select_ui(single_data_extract_spec$select, id = ns("select")),
-    reshape_display
-  )
+  div(filter_display, select_display, reshape_display)
 }
 
 #' The server function for a single `data_extract_spec` object
@@ -81,15 +77,15 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
 
       # ui could be initialized with a delayed select spec so the choices and selected are NULL
       # here delayed are resolved
-      resolved <- resolve_delayed(single_data_extract_spec, datasets)
-      isolate(
+      isolate({
+        resolved <- resolve_delayed(single_data_extract_spec, datasets)
         teal.widgets::updateOptionalSelectInput(
           session = session,
           inputId = "select",
           choices = resolved$select$choices,
           selected = resolved$select$selected
         )
-      )
+      })
 
       for (idx in seq_along(resolved$filter)) {
         x <- resolved$filter[[idx]]
