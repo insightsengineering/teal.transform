@@ -258,10 +258,12 @@ filter_spec_internal <- function(vars_choices,
   checkmate::assert_string(sep)
   checkmate::assert_flag(drop_keys)
 
-  if (inherits(vars_choices, "delayed_data") ||
-    inherits(vars_selected, "delayed_data") ||
-    inherits(choices, "delayed_data") ||
-    inherits(selected, "delayed_data")) {
+  if (
+    inherits(vars_choices, "delayed_data") ||
+      inherits(vars_selected, "delayed_data") ||
+      inherits(choices, "delayed_data") ||
+      inherits(selected, "delayed_data")
+  ) {
     filter_spec_internal.delayed_data(
       vars_choices = vars_choices,
       vars_selected = vars_selected,
