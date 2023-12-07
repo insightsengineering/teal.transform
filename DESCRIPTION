@@ -51,7 +51,7 @@ Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
     rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
     insightsengineering/teal.widgets,
-    tidyverse/tidyr, r-lib/tidyselect, yihui/knitr, rstudio/shinytest,
+    tidyverse/tidyr, r-lib/tidyselect, yihui/knitr,
     insightsengineering/teal.code, r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
