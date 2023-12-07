@@ -828,8 +828,7 @@ testthat::test_that("Single long dataset", {
     get_dplyr_call(merged_selectors2, join_keys = jk2),
     quote(
       ADRS %>%
-        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-          c("BASELINE", "SCREENING")) %>%
+        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
         dplyr::select(STUDYID, USUBJID, AVISIT, AGE, SEX)
     )
   ) # AVISIT should be in select - filter is not complete (two levels selected)
@@ -1104,15 +1103,13 @@ testthat::test_that("Single long dataset", {
     list(
       deparse(quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" &
-            AVISIT %in% c("BASELINE", "SCREENING")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, AGE) %>%
           dplyr::rename(x1.AGE = AGE)
       ), 120),
       deparse(quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, SEX, AGE, BMRKR1) %>%
           dplyr::rename(x2.AGE = AGE)
       ), 120)
@@ -1167,15 +1164,13 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("BASELINE", "SCREENING") & SEX %in% c("F", "M")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING") & SEX %in% c("F", "M")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, AGE) %>%
           dplyr::rename(x1.AGE = AGE)
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "INVET" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "INVET" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, SEX, AGE, BMRKR1) %>%
           dplyr::rename(x2.AGE = AGE)
       )
@@ -1243,8 +1238,7 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "INVET" & AVISIT %in%
-            c("BASELINE", "SCREENING") & SEX %in% c("F", "M")) %>%
+          dplyr::filter(PARAMCD == "INVET" & AVISIT %in% c("BASELINE", "SCREENING") & SEX %in% c("F", "M")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, AGE) %>%
           dplyr::rename(x1.AGE = AGE)
       ),
@@ -1255,8 +1249,7 @@ testthat::test_that("Single long dataset", {
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, AVAL, AGE) %>%
           dplyr::rename(x3.AGE = AGE)
       )
@@ -1335,8 +1328,7 @@ testthat::test_that("Single long dataset", {
     get_dplyr_call(merged_selectors10, join_keys = jk10),
     quote(
       ADRS %>%
-        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-          c("BASELINE", "SCREENING")) %>%
+        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
         dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
         tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
         tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
@@ -1379,8 +1371,7 @@ testthat::test_that("Single long dataset", {
     get_dplyr_call(merged_selectors11, join_keys = jk11),
     quote(
       ADRS %>%
-        dplyr::filter(PARAMCD == "BESRSPI" & SEX %in%
-          c("M", "F")) %>%
+        dplyr::filter(PARAMCD == "BESRSPI" & SEX %in% c("M", "F")) %>%
         dplyr::select(STUDYID, USUBJID, AVISIT, PARAMCD, AVAL) %>%
         tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
         tidyr::unite(KEY, MEASURE, PARAMCD) %>%
@@ -1490,8 +1481,7 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "INVET" & AVISIT %in%
-            c("BASELINE", "SCREENING")) %>%
+          dplyr::filter(PARAMCD == "INVET" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           dplyr::rename(x1.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -1500,8 +1490,7 @@ testthat::test_that("Single long dataset", {
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           dplyr::rename(x2.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x2.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -1565,8 +1554,7 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("BASELINE", "SCREENING")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT) %>%
           tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "MEASURE", values_to = "VALUE") %>%
           tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
@@ -1574,8 +1562,7 @@ testthat::test_that("Single long dataset", {
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
           tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
@@ -1644,8 +1631,7 @@ testthat::test_that("Single long dataset", {
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           dplyr::rename(x2.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x2.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -1728,8 +1714,7 @@ testthat::test_that("Single long dataset", {
       ), 120),
       deparse(quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "INVET" & AVISIT ==
-            "SCREENING") %>%
+          dplyr::filter(PARAMCD == "INVET" & AVISIT == "SCREENING") %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           dplyr::rename(x2.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x2.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -1819,9 +1804,9 @@ testthat::test_that("Single long dataset", {
     list(
       deparse(quote(
         ADRS %>%
-          dplyr::filter(PARAMCD %in% c("BESRSPI", "INVET") &
-            AVISIT %in% c("BASELINE", "SCREENING") &
-            SEX %in% c("F", "M")) %>%
+          dplyr::filter(
+            PARAMCD %in% c("BESRSPI", "INVET") & AVISIT %in% c("BASELINE", "SCREENING") & SEX %in% c("F", "M")
+          ) %>%
           dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
           dplyr::rename(x1.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
@@ -1964,9 +1949,7 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" &
-            AVISIT %in% c("BASELINE", "SCREENING") &
-            SEX %in% c("F", "M")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING") &  %in% c("F", "M")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, PARAMCD, AGE) %>%
           dplyr::rename(x1.PARAMCD = PARAMCD, x1.AGE = AGE)
       ),
@@ -1978,8 +1961,7 @@ testthat::test_that("Single long dataset", {
       ),
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-            c("SCREENING", "FOLLOW UP")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("SCREENING", "FOLLOW UP")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, PARAMCD, AVAL, AGE) %>%
           dplyr::rename(x3.PARAMCD = PARAMCD, x3.AGE = AGE)
       )
@@ -2633,27 +2615,37 @@ testthat::test_that("Multiple long datasets", {
       deparse(get_dplyr_call(merged_selectors8, 3L, jk8), width.cutoff = 120)
     ),
     list(
-      deparse(quote(ADRS %>%
-        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT == "SCREENING") %>%
-        dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
-        dplyr::rename(x1.AVAL = AVAL) %>%
-        tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
-        tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
-        tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")), width.cutoff = 120),
-      deparse(quote(
-        ADTTE %>%
-          dplyr::filter(PARAMCD %in% c("EFS", "PFS")) %>%
-          dplyr::select(STUDYID, USUBJID, PARAMCD, AVAL, AGE) %>%
-          dplyr::rename(x2.AVAL = AVAL, x2.AGE = AGE) %>%
-          tidyr::pivot_longer(cols = c("x2.AVAL", "x2.AGE"), names_to = "MEASURE", values_to = "VALUE") %>%
-          tidyr::unite(KEY, MEASURE, PARAMCD) %>%
+      deparse(
+        quote(ADRS %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT == "SCREENING") %>%
+          dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
+          dplyr::rename(x1.AVAL = AVAL) %>%
+          tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
+          tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
           tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
-      ), width.cutoff = 120),
-      deparse(quote(
-        ADSL %>%
-          dplyr::select(STUDYID, USUBJID, AGE) %>%
-          dplyr::rename(x3.AGE = AGE)
-      ), width.cutoff = 120)
+        ),
+        width.cutoff = 120
+      ),
+      deparse(
+        quote(
+          ADTTE %>%
+            dplyr::filter(PARAMCD %in% c("EFS", "PFS")) %>%
+            dplyr::select(STUDYID, USUBJID, PARAMCD, AVAL, AGE) %>%
+            dplyr::rename(x2.AVAL = AVAL, x2.AGE = AGE) %>%
+            tidyr::pivot_longer(cols = c("x2.AVAL", "x2.AGE"), names_to = "MEASURE", values_to = "VALUE") %>%
+            tidyr::unite(KEY, MEASURE, PARAMCD) %>%
+            tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
+        ),
+        width.cutoff = 120
+      ),
+      deparse(
+        quote(
+          ADSL %>%
+            dplyr::select(STUDYID, USUBJID, AGE) %>%
+            dplyr::rename(x3.AGE = AGE)
+        ),
+        width.cutoff = 120
+      )
     )
   )
 

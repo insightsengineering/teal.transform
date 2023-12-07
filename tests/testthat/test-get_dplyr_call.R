@@ -326,18 +326,22 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
   # multiple variable filters, single selection, reshape by all keys even if filtered out (to keep proper label)
   testthat::expect_equal(
     get_dplyr_call(
-      list(list(
-        dataname = "ADLB",
-        filters = list(list(
-          columns = c("PARAMCD", "AVISIT"),
-          selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE")),
-          multiple = TRUE
-        )),
-        select = "AVAL",
-        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
-        reshape = TRUE,
-        internal_id = "test1"
-      )),
+      list(
+        list(
+          dataname = "ADLB",
+          filters = list(
+            list(
+              columns = c("PARAMCD", "AVISIT"),
+              selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE")),
+              multiple = TRUE
+            )
+          ),
+          select = "AVAL",
+          keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
+          reshape = TRUE,
+          internal_id = "test1"
+        )
+      ),
       join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID")))
     ),
     quote(ADLB %>%
