@@ -13,10 +13,9 @@ value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 \method{value_choices}{data.frame}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 }
 \arguments{
-\item{data}{(\code{data.frame}, \code{character}, \code{TealDataset}, \code{TealDatasetConnector})
-If \code{data.frame}, then data to extract labels from
-If \code{character}, then name of the dataset to extract data from once available
-If \code{TealDataset} or \code{TealDatasetConnector}, then raw data to extract labels from.}
+\item{data}{(\code{data.frame}, \code{character})
+If \code{data.frame}, then data to extract labels from.
+If \code{character}, then name of the dataset to extract data from once available.}
 
 \item{var_choices}{(\code{character} or \code{NULL}) vector with choices column names}
 

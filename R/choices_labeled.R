@@ -117,10 +117,9 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param data (`data.frame`, `character`, `TealDataset`, `TealDatasetConnector`)
+#' @param data (`data.frame`, `character`)
 #' If `data.frame`, then data to extract labels from
 #' If `character`, then name of the dataset to extract data from once available
-#' If `TealDataset` or `TealDatasetConnector`, then raw data to extract labels from.
 #' @param subset (`character` or `function`)
 #' If `character`, then a vector of column names.
 #' If `function`, then this function is used to determine the possible columns (e.g. all factor columns).
@@ -235,10 +234,9 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param data (`data.frame`, `character`, `TealDataset`, `TealDatasetConnector`)
-#' If `data.frame`, then data to extract labels from
-#' If `character`, then name of the dataset to extract data from once available
-#' If `TealDataset` or `TealDatasetConnector`, then raw data to extract labels from.
+#' @param data (`data.frame`, `character`)
+#' If `data.frame`, then data to extract labels from.
+#' If `character`, then name of the dataset to extract data from once available.
 #' @param var_choices (`character` or `NULL`) vector with choices column names
 #' @param var_label (`character`) vector with labels column names
 #' @param subset (`character` or `function`)

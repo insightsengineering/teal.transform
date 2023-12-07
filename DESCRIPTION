@@ -39,6 +39,7 @@ Imports:
     tidyselect
 Suggests:
     knitr (>= 1.42),
+    rmarkdown (>= 2.19),
     teal.code (>= 0.4.0),
     testthat (>= 3.1.5)
 VignetteBuilder:
@@ -47,7 +48,7 @@ RdMacros:
     lifecycle
 Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
     tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
-    rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
+    rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
     insightsengineering/teal.widgets,
     tidyverse/tidyr, r-lib/tidyselect, yihui/knitr, rstudio/shinytest,

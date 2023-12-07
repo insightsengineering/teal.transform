@@ -13,10 +13,9 @@ variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
 \method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
 }
 \arguments{
-\item{data}{(\code{data.frame}, \code{character}, \code{TealDataset}, \code{TealDatasetConnector})
+\item{data}{(\code{data.frame}, \code{character})
 If \code{data.frame}, then data to extract labels from
-If \code{character}, then name of the dataset to extract data from once available
-If \code{TealDataset} or \code{TealDatasetConnector}, then raw data to extract labels from.}
+If \code{character}, then name of the dataset to extract data from once available}
 
 \item{subset}{(\code{character} or \code{function})
 If \code{character}, then a vector of column names.
