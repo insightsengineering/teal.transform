@@ -49,7 +49,7 @@ Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
     tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
     rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
-    insightsengineering/teal.slice, insightsengineering/teal.widgets,
+    insightsengineering/teal.widgets,
     tidyverse/tidyr, r-lib/tidyselect, yihui/knitr, rstudio/shinytest,
     insightsengineering/teal.code, r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
