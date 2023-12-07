@@ -659,7 +659,7 @@ data_extract_multiple_srv <- function(data_extract, datasets, ...) {
 #' @rdname data_extract_multiple_srv
 #' @export
 data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
-  # convert teal_data to list of reactives
+  # convert reactive containing teal_data to list of reactives with one dataset each
   datasets_new <- convert_teal_data(datasets)
   data_extract_multiple_srv.list(data_extract, datasets_new, ...)
 }
