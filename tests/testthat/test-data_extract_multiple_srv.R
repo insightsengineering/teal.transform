@@ -77,9 +77,8 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData"
   )
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
-      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = mock_datasets),
-      regexp = NA
+    expr = testthat::expect_no_error(
+      data_extract_multiple_srv(data_extract = list(test = NULL), datasets = mock_datasets)
     )
   )
 })
