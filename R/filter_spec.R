@@ -408,7 +408,7 @@ filter_spec_internal.default <- function(vars_choices,
       checkmate::check_numeric(selected, min.len = 1, any.missing = FALSE),
       checkmate::check_logical(selected, min.len = 1, any.missing = FALSE)
     )
-    stopifnot(all(!duplicated(selected)))
+    checkmate::assert_vector(selected, unique = TRUE)
     checkmate::assert_subset(selected, choices)
   }
 
