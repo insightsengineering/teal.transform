@@ -6,7 +6,7 @@ testthat::test_that("Different join types", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -14,16 +14,16 @@ testthat::test_that("Different join types", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("SEX", "STRATA"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL2", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL2", "ADSL2", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID"))
   )
 
 
@@ -71,7 +71,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         select = "AGE",
         internal_id = "x1"
@@ -79,7 +79,7 @@ testthat::test_that("Single wide dataset", {
     )
   )[[1]]
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -102,14 +102,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("USUBJID", "AGE", "SEX"), # adding USUBJID doesn"t affect result - keys are selected always
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk2 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -132,7 +132,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -140,14 +140,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk3 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -170,7 +170,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -178,7 +178,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -186,7 +186,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("STRATA", "ARMCD", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -194,14 +194,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("COUNTRY"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk4 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -224,7 +224,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -232,7 +232,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -240,7 +240,7 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("STRATA", "ARMCD", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -248,14 +248,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("COUNTRY"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk5 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -278,14 +278,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = list(list(columns = "SEX", selected = "F", multiple = TRUE, drop_keys = FALSE)),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk6 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -309,14 +309,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = list(list(columns = "STUDYID", selected = "STUDY1", multiple = TRUE, drop_keys = FALSE)),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk7 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -340,14 +340,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = list(list(columns = "STUDYID", selected = "STUDY1", multiple = TRUE, drop_keys = TRUE)),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk8 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -371,14 +371,14 @@ testthat::test_that("Single wide dataset", {
         dataname = "ADSL",
         filters = list(list(columns = "STUDYID", selected = "STUDY1", multiple = TRUE, drop_keys = TRUE)),
         select = c("AGE", "STUDYID"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk9 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -405,7 +405,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -413,16 +413,16 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("SEX", "STRATA"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL2", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL2", "ADSL2", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -457,7 +457,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -465,15 +465,15 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk2 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -508,7 +508,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -516,7 +516,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("AGE", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -524,7 +524,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL3",
         filters = NULL,
         select = c("AGE", "SEX", "STRATA"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -532,16 +532,16 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("AGE", "STRATA", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk3 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL3", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -585,7 +585,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -593,7 +593,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("AGE", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -601,7 +601,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL3",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -609,16 +609,16 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk4 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL3", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -661,7 +661,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = c("STUDYID", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -669,7 +669,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("STUDYID", "AGE", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -677,7 +677,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL",
         filters = NULL,
         select = "STUDYID",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -685,7 +685,7 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL3",
         filters = NULL,
         select = c("USUBJID", "AGE", "SEX", "STRATA"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x4"
       ),
@@ -693,16 +693,16 @@ testthat::test_that("Multiple wide dataset", {
         dataname = "ADSL2",
         filters = NULL,
         select = c("AGE", "STRATA", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x5"
       )
     )
   )[[1]]
   jk5 <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL2", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADSL3", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL2", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADSL3", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -749,14 +749,14 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE, drop_keys = FALSE)),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_identical(
@@ -780,14 +780,14 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE, drop_keys = TRUE)),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_identical(
@@ -814,14 +814,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE, drop_keys = TRUE)
         ),
         select = c("AGE", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk2 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -849,7 +849,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE, drop_keys = FALSE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -860,14 +860,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE, drop_keys = FALSE)
         ),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk3 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -895,7 +895,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE, drop_keys = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -906,14 +906,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE, drop_keys = FALSE)
         ),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk3 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   # failure:
@@ -958,7 +958,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "BASELINE", multiple = TRUE, drop_keys = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -969,14 +969,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE, drop_keys = TRUE)
         ),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk4 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1018,7 +1018,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE"), multiple = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -1026,14 +1026,14 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE)),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk5 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1075,7 +1075,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -1086,14 +1086,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk6 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1138,7 +1138,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("F", "M"), multiple = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -1149,14 +1149,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("SEX", "AGE", "BMRKR1"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk7 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1202,7 +1202,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("F", "M"), multiple = TRUE)
         ),
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -1213,7 +1213,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -1224,14 +1224,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk8 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1279,14 +1279,14 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE, drop_keys = TRUE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk9 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_identical(
@@ -1321,14 +1321,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk10 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1365,14 +1365,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("M", "F"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk11 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1408,7 +1408,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -1419,14 +1419,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk12 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1461,7 +1461,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -1472,14 +1472,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk13 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1535,7 +1535,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("BASELINE", "SCREENING"), multiple = TRUE)
         ),
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         select = character(0),
         internal_id = "x1"
@@ -1547,14 +1547,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk14 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1606,7 +1606,7 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "SEX", selected = c("M", "F"), multiple = TRUE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -1617,14 +1617,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk15 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1678,7 +1678,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("F", "M"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -1689,7 +1689,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       ),
@@ -1700,14 +1700,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk16 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1778,7 +1778,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("F", "M"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -1789,7 +1789,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x2"
       ),
@@ -1800,14 +1800,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk17 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -1879,14 +1879,14 @@ testthat::test_that("Single long dataset", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE)),
         select = c("AVAL", "STUDYID"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk18 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_identical(
@@ -1923,7 +1923,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "SEX", selected = c("F", "M"), multiple = TRUE)
         ),
         select = c("STUDYID", "PARAMCD", "AVISIT", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -1934,7 +1934,7 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = c("STUDYID", "PARAMCD", "AVISIT"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -1945,14 +1945,14 @@ testthat::test_that("Single long dataset", {
           list(columns = "AVISIT", selected = c("SCREENING", "FOLLOW UP"), multiple = TRUE)
         ),
         select = c("STUDYID", "PARAMCD", "AVISIT", "AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk20 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -2015,14 +2015,14 @@ testthat::test_that("Single long dataset", {
           )
         ),
         select = c("AGE", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       )
     )
   )[[1]]
   jk21 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -2059,7 +2059,7 @@ testthat::test_that("Single long dataset", {
           )
         ),
         select = c("AGE", "PARAMCD"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2080,7 +2080,7 @@ testthat::test_that("Single long dataset", {
           )
         ),
         select = c("AGE", "AVISIT"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -2101,7 +2101,7 @@ testthat::test_that("Single long dataset", {
           )
         ),
         select = c("COUNTRY", "AVISIT"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -2122,14 +2122,14 @@ testthat::test_that("Single long dataset", {
           )
         ),
         select = c("STUDYID", "AVAL", "AGE", "PARAMCD", "AVISIT"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk22 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -2184,7 +2184,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADRS",
         filters = NULL,
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2192,14 +2192,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = NULL,
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk1 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2237,7 +2237,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADRS",
         filters = NULL,
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2295,7 +2295,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         select = "AVAL",
         internal_id = "x1"
@@ -2304,14 +2304,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = NULL,
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk3 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2352,7 +2352,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2360,14 +2360,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk4 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2410,7 +2410,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2418,14 +2418,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk5 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2466,7 +2466,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2474,14 +2474,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk6 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2531,7 +2531,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -2539,14 +2539,14 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk7 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2599,7 +2599,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = "SCREENING", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -2607,7 +2607,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       ),
@@ -2615,15 +2615,15 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk8 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADSL", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_identical(
@@ -2687,7 +2687,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2695,7 +2695,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       ),
@@ -2703,7 +2703,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -2714,16 +2714,16 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "AVISIT", selected = c("SCREENING", "BASELINE"), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk9 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -2794,7 +2794,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2802,7 +2802,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       ),
@@ -2810,7 +2810,7 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADSL",
         filters = NULL,
         select = "AGE",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "x3"
       ),
@@ -2818,16 +2818,16 @@ testthat::test_that("Multiple long datasets", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "BESRSPI", multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x4"
       )
     )
   )[[1]]
   jk10 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
 
@@ -2881,7 +2881,7 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "SEX", selected = "F", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2892,14 +2892,14 @@ testthat::test_that("Multiple long datasets", {
           list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk11 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
 
@@ -2963,7 +2963,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           )
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -2974,15 +2974,15 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE, drop_keys = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk12 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS")),
-    teal.data::join_key("ADTTE", "ADRS", teal.data::get_cdisc_keys("ADTTE")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")),
+    teal.data::join_key("ADTTE", "ADRS", c("STUDYID", "USUBJID", "PARAMCD")),
     teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD")) # non-stadard keys set for example purpose
   )
 
@@ -3033,7 +3033,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = c("PARAMCD", "AVISIT"), selected = list(c("BESRSPI", "SCREENING")), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -3041,14 +3041,14 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
         dataname = "ADTTE",
         filters = list(list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = TRUE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk13 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
 
@@ -3108,7 +3108,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = "SEX", selected = "F", multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -3119,7 +3119,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -3129,15 +3129,15 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = c("PARAMCD", "AVISIT"), selected = list(c("OVRINV", "FOLLOW UP")), multiple = TRUE)
         ),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk14 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -3188,7 +3188,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           multiple = TRUE
         )),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x1"
       ),
@@ -3199,7 +3199,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       ),
@@ -3211,15 +3211,15 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           multiple = TRUE
         )),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "x3"
       )
     )
   )[[1]]
   jk15 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   testthat::expect_equal(
@@ -3273,7 +3273,7 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           multiple = TRUE
         )),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "x1"
       ),
@@ -3284,14 +3284,14 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
           list(columns = "PARAMCD", selected = c("EFS", "PFS"), multiple = TRUE)
         ),
         select = c("AVAL", "AGE"),
-        keys = teal.data::get_cdisc_keys("ADTTE"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD"),
         reshape = FALSE,
         internal_id = "x2"
       )
     )
   )[[1]]
   jk16 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADTTE", teal.data::get_cdisc_keys("ADSL"))
+    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID"))
   )
 
   testthat::expect_equal(

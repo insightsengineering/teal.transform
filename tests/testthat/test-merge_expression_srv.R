@@ -1,6 +1,6 @@
-adsl <- as.data.frame(as.list(stats::setNames(nm = c(teal.data::get_cdisc_keys("ADSL"), "AGE"))))
+adsl <- as.data.frame(as.list(stats::setNames(nm = c(c("STUDYID", "USUBJID"), "AGE"))))
 adlb <- as.data.frame(
-  as.list(stats::setNames(nm = c(teal.data::get_cdisc_keys("ADLB"), "AVAL", "CHG", "CHG2", "ABLFL")))
+  as.list(stats::setNames(nm = c(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "AVAL", "CHG", "CHG2", "ABLFL")))
 )
 
 data_list <- list(ADSL = reactive(adsl), ADLB = reactive(adlb))

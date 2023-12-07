@@ -1,7 +1,7 @@
 adsl <- teal.transform::rADSL # nolint
 adtte <- teal.transform::rADTTE # nolint
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
-primary_keys_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
 testthat::test_that("Proper argument types", {
   choices <- c("c1", "c2", "c3")
@@ -85,7 +85,7 @@ testthat::test_that("Multiple choices", {
 })
 
 testthat::test_that("resolve select_spec works", {
-  attr(adsl, "keys") <- teal.data::get_cdisc_keys("ADSL") # nolint
+  attr(adsl, "keys") <- c("STUDYID", "USUBJID") # nolint
 
   expected_spec <- select_spec(
     choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),
@@ -156,8 +156,8 @@ testthat::test_that("delayed version of select_spec", {
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
   exp_obj <- select_spec(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-    selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(adsl, "STUDYID", key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj)
 
@@ -207,7 +207,7 @@ testthat::test_that("default values", {
 
 # With resolve_delayed
 testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
-  attr(adsl, "keys") <- teal.data::get_cdisc_keys("ADSL") # nolint
+  attr(adsl, "keys") <- c("STUDYID", "USUBJID") # nolint
 
   expected_spec <- select_spec(
     choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),
@@ -255,8 +255,8 @@ testthat::test_that("delayed version of select_spec - resolve_delayed", {
 
   res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
   exp_obj <- select_spec(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-    selected = variable_choices(adsl, "STUDYID", key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(adsl, "STUDYID", key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj)
 

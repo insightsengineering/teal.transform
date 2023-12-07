@@ -9,7 +9,7 @@ adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
-    choices = variable_choices("ADSL", teal.data::get_cdisc_keys("ADSL")),
+    choices = variable_choices("ADSL", c("STUDYID", "USUBJID")),
     selected = "STUDYID",
     multiple = TRUE,
     fixed = FALSE
@@ -267,7 +267,7 @@ testthat::test_that("data_extract_srv returns select ordered according to select
     dataname = "ADSL",
     select = select_spec(
       label = "Select variable:",
-      choices = variable_choices(ADSL, teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, c("STUDYID", "USUBJID")),
       selected = "STUDYID",
       ordered = TRUE
     )
@@ -294,7 +294,7 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
     dataname = "ADSL",
     select = select_spec(
       label = "Select variable:",
-      choices = variable_choices(ADSL, teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, c("STUDYID", "USUBJID")),
       selected = "STUDYID",
       ordered = FALSE
     )

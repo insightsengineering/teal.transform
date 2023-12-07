@@ -57,20 +57,20 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
   x_expected <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
-      choices = variable_choices(ADSL, subset = get_continuous, key = teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, subset = get_continuous, key = c("STUDYID", "USUBJID")),
       selected = NULL
     )
   )
   y_expected <- data_extract_spec(
     dataname = "ADAE",
     select = select_spec(
-      choices = variable_choices(ADAE, subset = get_continuous, key = teal.data::get_cdisc_keys("ADAE"))
+      choices = variable_choices(ADAE, subset = get_continuous, key = c("STUDYID", "USUBJID", "ASTDTM", "AETERM", "AESEQ"))
     )
   )
   data_list <- list(ADSL = reactive(ADSL), ADAE = reactive(ADAE))
   primary_keys_list <- list(
-    ADSL = teal.data::get_cdisc_keys("ADSL"),
-    ADAE = teal.data::get_cdisc_keys("ADAE")
+    ADSL = c("STUDYID", "USUBJID"),
+    ADAE = c("STUDYID", "USUBJID", "ASTDTM", "AETERM", "AESEQ")
   )
   x_result <- isolate(resolve(x, datasets = data_list, keys = primary_keys_list))
   y_result <- isolate(resolve(y, datasets = data_list, keys = primary_keys_list))
@@ -83,13 +83,13 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
 testthat::test_that("Delayed choices selected - single data connector with two scda dataset connectors", {
   data_list <- list(ADSL = reactive(ADSL), ADAE = reactive(ADAE))
   primary_keys_list <- list(
-    ADSL = teal.data::get_cdisc_keys("ADSL"),
-    ADAE = teal.data::get_cdisc_keys("ADAE")
+    ADSL = c("STUDYID", "USUBJID"),
+    ADAE = c("STUDYID", "USUBJID", "ASTDTM", "AETERM", "AESEQ")
   )
   choices <- variable_choices("ADSL")
   choices_result <- isolate(resolve(choices, datasets = data_list, keys = primary_keys_list))
 
-  choices_expected <- variable_choices(ADSL, key = teal.data::get_cdisc_keys("ADSL"))
+  choices_expected <- variable_choices(ADSL, key = c("STUDYID", "USUBJID"))
   testthat::expect_identical(choices_result, choices_expected)
 })
 
@@ -98,8 +98,8 @@ testthat::test_that("Delayed choices selected - single data connector with two s
 testthat::test_that("Delayed data extract - filtered", {
   data_list <- list(ADSL = reactive(ADSL), ADRS = reactive(ADRS))
   primary_keys_list <- list(
-    ADSL = teal.data::get_cdisc_keys("ADSL"),
-    ADRS = teal.data::get_cdisc_keys("ADRS")
+    ADSL = c("STUDYID", "USUBJID"),
+    ADRS = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
   )
 
   x <- data_extract_spec(

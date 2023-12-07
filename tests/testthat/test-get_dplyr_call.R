@@ -57,7 +57,7 @@ testthat::test_that("get_rename_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     ),
@@ -65,7 +65,7 @@ testthat::test_that("get_rename_call", {
       dataname = "ADSL",
       filters = NULL,
       select = letters,
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test2"
     ),
@@ -73,7 +73,7 @@ testthat::test_that("get_rename_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::tail(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test3"
     ),
@@ -81,7 +81,7 @@ testthat::test_that("get_rename_call", {
       dataname = "ADSL",
       filters = NULL,
       select = c("aa", "bb"),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test4"
     )
@@ -112,7 +112,7 @@ testthat::test_that("get_reshape_call", {
         multiple = FALSE
       )),
       select = "AVAL",
-      keys = teal.data::get_cdisc_keys("ADLB"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = TRUE,
       internal_id = "test"
     )
@@ -136,7 +136,7 @@ testthat::test_that("get_reshape_call", {
         multiple = TRUE
       )),
       select = "AVAL",
-      keys = teal.data::get_cdisc_keys("ADLB"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = TRUE,
       internal_id = "test"
     )
@@ -160,11 +160,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = NULL,
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(ADSL %>% dplyr::select(STUDYID, USUBJID))
   )
@@ -176,11 +176,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "SEX", selected = list("F", "M"))),
         select = character(0),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -196,11 +196,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "SEX", selected = list("F", "M"))),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -216,11 +216,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "SEX", selected = list("F"))),
         select = c("AVAL", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -237,11 +237,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "SEX", selected = list("F"), drop_keys = TRUE)),
         select = c("AVAL", "SEX"),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -257,11 +257,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "STUDYID", selected = list("ANY"), drop_keys = TRUE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -277,11 +277,11 @@ testthat::test_that("get_dplyr_call - single filter and single select", {
         dataname = "ADSL",
         filters = list(list(columns = "STUDYID", selected = list("ANY"), drop_keys = FALSE)),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -300,7 +300,7 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
           dataname = "ADSL",
           filters = NULL,
           select = c("COL_1", "COL_2"),
-          keys = teal.data::get_cdisc_keys("ADSL"),
+          keys = c("STUDYID", "USUBJID"),
           reshape = FALSE,
           internal_id = "test1"
         ),
@@ -308,13 +308,13 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
           dataname = "ADSL",
           filters = NULL,
           select = c("COL_2", "COL_3"),
-          keys = teal.data::get_cdisc_keys("ADSL"),
+          keys = c("STUDYID", "USUBJID"),
           reshape = FALSE,
           internal_id = "test2"
         )
       ),
       idx = 1L,
-      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADSL %>%
@@ -334,11 +334,11 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
           multiple = TRUE
         )),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADLB"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID")))
     ),
     quote(ADLB %>%
       dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
@@ -359,11 +359,11 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
           multiple = TRUE
         )),
         select = "AVAL",
-        keys = teal.data::get_cdisc_keys("ADLB"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       )),
-      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADSL")))
+      join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID")))
     ),
     quote(
       ADLB %>%

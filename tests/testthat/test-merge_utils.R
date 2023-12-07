@@ -3,7 +3,7 @@ testthat::test_that("merge_selectors makes no changes when single selector is pr
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   )
@@ -20,7 +20,7 @@ testthat::test_that(
       dataname = "ADSL",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     )
@@ -28,7 +28,7 @@ testthat::test_that(
       dataname = "ADSL",
       filters = NULL,
       select = utils::tail(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test2"
     )
@@ -41,7 +41,7 @@ testthat::test_that(
             dataname = "ADSL",
             filters = NULL,
             select = c(utils::head(letters, 3), utils::tail(letters, 3)),
-            keys = teal.data::get_cdisc_keys("ADSL"),
+            keys = c("STUDYID", "USUBJID"),
             reshape = FALSE,
             internal_id = "test1"
           )
@@ -57,7 +57,7 @@ testthat::test_that("merge selectors combines two selectorsdespite duplicated in
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   )
@@ -65,7 +65,7 @@ testthat::test_that("merge selectors combines two selectorsdespite duplicated in
     dataname = "ADSL",
     filters = NULL,
     select = utils::tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   )
@@ -78,7 +78,7 @@ testthat::test_that("merge selectors combines two selectorsdespite duplicated in
           dataname = "ADSL",
           filters = NULL,
           select = c(utils::head(letters, 3), utils::tail(letters, 3)),
-          keys = teal.data::get_cdisc_keys("ADSL"),
+          keys = c("STUDYID", "USUBJID"),
           reshape = FALSE,
           internal_id = "test1"
         )
@@ -93,7 +93,7 @@ testthat::test_that("Two pairs of selectors combined into two selectors", {
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   )
@@ -101,7 +101,7 @@ testthat::test_that("Two pairs of selectors combined into two selectors", {
     dataname = "ADLB",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test2"
   )
@@ -109,7 +109,7 @@ testthat::test_that("Two pairs of selectors combined into two selectors", {
     dataname = "ADSL",
     filters = NULL,
     select = tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test3"
   )
@@ -117,7 +117,7 @@ testthat::test_that("Two pairs of selectors combined into two selectors", {
     dataname = "ADLB",
     filters = NULL,
     select = utils::tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test4"
   )
@@ -142,7 +142,7 @@ testthat::test_that("merge does not merge when reshape differs", {
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   )
@@ -150,7 +150,7 @@ testthat::test_that("merge does not merge when reshape differs", {
     dataname = "ADSL",
     filters = NULL,
     select = utils::tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = TRUE,
     internal_id = "test2"
   )
@@ -169,7 +169,7 @@ testthat::test_that("merge does not merge when filters differs", {
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = TRUE,
     internal_id = "test1"
   )
@@ -177,7 +177,7 @@ testthat::test_that("merge does not merge when filters differs", {
     dataname = "ADSL",
     filters = list(list(columns = "a", selected = list("1", "2"))),
     select = utils::tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test2"
   )
@@ -198,7 +198,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADSL",
         filters = NULL,
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -206,13 +206,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADSL",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADSL"),
+        keys = c("STUDYID", "USUBJID"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADSL")
+      c("STUDYID", "USUBJID")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADSL"))
+    rlang::set_names(c("STUDYID", "USUBJID"))
   )
 
   # this is useful when merging two subsets of long datasets -> value columns next to each other
@@ -223,7 +223,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = FALSE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -231,13 +231,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
   # ignore "to" selector's filter
   testthat::expect_identical(
@@ -246,7 +246,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -254,13 +254,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = FALSE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   # subtract from keys single filter on "from" selector
   testthat::expect_identical(
@@ -269,7 +269,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = FALSE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -277,13 +277,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = FALSE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
   # subtract if multiple filter and single selection
   testthat::expect_identical(
@@ -292,7 +292,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -300,13 +300,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = FALSE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
   # ignore if multiple filter with multiple selection
   testthat::expect_identical(
@@ -315,7 +315,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -323,13 +323,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = FALSE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   # subtract only keys filter cols
   testthat::expect_identical(
@@ -342,7 +342,7 @@ testthat::test_that("get_merge_key_pair works", {
           list(columns = "RACE", selected = "ASIAN", multiple = FALSE)
         ),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -350,13 +350,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
 
   # do not subtract from primary key if not reshape and multiple filter column
@@ -366,7 +366,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -374,13 +374,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   testthat::expect_identical(
     get_merge_key_pair(
@@ -388,7 +388,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -396,13 +396,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = TRUE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   testthat::expect_identical(
     get_merge_key_pair(
@@ -410,7 +410,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -418,13 +418,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = c("OS", "PFS"), multiple = TRUE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   ## reshape cases
@@ -439,7 +439,7 @@ testthat::test_that("get_merge_key_pair works", {
           list(columns = "RACE", selected = "ASIAN", multiple = TRUE)
         ),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -447,13 +447,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
 
   ## reshape cases
@@ -464,7 +464,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test1"
       ),
@@ -472,13 +472,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
   # no changes because only "from" filter is used
   testthat::expect_identical(
@@ -487,7 +487,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test1"
       ),
@@ -495,13 +495,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = TRUE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(teal.data::get_cdisc_keys("ADRS"))
+    rlang::set_names(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   # subtract by filter column on "from" selector
   testthat::expect_identical(
@@ -510,7 +510,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = TRUE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test1"
       ),
@@ -518,13 +518,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = list(list(columns = "PARAMCD", selected = "OS", multiple = TRUE)),
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
   # subtract by filter key column on "from" selector
   testthat::expect_identical(
@@ -537,7 +537,7 @@ testthat::test_that("get_merge_key_pair works", {
           list(columns = "RACE", selected = "ASIAN", multiple = TRUE)
         ),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test1"
       ),
@@ -545,13 +545,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADRS",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADRS"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = TRUE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADRS")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADRS"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
 
   testthat::expect_identical(
@@ -560,7 +560,7 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADLB",
         filters = list(list(columns = "PARAMCD", selected = "ALT", multiple = FALSE)),
         select = utils::head(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADLB"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test1"
       ),
@@ -568,13 +568,13 @@ testthat::test_that("get_merge_key_pair works", {
         dataname = "ADLB",
         filters = NULL,
         select = utils::tail(letters, 3),
-        keys = teal.data::get_cdisc_keys("ADLB"),
+        keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
         reshape = FALSE,
         internal_id = "test2"
       ),
-      teal.data::get_cdisc_keys("ADLB")
+      c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")
     ),
-    rlang::set_names(setdiff(teal.data::get_cdisc_keys("ADLB"), "PARAMCD"))
+    rlang::set_names(setdiff(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "PARAMCD"))
   )
 })
 
@@ -585,7 +585,7 @@ testthat::test_that("get_merge_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     )
@@ -600,7 +600,7 @@ testthat::test_that("get_merge_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     ),
@@ -608,12 +608,12 @@ testthat::test_that("get_merge_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::tail(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test2"
     )
   )
-  jk <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")))
+  jk <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
@@ -627,7 +627,7 @@ testthat::test_that("get_merge_call", {
       dataname = "ADRS",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADRS"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = FALSE,
       internal_id = "test1"
     ),
@@ -635,12 +635,12 @@ testthat::test_that("get_merge_call", {
       dataname = "ADRS",
       filters = NULL,
       select = utils::tail(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADRS"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = FALSE,
       internal_id = "test2"
     )
   )
-  jk <- teal.data::join_keys(teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS")))
+  jk <- teal.data::join_keys(teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")))
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
@@ -656,7 +656,7 @@ testthat::test_that("get_merge_call", {
       dataname = "ADSL",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     ),
@@ -664,7 +664,7 @@ testthat::test_that("get_merge_call", {
       dataname = "ADRS",
       filters = NULL,
       select = utils::head(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADRS"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = FALSE,
       internal_id = "test2"
     ),
@@ -672,15 +672,15 @@ testthat::test_that("get_merge_call", {
       dataname = "ADRS",
       filters = NULL,
       select = utils::tail(letters, 3),
-      keys = teal.data::get_cdisc_keys("ADRS"),
+      keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
       reshape = FALSE,
       internal_id = "test3"
     )
   )
   jk <- teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADSL", "ADRS", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADRS", "ADRS", teal.data::get_cdisc_keys("ADRS"))
+    teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADSL", "ADRS", c("STUDYID", "USUBJID")),
+    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
   )
   testthat::expect_identical(
     get_merge_call(x, jk),

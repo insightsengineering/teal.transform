@@ -179,7 +179,7 @@ testthat::test_that("delayed filter_spec", {
   expect_equal(names(expected_spec), names(delayed))
 
   data_list <- list(ADSL = reactive(ADSL))
-  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"))
 
   result_spec <- isolate(resolve(delayed, data_list, key_list))
   testthat::expect_identical(expected_spec, isolate(resolve(delayed, data_list, key_list)))
