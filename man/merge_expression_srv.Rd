@@ -2,9 +2,29 @@
 % Please edit documentation in R/merge_expression_module.R
 \name{merge_expression_srv}
 \alias{merge_expression_srv}
+\alias{merge_expression_srv.reactive}
+\alias{merge_expression_srv.list}
 \title{Data merge module server}
 \usage{
 merge_expression_srv(
+  id = "merge_id",
+  selector_list,
+  datasets,
+  join_keys,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL"
+)
+
+\method{merge_expression_srv}{reactive}(
+  id = "merge_id",
+  selector_list,
+  datasets,
+  join_keys,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL"
+)
+
+\method{merge_expression_srv}{list}(
   id = "merge_id",
   selector_list,
   datasets,

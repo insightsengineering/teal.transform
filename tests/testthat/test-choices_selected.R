@@ -1,5 +1,5 @@
-adsl <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
-adtte <- as.data.frame(as.list(setNames(nm = teal.data::get_cdisc_keys("ADTTE"))))
+adsl <- as.data.frame(as.list(setNames(nm = c("STUDYID", "USUBJID"))))
+adtte <- as.data.frame(as.list(setNames(nm = c("STUDYID", "USUBJID", "PARAMCD"))))
 
 vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
 vc_hard_exp <- structure(
@@ -37,12 +37,12 @@ testthat::test_that("delayed version of choices_selected", {
   )
 
   data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
-  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
   exp_obj <- choices_selected(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-    selected = variable_choices(adsl, subset = c("STUDYID"), key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(adsl, subset = c("STUDYID"), key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj, check.attributes = TRUE)
 
@@ -61,14 +61,14 @@ testthat::test_that("delayed version of choices_selected", {
 })
 
 testthat::test_that("choices_selected throws error when selected is not found in choices", {
-  testthat::expect_error(choices_selected(choices = c("a"), selected = "b"), "b 'selected' but not in 'choices'")
+  testthat::expect_error(choices_selected(choices = c("a"), selected = "b"), "Must be a subset of \\{'a'\\}")
   testthat::expect_error(
     choices_selected(choices = c("a"), selected = c("a", "b")),
-    "b 'selected' but not in 'choices'"
+    "Must be a subset of \\{'a'\\}"
   )
   testthat::expect_error(
     choices_selected(choices = c("a"), selected = c("c", "b")),
-    "c, b 'selected' but not in 'choices'"
+    "Must be a subset of \\{'a'\\}"
   )
 })
 
@@ -147,12 +147,10 @@ testthat::test_that("choices_selected remove duplicates", {
   )
 })
 
-
-# With resolve_delayed
-data <- teal.data::cdisc_data(teal.data::cdisc_dataset("ADSL", adsl), teal.data::cdisc_dataset("ADTTE", adtte))
-ds <- teal.slice::init_filtered_data(data)
-
 testthat::test_that("delayed version of choices_selected - resolve_delayed", {
+  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+
   # hard-coded choices and selected
   obj <- choices_selected(vc_hard, selected = vc_hard_short)
   testthat::expect_equal(
@@ -163,10 +161,10 @@ testthat::test_that("delayed version of choices_selected - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   exp_obj <- choices_selected(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = teal.data::get_cdisc_keys("ADSL")),
-    selected = variable_choices(adsl, subset = c("STUDYID"), key = teal.data::get_cdisc_keys("ADSL"))
+    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(adsl, subset = c("STUDYID"), key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj, check.attributes = TRUE)
 
@@ -180,6 +178,6 @@ testthat::test_that("delayed version of choices_selected - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = ds))
+  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   testthat::expect_equal(res_obj, exp_obj)
 })

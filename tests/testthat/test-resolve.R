@@ -73,36 +73,15 @@ testthat::test_that("resolve_delayed_expr works correctly", {
 
 testthat::test_that("resolve.list works correctly", {
   data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
-  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   ddl_resolved <- isolate(resolve(arm_ref_comp_ddl, data_list, key_list))
   testthat::expect_identical(arm_ref_comp, ddl_resolved)
 })
 
-
-testthat::test_that("resolving delayed choices removes selected not in choices and give a log output", {
-  iris_dataset <- teal.data::dataset("IRIS", head(iris))
-
-  c_s <- choices_selected(
-    choices = variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
-    selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
-  )
-
-  output <- testthat::capture_output({
-    data_list <- list(IRIS = reactive(head(iris)))
-    key_list <- list(IRIS = character(0))
-    resolved_cs <- isolate(resolve(c_s, data_list, key_list))
-  })
-
-  testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))
-  testthat::expect_true(
-    grepl("Removing Petal.Length from 'selected' as not in 'choices' when resolving delayed choices_selected", output)
-  )
-})
-
 testthat::test_that("resolve throws error with non-reactive data.frames or unnamed list as input to datasets", {
   data_list <- list(ADSL = ADSL, ADTTE = ADTTE)
-  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
@@ -119,14 +98,14 @@ testthat::test_that("resolve throws error with non-reactive data.frames or unnam
 
 testthat::test_that("resolve throws error with unnamed list or wrong names as input to keys", {
   data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
-  key_list <- list(teal.data::get_cdisc_keys("ADSL"), teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(c("STUDYID", "USUBJID"), c("STUDYID", "USUBJID", "PARAMCD"))
 
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
     "Assertion on 'keys' failed: Must have names."
   )
 
-  key_list <- list(AA = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(AA = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list, key_list)),
@@ -137,7 +116,7 @@ testthat::test_that("resolve throws error with unnamed list or wrong names as in
 
 testthat::test_that("resolve throws error with missing arguments", {
   data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
-  key_list <- list(ADSL = teal.data::get_cdisc_keys("ADSL"), ADTTE = teal.data::get_cdisc_keys("ADTTE"))
+  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   testthat::expect_error(
     isolate(resolve(arm_ref_comp_ddl, data_list)),

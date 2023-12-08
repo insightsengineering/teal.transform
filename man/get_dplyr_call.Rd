@@ -40,7 +40,7 @@ teal.transform:::get_dplyr_call(
     dataname = "ADSL",
     filters = NULL,
     select = character(0),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   ))
@@ -50,7 +50,7 @@ teal.transform:::get_dplyr_call(
     dataname = "ADSL",
     filters = list(list(columns = "SEX", selected = list("F", "M"))),
     select = character(0),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   ))
@@ -60,7 +60,7 @@ teal.transform:::get_dplyr_call(
     dataname = "ADSL",
     filters = list(list(columns = "SEX", selected = list("F", "M"))),
     select = c("AVAL"),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   ))
@@ -73,7 +73,7 @@ teal.transform:::get_dplyr_call(
       dataname = "ADSL",
       filters = NULL,
       select = c("COL_1", "COL_2"),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test1"
     ),
@@ -81,7 +81,7 @@ teal.transform:::get_dplyr_call(
       dataname = "ADSL",
       filters = NULL,
       select = c("COL_2", "COL_3"),
-      keys = teal.data::get_cdisc_keys("ADSL"),
+      keys = c("STUDYID", "USUBJID"),
       reshape = FALSE,
       internal_id = "test2"
     )
@@ -98,7 +98,7 @@ teal.transform:::get_dplyr_call(
       selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE"))
     )),
     select = c("AVAL"),
-    keys = teal.data::get_cdisc_keys("ADLB"),
+    keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
     reshape = TRUE,
     internal_id = "test1"
   ))

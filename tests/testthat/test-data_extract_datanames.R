@@ -63,14 +63,16 @@ testthat::test_that(
   }
 )
 
-testthat::test_that("get_extract_datanames throws error when no data_extract_spec nor list  (of lists)
-          of data_extract_spec is passed", {
-  testthat::expect_error(get_extract_datanames(1))
-  testthat::expect_error(get_extract_datanames("A"))
-  testthat::expect_error(get_extract_datanames(TRUE))
-  testthat::expect_error(get_extract_datanames(list(des, 1)))
-  testthat::expect_error(get_extract_datanames(list(des, "A")))
-})
+testthat::test_that(
+  "get_extract_datanames throws error when no data_extract_spec nor list  (of lists) of data_extract_spec is passed",
+  {
+    testthat::expect_error(get_extract_datanames(1))
+    testthat::expect_error(get_extract_datanames("A"))
+    testthat::expect_error(get_extract_datanames(TRUE))
+    testthat::expect_error(get_extract_datanames(list(des, 1)))
+    testthat::expect_error(get_extract_datanames(list(des, "A")))
+  }
+)
 
 testthat::test_that("get_extract_datanames throws error with empty list", {
   testthat::expect_error(get_extract_datanames(list()), "length(data_extracts) > 0 is not TRUE", fixed = TRUE)

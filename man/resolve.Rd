@@ -22,7 +22,7 @@ Resolved object.
 }
 \examples{
 ADSL <- teal.transform::rADSL
-attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
+attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 data_list <- list(ADSL = shiny::reactive(ADSL))
 keys <- list(ADSL = attr(ADSL, "keys"))
 shiny::isolate({

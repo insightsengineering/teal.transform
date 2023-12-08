@@ -21,9 +21,10 @@ check_selector_filters <- function(filters) {
     is.list(x) &&
       all(c("columns", "selected") %in% names(x)) &&
       checkmate::test_character(x$columns, null.ok = TRUE, min.len = 1, any.missing = FALSE) &&
-      (is.null(x$selected) ||
-        all(vapply(x$selected, is.character, logical(1))) ||
-        all(vapply(x$selected, is.numeric, logical(1)))
+      (
+        is.null(x$selected) ||
+          all(vapply(x$selected, is.character, logical(1))) ||
+          all(vapply(x$selected, is.numeric, logical(1)))
       )
   }
   stopifnot(is.null(filters) || all(vapply(filters, check_selector_filter, logical(1))))
