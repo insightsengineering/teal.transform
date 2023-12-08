@@ -107,8 +107,10 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
 
   for (idx in seq_along(filter)) filter[[idx]]$dataname <- dataname
 
-  if (inherits(select, "delayed_select_spec") ||
-    any(vapply(filter, inherits, logical(1), "delayed_filter_spec"))) {
+  if (
+    inherits(select, "delayed_select_spec") ||
+      any(vapply(filter, inherits, logical(1), "delayed_filter_spec"))
+  ) {
     structure(
       list(dataname = dataname, select = select, filter = filter, reshape = reshape),
       class = c("delayed_data_extract_spec", "delayed_data", "data_extract_spec")

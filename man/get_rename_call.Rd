@@ -36,7 +36,7 @@ x <- list(
     dataname = "ADSL",
     filters = NULL,
     select = utils::head(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
   ),
@@ -44,7 +44,7 @@ x <- list(
     dataname = "ADSL",
     filters = NULL,
     select = letters,
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test2"
   ),
@@ -52,7 +52,7 @@ x <- list(
     dataname = "ADSL",
     filters = NULL,
     select = utils::tail(letters, 3),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test3"
   ),
@@ -60,7 +60,7 @@ x <- list(
     dataname = "ADSL",
     filters = NULL,
     select = c("aa", "bb"),
-    keys = teal.data::get_cdisc_keys("ADSL"),
+    keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test4"
   )

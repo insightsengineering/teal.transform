@@ -105,6 +105,5 @@ Queue <- R6::R6Class( # nolint
   private = list(
     array = c()
   ),
-
   lock_class = TRUE
 )

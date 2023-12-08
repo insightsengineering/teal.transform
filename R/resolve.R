@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' ADSL <- teal.transform::rADSL
-#' attr(ADSL, "keys") <- teal.data::get_cdisc_keys("ADSL")
+#' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 #' data_list <- list(ADSL = shiny::reactive(ADSL))
 #' keys <- list(ADSL = attr(ADSL, "keys"))
 #' shiny::isolate({
@@ -175,7 +175,7 @@ resolve.default <- function(x, datasets, keys) {
 #'
 #' @param x (`function`) Function that is applied on dataset.
 #' It must take only a single argument "data" and return character vector with columns / values.
-#' @param ds (`data.frame`) `TealDataset` on which the function is applied to.
+#' @param ds (`data.frame`) Dataset.
 #' @param is_value_choices (`logical`) Determines which check of the returned value will be applied.
 #'
 #' @return Character vector - result of calling function `x` on dataset `ds`.

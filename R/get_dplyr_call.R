@@ -135,7 +135,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     dataname = "ADSL",
 #'     filters = NULL,
 #'     select = character(0),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test1"
 #'   ))
@@ -145,7 +145,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     dataname = "ADSL",
 #'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
 #'     select = character(0),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test1"
 #'   ))
@@ -155,7 +155,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     dataname = "ADSL",
 #'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
 #'     select = c("AVAL"),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test1"
 #'   ))
@@ -168,7 +168,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'       dataname = "ADSL",
 #'       filters = NULL,
 #'       select = c("COL_1", "COL_2"),
-#'       keys = teal.data::get_cdisc_keys("ADSL"),
+#'       keys = c("STUDYID", "USUBJID"),
 #'       reshape = FALSE,
 #'       internal_id = "test1"
 #'     ),
@@ -176,7 +176,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'       dataname = "ADSL",
 #'       filters = NULL,
 #'       select = c("COL_2", "COL_3"),
-#'       keys = teal.data::get_cdisc_keys("ADSL"),
+#'       keys = c("STUDYID", "USUBJID"),
 #'       reshape = FALSE,
 #'       internal_id = "test2"
 #'     )
@@ -193,7 +193,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'       selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE"))
 #'     )),
 #'     select = c("AVAL"),
-#'     keys = teal.data::get_cdisc_keys("ADLB"),
+#'     keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
 #'     reshape = TRUE,
 #'     internal_id = "test1"
 #'   ))
@@ -414,7 +414,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'     dataname = "ADSL",
 #'     filters = NULL,
 #'     select = utils::head(letters, 3),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test1"
 #'   ),
@@ -422,7 +422,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'     dataname = "ADSL",
 #'     filters = NULL,
 #'     select = letters,
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test2"
 #'   ),
@@ -430,7 +430,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'     dataname = "ADSL",
 #'     filters = NULL,
 #'     select = utils::tail(letters, 3),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test3"
 #'   ),
@@ -438,7 +438,7 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'     dataname = "ADSL",
 #'     filters = NULL,
 #'     select = c("aa", "bb"),
-#'     keys = teal.data::get_cdisc_keys("ADSL"),
+#'     keys = c("STUDYID", "USUBJID"),
 #'     reshape = FALSE,
 #'     internal_id = "test4"
 #'   )
@@ -499,7 +499,7 @@ get_rename_call <- function(selector_list = list(),
 #'       multiple = FALSE
 #'     )),
 #'     select = "AVAL",
-#'     keys = teal.data::get_cdisc_keys("ADLB"),
+#'     keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
 #'     reshape = TRUE,
 #'     internal_id = "test"
 #'   )

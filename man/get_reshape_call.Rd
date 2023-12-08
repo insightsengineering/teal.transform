@@ -47,7 +47,7 @@ x <- list(
       multiple = FALSE
     )),
     select = "AVAL",
-    keys = teal.data::get_cdisc_keys("ADLB"),
+    keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
     reshape = TRUE,
     internal_id = "test"
   )

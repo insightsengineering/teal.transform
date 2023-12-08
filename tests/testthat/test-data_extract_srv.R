@@ -1,31 +1,15 @@
-adsl_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADSL"))))
-adlb_df <- as.data.frame(as.list(stats::setNames(nm = teal.data::get_cdisc_keys("ADLB"))))
+ADSL <- teal.transform::rADSL # nolint
+ADLB <- teal.transform::rADLB # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
-adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
-adlb <- teal.data::cdisc_dataset("ADLB", adlb_df)
-
-datasets <- teal.slice::init_filtered_data(
-  list(ADSL = list(dataset = adsl_df)),
-  join_keys = teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL"))
-  )
-)
-
-data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  reactive(datasets$get_data(dataname = x, filtered = FALSE))
-})
-
-nr_data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-  datasets$get_data(dataname = x, filtered = FALSE)
-})
-
-join_keys_list <- datasets$get_join_keys()
+data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
+join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
-    choices = variable_choices(adsl, teal.data::get_cdisc_keys("ADSL")),
+    choices = variable_choices("ADSL", c("STUDYID", "USUBJID")),
     selected = "STUDYID",
     multiple = TRUE,
     fixed = FALSE
@@ -44,58 +28,64 @@ adlb_extract <- data_extract_spec(
 )
 
 testthat::test_that(
-  desc = "data_extract_srv accepts a FilteredData object or a list of (reactive) data frames to datasets",
+  desc = "data_extract_srv datasets accepts list of (reactive) data frames",
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = datasets),
-        NA
-      )
-    )
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = join_keys_list),
-        NA
-      )
-    )
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(
-          id = "x",
-          data_extract_spec = adsl_extract,
-          datasets = nr_data_list,
-          join_keys = join_keys_list
-        ),
-        NA
-      )
-    )
-
-    mixed_data_list <- list(ADSL = reactive(datasets$get_data(dataname = "ADSL", filtered = FALSE)), ADLB = adsl_df)
-    mixed_join_keys_list <- teal.data::join_keys(
-      teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-      teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADLB")),
-      teal.data::join_key("ADSL", "ADLB", teal.data::get_cdisc_keys("ADSL"))
-    )
-
-    shiny::withReactiveDomain(
-      domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
-        data_extract_srv(
-          id = "x",
-          data_extract_spec = adsl_extract,
-          datasets = mixed_data_list,
-          join_keys = mixed_join_keys_list
-        ),
-        NA
+      expr = testthat::expect_no_error(
+        data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = join_keys)
       )
     )
   }
 )
+
+testthat::test_that("data_extract_srv datasets accepts a FilteredData", {
+  mock_datasets <- structure(
+    list(
+      datanames = function() names(data_list),
+      get_data = function(dataname, ...) data_list[[dataname]](),
+      get_join_keys = function(dataname, ...) join_keys
+    ),
+    class = "FilteredData"
+  )
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_no_error(
+      data_extract_srv(id = "x", data_extract_spec = adsl_extract, datasets = mock_datasets)
+    )
+  )
+})
+
+testthat::test_that("data_extract_srv datasets accepts a list of data frames", {
+  data_list <- list(ADSL = ADSL, ADTTE = ADTTE, ADLB = ADLB)
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_no_error(
+      data_extract_srv(
+        id = "x",
+        data_extract_spec = adsl_extract,
+        datasets = data_list,
+        join_keys = join_keys
+      )
+    )
+  )
+})
+
+testthat::test_that("data_extract_srv datasets accepts a mixed list of reactive and not reactive data frames", {
+  mixed_data_list <- list(ADSL = reactive(ADSL), ADLB = ADLB)
+
+  shiny::withReactiveDomain(
+    domain = shiny::MockShinySession$new(),
+    expr = testthat::expect_no_error(
+      data_extract_srv(
+        id = "x",
+        data_extract_spec = adsl_extract,
+        datasets = mixed_data_list,
+        join_keys = join_keys
+      )
+    )
+  )
+})
 
 testthat::test_that(
   desc = "data_extract_srv works with join_keys = NULL (default)",
@@ -126,7 +116,7 @@ testthat::test_that(
 testthat::test_that("data_extract_srv returns a list of elements", {
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = adsl_extract, datasets = nr_data_list, join_keys = join_keys_list),
+    args = list(id = "x", data_extract_spec = adsl_extract, datasets = data_list, join_keys = join_keys),
     expr = {
       testthat::expect_is(session$returned(), "list")
       testthat::expect_setequal(
@@ -137,11 +127,11 @@ testthat::test_that("data_extract_srv returns a list of elements", {
   )
 })
 
-testthat::test_that("data_extract_srv throws error with missing arguments", {
+testthat::test_that("data_extract_srv throws error when data_extract_spec is missing", {
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", datasets = nr_data_list, join_keys = join_keys_list),
+      args = list(id = "x", datasets = data_list, join_keys = join_keys),
       expr = NULL
     ),
     "argument \"data_extract_spec\" is missing, with no default"
@@ -157,11 +147,11 @@ testthat::test_that("data_extract_srv throws error with missing arguments", {
   )
 })
 
-testthat::test_that("data_extract_srv throws error with wrong argument input type", {
+testthat::test_that("data_extract_srv throws when data_extract_spec don't get data_extract_spec object", {
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = nr_data_list, join_keys = join_keys_list),
+      args = list(id = "x", data_extract_spec = c("data_extract"), datasets = data_list, join_keys = join_keys),
       expr = NULL
     ),
     regexp = "has class 'character'"
@@ -170,16 +160,7 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
   testthat::expect_error(
     shiny::testServer(
       data_extract_srv,
-      args = list(id = "x", data_extract_spec = TRUE, datasets = nr_data_list, join_keys = join_keys_list),
-      expr = NULL
-    ),
-    regexp = "has class 'logical'"
-  )
-
-  testthat::expect_error(
-    shiny::testServer(
-      data_extract_srv,
-      args = list(id = "x", data_extract_spec = adsl_extract, datasets = adsl, join_keys = join_keys_list),
+      args = list(id = "x", data_extract_spec = adsl_extract, datasets = ADSL, join_keys = join_keys),
       expr = NULL
     ),
     regexp = "Assertion on 'datasets' failed:"
@@ -191,8 +172,8 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(
         id = "adsl_extract",
         data_extract_spec = adsl_extract,
-        datasets = nr_data_list,
-        join_keys = join_keys_list,
+        datasets = data_list,
+        join_keys = join_keys,
         select_validation_rule = "string"
       ),
       expr = NULL
@@ -206,8 +187,8 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(
         id = "adsl_extract",
         data_extract_spec = adsl_extract,
-        datasets = nr_data_list,
-        join_keys = join_keys_list,
+        datasets = data_list,
+        join_keys = join_keys,
         filter_validation_rule = "string"
       ),
       expr = NULL
@@ -221,8 +202,8 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(
         id = "adsl_extract",
         data_extract_spec = adsl_extract,
-        datasets = nr_data_list,
-        join_keys = join_keys_list,
+        datasets = data_list,
+        join_keys = join_keys,
         dataset_validation_rule = "string"
       ),
       expr = NULL
@@ -236,8 +217,8 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(
         id = "adsl_extract",
         data_extract_spec = adsl_extract,
-        datasets = nr_data_list,
-        join_keys = join_keys_list,
+        datasets = data_list,
+        join_keys = join_keys,
         select_validation_rule = TRUE
       ),
       expr = NULL
@@ -251,8 +232,8 @@ testthat::test_that("data_extract_srv throws error with wrong argument input typ
       args = list(
         id = "adsl_extract",
         data_extract_spec = adsl_extract,
-        datasets = nr_data_list,
-        join_keys = join_keys_list,
+        datasets = data_list,
+        join_keys = join_keys,
         select_validation_rule = 1
       ),
       expr = NULL
@@ -267,8 +248,8 @@ testthat::test_that("data_extract_srv uses the current session id when id is mis
     args = list(
       id = "adsl_extract",
       data_extract_spec = adsl_extract,
-      datasets = nr_data_list,
-      join_keys = join_keys_list
+      datasets = data_list,
+      join_keys = join_keys
     ),
     expr = {
       testthat::expect_is(session$returned(), "list")
@@ -280,13 +261,12 @@ testthat::test_that("data_extract_srv uses the current session id when id is mis
   )
 })
 
-
 testthat::test_that("data_extract_srv returns select ordered according to selection", {
   extract_ordered <- data_extract_spec(
     dataname = "ADSL",
     select = select_spec(
       label = "Select variable:",
-      choices = variable_choices(adsl, teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, c("STUDYID", "USUBJID")),
       selected = "STUDYID",
       ordered = TRUE
     )
@@ -294,7 +274,7 @@ testthat::test_that("data_extract_srv returns select ordered according to select
 
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = extract_ordered, datasets = datasets),
+    args = list(id = "x", data_extract_spec = extract_ordered, datasets = data_list),
     expr = {
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
       testthat::expect_identical(filter_and_select_reactive()$select, c("b", "c"))
@@ -313,7 +293,7 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
     dataname = "ADSL",
     select = select_spec(
       label = "Select variable:",
-      choices = variable_choices(adsl, teal.data::get_cdisc_keys("ADSL")),
+      choices = variable_choices(ADSL, c("STUDYID", "USUBJID")),
       selected = "STUDYID",
       ordered = FALSE
     )
@@ -321,7 +301,7 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
 
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = extract_unordered, datasets = datasets),
+    args = list(id = "x", data_extract_spec = extract_unordered, datasets = data_list),
     expr = {
       session$setInputs(`dataset_ADSL_singleextract-select` = c("b", "c"))
       testthat::expect_identical(filter_and_select_reactive()$select, c("b", "c"))
@@ -335,22 +315,12 @@ testthat::test_that("data_extract_srv returns select ordered according to choice
   )
 })
 
-datasets <- teal.slice::init_filtered_data(
-  list(
-    ADSL = list(dataset = adsl_df),
-    ADLB = list(dataset = adsl_df)
-  ),
-  join_keys = teal.data::join_keys(
-    teal.data::join_key("ADSL", "ADSL", teal.data::get_cdisc_keys("ADSL")),
-    teal.data::join_key("ADLB", "ADLB", teal.data::get_cdisc_keys("ADLB"))
-  )
-)
 testthat::test_that("data_extract_srv with a list of multiple data_extract_spec", {
   extract_list <- list(adsl_extract = adsl_extract, adlb_extract = adlb_extract)
 
   shiny::testServer(
     data_extract_srv,
-    args = list(id = "x", data_extract_spec = extract_list, datasets = datasets),
+    args = list(id = "x", data_extract_spec = extract_list, datasets = data_list),
     expr = {
       session$setInputs(`dataset` = "ADLB")
       testthat::expect_identical(input$dataset, "ADLB")
@@ -363,36 +333,25 @@ testthat::test_that("data_extract_srv with a list of multiple data_extract_spec"
   )
 })
 
-ADSL_val <- data.frame( # nolint
-  STUDYID = "A",
-  USUBJID = LETTERS[1:10],
-  SEX = rep(c("F", "M"), 5),
-  AGE = rpois(10, 30),
-  BMRKR1 = rlnorm(10)
-)
-
-adsl_extract_val <- data_extract_spec(
-  dataname = "ADSL",
-  filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
-  select = select_spec(
-    label = "Select variable:",
-    choices = variable_choices(ADSL_val, c("AGE", "BMRKR1")),
-    selected = "AGE",
-    multiple = TRUE,
-    fixed = FALSE
-  )
-)
-
-data_list_val <- list(ADSL = reactive(ADSL_val))
-join_keys_val <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 
 testthat::test_that("select validation", {
+  adsl_extract <- data_extract_spec(
+    dataname = "ADSL",
+    filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+    select = select_spec(
+      label = "Select variable:",
+      choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
+      selected = "AGE",
+      multiple = TRUE,
+      fixed = FALSE
+    )
+  )
   server <- function(input, output, session) {
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
-      datasets = data_list_val,
-      data_extract_spec = adsl_extract_val,
-      join_keys = join_keys_val,
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      join_keys = join_keys,
       select_validation_rule = shinyvalidate::sv_required("Please select a variable.")
     )
 
@@ -423,7 +382,7 @@ testthat::test_that("select validation", {
 })
 
 testthat::test_that("validation only runs on currently selected dataset's data extract spec", {
-  iris_extract_val <- data_extract_spec(
+  iris_extract <- data_extract_spec(
     dataname = "IRIS",
     select = select_spec(
       label = "Select variable:",
@@ -434,13 +393,12 @@ testthat::test_that("validation only runs on currently selected dataset's data e
     )
   )
 
-
   server <- function(input, output, session) {
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
-      datasets = data_list_val,
-      data_extract_spec = list(adsl_extract_val, iris_extract_val),
-      join_keys = join_keys_val,
+      datasets = data_list,
+      data_extract_spec = list(iris_extract, iris_extract),
+      join_keys = join_keys,
       select_validation_rule = shinyvalidate::sv_required("Please select a variable.")
     )
 
@@ -470,12 +428,23 @@ testthat::test_that("validation only runs on currently selected dataset's data e
 })
 
 testthat::test_that("filter validation", {
+  adsl_extract <- data_extract_spec(
+    dataname = "ADSL",
+    filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+    select = select_spec(
+      label = "Select variable:",
+      choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
+      selected = "AGE",
+      multiple = TRUE,
+      fixed = FALSE
+    )
+  )
   server <- function(input, output, session) {
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
-      datasets = data_list_val,
-      data_extract_spec = adsl_extract_val,
-      join_keys = join_keys_val,
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      join_keys = join_keys,
       filter_validation_rule = shinyvalidate::sv_required("Please select a variable.")
     )
 
@@ -507,12 +476,23 @@ testthat::test_that("filter validation", {
 
 
 testthat::test_that("select validation accepts function as validator", {
+  adsl_extract <- data_extract_spec(
+    dataname = "ADSL",
+    filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
+    select = select_spec(
+      label = "Select variable:",
+      choices = variable_choices(ADSL, c("AGE", "BMRKR1")),
+      selected = "AGE",
+      multiple = TRUE,
+      fixed = FALSE
+    )
+  )
   server <- function(input, output, session) {
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
-      datasets = data_list_val,
-      data_extract_spec = adsl_extract_val,
-      join_keys = join_keys_val,
+      datasets = data_list,
+      data_extract_spec = adsl_extract,
+      join_keys = join_keys,
       select_validation_rule = ~ if (nchar(.) == 0) "error"
     )
 

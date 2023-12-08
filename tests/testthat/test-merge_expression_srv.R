@@ -1,19 +1,12 @@
-adsl_df <- as.data.frame(as.list(stats::setNames(nm = c(teal.data::get_cdisc_keys("ADSL"), "AGE"))))
-adlb_df <- as.data.frame(
-  as.list(stats::setNames(nm = c(teal.data::get_cdisc_keys("ADLB"), "AVAL", "CHG", "CHG2", "ABLFL")))
+adsl <- as.data.frame(as.list(stats::setNames(nm = c(c("STUDYID", "USUBJID"), "AGE"))))
+adlb <- as.data.frame(
+  as.list(stats::setNames(nm = c(c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"), "AVAL", "CHG", "CHG2", "ABLFL")))
 )
 
-adsl <- teal.data::cdisc_dataset("ADSL", adsl_df)
-adlb <- teal.data::cdisc_dataset("ADLB", adlb_df)
+data_list <- list(ADSL = reactive(adsl), ADLB = reactive(adlb))
+data_list_nr <- list(ADSL = adsl, ADLB = adlb)
 
-data_list <- list(ADSL = reactive(adsl_df), ADLB = reactive(adlb_df))
-data_list_nr <- list(ADSL = adsl_df, ADLB = adlb_df)
-
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
-)
+join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADLB")]
 
 adsl_data_extract_srv_output <-
   list(
@@ -233,11 +226,7 @@ testthat::test_that("merge_expression_srv returns merge expression when passing 
 
 testthat::test_that("merge_expression_srv throws error if datasets is not a named list", {
   testthat::expect_error(
-    shiny::testServer(
-      merge_expression_srv,
-      args = list(selector_list = selector_list, datasets = list(adsl, adlb), join_keys = join_keys),
-      expr = NULL
-    ),
+    merge_expression_srv(selector_list = selector_list, datasets = list(adsl, adlb), join_keys = join_keys),
     "Assertion on 'datasets' failed: Must have names."
   )
 })

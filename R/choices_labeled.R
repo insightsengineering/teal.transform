@@ -117,10 +117,9 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param data (`data.frame`, `character`, `TealDataset`, `TealDatasetConnector`)
+#' @param data (`data.frame`, `character`)
 #' If `data.frame`, then data to extract labels from
 #' If `character`, then name of the dataset to extract data from once available
-#' If `TealDataset` or `TealDatasetConnector`, then raw data to extract labels from.
 #' @param subset (`character` or `function`)
 #' If `character`, then a vector of column names.
 #' If `function`, then this function is used to determine the possible columns (e.g. all factor columns).
@@ -144,21 +143,14 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 #' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
-#' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"), key = teal.data::get_cdisc_keys("ADRS"))
+#' variable_choices(
+#'   ADRS,
+#'   subset = c("", "PARAM", "PARAMCD"),
+#'   key = teal.data::default_cdisc_join_keys["ADRS", "ADRS"]
+#' )
 #'
 #' # delayed version
 #' variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
-#'
-#' # also works with [teal.data::TealDataset] and [teal.data::TealDatasetConnector]
-#' ADRS_dataset <- teal.data::dataset("ADRS", ADRS, key = teal.data::get_cdisc_keys("ADRS"))
-#' variable_choices(ADRS_dataset)
-#'
-#' ADRS_conn <- teal.data::dataset_connector(
-#'   "ADRS",
-#'   pull_callable = teal.data::callable_code("radrs(cached = TRUE)"),
-#'   key = teal.data::get_cdisc_keys("ADRS")
-#' )
-#' variable_choices(ADRS_conn)
 #'
 #' # functional subset (with delayed data) - return only factor variables
 #' variable_choices("ADRS", subset = function(data) {
@@ -205,7 +197,8 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 
   key <- intersect(subset, key)
 
-  var_types <- stats::setNames(teal.slice:::variable_types(data = data), names(data))
+  var_types <- vapply(data, function(x) class(x)[[1]], character(1))
+
   if (length(key) != 0) {
     var_types[key] <- "primary_key"
   }
@@ -237,49 +230,13 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
   return(res)
 }
 
-#' @rdname variable_choices
-#' @export
-variable_choices.TealDataset <- function(data, subset = NULL, fill = FALSE, key = teal.data::get_keys(data)) {
-  variable_choices(
-    data = teal.data::get_raw_data(data),
-    subset = subset,
-    fill = fill,
-    key = key
-  )
-}
-
-#' @rdname variable_choices
-#' @export
-variable_choices.TealDatasetConnector <- function(data, # nolint
-                                                  subset = NULL,
-                                                  fill = FALSE,
-                                                  key = teal.data::get_keys(data)) {
-  if (teal.data::is_pulled(data)) {
-    variable_choices(
-      data = teal.data::get_raw_data(data),
-      subset = subset,
-      fill = fill,
-      key = key
-    )
-  } else {
-    variable_choices(
-      data = teal.data::get_dataname(data),
-      subset = subset,
-      fill = fill,
-      key = key
-    )
-  }
-}
-
-
 #' Wrapper on [choices_labeled] to label variable values basing on other variable values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param data (`data.frame`, `character`, `TealDataset`, `TealDatasetConnector`)
-#' If `data.frame`, then data to extract labels from
-#' If `character`, then name of the dataset to extract data from once available
-#' If `TealDataset` or `TealDatasetConnector`, then raw data to extract labels from.
+#' @param data (`data.frame`, `character`)
+#' If `data.frame`, then data to extract labels from.
+#' If `character`, then name of the dataset to extract data from once available.
 #' @param var_choices (`character` or `NULL`) vector with choices column names
 #' @param var_label (`character`) vector with labels column names
 #' @param subset (`character` or `function`)
@@ -407,47 +364,6 @@ value_choices.data.frame <- function(data, # nolint
   return(res)
 }
 
-#' @rdname value_choices
-#' @export
-value_choices.TealDataset <- function(data,
-                                      var_choices,
-                                      var_label = NULL,
-                                      subset = NULL,
-                                      sep = " - ") {
-  value_choices(
-    data = teal.data::get_raw_data(data),
-    var_choices = var_choices,
-    var_label = var_label,
-    subset = subset,
-    sep = sep
-  )
-}
-
-#' @rdname value_choices
-#' @export
-value_choices.TealDatasetConnector <- function(data, # nolint
-                                               var_choices,
-                                               var_label = NULL,
-                                               subset = NULL,
-                                               sep = " - ") {
-  if (teal.data::is_pulled(data)) {
-    value_choices(
-      data = teal.data::get_raw_data(data),
-      var_choices = var_choices,
-      var_label = var_label,
-      subset = subset,
-      sep = sep
-    )
-  } else {
-    value_choices(
-      data = teal.data::get_dataname(data),
-      var_choices = var_choices,
-      var_label = var_label,
-      subset = subset,
-      sep = sep
-    )
-  }
-}
 #' Print choices_labeled object
 #' @description `r lifecycle::badge("stable")`
 #' @rdname choices_labeled

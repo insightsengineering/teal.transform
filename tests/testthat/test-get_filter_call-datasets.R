@@ -91,8 +91,10 @@ testthat::test_that("get_filter_call - data - trunc POSIX and two columns", {
       ))
     ), dataname = "ADAMSET", data = data_list)),
     quote(
-      dplyr::filter((trunc(TRTSDTM) == "2020-03-08 06:28:11" & AGE == "33") |
-        (trunc(TRTSDTM) == "2020-03-09 06:28:11" & is.na(AGE)))
+      dplyr::filter(
+        (trunc(TRTSDTM) == "2020-03-08 06:28:11" & AGE == "33") |
+          (trunc(TRTSDTM) == "2020-03-09 06:28:11" & is.na(AGE))
+      )
     )
   )
 })
@@ -120,8 +122,7 @@ testthat::test_that("get_filter_call - data - three columns", {
       ))
     ), dataname = "ADAMSET", data = data_list)),
     quote(
-      dplyr::filter((SEX == "F" & AGE == "33" & is.na(DCSREAS)) | (SEX ==
-        "M" & is.na(AGE) & is.na(DCSREAS)))
+      dplyr::filter((SEX == "F" & AGE == "33" & is.na(DCSREAS)) | (SEX == "M" & is.na(AGE) & is.na(DCSREAS)))
     )
   )
 })

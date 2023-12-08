@@ -4,8 +4,6 @@
 \alias{value_choices}
 \alias{value_choices.character}
 \alias{value_choices.data.frame}
-\alias{value_choices.TealDataset}
-\alias{value_choices.TealDatasetConnector}
 \title{Wrapper on \link{choices_labeled} to label variable values basing on other variable values}
 \usage{
 value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
@@ -13,16 +11,11 @@ value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 \method{value_choices}{character}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 
 \method{value_choices}{data.frame}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{TealDataset}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{TealDatasetConnector}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 }
 \arguments{
-\item{data}{(\code{data.frame}, \code{character}, \code{TealDataset}, \code{TealDatasetConnector})
-If \code{data.frame}, then data to extract labels from
-If \code{character}, then name of the dataset to extract data from once available
-If \code{TealDataset} or \code{TealDatasetConnector}, then raw data to extract labels from.}
+\item{data}{(\code{data.frame}, \code{character})
+If \code{data.frame}, then data to extract labels from.
+If \code{character}, then name of the dataset to extract data from once available.}
 
 \item{var_choices}{(\code{character} or \code{NULL}) vector with choices column names}
 
