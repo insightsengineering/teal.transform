@@ -10,7 +10,7 @@ resolve_delayed_expr(x, ds, is_value_choices)
 \item{x}{(\code{function}) Function that is applied on dataset.
 It must take only a single argument "data" and return character vector with columns / values.}
 
-\item{ds}{(\code{data.frame})}
+\item{ds}{(\code{data.frame}) Dataset.}
 
 \item{is_value_choices}{(\code{logical}) Determines which check of the returned value will be applied.}
 }
