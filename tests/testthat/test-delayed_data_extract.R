@@ -64,7 +64,10 @@ testthat::test_that("Delayed data extract - single data connector with two scda 
   y_expected <- data_extract_spec(
     dataname = "ADAE",
     select = select_spec(
-      choices = variable_choices(ADAE, subset = get_continuous, key = c("STUDYID", "USUBJID", "ASTDTM", "AETERM", "AESEQ"))
+      choices = variable_choices(
+        ADAE,
+        subset = get_continuous, key = c("STUDYID", "USUBJID", "ASTDTM", "AETERM", "AESEQ")
+      )
     )
   )
   data_list <- list(ADSL = reactive(ADSL), ADAE = reactive(ADAE))

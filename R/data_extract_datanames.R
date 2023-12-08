@@ -37,9 +37,7 @@ get_extract_datanames <- function(data_extracts) {
   stopifnot(length(data_extracts) > 0)
   stopifnot(
     checkmate::test_list(data_extracts, types = "data_extract_spec") ||
-      all(
-        vapply(data_extracts, function(x) checkmate::test_list(x, types = "data_extract_spec"), logical(1))
-      )
+      all(vapply(data_extracts, function(x) checkmate::test_list(x, types = "data_extract_spec"), logical(1)))
   )
 
   datanames <- lapply(data_extracts, function(x) {
