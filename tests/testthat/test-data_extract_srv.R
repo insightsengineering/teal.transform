@@ -60,15 +60,14 @@ testthat::test_that("data_extract_srv datasets accepts a list of data frames", {
   data_list <- list(ADSL = ADSL, ADTTE = ADTTE, ADLB = ADLB)
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
-    expr = testthat::expect_error(
+    expr = testthat::expect_no_error(
       data_extract_srv(
         id = "x",
         data_extract_spec = adsl_extract,
         datasets = data_list,
         join_keys = join_keys
-      ),
-      NA
-    )
+      )
+   )
   )
 })
 
