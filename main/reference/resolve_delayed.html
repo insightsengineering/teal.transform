@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9009</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -108,19 +98,17 @@ should match <code>names(datasets)</code></p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="rADSL.html">rADSL</a></span></span></span>
 <span class="r-in"><span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/isolate.html" class="external-link">isolate</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu">teal.slice</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.slice/reference/init_filtered_data.html" class="external-link">init_filtered_data</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">ADSL</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># value_choices example</span></span></span>
 <span class="r-in"><span>  <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="value_choices.html">value_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"SEX"</span>, <span class="st">"SEX"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">v1</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">v1</span>, <span class="va">ds</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">v1</span>, <span class="va">data_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># variable_choices example</span></span></span>
 <span class="r-in"><span>  <span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">v2</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">v2</span>, <span class="va">ds</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">v2</span>, <span class="va">data_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># data_extract_spec example</span></span></span>
 <span class="r-in"><span>  <span class="va">adsl_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="filter_spec.html">filter_spec</a></span><span class="op">(</span></span></span>
@@ -146,9 +134,9 @@ should match <code>names(datasets)</code></p></dd>
 <span class="r-in"><span>    filter <span class="op">=</span> <span class="va">adsl_filter</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_filter</span>, <span class="va">ds</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_select</span>, <span class="va">ds</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_de</span>, <span class="va">ds</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_filter</span>, datasets <span class="op">=</span> <span class="va">data_list</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_select</span>, datasets <span class="op">=</span> <span class="va">data_list</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">adsl_de</span>, datasets <span class="op">=</span> <span class="va">data_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># nested list (arm_ref_comp)</span></span></span>
 <span class="r-in"><span>  <span class="va">arm_ref_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
@@ -158,7 +146,7 @@ should match <code>names(datasets)</code></p></dd>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">arm_ref_comp</span>, <span class="va">ds</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">resolve_delayed</span><span class="op">(</span><span class="va">arm_ref_comp</span>, datasets <span class="op">=</span> <span class="va">data_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ARMCD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ARMCD$ref</span>

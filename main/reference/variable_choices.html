@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9009</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -85,32 +75,15 @@
 <span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for data.frame</span></span>
-<span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">TRUE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for TealDataset</span></span>
-<span><span class="fu">variable_choices</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  fill <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/get_keys.html" class="external-link">get_keys</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for TealDatasetConnector</span></span>
-<span><span class="fu">variable_choices</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  fill <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/get_keys.html" class="external-link">get_keys</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">data</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">TRUE</span>, key <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>(<code>data.frame</code>, <code>character</code>, <code>TealDataset</code>, <code>TealDatasetConnector</code>)
+<dd><p>(<code>data.frame</code>, <code>character</code>)
 If <code>data.frame</code>, then data to extract labels from
-If <code>character</code>, then name of the dataset to extract data from once available
-If <code>TealDataset</code> or <code>TealDatasetConnector</code>, then raw data to extract labels from.</p></dd>
+If <code>character</code>, then name of the dataset to extract data from once available</p></dd>
 
 
 <dt>subset</dt>
@@ -225,7 +198,11 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> PARAM: Parameter</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PARAMCD: Parameter Code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS</span>, subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"PARAM"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span>, key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/get_cdisc_keys.html" class="external-link">get_cdisc_keys</a></span><span class="op">(</span><span class="st">"ADRS"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">ADRS</span>,</span></span>
+<span class="r-in"><span>  subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"PARAM"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/teal.data/reference/default_cdisc_join_keys.html" class="external-link">default_cdisc_join_keys</a></span><span class="op">[</span><span class="st">"ADRS"</span>, <span class="st">"ADRS"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> : </span>
@@ -243,92 +220,6 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># also works with [teal.data::TealDataset] and [teal.data::TealDatasetConnector]</span></span></span>
-<span class="r-in"><span><span class="va">ADRS_dataset</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/dataset.html" class="external-link">dataset</a></span><span class="op">(</span><span class="st">"ADRS"</span>, <span class="va">ADRS</span>, key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/get_cdisc_keys.html" class="external-link">get_cdisc_keys</a></span><span class="op">(</span><span class="st">"ADRS"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS_dataset</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 65 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> USUBJID: Unique Subject Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SUBJID: Subject Identifier for the Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SITEID: Study Site Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGE: Age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> COUNTRY: Country</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHFL: Subject Death Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVID: Investigator Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVNAM: Investigator Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM: Description of Planned Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02P: Planned Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02A: Actual Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR1: Continuous Level Biomarker 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2: Categorical Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ITTFL: Intent-To-Treat Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAFFL: Safety Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMEASIFL: Response Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BEP01FL: Biomarker Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AEWITHFL: AE Leading to Drug Withdrawal Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RANDDT: Date of Randomization</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTSDTM: Datetime of First Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTEDTM: Datetime of Last Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01SDTM: Datetime of First Exposure to Treatment in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01EDTM: Datetime of Last Exposure in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02SDTM: Datetime of First Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02EDTM: Datetime of Last Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01SDTM: Period 01 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01EDTM: Period 01 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02SDTM: Period 02 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02EDTM: Period 02 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSSTT: End of Study Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOTSTT: End of Treatment Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDT: End of Study Date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDY: End of Study Relative Day</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DCSREAS: Reason for Discontinuation from Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHDT: Date of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAUS: Cause of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAT: Cause of Death Category</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHELD: Elapsed Days from Last Dose to Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHGR1: Last Dose to Death - Days Elapsed Grp 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LSTALVDT: Date Last Known Alive</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHADY: Relative Day of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADTHAUT: Autopsy Performed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ASEQ: Analysis Sequence Number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RSSEQ: Sequence Number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PARAM: Parameter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PARAMCD: Parameter Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVAL: Analysis Value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVALC: Analysis Value (C)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADTM: Analysis Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADY: Analysis Relative Day</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVISIT: Analysis Visit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVISITN: Analysis Visit (N)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ADRS_conn</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/dataset_connector.html" class="external-link">dataset_connector</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"ADRS"</span>,</span></span>
-<span class="r-in"><span>  pull_callable <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/callable_code.html" class="external-link">callable_code</a></span><span class="op">(</span><span class="st">"radrs(cached = TRUE)"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  key <span class="op">=</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/reference/get_cdisc_keys.html" class="external-link">get_cdisc_keys</a></span><span class="op">(</span><span class="st">"ADRS"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS_conn</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> variable_choices with delayed data: ADRS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ADRS"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "STUDYID" "USUBJID" "PARAMCD" "AVISIT" </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># functional subset (with delayed data) - return only factor variables</span></span></span>
 <span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="st">"ADRS"</span>, subset <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">is.factor</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -342,7 +233,7 @@ associated with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span>   idx &lt;- vapply(data, is.factor, logical(1))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   return(names(data)[idx])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556c2323a2c0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559210cbbce0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
