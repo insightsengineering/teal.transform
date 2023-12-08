@@ -67,7 +67,7 @@ testthat::test_that("data_extract_srv datasets accepts a list of data frames", {
         datasets = data_list,
         join_keys = join_keys
       )
-   )
+    )
   )
 })
 
