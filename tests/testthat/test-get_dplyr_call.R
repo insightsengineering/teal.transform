@@ -344,12 +344,14 @@ testthat::test_that("get_dplyr_call - multiple filter(s) or multiple select(s)",
       ),
       join_keys = teal.data::join_keys(teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID")))
     ),
-    quote(ADLB %>%
-      dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
-      dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
-      tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
-      tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
-      tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE"))
+    quote(
+      ADLB %>%
+        dplyr::filter((PARAMCD == "ALBCV" & AVISIT == "SCREENING") | (PARAMCD == "ALBCV" & AVISIT == "BASELINE")) %>%
+        dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
+        tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
+        tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
+        tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
+    )
   )
 
   # multiple variable filters, single select - one key filtered out and dropped from select

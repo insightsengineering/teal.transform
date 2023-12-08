@@ -1,3 +1,4 @@
+# nolint start
 # Different join keys ------
 testthat::test_that("Different join types", {
   merged_selectors1 <- merge_selectors(
@@ -1949,7 +1950,7 @@ testthat::test_that("Single long dataset", {
     list(
       quote(
         ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING") &  %in% c("F", "M")) %>%
+          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING") & SEX %in% c("F", "M")) %>%
           dplyr::select(STUDYID, USUBJID, AVISIT, PARAMCD, AGE) %>%
           dplyr::rename(x1.PARAMCD = PARAMCD, x1.AGE = AGE)
       ),
@@ -2622,8 +2623,7 @@ testthat::test_that("Multiple long datasets", {
           dplyr::rename(x1.AVAL = AVAL) %>%
           tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
           tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
-          tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
-        ),
+          tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")),
         width.cutoff = 120
       ),
       deparse(
@@ -3383,3 +3383,4 @@ testthat::test_that("Universal example", {
     )
   )
 })
+# nolint end
