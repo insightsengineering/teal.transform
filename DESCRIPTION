@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.4.0.9009
-Date: 2023-12-05
+Version: 0.4.0.9010
+Date: 2023-12-08
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -48,9 +48,9 @@ RdMacros:
     lifecycle
 Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
     tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
-    rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
-    insightsengineering/teal.data, insightsengineering/teal.logger,
-    insightsengineering/teal.widgets,
+    rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs,
+    rstudio/shinyvalidate, insightsengineering/teal.data,
+    insightsengineering/teal.logger, insightsengineering/teal.widgets,
     tidyverse/tidyr, r-lib/tidyselect, yihui/knitr,
     insightsengineering/teal.code, r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
