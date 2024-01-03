@@ -2973,9 +2973,8 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
     )
   )[[1]]
   jk12 <- teal.data::join_keys(
-    teal.data::join_key("ADRS", "ADRS", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")),
-    teal.data::join_key("ADTTE", "ADRS", c("STUDYID", "USUBJID", "PARAMCD")),
-    teal.data::join_key("ADRS", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD")) # non-stadard keys set for example purpose
+    teal.data::join_key("ADRS", keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")),
+    teal.data::join_key("ADTTE", "ADRS", c("STUDYID", "USUBJID", "PARAMCD"))
   )
 
   # PARAMCD is included if drop_keys = TRUE - because merge is on different datasets
