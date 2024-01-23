@@ -176,7 +176,7 @@ testthat::test_that("delayed filter_spec", {
     multiple = FALSE
   )
 
-  expect_equal(names(expected_spec), names(delayed))
+  testthat::expect_equal(names(expected_spec), names(delayed))
 
   data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = c("STUDYID", "USUBJID"))
@@ -224,7 +224,7 @@ testthat::test_that("filter_spec_internal contains dataname", {
     vars_choices = variable_choices(ADSL)
   )
 
-  expect_null(x_filter$dataname)
+  testthat::expect_null(x_filter$dataname)
 
   x <- data_extract_spec(
     dataname = "ADSL",

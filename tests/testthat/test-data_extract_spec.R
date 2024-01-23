@@ -1,5 +1,5 @@
 testthat::test_that("data_extract_spec throws when select is not select_spec or NULL", {
-  expect_error(data_extract_spec("toyDataset", select = c("A", "B")))
+  testthat::expect_error(data_extract_spec("toyDataset", select = c("A", "B")))
 })
 
 testthat::test_that("data_extract_spec works with valid input", {

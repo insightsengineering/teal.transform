@@ -29,7 +29,7 @@ testthat::test_that("Will output warnings when value_choices applied on datasets
 testthat::test_that("delayed version of value_choices", {
   # hard-coded subset
   obj <- value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(
@@ -131,7 +131,7 @@ testthat::test_that("delayed version of value_choices", {
 testthat::test_that("delayed version of value_choices - resolve_delayed", {
   # hard-coded subset
   obj <- value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(
