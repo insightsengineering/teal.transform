@@ -301,7 +301,7 @@ testthat::test_that("delayed version of data_extract_spec", {
 })
 
 testthat::test_that("data_extract_spec allows both select and filter parameters to be NULL", {
-  testthat::expect_error(des <- data_extract_spec("ADSL"), NA)
+  testthat::expect_no_error(des <- data_extract_spec("ADSL"))
 })
 
 testthat::test_that("data_extract_spec returns filter_spec with multiple set to TRUE", {

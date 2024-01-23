@@ -191,7 +191,7 @@ testthat::test_that("filter_spec with choices_selected where all selected in cho
     choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
     selected = c("A", "B")
   )
-  testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
+  testthat::expect_no_error(filter_spec(vars = valid_cs))
 })
 
 
@@ -477,7 +477,7 @@ testthat::test_that(
       choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
       selected = c("A", "B")
     )
-    testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
+    testthat::expect_no_error(filter_spec(vars = valid_cs))
   }
 )
 

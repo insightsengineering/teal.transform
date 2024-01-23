@@ -22,8 +22,8 @@ testthat::test_that("Will output warnings when value_choices applied on datasets
   testthat::expect_warning(value_choices(data, var_choices = c("A", "F")))
   testthat::expect_error(value_choices(data, var_choices = "K"))
   testthat::expect_error(value_choices(data, var_choices = "F", var_label = "K"))
-  testthat::expect_warning(value_choices(data, var_choices = c("J")), NA)
-  testthat::expect_warning(value_choices(data, var_choices = c("B")), NA)
+  testthat::expect_no_warning(value_choices(data, var_choices = c("J")))
+  testthat::expect_no_warning(value_choices(data, var_choices = c("B")))
 })
 
 testthat::test_that("delayed version of value_choices", {

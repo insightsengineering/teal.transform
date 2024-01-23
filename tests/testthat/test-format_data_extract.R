@@ -3,7 +3,7 @@ required_names <- c("select", "filters", "dataname")
 testthat::test_that("format_data_extract is a function that accepts a list", {
   data_extract_fake <- as.list(stats::setNames(nm = required_names))
   data_extract_fake$filters <- list()
-  testthat::expect_error(format_data_extract(data_extract_fake), regexp = NA)
+  testthat::expect_no_error(format_data_extract(data_extract_fake))
 })
 
 testthat::test_that("format_data_extract asserts its argument has required names", {
@@ -46,7 +46,7 @@ testthat::test_that("format_data_extract integrates with data_extract_srv", {
     data_extract_srv,
     args = list(data_extract_spec = simple_des, datasets = sample_data),
     expr = {
-      testthat::expect_error(format_data_extract(session$returned()), regexp = NA)
+      testthat::expect_no_error(format_data_extract(session$returned()))
     }
   )
 })

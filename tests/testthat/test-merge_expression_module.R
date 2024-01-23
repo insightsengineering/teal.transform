@@ -37,13 +37,12 @@ testthat::test_that(
   code = {
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
-      expr = testthat::expect_error(
+      expr = testthat::expect_no_error(
         merge_expression_module(
           data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
           datasets = data_list,
           join_keys = join_keys
-        ),
-        NA
+        )
       )
     )
   }
