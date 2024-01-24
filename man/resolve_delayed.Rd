@@ -21,9 +21,9 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-ADSL <- teal.transform::rADSL
-shiny::isolate({
-  data_list <- list(ADSL = shiny::reactive(ADSL))
+ADSL <- rADSL
+isolate({
+  data_list <- list(ADSL = reactive(ADSL))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")

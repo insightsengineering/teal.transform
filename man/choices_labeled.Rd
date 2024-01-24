@@ -43,8 +43,8 @@ Duplicated elements from \code{choices} get removed.
 \examples{
 library(shiny)
 
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
+ADSL <- rADSL
+ADTTE <- rADTTE
 choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 # if only a subset of variables are needed, use subset argument

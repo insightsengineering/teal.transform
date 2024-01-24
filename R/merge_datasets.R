@@ -21,6 +21,7 @@
 #' - `filter_info` (`list`) The information given by the user. This information
 #'    defines the filters that are applied on the data. Additionally it defines
 #'    the variables that are selected from the data sets.
+#'
 #' @export
 #'
 #' @examples

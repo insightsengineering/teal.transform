@@ -53,7 +53,6 @@ argument is set to false which will run the following code inside:
 in case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
 }
 \examples{
-
 library(shiny)
 
 # all_choices example - semantically the same objects
@@ -65,7 +64,7 @@ choices_selected(
   selected = "C"
 )
 
-ADSL <- teal.transform::rADSL
+ADSL <- rADSL
 choices_selected(variable_choices(ADSL), "SEX")
 
 # How to select nothing

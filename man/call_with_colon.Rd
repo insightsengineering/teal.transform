@@ -19,7 +19,6 @@ avoids the use of \code{do.call} with this function}
 The arguments in ... need to be quoted because they will be evaluated otherwise
 }
 \examples{
-
 print_call_and_eval <- function(x) {
   eval(print(x))
 }
@@ -27,7 +26,7 @@ print_call_and_eval <- function(x) {
 print_call_and_eval(
   teal.transform:::call_with_colon("glue::glue", "x = {x}", x = 10)
 )
-\dontrun{
+
 # mtcars$cyl evaluated
 print_call_and_eval(
   teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
@@ -53,6 +52,5 @@ print_call_and_eval(
 print_call_and_eval(
   teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
 )
-}
 }
 \keyword{internal}

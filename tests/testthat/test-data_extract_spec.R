@@ -199,8 +199,8 @@ testthat::test_that("delayed data_extract_spec works", {
   testthat::expect_identical(expected_spec, mix3_res)
 })
 
-ADSL <- teal.transform::rADSL # nolint
-ADTTE <- teal.transform::rADTTE # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 

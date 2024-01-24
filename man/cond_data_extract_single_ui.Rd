@@ -23,7 +23,7 @@ conditionally on \code{input[ns("dataset")] == dataname}.
 }
 \examples{
 teal.transform:::cond_data_extract_single_ui(
-  shiny::NS("TEST"),
+  NS("TEST"),
   data_extract_spec(dataname = "test")
 )
 }

@@ -10,11 +10,11 @@
 #' @return Resolved object.
 #'
 #' @examples
-#' ADSL <- teal.transform::rADSL
+#' ADSL <- rADSL
 #' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
-#' data_list <- list(ADSL = shiny::reactive(ADSL))
+#' data_list <- list(ADSL = reactive(ADSL))
 #' keys <- list(ADSL = attr(ADSL, "keys"))
-#' shiny::isolate({
+#' isolate({
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
 #'   v1
@@ -104,7 +104,7 @@ resolve.delayed_choices_selected <- function(x, datasets, keys) { # nolint
   x$choices <- resolve(x$choices, datasets = datasets, keys)
 
   if (!all(x$selected %in% x$choices)) {
-    logger::log_warn(paste(
+    warning(paste(
       "Removing",
       paste(x$selected[which(!x$selected %in% x$choices)]),
       "from 'selected' as not in 'choices' when resolving delayed choices_selected"
@@ -179,6 +179,7 @@ resolve.default <- function(x, datasets, keys) {
 #' @param is_value_choices (`logical`) Determines which check of the returned value will be applied.
 #'
 #' @return Character vector - result of calling function `x` on dataset `ds`.
+#'
 #' @keywords internal
 #'
 #' @examples

@@ -76,7 +76,6 @@ A reactive \code{list} containing following fields:
 Extracting details of the selection(s) in \link{data_extract_ui} elements.
 }
 \examples{
-
 library(shiny)
 library(shinyvalidate)
 
@@ -105,74 +104,73 @@ data_list <- list(ADSL = reactive(ADSL))
 
 join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = verbatimTextOutput("out1"),
-      encoding = tagList(
-        data_extract_ui(
-          id = "adsl_var",
-          label = "ADSL selection",
-          data_extract_spec = adsl_extract
-        )
+ui <- fluidPage(
+  teal.widgets::standard_layout(
+    output = verbatimTextOutput("out1"),
+    encoding = tagList(
+      data_extract_ui(
+        id = "adsl_var",
+        label = "ADSL selection",
+        data_extract_spec = adsl_extract
       )
     )
-  ),
-  server = function(input, output, session) {
-    adsl_reactive_input <- data_extract_srv(
-      id = "adsl_var",
-      datasets = data_list,
-      data_extract_spec = adsl_extract,
-      join_keys = join_keys,
-      select_validation_rule = sv_required("Please select a variable.")
-    )
-
-    iv_r <- reactive({
-      iv <- InputValidator$new()
-      iv$add_validator(adsl_reactive_input()$iv)
-      iv$enable()
-      iv
-    })
-
-    output$out1 <- renderPrint({
-      if (iv_r()$is_valid()) {
-        cat(format_data_extract(adsl_reactive_input()))
-      } else {
-        "Please fix errors in your selection"
-      }
-    })
-  }
+  )
 )
+
+server <- function(input, output, session) {
+  adsl_reactive_input <- data_extract_srv(
+    id = "adsl_var",
+    datasets = data_list,
+    data_extract_spec = adsl_extract,
+    join_keys = join_keys,
+    select_validation_rule = sv_required("Please select a variable.")
+  )
+
+  iv_r <- reactive({
+    iv <- InputValidator$new()
+    iv$add_validator(adsl_reactive_input()$iv)
+    iv$enable()
+    iv
+  })
+
+  output$out1 <- renderPrint({
+    if (iv_r()$is_valid()) {
+      cat(format_data_extract(adsl_reactive_input()))
+    } else {
+      "Please fix errors in your selection"
+    }
+  })
+}
+
 if (interactive()) {
-  shinyApp(app$ui, app$server)
+  shinyApp(ui, server)
 }
 
 
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = verbatimTextOutput("out1"),
-      encoding = tagList(
-        data_extract_ui(
-          id = "adsl_var",
-          label = "ADSL selection",
-          data_extract_spec = adsl_extract
-        )
+ui <- fluidPage(
+  teal.widgets::standard_layout(
+    output = verbatimTextOutput("out1"),
+    encoding = tagList(
+      data_extract_ui(
+        id = "adsl_var",
+        label = "ADSL selection",
+        data_extract_spec = adsl_extract
       )
     )
-  ),
-  server = function(input, output, session) {
-    adsl_reactive_input <- data_extract_srv(
-      id = "adsl_var",
-      datasets = datasets,
-      data_extract_spec = adsl_extract
-    )
-
-    output$out1 <- renderPrint(adsl_reactive_input())
-  }
+  )
 )
+
+server <- function(input, output, session) {
+  adsl_reactive_input <- data_extract_srv(
+    id = "adsl_var",
+    datasets = data_list,
+    data_extract_spec = adsl_extract
+  )
+  output$out1 <- renderPrint(adsl_reactive_input())
+}
+
 if (interactive()) {
-  shinyApp(app$ui, app$server)
+  shinyApp(ui, server)
 }
 }
 \references{

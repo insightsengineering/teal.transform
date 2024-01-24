@@ -14,15 +14,17 @@
 #' )
 #'
 #' if (interactive()) {
-#'   shiny::shinyApp(
-#'     ui = shiny::fluidPage(
+#'   library(shiny)
+#'
+#'   shinyApp(
+#'     ui = fluidPage(
 #'       data_extract_ui(
 #'         id = "extract",
 #'         label = "data extract ui",
 #'         data_extract_spec = simple_des,
 #'         is_single_dataset = TRUE
 #'       ),
-#'       shiny::verbatimTextOutput("formatted_extract")
+#'       verbatimTextOutput("formatted_extract")
 #'     ),
 #'     server = function(input, output, session) {
 #'       extracted_input <- data_extract_srv(
@@ -30,7 +32,7 @@
 #'         datasets = list(iris = iris),
 #'         data_extract_spec = simple_des
 #'       )
-#'       output$formatted_extract <- shiny::renderPrint({
+#'       output$formatted_extract <- renderPrint({
 #'         cat(format_data_extract(extracted_input()))
 #'       })
 #'     }

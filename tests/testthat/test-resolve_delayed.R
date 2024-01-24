@@ -1,5 +1,5 @@
-adsl <- teal.transform::rADSL # nolint
-adtte <- teal.transform::rADTTE # nolint
+adsl <- rADSL # nolint
+adtte <- rADTTE # nolint
 
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE")]
@@ -150,14 +150,12 @@ testthat::test_that("resolving delayed choices removes selected not in choices a
     selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))
   )
 
-  output <- testthat::capture_output({
-    shiny::isolate({
+  testthat::expect_warning(
+    output <- shiny::isolate({
       resolved_cs <- resolve_delayed(c_s, datasets = list(IRIS = reactive(iris)))
-    })
-  })
+    }),
+    "Removing Petal.Length from 'selected' as not in 'choices' when resolving delayed choices_selected"
+  )
 
   testthat::expect_equal(resolved_cs$selected, stats::setNames("Sepal.Width", "Sepal.Width: Sepal.Width"))
-  testthat::expect_true(
-    grepl("Removing Petal.Length from 'selected' as not in 'choices' when resolving delayed choices_selected", output)
-  )
 })

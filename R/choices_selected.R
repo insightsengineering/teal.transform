@@ -34,7 +34,6 @@ no_select_keyword <- "-- no selection --"
 #' @export
 #'
 #' @examples
-#'
 #' library(shiny)
 #'
 #' # all_choices example - semantically the same objects
@@ -46,7 +45,7 @@ no_select_keyword <- "-- no selection --"
 #'   selected = "C"
 #' )
 #'
-#' ADSL <- teal.transform::rADSL
+#' ADSL <- rADSL
 #' choices_selected(variable_choices(ADSL), "SEX")
 #'
 #' # How to select nothing

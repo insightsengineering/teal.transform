@@ -20,10 +20,10 @@ Returns the initial values for the \code{vals} widget
 of a \code{filter_spec} object.
 }
 \examples{
-filtered_data_list <- list(iris = shiny::reactive(utils::head(iris)))
+filtered_data_list <- list(iris = reactive(head(iris)))
 filter <- filter_spec(vars = colnames(iris)[1])
 filter$dataname <- "iris"
-shiny::isolate(
+isolate(
   teal.transform:::get_initial_filter_values(filter = filter, datasets = filtered_data_list)
 )
 

@@ -3,3 +3,14 @@ linters: linters_with_defaults(
   cyclocomp_linter = NULL,
   object_usage_linter = NULL
   )
+exclusions: list(
+    "vignettes/data-extract-merge.Rmd" = list(
+      object_name_linter = Inf
+    ),
+    "vignettes/data-extract.Rmd" = list(
+      object_name_linter = Inf
+    ),
+    "vignettes/data-merge.Rmd" = list(
+      object_name_linter = Inf
+    )
+  )
