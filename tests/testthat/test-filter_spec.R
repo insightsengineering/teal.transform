@@ -176,7 +176,7 @@ testthat::test_that("delayed filter_spec", {
     multiple = FALSE
   )
 
-  expect_equal(names(expected_spec), names(delayed))
+  testthat::expect_equal(names(expected_spec), names(delayed))
 
   data_list <- list(ADSL = reactive(ADSL))
   key_list <- list(ADSL = c("STUDYID", "USUBJID"))
@@ -191,7 +191,7 @@ testthat::test_that("filter_spec with choices_selected where all selected in cho
     choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
     selected = c("A", "B")
   )
-  testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
+  testthat::expect_no_error(filter_spec(vars = valid_cs))
 })
 
 
@@ -224,7 +224,7 @@ testthat::test_that("filter_spec_internal contains dataname", {
     vars_choices = variable_choices(ADSL)
   )
 
-  expect_null(x_filter$dataname)
+  testthat::expect_null(x_filter$dataname)
 
   x <- data_extract_spec(
     dataname = "ADSL",
@@ -477,7 +477,7 @@ testthat::test_that(
       choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
       selected = c("A", "B")
     )
-    testthat::expect_error(filter_spec(vars = valid_cs), regexp = NA)
+    testthat::expect_no_error(filter_spec(vars = valid_cs))
   }
 )
 

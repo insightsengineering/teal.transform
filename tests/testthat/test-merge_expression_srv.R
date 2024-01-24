@@ -173,16 +173,15 @@ testthat::test_that("merge_expression_srv throws error if selector_list is not n
 
 testthat::test_that("merge_expression_srv accepts reactive and character merge_function", {
   m_fun <- reactive("dplyr::left_join")
-  testthat::expect_error(
+  testthat::expect_no_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys, merge_function = m_fun),
       expr = session$returned()
-    ),
-    NA
+    )
   )
 
-  testthat::expect_error(
+  testthat::expect_no_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(
@@ -192,8 +191,7 @@ testthat::test_that("merge_expression_srv accepts reactive and character merge_f
         merge_function = "dplyr::left_join"
       ),
       expr = session$returned()
-    ),
-    NA
+    )
   )
 })
 
@@ -243,21 +241,19 @@ testthat::test_that("merge_expression_srv throws error if join_keys is not a joi
 })
 
 testthat::test_that("merge_expression_srv accepts a list of (reactive) data.frames for datasets argument", {
-  testthat::expect_error(
+  testthat::expect_no_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys),
       expr = NULL
-    ),
-    NA
+    )
   )
 
-  testthat::expect_error(
+  testthat::expect_no_error(
     shiny::testServer(
       merge_expression_srv,
       args = list(selector_list = selector_list, datasets = data_list_nr, join_keys = join_keys),
       expr = NULL
-    ),
-    NA
+    )
   )
 })

@@ -8,25 +8,25 @@ test_that("Can create variable_choices with datasets with no or missing labels",
 
   # no labels given
   choice_1 <- variable_choices(example_data, fill = TRUE)
-  expect_equal(names(choice_1), c("USUBJID: USUBJID", "STUDYID: STUDYID"))
+  testthat::expect_equal(names(choice_1), c("USUBJID: USUBJID", "STUDYID: STUDYID"))
 
   # one missing label
   missing_one_label_data <- example_data
   teal.data::col_labels(missing_one_label_data) <- c(as.character(NA), "Label")
   choice_2 <- variable_choices(missing_one_label_data, fill = FALSE)
-  expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label"))
+  testthat::expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label"))
 
   # all missing label
   missing_two_label_data <- example_data
   teal.data::col_labels(missing_two_label_data) <- c(as.character(NA), as.character(NA))
   choice_2 <- variable_choices(missing_two_label_data, fill = FALSE)
-  expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label Missing"))
+  testthat::expect_equal(names(choice_2), c("USUBJID: Label Missing", "STUDYID: Label Missing"))
 })
 
 test_that("delayed version of variable_choices", {
   # hard-coded subset
   obj <- variable_choices("ADSL", subset = c("SEX", "ARMCD", "COUNTRY"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = c("SEX", "ARMCD", "COUNTRY"), key = NULL),
@@ -38,14 +38,14 @@ test_that("delayed version of variable_choices", {
   key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, subset = c("SEX", "ARMCD", "COUNTRY"))
   )
 
   # functional subset
   obj <- variable_choices("ADSL", subset = function(data) colnames(data)[1:2])
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = function(data) colnames(data)[1:2], key = NULL),
@@ -54,14 +54,14 @@ test_that("delayed version of variable_choices", {
   )
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, subset = colnames(ADSL)[1:2], key = c("STUDYID", "USUBJID"))
   )
 
   # non-null key value
   obj <- variable_choices("ADSL", key = c("USUBJID", "STUDYID"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = NULL, key = c("USUBJID", "STUDYID")),
@@ -70,7 +70,7 @@ test_that("delayed version of variable_choices", {
   )
 
   res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, key = c("USUBJID", "STUDYID"))
   )
@@ -80,7 +80,7 @@ test_that("delayed version of variable_choices", {
 test_that("delayed version of variable_choices - resolve_delayed", {
   # hard-coded subset
   obj <- variable_choices("ADSL", subset = c("SEX", "ARMCD", "COUNTRY"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = c("SEX", "ARMCD", "COUNTRY"), key = NULL),
@@ -89,7 +89,7 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   )
 
   res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, subset = c("SEX", "ARMCD", "COUNTRY"))
   )
@@ -97,7 +97,7 @@ test_that("delayed version of variable_choices - resolve_delayed", {
 
   # functional subset
   obj <- variable_choices("ADSL", subset = function(data) colnames(data)[1:2])
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = function(data) colnames(data)[1:2], key = NULL),
@@ -106,14 +106,14 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   )
 
   res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, subset = colnames(ADSL)[1:2], key = c("STUDYID", "USUBJID"))
   )
 
   # non-null key value
   obj <- variable_choices("ADSL", key = c("USUBJID", "STUDYID"))
-  expect_equal(
+  testthat::expect_equal(
     obj,
     structure(
       list(data = "ADSL", subset = NULL, key = c("USUBJID", "STUDYID")),
@@ -122,7 +122,7 @@ test_that("delayed version of variable_choices - resolve_delayed", {
   )
 
   res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
-  expect_equal(
+  testthat::expect_equal(
     res_obj,
     variable_choices(ADSL, key = c("USUBJID", "STUDYID"))
   )
