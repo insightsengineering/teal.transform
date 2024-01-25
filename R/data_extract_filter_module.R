@@ -134,10 +134,10 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 #' @keywords internal
 #'
 #' @examples
-#' filtered_data_list <- list(iris = reactive(head(iris)))
+#' filtered_data_list <- list(iris = shiny::reactive(head(iris)))
 #' filter <- filter_spec(vars = colnames(iris)[1])
 #' filter$dataname <- "iris"
-#' isolate(
+#' shiny::isolate(
 #'   teal.transform:::get_initial_filter_values(filter = filter, datasets = filtered_data_list)
 #' )
 #'

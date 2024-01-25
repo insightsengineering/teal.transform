@@ -12,9 +12,9 @@
 #' @examples
 #' ADSL <- rADSL
 #' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
-#' data_list <- list(ADSL = reactive(ADSL))
+#' data_list <- list(ADSL = shiny::reactive(ADSL))
 #' keys <- list(ADSL = attr(ADSL, "keys"))
-#' isolate({
+#' shiny::isolate({
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
 #'   v1

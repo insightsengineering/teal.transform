@@ -22,7 +22,7 @@ id_for_dataset <- function(dataname) {
 #' @keywords internal
 #' @examples
 #' teal.transform:::cond_data_extract_single_ui(
-#'   NS("TEST"),
+#'   shiny::NS("TEST"),
 #'   data_extract_spec(dataname = "test")
 #' )
 cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {

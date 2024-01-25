@@ -22,8 +22,8 @@ Resolved object.
 }
 \examples{
 ADSL <- rADSL
-isolate({
-  data_list <- list(ADSL = reactive(ADSL))
+shiny::isolate({
+  data_list <- list(ADSL = shiny::reactive(ADSL))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
