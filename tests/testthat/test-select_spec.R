@@ -79,7 +79,7 @@ testthat::test_that("Multiple choices", {
 
   testthat::expect_true(c1$multiple)
   testthat::expect_false(c1$fixed)
-  expect_null(c1$always_selected)
+  testthat::expect_null(c1$always_selected)
   testthat::expect_false(c1$ordered)
   testthat::expect_identical(c1$label, "Select")
 })
