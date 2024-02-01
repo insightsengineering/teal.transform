@@ -1,4 +1,4 @@
 .onLoad <- function(libname, pkgname) { # nolint
   teal.logger::register_logger("teal.transform")
-  invisible()
+  teal.logger::register_handlers("teal.transform")
 }
