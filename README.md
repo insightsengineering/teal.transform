@@ -25,7 +25,7 @@ This package contains functions and shiny modules for extracting and merging dat
 
 ```r
 # stable versions
-install.packages('teal.transform', repos = c('https://insightsengineering.r-universe.dev', getOption('repos')))
+install.packages('teal.slice')
 
 # install.packages("pak")
 pak::pak("insightsengineering/teal.transform@*release")
