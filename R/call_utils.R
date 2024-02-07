@@ -49,12 +49,15 @@ call_check_parse_varname <- function(varname) {
 #'   }
 #'
 #' @examples
-#' teal.transform:::call_condition_choice("SEX", choices = c(1, 2))
-#' teal.transform:::call_condition_choice(as.name("SEX"), choices = "F")
-#' teal.transform:::call_condition_choice("SEX", choices = c("F", "M"))
-#' teal.transform:::call_condition_choice("SEX", choices = factor(c("F", "M")))
-#' teal.transform:::call_condition_choice("x$SEX", choices = Sys.Date())
-#' teal.transform:::call_condition_choice("trunc(x$SEX)", choices = Sys.time())
+#' # use non-exported function from teal.transform
+#' call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+#'
+#' call_condition_choice("SEX", choices = c(1, 2))
+#' call_condition_choice(as.name("SEX"), choices = "F")
+#' call_condition_choice("SEX", choices = c("F", "M"))
+#' call_condition_choice("SEX", choices = factor(c("F", "M")))
+#' call_condition_choice("x$SEX", choices = Sys.Date())
+#' call_condition_choice("trunc(x$SEX)", choices = Sys.time())
 #' @return a `call`
 #' @keywords internal
 call_condition_choice <- function(varname, choices) {
@@ -95,10 +98,14 @@ call_condition_choice <- function(varname, choices) {
 #'
 #' @return call
 #' @examples
-#' teal.transform:::call_condition_range("AGE", range = c(1, 2))
-#' teal.transform:::call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
-#' teal.transform:::call_condition_range(
-#'   teal.transform:::call_extract_list("ADSL", "AGE"),
+#' # use non-exported function from teal.transform
+#' call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
+#' call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
+#'
+#' call_condition_range("AGE", range = c(1, 2))
+#' call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
+#' call_condition_range(
+#'   call_extract_list("ADSL", "AGE"),
 #'   range = c(-1.2, 2.1)
 #' )
 #' @return a `call`
@@ -126,8 +133,11 @@ call_condition_range <- function(varname, range) {
 #'
 #' @return call
 #' @examples
-#' teal.transform:::call_condition_logical("event", choice = TRUE)
-#' teal.transform:::call_condition_logical("event", choice = FALSE)
+#' # use non-exported function from teal.transform
+#' call_condition_logical <- getFromNamespace("call_condition_logical", "teal.transform")
+#'
+#' call_condition_logical("event", choice = TRUE)
+#' call_condition_logical("event", choice = FALSE)
 #' @return a `call`
 #' @keywords internal
 call_condition_logical <- function(varname, choice) {
@@ -164,7 +174,12 @@ call_condition_logical <- function(varname, choice) {
 #'   By default `Sys.timezone()` is used.
 #'
 #' @examples
-#' teal.transform:::call_condition_range_posixct(
+#' # use non-exported function from teal.transform
+#' call_condition_range_posixct <- getFromNamespace(
+#'   "call_condition_range_posixct", "teal.transform"
+#' )
+#'
+#' call_condition_range_posixct(
 #'   varname = as.name("datetime"),
 #'   range = c(Sys.time(), Sys.time() + 1),
 #'   timezone = "UTC"
@@ -203,7 +218,10 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
 #'   range of the variable
 #'
 #' @examples
-#' teal.transform:::call_condition_range_date(
+#' # use non-exported function from teal.transform
+#' call_condition_range_date <- getFromNamespace("call_condition_range_date", "teal.transform")
+#'
+#' call_condition_range_date(
 #'   as.name("date"),
 #'   range = c(Sys.Date(), Sys.Date() + 1)
 #' )
@@ -233,15 +251,19 @@ call_condition_range_date <- function(varname, range) {
 #'   optional, name of the `row` or condition
 #' @return `[` call with all conditions included
 #' @examples
-#' teal.transform:::call_extract_array(
+#' # use non-exported function from teal.transform
+#' call_extract_array <- getFromNamespace("call_extract_array", "teal.transform")
+#' call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+#'
+#' call_extract_array(
 #'   dataname = "my_array",
-#'   row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
+#'   row = call_condition_choice("my_array$SEX", "M"),
 #'   column = call("c", "SEX", "AGE"),
 #'   aisle = "RNAseq_rnaaccess"
 #' )
-#' teal.transform:::call_extract_array(
+#' call_extract_array(
 #'   "mae_object",
-#'   column = teal.transform:::call_condition_choice("SEX", "M")
+#'   column = call_condition_choice("SEX", "M")
 #' )
 #' @return specific \code{\link[base]{Extract}} `call` for 3-dimensional array
 #' @keywords internal
@@ -291,14 +313,18 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 #'   optional, name of the `column` or condition
 #' @return `[` call with all conditions included
 #' @examples
-#' teal.transform:::call_extract_matrix(
+#' # use non-exported function from teal.transform
+#' call_extract_matrix <- getFromNamespace("call_extract_matrix", "teal.transform")
+#' call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+#'
+#' call_extract_matrix(
 #'   dataname = "my_array",
-#'   row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
+#'   row = call_condition_choice("my_array$SEX", "M"),
 #'   column = call("c", "SEX", "AGE")
 #' )
-#' teal.transform:::call_extract_matrix(
+#' call_extract_matrix(
 #'   "mae_object",
-#'   column = teal.transform:::call_condition_choice("SEX", "M")
+#'   column = call_condition_choice("SEX", "M")
 #' )
 #' @return specific \code{\link[base]{Extract}} `call` for matrix
 #' @keywords internal
@@ -348,11 +374,14 @@ call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
 #'
 #' @return `$` or `[[` call
 #' @examples
-#' teal.transform:::call_extract_list("ADSL", "SEX")
-#' teal.transform:::call_extract_list("ADSL", "named element")
-#' teal.transform:::call_extract_list(as.name("ADSL"), as.name("AGE"))
-#' teal.transform:::call_extract_list(as.name("weird name"), as.name("AGE"))
-#' teal.transform:::call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
+#' # use non-exported function from teal.transform
+#' call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
+#'
+#' call_extract_list("ADSL", "SEX")
+#' call_extract_list("ADSL", "named element")
+#' call_extract_list(as.name("ADSL"), as.name("AGE"))
+#' call_extract_list(as.name("weird name"), as.name("AGE"))
+#' call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
 #' @keywords internal
 call_extract_list <- function(dataname, varname, dollar = TRUE) {
   checkmate::assert_flag(dollar)
@@ -386,23 +415,24 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #' @param unlist_args `list` extra arguments passed in a single list,
 #'   avoids the use of `do.call` with this function
 #' @examples
+#' # use non-exported function from teal.transform
+#' call_with_colon <- getFromNamespace("call_with_colon", "teal.transform")
 #'
-#' print_call_and_eval <- function(x) {
-#'   eval(print(x))
-#' }
+#' print_call_and_eval <- function(x) eval(print(x))
 #'
 #' print_call_and_eval(
-#'   teal.transform:::call_with_colon("glue::glue", "x = {x}", x = 10)
+#'   call_with_colon("glue::glue", "x = {x}", x = 10)
 #' )
+#'
 #' \dontrun{
 #' # mtcars$cyl evaluated
 #' print_call_and_eval(
-#'   teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
+#'   call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
 #' )
 #'
 #' # mtcars$cyl argument not evaluated immediately (in call expression)
 #' print_call_and_eval(
-#'   teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), quote(cyl == 6))
+#'   call_with_colon("dplyr::filter", as.name("mtcars"), quote(cyl == 6))
 #' )
 #'
 #' # does not work because argument is evaluated and the
@@ -414,11 +444,11 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #'
 #' nb_args <- function(...) nargs()
 #' print_call_and_eval(
-#'   teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args3 = 3))
+#'   call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args3 = 3))
 #' )
 #' # duplicate arguments
 #' print_call_and_eval(
-#'   teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
+#'   call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
 #' )
 #' }
 #' @keywords internal
@@ -444,12 +474,17 @@ call_with_colon <- function(name, ..., unlist_args = list()) {
 #'
 #' @return call
 #' @examples
-#' teal.transform:::calls_combine_by(
+#' # use non-exported function from teal.transform
+#' calls_combine_by <- getFromNamespace("calls_combine_by", "teal.transform")
+#' call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+#' call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
+#'
+#' calls_combine_by(
 #'   "&",
 #'   calls = list(
-#'     teal.transform:::call_condition_choice("SEX", "F"),
-#'     teal.transform:::call_condition_range("AGE", c(20, 50)),
-#'     teal.transform:::call_condition_choice("ARM", "ARM: A"),
+#'     call_condition_choice("SEX", "F"),
+#'     call_condition_range("AGE", c(20, 50)),
+#'     call_condition_choice("ARM", "ARM: A"),
 #'     TRUE
 #'   )
 #' )
