@@ -10,6 +10,9 @@
 #' @return Resolved object.
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' resolve <- getFromNamespace("resolve", "teal.transform")
+#'
 #' ADSL <- teal.transform::rADSL
 #' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 #' data_list <- list(ADSL = shiny::reactive(ADSL))
@@ -18,12 +21,12 @@
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
 #'   v1
-#'   teal.transform:::resolve(v1, data_list, keys)
+#'   resolve(v1, data_list, keys)
 #'
 #'   # variable_choices example
 #'   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
 #'   v2
-#'   teal.transform:::resolve(v2, data_list, keys)
+#'   resolve(v2, data_list, keys)
 #'
 #'   # data_extract_spec example
 #'   adsl_filter <- filter_spec(
@@ -49,9 +52,9 @@
 #'     filter = adsl_filter
 #'   )
 #'
-#'   teal.transform:::resolve(adsl_filter, data_list, keys)
-#'   teal.transform:::resolve(adsl_select, data_list, keys)
-#'   teal.transform:::resolve(adsl_de, data_list, keys)
+#'   resolve(adsl_filter, data_list, keys)
+#'   resolve(adsl_select, data_list, keys)
+#'   resolve(adsl_de, data_list, keys)
 #'
 #'   # nested list (arm_ref_comp)
 #'   arm_ref_comp <- list(
@@ -61,7 +64,7 @@
 #'     )
 #'   )
 #'
-#'   teal.transform:::resolve(arm_ref_comp, data_list, keys)
+#'   resolve(arm_ref_comp, data_list, keys)
 #' })
 resolve <- function(x, datasets, keys = NULL) {
   checkmate::assert_list(datasets, types = "reactive", min.len = 1, names = "named")
