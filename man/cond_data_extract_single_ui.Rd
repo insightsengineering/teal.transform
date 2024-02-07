@@ -22,7 +22,10 @@ Creates a panel that displays (with filter and column selection)
 conditionally on \code{input[ns("dataset")] == dataname}.
 }
 \examples{
-teal.transform:::cond_data_extract_single_ui(
+# use non-exported function from teal.transform
+cond_data_extract_single_ui <- getFromNamespace("cond_data_extract_single_ui", "teal.transform")
+
+cond_data_extract_single_ui(
   shiny::NS("TEST"),
   data_extract_spec(dataname = "test")
 )
