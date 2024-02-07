@@ -129,8 +129,11 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #' @keywords internal
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' get_dplyr_call <- getFromNamespace("get_dplyr_call", "teal.transform")
+#'
 #' # one dataset
-#' teal.transform:::get_dplyr_call(
+#' get_dplyr_call(
 #'   list(list(
 #'     dataname = "ADSL",
 #'     filters = NULL,
@@ -140,7 +143,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     internal_id = "test1"
 #'   ))
 #' )
-#' teal.transform:::get_dplyr_call(
+#' get_dplyr_call(
 #'   list(list(
 #'     dataname = "ADSL",
 #'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
@@ -150,7 +153,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     internal_id = "test1"
 #'   ))
 #' )
-#' teal.transform:::get_dplyr_call(
+#' get_dplyr_call(
 #'   list(list(
 #'     dataname = "ADSL",
 #'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
@@ -162,7 +165,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #' )
 #'
 #' # two datasets with rename part
-#' teal.transform:::get_dplyr_call(
+#' get_dplyr_call(
 #'   list(
 #'     list(
 #'       dataname = "ADSL",
@@ -185,7 +188,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #' )
 #'
 #' # long dataset with reshape part
-#' teal.transform:::get_dplyr_call(
+#' get_dplyr_call(
 #'   list(list(
 #'     dataname = "ADLB",
 #'     filters = list(list(
@@ -250,7 +253,10 @@ get_dplyr_call <- function(selector_list,
 #' @keywords internal
 #'
 #' @examples
-#' teal.transform:::get_select_call(letters)
+#' # use non-exported function from teal.transform
+#' get_select_call <- getFromNamespace("get_select_call", "teal.transform")
+#'
+#' get_select_call(letters)
 get_select_call <- function(select) {
   logger::log_trace("get_select_call called with: { paste(select, collapse = ', ') } columns.")
   if (is.null(select) || length(select) == 0) {
@@ -271,10 +277,13 @@ get_select_call <- function(select) {
 #' @keywords internal
 #'
 #' @examples
-#' teal.transform:::get_filter_call(
+#' # use non-exported function from teal.transform
+#' get_filter_call <- getFromNamespace("get_filter_call", "teal.transform")
+#'
+#' get_filter_call(
 #'   filter = list(list(columns = "SEX", selected = list(NA, "F", "M")))
 #' )
-#' teal.transform:::get_filter_call(filter = list(
+#' get_filter_call(filter = list(
 #'   list(columns = "SEX", selected = list(NA, "F", "M")),
 #'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
 #' ))
@@ -409,6 +418,9 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #' @references get_rename_dict
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' get_rename_call <- getFromNamespace("get_rename_call", "teal.transform")
+#'
 #' x <- list(
 #'   list(
 #'     dataname = "ADSL",
@@ -443,10 +455,10 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'     internal_id = "test4"
 #'   )
 #' )
-#' teal.transform:::get_rename_call(x, 1L)
-#' teal.transform:::get_rename_call(x, 2L)
-#' teal.transform:::get_rename_call(x, 3L)
-#' teal.transform:::get_rename_call(x, 4L)
+#' get_rename_call(x, 1L)
+#' get_rename_call(x, 2L)
+#' get_rename_call(x, 3L)
+#' get_rename_call(x, 4L)
 get_rename_call <- function(selector_list = list(),
                             idx = 1L,
                             join_keys = teal.data::join_keys(),
@@ -483,6 +495,9 @@ get_rename_call <- function(selector_list = list(),
 #' @keywords internal
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' get_reshape_call <- getFromNamespace("get_reshape_call", "teal.transform")
+#'
 #' filters <- list(
 #'   columns = c("PARAMCD", "AVISIT"),
 #'   selected = list(c("ALT", "SCREENING"), c("ALT", "BASELINE"))
@@ -504,7 +519,7 @@ get_rename_call <- function(selector_list = list(),
 #'     internal_id = "test"
 #'   )
 #' )
-#' teal.transform:::get_reshape_call(x, 1L)
+#' get_reshape_call(x, 1L)
 get_reshape_call <- function(selector_list = list(),
                              idx = 1L,
                              join_keys = teal.data::join_keys(),

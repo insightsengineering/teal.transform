@@ -31,6 +31,9 @@ selections, reshapes etc. All necessary data for merging}
 Returns \code{dplyr} reshape call
 }
 \examples{
+# use non-exported function from teal.transform
+get_reshape_call <- getFromNamespace("get_reshape_call", "teal.transform")
+
 filters <- list(
   columns = c("PARAMCD", "AVISIT"),
   selected = list(c("ALT", "SCREENING"), c("ALT", "BASELINE"))
@@ -52,6 +55,6 @@ x <- list(
     internal_id = "test"
   )
 )
-teal.transform:::get_reshape_call(x, 1L)
+get_reshape_call(x, 1L)
 }
 \keyword{internal}

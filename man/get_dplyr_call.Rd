@@ -34,8 +34,11 @@ selections, reshapes etc. All necessary data for merging}
 Parse filter, select, rename and reshape call
 }
 \examples{
+# use non-exported function from teal.transform
+get_dplyr_call <- getFromNamespace("get_dplyr_call", "teal.transform")
+
 # one dataset
-teal.transform:::get_dplyr_call(
+get_dplyr_call(
   list(list(
     dataname = "ADSL",
     filters = NULL,
@@ -45,7 +48,7 @@ teal.transform:::get_dplyr_call(
     internal_id = "test1"
   ))
 )
-teal.transform:::get_dplyr_call(
+get_dplyr_call(
   list(list(
     dataname = "ADSL",
     filters = list(list(columns = "SEX", selected = list("F", "M"))),
@@ -55,7 +58,7 @@ teal.transform:::get_dplyr_call(
     internal_id = "test1"
   ))
 )
-teal.transform:::get_dplyr_call(
+get_dplyr_call(
   list(list(
     dataname = "ADSL",
     filters = list(list(columns = "SEX", selected = list("F", "M"))),
@@ -67,7 +70,7 @@ teal.transform:::get_dplyr_call(
 )
 
 # two datasets with rename part
-teal.transform:::get_dplyr_call(
+get_dplyr_call(
   list(
     list(
       dataname = "ADSL",
@@ -90,7 +93,7 @@ teal.transform:::get_dplyr_call(
 )
 
 # long dataset with reshape part
-teal.transform:::get_dplyr_call(
+get_dplyr_call(
   list(list(
     dataname = "ADLB",
     filters = list(list(

@@ -31,6 +31,9 @@ selections, reshapes etc. All necessary data for merging}
 Rename is used only if there are duplicated columns
 }
 \examples{
+# use non-exported function from teal.transform
+get_rename_call <- getFromNamespace("get_rename_call", "teal.transform")
+
 x <- list(
   list(
     dataname = "ADSL",
@@ -65,10 +68,10 @@ x <- list(
     internal_id = "test4"
   )
 )
-teal.transform:::get_rename_call(x, 1L)
-teal.transform:::get_rename_call(x, 2L)
-teal.transform:::get_rename_call(x, 3L)
-teal.transform:::get_rename_call(x, 4L)
+get_rename_call(x, 1L)
+get_rename_call(x, 2L)
+get_rename_call(x, 3L)
+get_rename_call(x, 4L)
 }
 \references{
 get_rename_dict
