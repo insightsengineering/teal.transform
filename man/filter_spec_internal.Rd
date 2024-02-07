@@ -129,20 +129,23 @@ the configuration of filtering datasets (so called \code{filter_spec}), which th
 the UI element in the \code{teal} app.
 }
 \examples{
-teal.transform:::filter_spec_internal(
+# use non-exported function from teal.transform
+filter_spec_internal <- getFromNamespace("filter_spec_internal", "teal.transform")
+
+filter_spec_internal(
   vars_choices = c("PARAMCD", "AVISIT"),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE
 )
 
 ADRS <- teal.transform::rADRS
-teal.transform:::filter_spec_internal(
+filter_spec_internal(
   vars_choices = variable_choices(ADRS),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE
 )
 
-teal.transform:::filter_spec_internal(
+filter_spec_internal(
   vars_choices = variable_choices("ADRS"),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE
