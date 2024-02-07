@@ -40,12 +40,12 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
   )
 }
 
-#' teal data extraction module user-interface
+#' `teal` data extraction module user-interface
 #'
 #' @description `r lifecycle::badge("experimental")`
 #' This functionality should be used in the encoding panel of your `teal` app. It will
 #' allow app-developers to specify a [data_extract_spec] object. This object should be used
-#' to teal module variables being filtered data from `CDISC` datasets. You can use this function in the same way as any
+#' to `teal` module variables being filtered data from `CDISC` datasets. You can use this function in the same way as any
 #' [shiny module](https://shiny.rstudio.com/articles/modules.html) UI. The corresponding server module
 #' can be found in [data_extract_srv()].
 #'

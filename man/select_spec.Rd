@@ -71,7 +71,7 @@ If \code{select_spec}, then the function double checks the \code{choices} and \c
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-\code{select_spec} is used inside teal to create a \code{\link[shiny]{selectInput}}
+\code{select_spec} is used inside \code{teal} to create a \code{\link[shiny]{selectInput}}
 that will select columns from a dataset.
 }
 \examples{

@@ -114,7 +114,7 @@ shiny \code{\link[shiny]{selectInput}}.}
 \code{TRUE} on default.}
 
 \item{dataname}{(\code{character})\cr
-the name of the dataset this filter covers. Set during the initialization of the teal application.}
+the name of the dataset this filter covers. Set during the initialization of the \code{teal} application.}
 
 \item{initialized}{(\code{logical})\cr
 indicates whether this filter was already initialized in the application.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_ui}
 \alias{data_extract_ui}
-\title{teal data extraction module user-interface}
+\title{\code{teal} data extraction module user-interface}
 \usage{
 data_extract_ui(id, label, data_extract_spec, is_single_dataset = FALSE)
 }
@@ -42,7 +42,7 @@ The output can be analyzed using \code{data_extract_srv(...)}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This functionality should be used in the encoding panel of your \code{teal} app. It will
 allow app-developers to specify a \link{data_extract_spec} object. This object should be used
-to teal module variables being filtered data from \code{CDISC} datasets. You can use this function in the same way as any
+to \code{teal} module variables being filtered data from \code{CDISC} datasets. You can use this function in the same way as any
 \href{https://shiny.rstudio.com/articles/modules.html}{shiny module} UI. The corresponding server module
 can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
 }

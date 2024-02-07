@@ -48,7 +48,7 @@
 #'
 #' @details
 #'
-#' The \code{filter_spec} is used inside \code{teal} apps to allow filtering datasets
+#' The \code{filter_spec} is used inside `teal` apps to allow filtering datasets
 #' for their key variables. Imagine having an adverse events table. It has
 #' the columns \code{PARAMCD} and \code{CNSR}. \code{PARAMCD} contains the levels
 #' \code{"OS"}, \code{"PFS"}, \code{"EFS"}. \code{CNSR} contains the levels \code{"0"} and \code{"1"}.
@@ -205,7 +205,7 @@ filter_spec <- function(vars,
 #' @param fixed (`logical`)\cr
 #'   if true allow to change the initially selected values of the variables; otherwise, do not allow.
 #' @param dataname (`character`)\cr
-#'   the name of the dataset this filter covers. Set during the initialization of the teal application.
+#'   the name of the dataset this filter covers. Set during the initialization of the `teal` application.
 #' @param initialized (`logical`)\cr
 #'   indicates whether this filter was already initialized in the application.
 #'   TRUE if this filter was already consumed by the server function; FALSE otherwise.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_extract_spec.R
 \name{data_extract_spec}
 \alias{data_extract_spec}
-\title{Data Extract input for teal modules}
+\title{Data Extract input for \code{teal} modules}
 \usage{
 data_extract_spec(dataname, select = NULL, filter = NULL, reshape = FALSE)
 }
@@ -28,7 +28,7 @@ keys selected in filter part.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 The Data Extract input can be used to filter and select columns from a data
-set. This function enables such an input in teal.
+set. This function enables such an input in \code{teal}.
 Please use the constructor function \link{data_extract_spec} to set it up.
 
 Note that no checks based on columns can be done because the data is only referred to by name.
