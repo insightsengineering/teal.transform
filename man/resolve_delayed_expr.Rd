@@ -21,7 +21,9 @@ Character vector - result of calling function \code{x} on dataset \code{ds}.
 Resolve expression after delayed data are loaded
 }
 \examples{
-\dontrun{
+# use non-exported function from teal.transform
+resolve_delayed_expr <- getFromNamespace("resolve_delayed_expr", "teal.transform")
+
 # get only possible factor variables from mtcars dataset
 resolve_delayed_expr(
   function(data) {
@@ -31,6 +33,5 @@ resolve_delayed_expr(
   ds = mtcars,
   is_value_choices = FALSE
 )
-}
 }
 \keyword{internal}

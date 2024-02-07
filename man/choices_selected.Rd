@@ -134,7 +134,7 @@ ui <- fluidPage(
     selected = cs$selected
   )
 )
-\dontrun{
-shinyApp(ui, server = function(input, output, session) {})
+if (interactive()) {
+  shinyApp(ui, server = function(input, output, session) {})
 }
 }

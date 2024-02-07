@@ -6,6 +6,25 @@
 #'
 #' @details Internally this function uses calls to allow reproducibility.
 #'
+#' This function is often used inside a `teal` module server function with the
+#' `selectors` being the output of `data_extract_srv` or `data_extract_multiple_srv`.
+#'
+#' ```
+#' # inside teal module server function
+#'
+#' response <- data_extract_srv(
+#'   id = "reponse",
+#'   data_extract_spec = response_spec,
+#'   datasets = datasets
+#' )
+#' regressor <- data_extract_srv(
+#'   id = "regressor",
+#'   data_extract_spec = regressor_spec,
+#'   datasets = datasets
+#' )
+#' merged_data <- merge_datasets(list(regressor(), response()))
+#' ```
+#'
 #' @inheritParams merge_expression_srv
 #' @return merged_dataset (`list`) containing:
 #' - `expr` (`list` of `call`) code needed to replicate merged dataset.
@@ -24,20 +43,43 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # inside teal module server function
-#' response <- data_extract_srv(
-#'   id = "reponse",
-#'   data_extract_spec = response_spec,
-#'   datasets = datasets
+#' library(shiny)
+#'
+#' X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9])
+#' Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], G = letters[1:3])
+#' join_keys <- teal.data::join_keys(teal.data::join_key("X", "Y", c("A", "B")))
+#'
+#' selector_list <- list(
+#'   list(
+#'     dataname = "X",
+#'     filters = NULL,
+#'     select = "E",
+#'     keys = c("A", "B"),
+#'     reshape = FALSE,
+#'     internal_id = "x"
+#'   ),
+#'   list(
+#'     dataname = "Y",
+#'     filters = NULL,
+#'     select = "G",
+#'     keys = c("A", "C"),
+#'     reshape = FALSE,
+#'     internal_id = "y"
+#'   )
 #' )
-#' regressor <- data_extract_srv(
-#'   id = "regressor",
-#'   data_extract_spec = regressor_spec,
-#'   datasets = datasets
+#'
+#' data_list <- list(X = reactive(X), Y = reactive(Y))
+#'
+#' merged_datasets <- isolate(
+#'   merge_datasets(
+#'     selector_list = selector_list,
+#'     datasets = data_list,
+#'     join_keys = join_keys
+#'   )
 #' )
-#' merged_data <- merge_datasets(list(regressor(), response()))
-#' }
+#'
+#' paste(merged_datasets$expr)
+#'
 merge_datasets <- function(selector_list, datasets, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
   logger::log_trace(
     paste(

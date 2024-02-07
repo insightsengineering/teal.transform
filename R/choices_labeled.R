@@ -24,35 +24,37 @@
 #'
 #' ADSL <- teal.transform::rADSL
 #' ADTTE <- teal.transform::rADTTE
+#'
 #' choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
+#'
 #' # if only a subset of variables are needed, use subset argument
 #' choices3 <- choices_labeled(
 #'   names(ADSL),
 #'   teal.data::col_labels(ADSL, fill = FALSE),
 #'   subset = c("ARMCD", "ARM")
 #' )
-#' \dontrun{
-#' shinyApp(
-#'   ui = fluidPage(
-#'     selectInput("c1",
-#'       label = "Choices from ADSL",
-#'       choices = choices1,
-#'       selected = choices1[1]
-#'     ),
-#'     selectInput("c2",
-#'       label = "Choices from ADTTE",
-#'       choices = choices2,
-#'       selected = choices2[1]
-#'     ),
-#'     selectInput("c3",
-#'       label = "Arm choices from ADSL",
-#'       choices = choices3,
-#'       selected = choices3[1]
-#'     )
+#'
+#' ui <- fluidPage(
+#'   selectInput("c1",
+#'     label = "Choices from ADSL",
+#'     choices = choices1,
+#'     selected = choices1[1]
 #'   ),
-#'   server = function(input, output) {}
+#'   selectInput("c2",
+#'     label = "Choices from ADTTE",
+#'     choices = choices2,
+#'     selected = choices2[1]
+#'   ),
+#'   selectInput("c3",
+#'     label = "Arm choices from ADSL",
+#'     choices = choices3,
+#'     selected = choices3[1]
+#'   )
 #' )
+#'
+#' if (interactive()) {
+#'   shinyApp(ui = ui, server = function(input, output) {})
 #' }
 choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   if (is.factor(choices)) {

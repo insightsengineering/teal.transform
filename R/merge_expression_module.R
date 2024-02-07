@@ -129,8 +129,8 @@
 #'     output$data <- renderDataTable(code_merge()[["ANL"]])
 #'   }
 #' )
-#' \dontrun{
-#' shinyApp(app$ui, app$server)
+#' if (interactive()) {
+#'   shinyApp(app$ui, app$server)
 #' }
 #' @export
 merge_expression_module <- function(datasets,
@@ -331,8 +331,8 @@ merge_expression_module.list <- function(datasets,
 #'     output$data <- renderDataTable(code_merge()[["ANL"]])
 #'   }
 #' )
-#' \dontrun{
-#' shinyApp(app$ui, app$server)
+#' if (interactive()) {
+#'   shinyApp(app$ui, app$server)
 #' }
 merge_expression_srv <- function(id = "merge_id",
                                  selector_list,

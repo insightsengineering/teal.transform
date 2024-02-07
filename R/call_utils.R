@@ -433,7 +433,6 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #'   call_with_colon("glue::glue", "x = {x}", x = 10)
 #' )
 #'
-#' \dontrun{
 #' # mtcars$cyl evaluated
 #' print_call_and_eval(
 #'   call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
@@ -459,7 +458,6 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #' print_call_and_eval(
 #'   call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
 #' )
-#' }
 #' @keywords internal
 #'
 call_with_colon <- function(name, ..., unlist_args = list()) {

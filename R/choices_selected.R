@@ -115,8 +115,8 @@ no_select_keyword <- "-- no selection --"
 #'     selected = cs$selected
 #'   )
 #' )
-#' \dontrun{
-#' shinyApp(ui, server = function(input, output, session) {})
+#' if (interactive()) {
+#'   shinyApp(ui, server = function(input, output, session) {})
 #' }
 choices_selected <- function(choices,
                              selected = if (inherits(choices, "delayed_data")) NULL else choices[1],

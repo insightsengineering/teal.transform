@@ -171,8 +171,8 @@ app <- shinyApp(
     output$data <- renderDataTable(code_merge()[["ANL"]])
   }
 )
-\dontrun{
-shinyApp(app$ui, app$server)
+if (interactive()) {
+  shinyApp(app$ui, app$server)
 }
 }
 \seealso{
