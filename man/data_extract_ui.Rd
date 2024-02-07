@@ -40,11 +40,12 @@ The output can be analyzed using \code{data_extract_srv(...)}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This functionality should be used in the encoding panel of your \code{teal} app. It will
-allow app-developers to specify a \link{data_extract_spec} object. This object should be used
-to \code{teal} module variables being filtered data from \code{CDISC} datasets. You can use this function in the same way as any
-\href{https://shiny.rstudio.com/articles/modules.html}{shiny module} UI. The corresponding server module
-can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
+This functionality should be used in the encoding panel of your \code{teal} app.
+It will allow app-developers to specify a \link{data_extract_spec} object.
+This object should be used to \code{teal} module variables being filtered data
+from \code{CDISC} datasets. You can use this function in the same way as any
+\href{https://shiny.rstudio.com/articles/modules.html}{shiny module} UI.
+The corresponding server module can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
 }
 \examples{
 library(shiny)
