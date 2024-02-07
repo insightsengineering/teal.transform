@@ -1,14 +1,27 @@
 no_select_keyword <- "-- no selection --"
 
-#' Choices Selected
+#' Choices selected
 #'
-#' @description `r lifecycle::badge("stable")`
-#'   Construct a single list containing available choices, the default selected value, and
-#'   additional settings such as to order the choices with the selected elements appearing first
-#'   or whether to block the user from making selections. Can be used in `ui` input elements
-#'   such as [teal.widgets::optionalSelectInput()]
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
-#' @param choices (`character`) vector of possible choices or `delayed_data` object
+#' Construct a single list containing available choices, the default selected value, and
+#' additional settings such as to order the choices with the selected elements appearing first
+#' or whether to block the user from making selections.
+#'
+#' Can be used in `ui` input elements such as [teal.widgets::optionalSelectInput()].
+#'
+#' @details
+#' Please note that the order of selected will always follow the order of choices. The `keep_order`
+#' argument is set to false which will run the following code inside:
+#'
+#' ```
+#' choices <- c(selected, setdiff(choices, selected))
+#' ```
+#'
+#' In case you want to keep your specific order of choices, set `keep_order` to `TRUE`.
+#'
+#' @param choices (`character`) vector of possible choices or `delayed_data` object.
 #'
 #' See [variable_choices()] and [value_choices()].
 #' @param selected (`character`) vector of preselected options, (`all_choices`) object
@@ -17,27 +30,14 @@ no_select_keyword <- "-- no selection --"
 #' If `delayed_data` object then `choices` must also be `delayed_data` object.
 #' If not supplied it will default to the first element of `choices` if
 #' `choices` is a vector, or `NULL` if `choices` is a `delayed_data` object.
-#' @param keep_order (`logical`)
-#' In case of `FALSE` the selected variables will be on top of the drop-down field.
-#' @param fixed optional, (`logical`)
-#' Whether to block user to select choices
-#'
-#' @details
-#'
-#' Please note that the order of selected will always follow the order of choices. The `keep_order`
-#' argument is set to false which will run the following code inside:
-#'
-#' `choices <- c(selected, setdiff(choices, selected))`
-#'
-#' in case you want to keep your specific order of choices, set `keep_order` to `TRUE`.
+#' @param keep_order (`logical`) In case of `FALSE` the selected variables will
+#' be on top of the drop-down field.
+#' @param fixed (optional `logical`) Whether to block user to select choices.
 #'
 #' @return Object of class `choices_selected` and of type list which contains the specified
-#'   `choices`, `selected`, `keep_order` and `fixed`.
-#'
-#' @export
+#' `choices`, `selected`, `keep_order` and `fixed`.
 #'
 #' @examples
-#'
 #' library(shiny)
 #'
 #' # all_choices example - semantically the same objects
@@ -121,6 +121,8 @@ no_select_keyword <- "-- no selection --"
 #' if (interactive()) {
 #'   shinyApp(ui, server = function(input, output, session) {})
 #' }
+#' @export
+#'
 choices_selected <- function(choices,
                              selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
                              keep_order = FALSE,
@@ -171,25 +173,33 @@ choices_selected <- function(choices,
   )
 }
 
-#' Check if an object is a choices_selected class.
+#' Check if an object is a choices_selected class
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
-#' @param x object to check
 #' @rdname choices_selected
+#'
+#' @param x (`choices_selected`) object to check.
+#'
+#' @return `TRUE` if `x` inherits from a `choices_selected` object, `FALSE` otherwise.
+#'
 #' @export
+#'
 is.choices_selected <- function(x) { # nolint
   inherits(x, "choices_selected")
 }
 
 #' Add empty choice to choices selected
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
-#' @param x (`choices_selected`) output
-#' @param multiple (`logical`) whether multiple selections are allowed or not
+#' @param x (`choices_selected`) object.
+#' @param multiple (`logical(1)`) whether multiple selections are allowed or not.
+#'
+#' @return `choices_selected` object with an empty option added to the choices.
 #'
 #' @export
+#'
 add_no_selected_choices <- function(x, multiple = FALSE) {
   if (is.null(x)) {
     choices_selected(NULL)
@@ -207,13 +217,14 @@ add_no_selected_choices <- function(x, multiple = FALSE) {
 
 #' Check select choices for no choice made
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
-#' @param x (`character`) Word that shall be checked for `NULL`, empty, "--no-selection"
+#' @param x (`character`) Word that shall be checked for `NULL`, empty, "--no-selection".
 #'
-#' @return the word or `NULL`
+#' @return The word or `NULL`.
 #'
 #' @export
+#'
 no_selected_as_NULL <- function(x) { # nolint
   if (is.null(x) || identical(x, no_select_keyword) || x == "") {
     NULL

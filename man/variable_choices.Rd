@@ -13,26 +13,29 @@ variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
 \method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
 }
 \arguments{
-\item{data}{(\code{data.frame}, \code{character})
-If \code{data.frame}, then data to extract labels from
-If \code{character}, then name of the dataset to extract data from once available}
+\item{data}{(\code{data.frame} or \code{character})
+If \code{data.frame}, then data to extract labels from.
+If \code{character}, then name of the dataset to extract data from once available.}
 
 \item{subset}{(\code{character} or \code{function})
 If \code{character}, then a vector of column names.
 If \code{function}, then this function is used to determine the possible columns (e.g. all factor columns).
 In this case, the function must take only single argument "data" and return a character vector.
+
 See examples for more details.}
 
-\item{fill}{(\code{logical(1)}) if \code{TRUE}, the function will return variable names for columns with non-existent labels;
-otherwise will return \code{NA} for them}
+\item{fill}{(\code{logical(1)}) if \code{TRUE}, the function will return variable names
+for columns with non-existent labels; otherwise will return \code{NA} for them.}
 
 \item{key}{(\code{character}) vector with names of the variables, which are part of the primary key
-of the \code{data} argument. This is an optional argument, which allows to identify variables
-associated with the primary key and display the appropriate icon for them in the
+of the \code{data} argument.
+
+This is an optional argument, which allows to identify variables associated
+with the primary key and display the appropriate icon for them in the
 \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}} widget.}
 }
 \value{
-named character vector with additional attributes or \code{delayed_data} object
+Named \code{character} vector with additional attributes or \code{delayed_data} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -3,7 +3,7 @@
 \name{choices_selected}
 \alias{choices_selected}
 \alias{is.choices_selected}
-\title{Choices Selected}
+\title{Choices selected}
 \usage{
 choices_selected(
   choices,
@@ -15,7 +15,7 @@ choices_selected(
 is.choices_selected(x)
 }
 \arguments{
-\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object
+\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object.
 
 See \code{\link[=variable_choices]{variable_choices()}} and \code{\link[=value_choices]{value_choices()}}.}
 
@@ -26,24 +26,27 @@ If \code{delayed_data} object then \code{choices} must also be \code{delayed_dat
 If not supplied it will default to the first element of \code{choices} if
 \code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}
 
-\item{keep_order}{(\code{logical})
-In case of \code{FALSE} the selected variables will be on top of the drop-down field.}
+\item{keep_order}{(\code{logical}) In case of \code{FALSE} the selected variables will
+be on top of the drop-down field.}
 
-\item{fixed}{optional, (\code{logical})
-Whether to block user to select choices}
+\item{fixed}{(optional \code{logical}) Whether to block user to select choices.}
 
-\item{x}{object to check}
+\item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
 Object of class \code{choices_selected} and of type list which contains the specified
 \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
+
+\code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Construct a single list containing available choices, the default selected value, and
 additional settings such as to order the choices with the selected elements appearing first
-or whether to block the user from making selections. Can be used in \code{ui} input elements
-such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}
+or whether to block the user from making selections.
+
+Can be used in \code{ui} input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
 
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
@@ -51,12 +54,12 @@ such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSele
 Please note that the order of selected will always follow the order of choices. The \code{keep_order}
 argument is set to false which will run the following code inside:
 
-\code{choices <- c(selected, setdiff(choices, selected))}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{choices <- c(selected, setdiff(choices, selected))
+}\if{html}{\out{</div>}}
 
-in case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
+In case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
 }
 \examples{
-
 library(shiny)
 
 # all_choices example - semantically the same objects

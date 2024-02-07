@@ -3,7 +3,7 @@
 \name{choices_labeled}
 \alias{choices_labeled}
 \alias{print.choices_labeled}
-\title{Set "\verb{<choice>:<label>}" type of Names}
+\title{Set "\verb{<choice>:<label>}" type of names}
 \usage{
 choices_labeled(choices, labels, subset = NULL, types = NULL)
 
@@ -12,25 +12,28 @@ choices_labeled(choices, labels, subset = NULL, types = NULL)
 \arguments{
 \item{choices}{A character / factor / numeric / logical vector.}
 
-\item{labels}{character vector containing labels to be applied to \code{choices}. If \code{NA} then
-"Label Missing" will be used.}
+\item{labels}{character vector containing labels to be applied to \code{choices}.
+If \code{NA} then "Label Missing" will be used.}
 
-\item{subset}{a vector that is a subset of \code{choices}. This is useful if
-only a few variables need to be named. If this argument is used, the returned vector will
-match its order.}
+\item{subset}{a vector that is a subset of \code{choices}.
+This is useful if only a few variables need to be named.
+If this argument is used, the returned vector will match its order.}
 
 \item{types}{Character vector containing the types of the columns to be used for applying the appropriate
-icons to the \link{choices_selected} drop down box. (e.g. "numeric")}
+icons to the \link{choices_selected} drop down box (e.g. "numeric").}
 
 \item{x}{an object used to select a method.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-a named character vector
+Named \code{character} vector.
+
+\code{x}, invisibly.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This is often useful for \link{choices_selected} as it marks up the drop-down boxes
 for \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 

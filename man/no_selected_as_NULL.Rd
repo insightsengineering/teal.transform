@@ -7,10 +7,10 @@
 no_selected_as_NULL(x)
 }
 \arguments{
-\item{x}{(\code{character}) Word that shall be checked for \code{NULL}, empty, "--no-selection"}
+\item{x}{(\code{character}) Word that shall be checked for \code{NULL}, empty, "--no-selection".}
 }
 \value{
-the word or \code{NULL}
+The word or \code{NULL}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
