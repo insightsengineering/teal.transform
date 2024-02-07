@@ -7,16 +7,16 @@
 call_extract_matrix(dataname = ".", row = NULL, column = NULL)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})}
+\item{dataname}{(\code{character(1)} or \code{name}).}
 
-\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})
-optional, name of the \code{row} or condition}
+\item{row}{(optional \code{name}, \code{call}, \code{logical}, \code{integer} or \code{character})
+name of the \code{row} or condition.}
 
-\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})
-optional, name of the \code{column} or condition}
+\item{column}{(optional \code{name}, \code{call}, \code{logical}, \code{integer} or \code{character})
+name of the \code{column} or condition.}
 }
 \value{
-specific \code{\link[=Extract]{Extract()}} \code{call} for matrix
+\code{\link[=Extract]{Extract()}} \code{call} for matrix in \code{x[i, j]} notation.
 }
 \description{
 Get call to subset and select matrix

@@ -8,18 +8,16 @@ call_condition_range(varname, range)
 }
 \arguments{
 \item{varname}{(\code{name} or \code{character(1)})
-
-name of the variable}
+name of the variable.}
 
 \item{range}{(\code{numeric(2)})
-
-range of the variable}
+range of the variable.}
 }
 \value{
-a \code{call}
+\code{call}.
 }
 \description{
-Compose \code{numeric} range condition call from inputs
+Compose \code{numeric} range condition call from inputs.
 }
 \examples{
 # use non-exported function from teal.transform

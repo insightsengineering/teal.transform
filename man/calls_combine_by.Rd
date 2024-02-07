@@ -7,17 +7,15 @@
 calls_combine_by(operator, calls)
 }
 \arguments{
-\item{operator}{(\code{character(1)} or \code{name})
-name / symbol of the operator.}
+\item{operator}{(\code{character(1)} or \code{name}) name / symbol of the operator.}
 
-\item{calls}{(\code{list} of calls)
-list containing calls to be combined by \code{operator}}
+\item{calls}{(\code{list} of calls) list containing calls to be combined by \code{operator}.}
 }
 \value{
-a combined \code{call}
+A combined \code{call}.
 }
 \description{
-Combine list of calls by specific operator
+Combine list of calls by specific operator.
 }
 \examples{
 # use non-exported function from teal.transform

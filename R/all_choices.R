@@ -1,9 +1,9 @@
-#' An S3 structure representing the selection of all
-#' possible choices in a `filter_spec`, `select_spec` or `choices_selected` object.
+#' An S3 structure representing the selection of all possible choices in a
+#' `filter_spec`, `select_spec` or `choices_selected` object
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("experimental")`
 #'
-#' @return `all_choices` object
+#' @return `all_choices` object.
 #'
 #' @examples
 #' # Both structures are semantically identical

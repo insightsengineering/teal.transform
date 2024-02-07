@@ -8,15 +8,18 @@ call_with_colon(name, ..., unlist_args = list())
 }
 \arguments{
 \item{name}{\code{character} function name, possibly using namespace colon \code{::}, also
-works with \code{:::} (sometimes needed, but strongly discouraged)}
+works with \code{:::} (sometimes needed, but strongly discouraged).}
 
-\item{...}{arguments to pass to function with name \code{name}}
+\item{...}{arguments to pass to function with name \code{name}.}
 
 \item{unlist_args}{\code{list} extra arguments passed in a single list,
-avoids the use of \code{do.call} with this function}
+avoids the use of \code{do.call} with this function.}
+}
+\value{
+\code{call}.
 }
 \description{
-The arguments in ... need to be quoted because they will be evaluated otherwise
+The dot arguments in \code{...} need to be quoted because they will be evaluated otherwise.
 }
 \examples{
 # use non-exported function from teal.transform

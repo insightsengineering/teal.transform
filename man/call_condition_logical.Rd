@@ -8,18 +8,16 @@ call_condition_logical(varname, choice)
 }
 \arguments{
 \item{varname}{(\code{name} or \code{character(1)})
-
 name of the variable}
 
 \item{choice}{(\code{logical(1)})
-
 chosen value}
 }
 \value{
-a \code{call}
+\code{call}.
 }
 \description{
-Compose \code{logical} variable condition call from inputs
+Compose \code{logical} variable condition call from inputs.
 }
 \examples{
 # use non-exported function from teal.transform
