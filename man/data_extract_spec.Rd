@@ -7,20 +7,20 @@
 data_extract_spec(dataname, select = NULL, filter = NULL, reshape = FALSE)
 }
 \arguments{
-\item{dataname}{(\code{character})\cr
+\item{dataname}{(\code{character})
 The name of the dataset to be extracted.}
 
-\item{select}{(\code{NULL}, \code{select_spec}-S3 class or \code{delayed_select_spec})\cr
+\item{select}{(\code{NULL}, \code{select_spec}-S3 class or \code{delayed_select_spec})
 Columns to be selected from the input dataset
 mentioned in \code{dataname}. The setup can be created using \link{select_spec} function.}
 
-\item{filter}{(\code{NULL} or \code{filter_spec} or its respective delayed version)\cr
+\item{filter}{(\code{NULL} or \code{filter_spec} or its respective delayed version)
 Setup of the filtering of key columns inside the dataset.
 This setup can be created using the \link{filter_spec} function.
 Please note that if both select and filter are set to NULL, then the result will be a filter spec UI with all
 variables as possible choices and a select spec with multiple set to \code{TRUE}.}
 
-\item{reshape}{(\code{logical})\cr
+\item{reshape}{(\code{logical})
 whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
 keys selected in filter part.}
 }
@@ -35,9 +35,7 @@ Note that no checks based on columns can be done because the data is only referr
 }
 \section{Module Development}{
 
-\describe{
 \code{teal.transform} uses this object to construct a UI element in a module.
-}
 }
 
 \examples{

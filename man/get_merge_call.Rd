@@ -13,20 +13,22 @@ get_merge_call(
 )
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
 \item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,}
 
-\item{merge_function}{(\code{character(1)} or \code{reactive})\cr
+\item{merge_function}{(\code{character(1)} or \code{reactive})
 A character string of a function that accepts the arguments
 \code{x}, \code{y} and \code{by} to perform the merging of datasets.}
 
-\item{anl_name}{(\code{character(1)})\cr
+\item{anl_name}{(\code{character(1)})
 Name of the analysis dataset.}
 }
 \value{

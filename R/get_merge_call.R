@@ -145,18 +145,16 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
 #' @param selector_to (`list`) `data_extract_srv`
 #' @param key_from (`character`) keys used in the first selector while joining
 #'
-#' @details This function covers up to now 4 cases
-#' \itemize{
-#'  \item{dataset without parent }{ Primary keys are returned}
-#'  \item{dataset source = dataset target}{
-#'    The primary keys subtracted of all key columns that
-#'    get purely filtered. This means just one value would
-#'    be left after filtering inside this column. Then it
-#'    can be taken out.
-#'  }
-#'  \item{target `dataname` is parent }{ foreign keys}
-#'  \item{any other case }{foreign keys}
-#' }
+#' @details
+#' This function covers up to now 4 cases
+#'
+#' * dataset without parent: Primary keys are returned
+#' * dataset source = dataset target:
+#' The primary keys subtracted of all key columns that get purely filtered.
+#' This means just one value would be left after filtering inside this column.
+#' Then it can be taken out.
+#' * target `dataname` is parent foreign keys
+#' * any other case foreign keys
 #'
 #' @return (`character`)
 #' @keywords internal
@@ -335,10 +333,11 @@ get_dropped_filters <- function(selector) {
 
 #' Gets the relabel call
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
+#'
 #' @inheritParams merge_datasets
-#' @param columns_source \code{named list}\cr
-#'  where names are column names, values are labels + additional attribute `dataname`
+#' @param columns_source named `list`
+#' where names are column names, values are labels + additional attribute `dataname`
 #'
 #' @return (`call`) to relabel `dataset` and assign to `anl_name`.
 #'
@@ -404,9 +403,11 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
 #' Create relabel call from named character
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Function creates relabel call from named character.
-#' @param labels (`named character`)\cr
-#'   where name is name is function argument name and value is a function argument value.
+#'
+#' @param labels (`named character`)
+#' where name is name is function argument name and value is a function argument value.
 #'
 #' @return (`call`) object with relabel step
 #' @examples

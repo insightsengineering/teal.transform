@@ -1,8 +1,10 @@
 #' Checks `varname` argument and convert to call
 #'
 #' Checks `varname` type and parse if it's a `character`
-#' @param varname (`name`, `call` or `character(1)`)\cr
-#'   name of the variable
+#'
+#' @param varname (`name`, `call` or `character(1)`)
+#' name of the variable
+#'
 #' @keywords internal
 #'
 call_check_parse_varname <- function(varname) {
@@ -373,12 +375,9 @@ call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
 
 #' Compose extract call with `$` operator
 #'
-#' @param dataname (`character(1)` or `name`)
-#' name of the object
-#' @param varname (`character(1)` or `name`)
-#' name of the slot in data
-#' @param dollar (`logical(1)`)\cr
-#' whether returned call should use `$` or `[[` operator
+#' @param dataname (`character(1)` or `name`) name of the object
+#' @param varname (`character(1)` or `name`) name of the slot in data
+#' @param dollar (`logical(1)`) whether returned call should use `$` or `[[` operator
 #'
 #' @return `$` or `[[` call
 #'

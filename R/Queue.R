@@ -2,7 +2,9 @@
 
 #' @title R6 Class - A First-In-First-Out Abstract Data Type
 #'
-#' @description `r lifecycle::badge("experimental")`\cr
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Abstract data type that stores and returns any number of elements.
 #'
 #' A `Queue` object stores all elements in a single vector,

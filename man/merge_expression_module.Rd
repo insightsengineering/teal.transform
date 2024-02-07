@@ -34,21 +34,22 @@ merge_expression_module(
 )
 }
 \arguments{
-\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
-object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
+object containing data as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(\code{join_keys})\cr
+\item{join_keys}{(\code{join_keys})
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
-\item{data_extract}{(named \code{list} of \code{data_extract_spec})\cr}
+\item{data_extract}{(named \code{list} of \code{data_extract_spec})}
 
-\item{merge_function}{(\code{character(1)})\cr
-A character string of a function that
-accepts the arguments \code{x}, \code{y} and \code{by} to perform the merging of datasets.}
+\item{merge_function}{(\code{character(1)})
+A character string of a function that accepts the arguments \code{x}, \code{y} and
+\code{by} to perform the merging of datasets.}
 
-\item{anl_name}{(\code{character(1)})\cr
+\item{anl_name}{(\code{character(1)})
 Name of the analysis dataset.}
 
 \item{id}{An ID string that corresponds with the ID used to call the module's

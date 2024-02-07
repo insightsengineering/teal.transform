@@ -44,36 +44,31 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'
 #' @description `r lifecycle::badge("experimental")`
 #' This functionality should be used in the encoding panel of your `teal` app.
-#' It will allow app-developers to specify a [data_extract_spec] object.
+#' It will allow app-developers to specify a [data_extract_spec()] object.
 #' This object should be used to `teal` module variables being filtered data
 #' from `CDISC` datasets. You can use this function in the same way as any
-#' [shiny module](https://shiny.rstudio.com/articles/modules.html) UI.
+#' [`shiny module`](https://shiny.rstudio.com/articles/modules.html) UI.
 #' The corresponding server module can be found in [data_extract_srv()].
 #'
 #' @param id (`character`) shiny input unique identifier
 #' @param label (`character`) Label above the data extract input
 #' @param data_extract_spec (`list` of `data_extract_spec`)
-#'  This is the outcome of listing [data_extract_spec]
-#'  constructor calls.
+#' This is the outcome of listing [data_extract_spec()] constructor calls.
 #' @param is_single_dataset (`logical`) FALSE to display the dataset widget
 #'
 #' @return shiny [shiny::selectInput]`s` that allow to define how to extract data from
 #' a specific dataset. The input elements will be returned inside a [shiny::div] container.
 #'
 #' There are three inputs that will be rendered
-#' \enumerate{
-#'  \item{Dataset select}{ Optional. If more than one [data_extract_spec] is handed over
-#'   to the function, a shiny [shiny::selectInput] will be rendered. Else just the name
-#'   of the dataset is given.
-#'  }
-#'  \item{Filter Panel }{Optional. If the [data_extract_spec] contains a
-#'   filter element a shiny [shiny::selectInput] will be rendered with the options to
-#'   filter the dataset.
-#'  }
-#'  \item{Select panel }{A shiny [shiny::selectInput] to select columns from the dataset to
-#'   go into the analysis.
-#'   }
-#' }
+#'
+#' 1. Dataset select Optional. If more than one [data_extract_spec] is handed over
+#' to the function, a shiny [shiny::selectInput] will be rendered. Else just the name
+#' of the dataset is given.
+#' 2. Filter Panel Optional. If the [data_extract_spec] contains a
+#' filter element a shiny [shiny::selectInput] will be rendered with the options to
+#' filter the dataset.
+#' 3. Select panel A shiny [shiny::selectInput] to select columns from the dataset to
+#' go into the analysis.
 #'
 #' The output can be analyzed using `data_extract_srv(...)`.
 #'
@@ -252,32 +247,30 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' Extraction of the selector(s) details
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' Extracting details of the selection(s) in [data_extract_ui] elements.
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data either in the form of `FilteredData` or as a list of `data.frame`.
-#'  When passing a list of non-reactive `data.frame` objects, they are converted to reactive `data.frame`s internally.
-#'  When passing a list of reactive or non-reactive `data.frame` objects, the argument `join_keys` is required also.
-#' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)\cr
-#'  A list of data filter and select information constructed by [data_extract_spec].
+#' @param datasets (`FilteredData` or `list` of `reactive` or non-`reactive` `data.frame`)
+#' object containing data either in the form of `FilteredData` or as a list of `data.frame`.
+#' When passing a list of non-reactive `data.frame` objects, they are converted to reactive `data.frame`s internally.
+#' When passing a list of reactive or non-reactive `data.frame` objects, the argument `join_keys` is required also.
+#' @param data_extract_spec (`data_extract_spec` or a list of `data_extract_spec`)
+#' A list of data filter and select information constructed by [data_extract_spec].
 #' @param ...
 #' an additional argument `join_keys` is required when `datasets` is a list of `data.frame`.
 #' It shall contain the keys per dataset in `datasets`.
 #'
-#' @return
-#' A reactive `list` containing following fields:
+#' @return A reactive `list` containing following fields:
 #'
-#' \itemize{
-#'   \item{`filters`: }{A list with the information on the filters that are applied to the data set.}
-#'   \item{`select`: }{The variables that are selected from the dataset.}
-#'   \item{`always_selected`: }{The column names from the data set that should always be selected.}
-#'   \item{`reshape`: }{Whether reshape long to wide should be applied or not.}
-#'   \item{`dataname`: }{The name of the data set.}
-#'   \item{`internal_id`: }{The `id` of the corresponding shiny input element.}
-#'   \item{`keys`: }{The names of the columns that can be used to merge the data set.}
-#'   \item{`iv`:}{A `shinyvalidate::InputValidator` containing `validator` for this `data_extract`}
-#' }
+#' * `filters`: A list with the information on the filters that are applied to the data set.
+#' * `select`: The variables that are selected from the dataset.
+#' * `always_selected`: The column names from the data set that should always be selected.
+#' * `reshape`: Whether reshape long to wide should be applied or not.
+#' * `dataname`: The name of the data set.
+#' * `internal_id`: The `id` of the corresponding shiny input element.
+#' * `keys`: The names of the columns that can be used to merge the data set.
+#' * `iv`: A `shinyvalidate::InputValidator` containing `validator` for this `data_extract`
 #'
 #' @references [data_extract_srv]
 #'

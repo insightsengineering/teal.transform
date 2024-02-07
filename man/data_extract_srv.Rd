@@ -31,12 +31,12 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
+\item{datasets}{(\code{FilteredData} or \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
 object containing data either in the form of \code{FilteredData} or as a list of \code{data.frame}.
 When passing a list of non-reactive \code{data.frame} objects, they are converted to reactive \code{data.frame}s internally.
 When passing a list of reactive or non-reactive \code{data.frame} objects, the argument \code{join_keys} is required also.}
 
-\item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})\cr
+\item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})
 A list of data filter and select information constructed by \link{data_extract_spec}.}
 
 \item{...}{an additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
@@ -59,20 +59,20 @@ If \code{NULL} then no validation will be added. See example for more details.}
 }
 \value{
 A reactive \code{list} containing following fields:
-
 \itemize{
-\item{\code{filters}: }{A list with the information on the filters that are applied to the data set.}
-\item{\code{select}: }{The variables that are selected from the dataset.}
-\item{\code{always_selected}: }{The column names from the data set that should always be selected.}
-\item{\code{reshape}: }{Whether reshape long to wide should be applied or not.}
-\item{\code{dataname}: }{The name of the data set.}
-\item{\code{internal_id}: }{The \code{id} of the corresponding shiny input element.}
-\item{\code{keys}: }{The names of the columns that can be used to merge the data set.}
-\item{\code{iv}:}{A \code{shinyvalidate::InputValidator} containing \code{validator} for this \code{data_extract}}
+\item \code{filters}: A list with the information on the filters that are applied to the data set.
+\item \code{select}: The variables that are selected from the dataset.
+\item \code{always_selected}: The column names from the data set that should always be selected.
+\item \code{reshape}: Whether reshape long to wide should be applied or not.
+\item \code{dataname}: The name of the data set.
+\item \code{internal_id}: The \code{id} of the corresponding shiny input element.
+\item \code{keys}: The names of the columns that can be used to merge the data set.
+\item \code{iv}: A \code{shinyvalidate::InputValidator} containing \code{validator} for this \code{data_extract}
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Extracting details of the selection(s) in \link{data_extract_ui} elements.
 }
 \examples{

@@ -261,9 +261,12 @@ merge_selectors <- function(selector_list) {
 #' Validate data_extracts in merge_datasets
 #'
 #' Validate selected inputs from data_extract before passing to data_merge to avoid
-#' \code{dplyr} errors or unexpected results
+#' `dplyr` errors or unexpected results
+#'
 #' @inheritParams merge_datasets
-#' @return \code{NULL} if check is successful
+#'
+#' @return `NULL` if check is successful
+#'
 #' @keywords internal
 #'
 check_data_merge_selectors <- function(selector_list) {

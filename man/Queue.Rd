@@ -4,7 +4,8 @@
 \alias{Queue}
 \title{R6 Class - A First-In-First-Out Abstract Data Type}
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}\cr
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Abstract data type that stores and returns any number of elements.
 
 A \code{Queue} object stores all elements in a single vector,

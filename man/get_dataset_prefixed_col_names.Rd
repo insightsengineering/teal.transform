@@ -17,5 +17,5 @@ A named character vector with the non-key columns of the \code{data}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \references{
-\link{data_extract_srv}
+\code{\link[=data_extract_srv]{data_extract_srv()}}
 }

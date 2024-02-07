@@ -7,14 +7,11 @@
 call_extract_list(dataname, varname, dollar = TRUE)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})
-name of the object}
+\item{dataname}{(\code{character(1)} or \code{name}) name of the object}
 
-\item{varname}{(\code{character(1)} or \code{name})
-name of the slot in data}
+\item{varname}{(\code{character(1)} or \code{name}) name of the slot in data}
 
-\item{dollar}{(\code{logical(1)})\cr
-whether returned call should use \code{$} or \code{[[} operator}
+\item{dollar}{(\code{logical(1)}) whether returned call should use \code{$} or \code{[[} operator}
 }
 \value{
 \code{$} or \code{[[} call

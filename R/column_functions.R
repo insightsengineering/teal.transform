@@ -8,7 +8,7 @@
 #'
 #' @return A named character vector with the non-key columns of the `data`.
 #'
-#' @references [data_extract_srv]
+#' @references [data_extract_srv()]
 get_dataset_prefixed_col_names <- function(data) {
   if (!is.null(attr(data, "filter_and_columns")$columns) && attr(data, "filter_and_columns")$columns != "") {
     paste(attr(data, "dataname"), attr(data, "filter_and_columns")$columns, sep = ".")

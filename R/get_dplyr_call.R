@@ -4,8 +4,8 @@
 #' same selector - same dataset, same filter configuration and same reshape status
 #' @inheritParams get_merge_call
 #'
-#' @return (\code{list}) simplified selectors with aggregated set of filters,
-#'   selections, reshapes etc. All necessary data for merging
+#' @return (`list`) simplified selectors with aggregated set of filters,
+#' selections, reshapes etc. All necessary data for merging
 #' @keywords internal
 #'
 get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
@@ -121,12 +121,12 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'
 #' Parse filter, select, rename and reshape call
 #' @inheritParams get_dplyr_call_data
-#' @param idx optional (\code{integer}) current selector index in all selectors list
-#' @param dplyr_call_data (\code{list}) simplified selectors with aggregated set of filters,
-#'   selections, reshapes etc. All necessary data for merging
+#' @param idx optional (`integer`) current selector index in all selectors list
+#' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
+#' selections, reshapes etc. All necessary data for merging
 #' @param data (`NULL` or named `list`).
 #'
-#' @return (\code{call}) filter, select, rename and reshape call
+#' @return (`call`) filter, select, rename and reshape call
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -246,11 +246,11 @@ get_dplyr_call <- function(selector_list,
   return(final_call)
 }
 
-#' Parse \code{dplyr} select call
+#' Parse `dplyr` select call
 #'
-#' @param select (\code{character}) vector of selected column names
+#' @param select (`character`) vector of selected column names
 #'
-#' @return (\code{call}) \code{dplyr} select call
+#' @return (`call`) `dplyr` select call
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -269,12 +269,12 @@ get_select_call <- function(select) {
   as.call(c(list(quote(dplyr::select)), lapply(select, as.name)))
 }
 
-#' Returns \code{dplyr} filter call
+#' Returns `dplyr` filter call
 #'
-#' @param filter (\code{list}) Either list of lists or list with \code{select} and \code{selected} items.
-#' @param dataname (\code{NULL} or \code{character}) name of dataset.
-#' @param datasets (\code{NULL} or \code{named `list`}).
-#' @return (\code{call}) \code{dplyr} filter call
+#' @param filter (`list`) Either list of lists or list with `select` and `selected` items.
+#' @param dataname (`NULL` or `character`) name of dataset.
+#' @param datasets (`NULL` or named `list`).
+#' @return (`call`) `dplyr` filter call
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -408,13 +408,14 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
   )
 }
 
-#' Returns \code{dplyr} rename call
+#' Returns `dplyr` rename call
 #'
 #' Rename is used only if there are duplicated columns
 #'
 #' @inheritParams get_dplyr_call
 #'
-#' @return (\code{call}) \code{dplyr} rename call
+#' @return (`call`) `dplyr` rename call
+#'
 #' @references get_rename_dict
 #'
 #' @examples
@@ -489,11 +490,11 @@ get_rename_call <- function(selector_list = list(),
   as.call(append(quote(dplyr::rename), internal))
 }
 
-#' Returns \code{dplyr} reshape call
+#' Returns `dplyr` reshape call
 #'
 #' @inheritParams get_dplyr_call
 #'
-#' @return (\code{list}) list of multiple \code{dplyr} calls that reshape data
+#' @return (`list`) list of multiple `dplyr` calls that reshape data
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -573,7 +574,7 @@ get_reshape_call <- function(selector_list = list(),
 #' Get pivot longer  columns
 #'
 #' Get values names which are spread into columns.
-#' @param selector one element of selector_list obtained by \code{get_dplyr_call_data}.
+#' @param selector one element of selector_list obtained by `get_dplyr_call_data`.
 #' @keywords internal
 #'
 get_pivot_longer_col <- function(selector) {
@@ -584,7 +585,7 @@ get_pivot_longer_col <- function(selector) {
 #' Get unite columns
 #'
 #' Get key names which spreads values into columns. Reshape is done only
-#' on keys which are in \code{filter_spec}.
+#' on keys which are in `filter_spec`.
 #' @inheritParams get_pivot_longer_col
 #' @keywords internal
 #'

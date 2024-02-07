@@ -104,7 +104,7 @@ shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value i
 if true allow to change the initially selected values of the variables; otherwise, do not allow.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
-shiny \code{\link[shiny]{selectInput}}.}
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or
 \code{selected} inputs into the values of the different columns}

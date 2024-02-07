@@ -12,23 +12,21 @@
 #' @rdname data_extract_spec
 #'
 #' @section Module Development:
-#' \describe{
 #' `teal.transform` uses this object to construct a UI element in a module.
-#' }
 #'
-#' @param dataname (`character`)\cr
-#'  The name of the dataset to be extracted.
-#' @param select (`NULL`, `select_spec`-S3 class or `delayed_select_spec`)\cr
-#'  Columns to be selected from the input dataset
-#'  mentioned in `dataname`. The setup can be created using [select_spec] function.
-#' @param filter (`NULL` or `filter_spec` or its respective delayed version)\cr
-#'  Setup of the filtering of key columns inside the dataset.
-#'  This setup can be created using the [filter_spec] function.
-#'  Please note that if both select and filter are set to NULL, then the result will be a filter spec UI with all
-#'  variables as possible choices and a select spec with multiple set to `TRUE`.
-#' @param reshape (`logical`)\cr
-#'  whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
-#'  keys selected in filter part.
+#' @param dataname (`character`)
+#' The name of the dataset to be extracted.
+#' @param select (`NULL`, `select_spec`-S3 class or `delayed_select_spec`)
+#' Columns to be selected from the input dataset
+#' mentioned in `dataname`. The setup can be created using [select_spec] function.
+#' @param filter (`NULL` or `filter_spec` or its respective delayed version)
+#' Setup of the filtering of key columns inside the dataset.
+#' This setup can be created using the [filter_spec] function.
+#' Please note that if both select and filter are set to NULL, then the result will be a filter spec UI with all
+#' variables as possible choices and a select spec with multiple set to `TRUE`.
+#' @param reshape (`logical`)
+#' whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
+#' keys selected in filter part.
 #'
 #' @examples
 #' adtte_filters <- filter_spec(

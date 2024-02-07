@@ -45,7 +45,7 @@ This value will be displayed inside the shiny app upon start. The \code{all_choi
 object indicates selecting all possible choices.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
-shiny \code{\link[shiny]{selectInput}}.}
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
 \item{label}{optional (\code{character}). Define a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}

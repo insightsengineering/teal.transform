@@ -22,15 +22,13 @@ Gets keys vector from keys list
 \details{
 This function covers up to now 4 cases
 \itemize{
-\item{dataset without parent }{ Primary keys are returned}
-\item{dataset source = dataset target}{
-The primary keys subtracted of all key columns that
-get purely filtered. This means just one value would
-be left after filtering inside this column. Then it
-can be taken out.
-}
-\item{target \code{dataname} is parent }{ foreign keys}
-\item{any other case }{foreign keys}
+\item dataset without parent: Primary keys are returned
+\item dataset source = dataset target:
+The primary keys subtracted of all key columns that get purely filtered.
+This means just one value would be left after filtering inside this column.
+Then it can be taken out.
+\item target \code{dataname} is parent foreign keys
+\item any other case foreign keys
 }
 }
 \keyword{internal}

@@ -6,18 +6,19 @@
 #' Compare the example below with that found in [merge_expression_srv()].
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
-#'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (`join_keys`)\cr
-#'  of variables used as join keys for each of the datasets in `datasets`.
-#'  This will be used to extract the `keys` of every dataset.
-#' @param data_extract (named `list` of `data_extract_spec`)\cr
-#' @param merge_function (`character(1)`)\cr
-#'  A character string of a function that
-#'  accepts the arguments `x`, `y` and `by` to perform the merging of datasets.
-#' @param anl_name (`character(1)`)\cr
-#'  Name of the analysis dataset.
+#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)
+#' object containing data as a list of `data.frame`.
+#' When passing a list of non-reactive `data.frame` objects, they are
+#' converted to reactive `data.frame` objects internally.
+#' @param join_keys (`join_keys`)
+#' of variables used as join keys for each of the datasets in `datasets`.
+#' This will be used to extract the `keys` of every dataset.
+#' @param data_extract (named `list` of `data_extract_spec`)
+#' @param merge_function (`character(1)`)
+#' A character string of a function that accepts the arguments `x`, `y` and
+#' `by` to perform the merging of datasets.
+#' @param anl_name (`character(1)`)
+#' Name of the analysis dataset.
 #'
 #' @return reactive expression with output from [merge_expression_srv()].
 #'
@@ -191,26 +192,31 @@ merge_expression_module.list <- function(datasets,
 
 #' Data merge module server
 #'
-#' @description `r lifecycle::badge("experimental")`
-#' @details When additional processing of the `data_extract` list input is required, `merge_expression_srv()` can be
-#'   combined with `data_extract_multiple_srv()` or `data_extract_srv()` to influence the `selector_list` input.
-#'   Compare the example below with that found in [merge_expression_module()].
+#' `r lifecycle::badge("experimental")`
+#'
+#' When additional processing of the `data_extract` list input is required,
+#' `merge_expression_srv()` can be combined with `data_extract_multiple_srv()`
+#' or `data_extract_srv()` to influence the `selector_list` input.
+#' Compare the example below with that found in [merge_expression_module()].
 #'
 #' @inheritParams shiny::moduleServer
-#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)\cr
-#'  object containing data as a list of `data.frame`. When passing a list of non-reactive `data.frame` objects, they are
-#'  converted to reactive `data.frame` objects internally.
-#' @param join_keys (`join_keys`)\cr
-#'  of variables used as join keys for each of the datasets in `datasets`.
-#'  This will be used to extract the `keys` of every dataset.
-#' @param selector_list (`reactive`)\cr
-#'   output from [data_extract_multiple_srv()] or a reactive named list of outputs from [data_extract_srv()].
-#'   When using a reactive named list, the names must be identical to the shiny ids of the respective
-#'   [data_extract_ui()].
-#' @param merge_function (`character(1)` or `reactive`)\cr
+#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)
+#' object containing data as a list of `data.frame`. When passing a list of
+#' non-reactive `data.frame` objects, they are converted to reactive
+#' `data.frame` objects internally.
+#' @param join_keys (`join_keys`)
+#' of variables used as join keys for each of the datasets in `datasets`.
+#' This will be used to extract the `keys` of every dataset.
+#' @param selector_list (`reactive`)
+#' output from [data_extract_multiple_srv()] or a reactive named list of
+#' outputs from [data_extract_srv()].
+#' When using a reactive named list, the names must be identical to the shiny
+#' ids of the respective
+#' [data_extract_ui()].
+#' @param merge_function (`character(1)` or `reactive`)
 #'  A character string of a function that accepts the arguments
 #'  `x`, `y` and `by` to perform the merging of datasets.
-#' @param anl_name (`character(1)`)\cr
+#' @param anl_name (`character(1)`)
 #'  Name of the analysis dataset.
 #'
 #' @return reactive expression with output from [merge_datasets()].
