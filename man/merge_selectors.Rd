@@ -19,6 +19,9 @@ error or nothing
 Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical
 }
 \examples{
+# use non-exported function from teal.transform
+merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
+
 selector_list <- list(
   # ADSL - SEX
   list(
@@ -44,7 +47,6 @@ selector_list <- list(
     )
   )
 )
-merged_selectors <- teal.transform:::merge_selectors(selector_list)
-merged_selectors
+merge_selectors(selector_list)
 }
 \keyword{internal}

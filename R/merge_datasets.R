@@ -135,6 +135,9 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #' @keywords internal
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
+#'
 #' selector_list <- list(
 #'   # ADSL - SEX
 #'   list(
@@ -160,8 +163,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #'     )
 #'   )
 #' )
-#' merged_selectors <- teal.transform:::merge_selectors(selector_list)
-#' merged_selectors
+#' merge_selectors(selector_list)
 merge_selectors <- function(selector_list) {
   logger::log_trace("merge_selectors called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_list(selector_list, min.len = 1)
