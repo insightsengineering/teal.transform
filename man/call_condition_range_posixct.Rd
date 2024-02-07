@@ -26,7 +26,12 @@ a \code{call}
 Compose \code{POSIXct} range condition call from inputs.
 }
 \examples{
-teal.transform:::call_condition_range_posixct(
+# use non-exported function from teal.transform
+call_condition_range_posixct <- getFromNamespace(
+  "call_condition_range_posixct", "teal.transform"
+)
+
+call_condition_range_posixct(
   varname = as.name("datetime"),
   range = c(Sys.time(), Sys.time() + 1),
   timezone = "UTC"

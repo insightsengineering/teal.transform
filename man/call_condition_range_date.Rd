@@ -20,7 +20,10 @@ a \code{call}
 Compose \code{Date} range condition call from inputs
 }
 \examples{
-teal.transform:::call_condition_range_date(
+# use non-exported function from teal.transform
+call_condition_range_date <- getFromNamespace("call_condition_range_date", "teal.transform")
+
+call_condition_range_date(
   as.name("date"),
   range = c(Sys.Date(), Sys.Date() + 1)
 )

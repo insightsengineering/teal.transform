@@ -32,11 +32,14 @@ a \code{call}
 Compose choices condition call from inputs.
 }
 \examples{
-teal.transform:::call_condition_choice("SEX", choices = c(1, 2))
-teal.transform:::call_condition_choice(as.name("SEX"), choices = "F")
-teal.transform:::call_condition_choice("SEX", choices = c("F", "M"))
-teal.transform:::call_condition_choice("SEX", choices = factor(c("F", "M")))
-teal.transform:::call_condition_choice("x$SEX", choices = Sys.Date())
-teal.transform:::call_condition_choice("trunc(x$SEX)", choices = Sys.time())
+# use non-exported function from teal.transform
+call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+
+call_condition_choice("SEX", choices = c(1, 2))
+call_condition_choice(as.name("SEX"), choices = "F")
+call_condition_choice("SEX", choices = c("F", "M"))
+call_condition_choice("SEX", choices = factor(c("F", "M")))
+call_condition_choice("x$SEX", choices = Sys.Date())
+call_condition_choice("trunc(x$SEX)", choices = Sys.time())
 }
 \keyword{internal}

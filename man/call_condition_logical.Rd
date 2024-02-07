@@ -22,7 +22,10 @@ a \code{call}
 Compose \code{logical} variable condition call from inputs
 }
 \examples{
-teal.transform:::call_condition_logical("event", choice = TRUE)
-teal.transform:::call_condition_logical("event", choice = FALSE)
+# use non-exported function from teal.transform
+call_condition_logical <- getFromNamespace("call_condition_logical", "teal.transform")
+
+call_condition_logical("event", choice = TRUE)
+call_condition_logical("event", choice = FALSE)
 }
 \keyword{internal}

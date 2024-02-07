@@ -27,15 +27,19 @@ specific \code{\link[base]{Extract}} \code{call} for 3-dimensional array
 Get call to subset and select array
 }
 \examples{
-teal.transform:::call_extract_array(
+# use non-exported function from teal.transform
+call_extract_array <- getFromNamespace("call_extract_array", "teal.transform")
+call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+
+call_extract_array(
   dataname = "my_array",
-  row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
+  row = call_condition_choice("my_array$SEX", "M"),
   column = call("c", "SEX", "AGE"),
   aisle = "RNAseq_rnaaccess"
 )
-teal.transform:::call_extract_array(
+call_extract_array(
   "mae_object",
-  column = teal.transform:::call_condition_choice("SEX", "M")
+  column = call_condition_choice("SEX", "M")
 )
 }
 \keyword{internal}

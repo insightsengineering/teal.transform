@@ -24,14 +24,18 @@ specific \code{\link[base]{Extract}} \code{call} for matrix
 Get call to subset and select matrix
 }
 \examples{
-teal.transform:::call_extract_matrix(
+# use non-exported function from teal.transform
+call_extract_matrix <- getFromNamespace("call_extract_matrix", "teal.transform")
+call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+
+call_extract_matrix(
   dataname = "my_array",
-  row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
+  row = call_condition_choice("my_array$SEX", "M"),
   column = call("c", "SEX", "AGE")
 )
-teal.transform:::call_extract_matrix(
+call_extract_matrix(
   "mae_object",
-  column = teal.transform:::call_condition_choice("SEX", "M")
+  column = call_condition_choice("SEX", "M")
 )
 }
 \keyword{internal}
