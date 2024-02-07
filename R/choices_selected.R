@@ -8,16 +8,19 @@ no_select_keyword <- "-- no selection --"
 #'   or whether to block the user from making selections. Can be used in `ui` input elements
 #'   such as [teal.widgets::optionalSelectInput()]
 #'
-#' @param choices (`character`) vector of possible choices or `delayed_data` object\cr
-#'   See [variable_choices()] and [value_choices()].
+#' @param choices (`character`) vector of possible choices or `delayed_data` object
+#'
+#' See [variable_choices()] and [value_choices()].
 #' @param selected (`character`) vector of preselected options, (`all_choices`) object
-#'  or (`delayed_data`) object. If `delayed_data` object then `choices` must also be
-#'  a `delayed_data` object. If not supplied it will default to the first element of
-#'  `choices` if `choices` is a vector, or `NULL` if `choices` is a `delayed_data` object.
-#' @param keep_order (`logical`)\cr
-#'  In case of `FALSE` the selected variables will be on top of the drop-down field.
-#' @param fixed optional, (`logical`)\cr
-#'  Whether to block user to select choices
+#' or (`delayed_data`) object.
+#'
+#' If `delayed_data` object then `choices` must also be `delayed_data` object.
+#' If not supplied it will default to the first element of `choices` if
+#' `choices` is a vector, or `NULL` if `choices` is a `delayed_data` object.
+#' @param keep_order (`logical`)
+#' In case of `FALSE` the selected variables will be on top of the drop-down field.
+#' @param fixed optional, (`logical`)
+#' Whether to block user to select choices
 #'
 #' @details
 #'
@@ -183,8 +186,8 @@ is.choices_selected <- function(x) { # nolint
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param x (\code{choices_selected}) output
-#' @param multiple (\code{logical}) whether multiple selections are allowed or not
+#' @param x (`choices_selected`) output
+#' @param multiple (`logical`) whether multiple selections are allowed or not
 #'
 #' @export
 add_no_selected_choices <- function(x, multiple = FALSE) {
@@ -206,10 +209,9 @@ add_no_selected_choices <- function(x, multiple = FALSE) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param x (\code{character}) Word that shall be checked for
-#'   NULL, empty, "--no-selection"
+#' @param x (`character`) Word that shall be checked for `NULL`, empty, "--no-selection"
 #'
-#' @return the word or NULL
+#' @return the word or `NULL`
 #'
 #' @export
 no_selected_as_NULL <- function(x) { # nolint

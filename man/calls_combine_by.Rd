@@ -7,15 +7,13 @@
 calls_combine_by(operator, calls)
 }
 \arguments{
-\item{operator}{(\code{character(1)} or \code{name})\cr
-name/symbol of the operator.}
+\item{operator}{(\code{character(1)} or \code{name})
+name / symbol of the operator.}
 
-\item{calls}{(\code{list} of calls)\cr
+\item{calls}{(\code{list} of calls)
 list containing calls to be combined by \code{operator}}
 }
 \value{
-call
-
 a combined \code{call}
 }
 \description{

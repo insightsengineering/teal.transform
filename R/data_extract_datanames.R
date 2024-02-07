@@ -1,9 +1,13 @@
 #' Available datasets input
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' Creates \link[shiny]{helpText} with the names of datasets
 #' available for current module.
+#'
 #' @param data_extracts list of data extracts for single variable
+#'
 #' @export
 datanames_input <- function(data_extracts) {
   datanames <- get_extract_datanames(data_extracts)
@@ -15,11 +19,14 @@ datanames_input <- function(data_extracts) {
 
 #' Gets names of the datasets from a list of `data_extract_spec` objects
 #'
-#' @description `r lifecycle::badge("stable")`
-#' Fetches `dataname` slot per \code{data_extract_spec} from a list of \code{data_extract_spec}
-#' and returns the unique `dataname` set.
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
-#' @param data_extracts A single \code{data_extract_spec} object or a list (of lists) of \code{data_extract_spec}
+#' Fetches `dataname` slot per `data_extract_spec` from a list of
+#' `data_extract_spec` and returns the unique `dataname` set.
+#'
+#' @param data_extracts A single `data_extract_spec` object or a list (of lists)
+#' of `data_extract_spec`
 #'
 #' @export
 get_extract_datanames <- function(data_extracts) {
@@ -53,10 +60,13 @@ get_extract_datanames <- function(data_extracts) {
 
 #' Checks if the input `data_extract_spec` objects all come from the same dataset
 #'
-#' @description `r lifecycle::badge("stable")`
-#' @param ... either \code{data_extract_spec} objects or lists of \code{data_extract_spec} objects that do not contain
+#' `r lifecycle::badge("stable")`
+#'
+#' @param ... either `data_extract_spec` objects or lists of `data_extract_spec` objects that do not contain
 #'   NULL
+#'
 #' @return logical
+#'
 #' @export
 is_single_dataset <- function(...) {
   data_extract_spec <- list(...)

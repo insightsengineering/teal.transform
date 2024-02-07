@@ -7,21 +7,19 @@
 call_extract_array(dataname = ".", row = NULL, column = NULL, aisle = NULL)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})\cr}
+\item{dataname}{(\code{character(1)} or \code{name})}
 
-\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
+\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})
 optional, name of the \code{row} or condition}
 
-\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
+\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})
 optional, name of the \code{column} or condition}
 
-\item{aisle}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
+\item{aisle}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})
 optional, name of the \code{row} or condition}
 }
 \value{
-\code{[} call with all conditions included
-
-specific \code{\link[base]{Extract}} \code{call} for 3-dimensional array
+specific \code{\link[=Extract]{Extract()}} \code{call} for 3-dimensional array
 }
 \description{
 Get call to subset and select array

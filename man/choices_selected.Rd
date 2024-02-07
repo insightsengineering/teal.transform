@@ -15,18 +15,21 @@ choices_selected(
 is.choices_selected(x)
 }
 \arguments{
-\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object\cr
+\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object
+
 See \code{\link[=variable_choices]{variable_choices()}} and \code{\link[=value_choices]{value_choices()}}.}
 
 \item{selected}{(\code{character}) vector of preselected options, (\code{all_choices}) object
-or (\code{delayed_data}) object. If \code{delayed_data} object then \code{choices} must also be
-a \code{delayed_data} object. If not supplied it will default to the first element of
-\code{choices} if \code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}
+or (\code{delayed_data}) object.
 
-\item{keep_order}{(\code{logical})\cr
+If \code{delayed_data} object then \code{choices} must also be \code{delayed_data} object.
+If not supplied it will default to the first element of \code{choices} if
+\code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}
+
+\item{keep_order}{(\code{logical})
 In case of \code{FALSE} the selected variables will be on top of the drop-down field.}
 
-\item{fixed}{optional, (\code{logical})\cr
+\item{fixed}{optional, (\code{logical})
 Whether to block user to select choices}
 
 \item{x}{object to check}

@@ -31,23 +31,24 @@ call_check_parse_varname <- function(varname) {
 #'
 #' Compose choices condition call from inputs.
 #'
-#' @param varname (`name`, `call` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name`, `call` or `character(1)`)
+#' name of the variable
+#' @param choices (`vector`)
+#' `varname` values to match using the `==` (single value) or `%in%` (vector)
+#' condition.
+#' `choices` can be vector of any type but for some output might be converted:
+#' * `factor` call is composed on choices converted to `character`
+#' * `Date` call is composed on choices converted to `character` using
+#' `format(choices)`
+#' * `POSIXct`, `POSIXlt` Call is composed on choices converted to `character` using
+#' `format(choices)`.
 #'
-#' @param choices (`vector`)\cr
-#'   `varname` values to match using the `==` (single value) or
-#'   `%in%` (vector) condition. `choices` can be vector of any type
-#'   but for some output might be converted:
-#'   \itemize{
-#'     \item{`factor`}{ call is composed on choices converted to `character`}
-#'     \item{`Date`}{ call is composed on choices converted to `character` using `format(choices)`}
-#'     \item{`POSIXct`, `POSIXlt`}{ Call is composed on choices converted to `character` using
-#'       `format(choices)`. One has to be careful here as formatted date-time variable might loose
-#'       some precision (see `format` argument in \code{\link{format.POSIXlt}}) and output call
-#'       could be insufficient for exact comparison. In this case one should specify
-#'       `varname = trunc(<varname>)` and possibly convert `choices` to `character`)
-#'     }
-#'   }
+#'     One has to be careful here as formatted date-time variable might loose
+#'     some precision (see `format` argument in [format.POSIXlt()] and output call
+#'     could be insufficient for exact comparison. In this case one should specify
+#'     `varname = trunc(<varname>)` and possibly convert `choices` to `character`)
+#'
+#' @return a `call`
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -59,7 +60,6 @@ call_check_parse_varname <- function(varname) {
 #' call_condition_choice("SEX", choices = factor(c("F", "M")))
 #' call_condition_choice("x$SEX", choices = Sys.Date())
 #' call_condition_choice("trunc(x$SEX)", choices = Sys.time())
-#' @return a `call`
 #' @keywords internal
 #'
 call_condition_choice <- function(varname, choices) {
@@ -92,13 +92,16 @@ call_condition_choice <- function(varname, choices) {
 #'
 #' Compose `numeric` range condition call from inputs
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
 #'
-#' @param range (`numeric(2)`)\cr
-#'   range of the variable
+#' name of the variable
 #'
-#' @return call
+#' @param range (`numeric(2)`)
+#'
+#' range of the variable
+#'
+#' @return a `call`
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
@@ -110,7 +113,6 @@ call_condition_choice <- function(varname, choices) {
 #'   call_extract_list("ADSL", "AGE"),
 #'   range = c(-1.2, 2.1)
 #' )
-#' @return a `call`
 #' @keywords internal
 #'
 call_condition_range <- function(varname, range) {
@@ -128,20 +130,22 @@ call_condition_range <- function(varname, range) {
 #'
 #' Compose `logical` variable condition call from inputs
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
 #'
-#' @param choice (`logical(1)`)\cr
-#'   chosen value
+#' name of the variable
 #'
-#' @return call
+#' @param choice (`logical(1)`)
+#'
+#' chosen value
+#'
+#' @return a `call`
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' call_condition_logical <- getFromNamespace("call_condition_logical", "teal.transform")
 #'
 #' call_condition_logical("event", choice = TRUE)
 #' call_condition_logical("event", choice = FALSE)
-#' @return a `call`
 #' @keywords internal
 #'
 call_condition_logical <- function(varname, choice) {
@@ -165,17 +169,16 @@ call_condition_logical <- function(varname, choice) {
 #'
 #' Compose `POSIXct` range condition call from inputs.
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
+#' name of the variable
 #'
-#' @param range (`POSIXct`)\cr
-#'   range of the variable. Be aware that output
-#'   uses truncated range format `"%Y-%m-%d %H:%M:%S"`, which means that
-#'   some precision might be lost.
+#' @param range (`POSIXct`)
+#' range of the variable. Be aware that output uses truncated range format
+#' `"%Y-%m-%d %H:%M:%S"`, which means that some precision might be lost.
 #'
-#' @param timezone (`character(1)`)\cr
-#'   specifies the time zone to be used for the conversion.
-#'   By default `Sys.timezone()` is used.
+#' @param timezone (`character(1)`)
+#' specifies the time zone to be used for the conversion.
+#' By default `Sys.timezone()` is used.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -216,11 +219,13 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
 #'
 #' Compose `Date` range condition call from inputs
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
+#' name of the variable
 #'
-#' @param range (`Date`)\cr
-#'   range of the variable
+#' @param range (`Date`)
+#' range of the variable
+#'
+#' @return a `call`
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -230,7 +235,6 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
 #'   as.name("date"),
 #'   range = c(Sys.Date(), Sys.Date() + 1)
 #' )
-#' @return a `call`
 #' @keywords internal
 #'
 call_condition_range_date <- function(varname, range) {
@@ -247,15 +251,16 @@ call_condition_range_date <- function(varname, range) {
 
 #' Get call to subset and select array
 #'
-#' Get call to subset and select array
-#' @param dataname (`character(1)` or `name`)\cr
-#' @param row (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @param column (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `column` or condition
-#' @param aisle (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @return `[` call with all conditions included
+#' @param dataname (`character(1)` or `name`)
+#' @param row (`name`, `call`, `logical`, `integer`, `character`)
+#' optional, name of the `row` or condition
+#' @param column (`name`, `call`, `logical`, `integer`, `character`)
+#' optional, name of the `column` or condition
+#' @param aisle (`name`, `call`, `logical`, `integer`, `character`)
+#' optional, name of the `row` or condition
+#'
+#' @return specific [Extract()] `call` for 3-dimensional array
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' call_extract_array <- getFromNamespace("call_extract_array", "teal.transform")
@@ -271,7 +276,6 @@ call_condition_range_date <- function(varname, range) {
 #'   "mae_object",
 #'   column = call_condition_choice("SEX", "M")
 #' )
-#' @return specific \code{\link[base]{Extract}} `call` for 3-dimensional array
 #' @keywords internal
 #'
 call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle = NULL) {
@@ -312,13 +316,14 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 
 #' Get call to subset and select matrix
 #'
-#' Get call to subset and select matrix
-#' @param dataname (`character(1)` or `name`)\cr
-#' @param row (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @param column (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `column` or condition
-#' @return `[` call with all conditions included
+#' @param dataname (`character(1)` or `name`)
+#' @param row (`name`, `call`, `logical`, `integer`, `character`)
+#' optional, name of the `row` or condition
+#' @param column (`name`, `call`, `logical`, `integer`, `character`)
+#' optional, name of the `column` or condition
+#'
+#' @return specific [Extract()] `call` for matrix
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' call_extract_matrix <- getFromNamespace("call_extract_matrix", "teal.transform")
@@ -333,7 +338,6 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 #'   "mae_object",
 #'   column = call_condition_choice("SEX", "M")
 #' )
-#' @return specific \code{\link[base]{Extract}} `call` for matrix
 #' @keywords internal
 #'
 call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
@@ -369,18 +373,15 @@ call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
 
 #' Compose extract call with `$` operator
 #'
-#' Compose extract call with `$` operator
-#'
-#' @param dataname (`character(1)` or `name`)\cr
-#'   name of the object
-#'
-#' @param varname (`character(1)` or `name`)\cr
-#'   name of the slot in data
-#'
+#' @param dataname (`character(1)` or `name`)
+#' name of the object
+#' @param varname (`character(1)` or `name`)
+#' name of the slot in data
 #' @param dollar (`logical(1)`)\cr
-#'   whether returned call should use `$` or `[[` operator
+#' whether returned call should use `$` or `[[` operator
 #'
 #' @return `$` or `[[` call
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
@@ -474,13 +475,14 @@ call_with_colon <- function(name, ..., unlist_args = list()) {
 #'
 #' Combine list of calls by specific operator
 #'
-#' @param operator (`character(1)` or `name`)\cr
-#'   name/symbol of the operator.
+#' @param operator (`character(1)` or `name`)
+#' name / symbol of the operator.
 #'
-#' @param calls (`list` of calls)\cr
-#'   list containing calls to be combined by `operator`
+#' @param calls (`list` of calls)
+#' list containing calls to be combined by `operator`
 #'
-#' @return call
+#' @return a combined `call`
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' calls_combine_by <- getFromNamespace("calls_combine_by", "teal.transform")
@@ -496,7 +498,6 @@ call_with_colon <- function(name, ..., unlist_args = list()) {
 #'     TRUE
 #'   )
 #' )
-#' @return a combined `call`
 #' @keywords internal
 #'
 calls_combine_by <- function(operator, calls) {

@@ -7,15 +7,15 @@
 call_condition_range(varname, range)
 }
 \arguments{
-\item{varname}{(\code{name} or \code{character(1)})\cr
+\item{varname}{(\code{name} or \code{character(1)})
+
 name of the variable}
 
-\item{range}{(\code{numeric(2)})\cr
+\item{range}{(\code{numeric(2)})
+
 range of the variable}
 }
 \value{
-call
-
 a \code{call}
 }
 \description{

@@ -7,10 +7,10 @@
 call_condition_range_date(varname, range)
 }
 \arguments{
-\item{varname}{(\code{name} or \code{character(1)})\cr
+\item{varname}{(\code{name} or \code{character(1)})
 name of the variable}
 
-\item{range}{(\code{Date})\cr
+\item{range}{(\code{Date})
 range of the variable}
 }
 \value{

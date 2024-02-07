@@ -8,10 +8,10 @@ get_dataset_prefixed_col_names(data)
 }
 \arguments{
 \item{data}{(\code{data.frame}) Data with attribute \code{filter_and_columns}. This can only be
-created by \code{\link{data_extract_srv}}. which returns a shiny \code{\link[shiny]{reactive}}.}
+created by \code{\link[=data_extract_srv]{data_extract_srv()}}. which returns a shiny \code{\link[shiny:reactive]{shiny::reactive()}}.}
 }
 \value{
-A named character vector with the non-key columns of the \code{data}..
+A named character vector with the non-key columns of the \code{data}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

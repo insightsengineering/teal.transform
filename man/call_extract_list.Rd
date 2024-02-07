@@ -7,10 +7,10 @@
 call_extract_list(dataname, varname, dollar = TRUE)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})\cr
+\item{dataname}{(\code{character(1)} or \code{name})
 name of the object}
 
-\item{varname}{(\code{character(1)} or \code{name})\cr
+\item{varname}{(\code{character(1)} or \code{name})
 name of the slot in data}
 
 \item{dollar}{(\code{logical(1)})\cr

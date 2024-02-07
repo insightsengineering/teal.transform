@@ -11,6 +11,7 @@ datanames_input(data_extracts)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Creates \link[shiny]{helpText} with the names of datasets
 available for current module.
 }
