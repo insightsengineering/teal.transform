@@ -211,7 +211,6 @@ filter_spec <- function(vars,
 #'   TRUE if this filter was already consumed by the server function; FALSE otherwise.
 #'
 #' @return `filter_spec` or `delayed_filter_spec` S3-class object.
-#' @keywords internal
 #'
 #' @seealso filter_spec
 #'
@@ -237,6 +236,8 @@ filter_spec <- function(vars,
 #'   vars_selected = "PARAMCD",
 #'   vars_multiple = TRUE
 #' )
+#' @keywords internal
+#'
 filter_spec_internal <- function(vars_choices,
                                  vars_selected = NULL,
                                  vars_label = NULL,

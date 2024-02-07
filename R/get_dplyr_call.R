@@ -7,6 +7,7 @@
 #' @return (\code{list}) simplified selectors with aggregated set of filters,
 #'   selections, reshapes etc. All necessary data for merging
 #' @keywords internal
+#'
 get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_class(join_keys, "join_keys")
@@ -126,7 +127,6 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #' @param data (`NULL` or named `list`).
 #'
 #' @return (\code{call}) filter, select, rename and reshape call
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -201,6 +201,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'     internal_id = "test1"
 #'   ))
 #' )
+#' @keywords internal
 get_dplyr_call <- function(selector_list,
                            idx = 1L,
                            join_keys = teal.data::join_keys(),
@@ -250,13 +251,13 @@ get_dplyr_call <- function(selector_list,
 #' @param select (\code{character}) vector of selected column names
 #'
 #' @return (\code{call}) \code{dplyr} select call
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
 #' get_select_call <- getFromNamespace("get_select_call", "teal.transform")
 #'
 #' get_select_call(letters)
+#' @keywords internal
 get_select_call <- function(select) {
   logger::log_trace("get_select_call called with: { paste(select, collapse = ', ') } columns.")
   if (is.null(select) || length(select) == 0) {
@@ -274,7 +275,6 @@ get_select_call <- function(select) {
 #' @param dataname (\code{NULL} or \code{character}) name of dataset.
 #' @param datasets (\code{NULL} or \code{named `list`}).
 #' @return (\code{call}) \code{dplyr} filter call
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -287,6 +287,7 @@ get_select_call <- function(select) {
 #'   list(columns = "SEX", selected = list(NA, "F", "M")),
 #'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
 #' ))
+#' @keywords internal
 get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
   logger::log_trace(
     paste(
@@ -414,7 +415,6 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #' @inheritParams get_dplyr_call
 #'
 #' @return (\code{call}) \code{dplyr} rename call
-#' @keywords internal
 #' @references get_rename_dict
 #'
 #' @examples
@@ -459,6 +459,8 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #' get_rename_call(x, 2L)
 #' get_rename_call(x, 3L)
 #' get_rename_call(x, 4L)
+#' @keywords internal
+#'
 get_rename_call <- function(selector_list = list(),
                             idx = 1L,
                             join_keys = teal.data::join_keys(),
@@ -492,7 +494,6 @@ get_rename_call <- function(selector_list = list(),
 #' @inheritParams get_dplyr_call
 #'
 #' @return (\code{list}) list of multiple \code{dplyr} calls that reshape data
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -520,6 +521,8 @@ get_rename_call <- function(selector_list = list(),
 #'   )
 #' )
 #' get_reshape_call(x, 1L)
+#' @keywords internal
+#'
 get_reshape_call <- function(selector_list = list(),
                              idx = 1L,
                              join_keys = teal.data::join_keys(),
@@ -572,6 +575,7 @@ get_reshape_call <- function(selector_list = list(),
 #' Get values names which are spread into columns.
 #' @param selector one element of selector_list obtained by \code{get_dplyr_call_data}.
 #' @keywords internal
+#'
 get_pivot_longer_col <- function(selector) {
   logger::log_trace("get_reshape_unite_col called with: { selector$internal_id } selector.")
   setdiff(selector$select, selector$keys)
@@ -583,6 +587,7 @@ get_pivot_longer_col <- function(selector) {
 #' on keys which are in \code{filter_spec}.
 #' @inheritParams get_pivot_longer_col
 #' @keywords internal
+#'
 get_reshape_unite_col <- function(selector) {
   logger::log_trace("get_reshape_unite_col called with: { selector$internal_id } selector.")
   intersect(
@@ -596,6 +601,7 @@ get_reshape_unite_col <- function(selector) {
 #' Get key values (levels) of the unite columns.
 #' @inheritParams get_pivot_longer_col
 #' @keywords internal
+#'
 get_reshape_unite_vals <- function(selector) {
   logger::log_trace("get_reshape_unite_vals called with: { selector$internal_id } selector.")
   unite_cols <- get_reshape_unite_col(selector)

@@ -5,7 +5,6 @@
 #'  selection order.
 #' @param id (`character(1)`) The shiny `inputId` of the element
 #' @return `shiny.tag.list` with the UI
-#' @keywords internal
 #' @examples
 #' # use non-exported function from teal.transform
 #' data_extract_select_ui <- getFromNamespace("data_extract_select_ui", "teal.transform")
@@ -14,6 +13,8 @@
 #'   select = select_spec(choices = "test_choice"),
 #'   id = "test_id"
 #' )
+#' @keywords internal
+#'
 data_extract_select_ui <- function(select, id = "select") {
   checkmate::assert_class(select, "select_spec")
   checkmate::assert_string(id)

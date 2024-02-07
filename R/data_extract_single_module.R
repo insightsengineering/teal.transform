@@ -7,13 +7,14 @@
 #' @param single_data_extract_spec (`data_extract_spec`) the [data_extract_spec()] object to handle.
 #'
 #' @return `shiny.tag` the HTML element defining the UI
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
 #' data_extract_single_ui <- getFromNamespace("data_extract_single_ui", "teal.transform")
 #'
 #' data_extract_single_ui(id = "test", data_extract_spec("extract"))
+#' @keywords internal
+#'
 data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   stopifnot(inherits(single_data_extract_spec, "data_extract_spec"))
   ns <- NS(id)
@@ -72,6 +73,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
 #'
 #' @return `NULL`
 #' @keywords internal
+#'
 data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
   moduleServer(
     id,

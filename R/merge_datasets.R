@@ -132,7 +132,6 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #' @inheritParams merge_datasets
 #'
 #' @return error or nothing
-#' @keywords internal
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -164,6 +163,8 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #'   )
 #' )
 #' merge_selectors(selector_list)
+#' @keywords internal
+#'
 merge_selectors <- function(selector_list) {
   logger::log_trace("merge_selectors called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_list(selector_list, min.len = 1)
@@ -222,6 +223,7 @@ merge_selectors <- function(selector_list) {
 #' @inheritParams merge_datasets
 #' @return \code{NULL} if check is successful
 #' @keywords internal
+#'
 check_data_merge_selectors <- function(selector_list) {
   # check if reshape n empt select or just primary keys
   lapply(selector_list, function(x) {
@@ -249,6 +251,7 @@ check_data_merge_selectors <- function(selector_list) {
 #' @return `TRUE` if the provided keys meet the requirements; the `shiny`
 #' validate error otherwise
 #' @keywords internal
+#'
 validate_keys_sufficient <- function(join_keys, merged_selector_list) {
   validate(
     need(
@@ -275,6 +278,7 @@ validate_keys_sufficient <- function(join_keys, merged_selector_list) {
 #' @return `TRUE` if all pairs of the slices have the corresponding keys;
 #' `FALSE` otherwise
 #' @keywords internal
+#'
 are_needed_keys_provided <- function(join_keys, merged_selector_list) {
   # because one slice doesn't have to be merged with anything
   if (length(merged_selector_list) <= 1) {

@@ -4,6 +4,7 @@
 #' @param varname (`name`, `call` or `character(1)`)\cr
 #'   name of the variable
 #' @keywords internal
+#'
 call_check_parse_varname <- function(varname) {
   checkmate::assert(
     checkmate::check_string(varname),
@@ -60,6 +61,7 @@ call_check_parse_varname <- function(varname) {
 #' call_condition_choice("trunc(x$SEX)", choices = Sys.time())
 #' @return a `call`
 #' @keywords internal
+#'
 call_condition_choice <- function(varname, choices) {
   varname <- call_check_parse_varname(varname)
 
@@ -110,6 +112,7 @@ call_condition_choice <- function(varname, choices) {
 #' )
 #' @return a `call`
 #' @keywords internal
+#'
 call_condition_range <- function(varname, range) {
   checkmate::assert_numeric(range, len = 2, sorted = TRUE)
 
@@ -140,6 +143,7 @@ call_condition_range <- function(varname, range) {
 #' call_condition_logical("event", choice = FALSE)
 #' @return a `call`
 #' @keywords internal
+#'
 call_condition_logical <- function(varname, choice) {
   checkmate::assert_flag(choice)
   varname <- call_check_parse_varname(varname)
@@ -186,6 +190,7 @@ call_condition_logical <- function(varname, choice) {
 #' )
 #' @return a `call`
 #' @keywords internal
+#'
 call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone()) {
   checkmate::assert_posixct(range, len = 2, sorted = TRUE)
   checkmate::assert_string(timezone)
@@ -227,6 +232,7 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
 #' )
 #' @return a `call`
 #' @keywords internal
+#'
 call_condition_range_date <- function(varname, range) {
   checkmate::assert_date(range, len = 2)
   checkmate::assert_true(range[2] >= range[1])
@@ -267,6 +273,7 @@ call_condition_range_date <- function(varname, range) {
 #' )
 #' @return specific \code{\link[base]{Extract}} `call` for 3-dimensional array
 #' @keywords internal
+#'
 call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle = NULL) {
   checkmate::assert(
     checkmate::check_string(dataname),
@@ -328,6 +335,7 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 #' )
 #' @return specific \code{\link[base]{Extract}} `call` for matrix
 #' @keywords internal
+#'
 call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
   checkmate::assert(
     checkmate::check_string(dataname),
@@ -383,6 +391,7 @@ call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
 #' call_extract_list(as.name("weird name"), as.name("AGE"))
 #' call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
 #' @keywords internal
+#'
 call_extract_list <- function(dataname, varname, dollar = TRUE) {
   checkmate::assert_flag(dollar)
   checkmate::assert(
@@ -452,6 +461,7 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 #' )
 #' }
 #' @keywords internal
+#'
 call_with_colon <- function(name, ..., unlist_args = list()) {
   checkmate::assert_string(name)
   checkmate::assert_list(unlist_args)
@@ -490,6 +500,7 @@ call_with_colon <- function(name, ..., unlist_args = list()) {
 #' )
 #' @return a combined `call`
 #' @keywords internal
+#'
 calls_combine_by <- function(operator, calls) {
   checkmate::assert_string(operator)
   stopifnot(

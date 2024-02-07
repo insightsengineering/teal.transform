@@ -22,6 +22,7 @@ split_by_sep <- function(x, sep) {
 #'
 #' @return (`character`) vector with labels
 #' @keywords internal
+#'
 extract_choices_labels <- function(choices, values = NULL) {
   res <- if (inherits(choices, "choices_labeled")) {
     attr(choices, "raw_labels")
@@ -38,7 +39,6 @@ extract_choices_labels <- function(choices, values = NULL) {
 
   return(res)
 }
-
 
 #' Function to compose `validators` from `data_extract_multiple_srv`
 #'

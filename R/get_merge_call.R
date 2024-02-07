@@ -116,6 +116,7 @@ get_merge_call <- function(selector_list,
 #' @inheritParams get_merge_call
 #' @return list of key pairs between all datasets
 #' @keywords internal
+#'
 get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
   logger::log_trace(
     "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors."
@@ -138,7 +139,6 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
   )
 }
 
-
 #' Gets keys vector from keys list
 #'
 #' @param selector_from (`list`) `data_extract_srv`
@@ -160,6 +160,7 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
 #'
 #' @return (`character`)
 #' @keywords internal
+#'
 get_merge_key_pair <- function(selector_from, selector_to, key_from) {
   logger::log_trace(
     paste(
@@ -199,6 +200,7 @@ get_merge_key_pair <- function(selector_from, selector_to, key_from) {
 #'
 #' @return (`call`)
 #' @keywords internal
+#'
 get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call_data(selector_list)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE, lower = 2L)
 
@@ -286,6 +288,7 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
 #' @param merge_key keys obtained from `get_merge_key_i`
 #' @param idx optional (`integer`) current selector index in all selectors list
 #' @keywords internal
+#'
 parse_merge_key_i <- function(selector_list,
                               idx,
                               dplyr_call_data = get_dplyr_call_data(selector_list),
@@ -310,6 +313,7 @@ parse_merge_key_i <- function(selector_list,
 #' @inheritParams get_pivot_longer_col
 #' @return names `character` of the filters which should be dropped from select call
 #' @keywords internal
+#'
 get_dropped_filters <- function(selector) {
   logger::log_trace("get_dropped_filters called with { selector$internal_id } selector.")
   unlist(
@@ -446,6 +450,7 @@ get_relabel_call <- function(labels) {
 #' @param dplyr_call_data `list`
 #' @return columns_source `list` without columns which has been reshaped
 #' @keywords internal
+#'
 get_relabel_cols <- function(columns_source, dplyr_call_data) {
   logger::log_trace(
     "get_relabel_cols called with: { paste(names(columns_source), collapse = ', ') } columns_source."
