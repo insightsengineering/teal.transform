@@ -1,7 +1,17 @@
 #' Data extract filter specification
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' It consists in choices and additionally the variable names for the choices
+#'
+#' @details
+#' The `filter_spec` is used inside `teal` apps to allow filtering datasets
+#' for their key variables. Imagine having an adverse events table. It has
+#' the columns `PARAMCD` and `CNSR`. `PARAMCD` contains the levels
+#' `"OS"`, `"PFS"`, `"EFS"`. `CNSR` contains the levels `"0"` and `"1"`.
+#' The first example should show how a `filter_spec` setup will influence
+#' the drop-down menu the app user will see.
 #'
 #' @inheritParams select_spec
 #' @param vars (`character`) or (`delayed_data`) object.
@@ -10,11 +20,10 @@
 #' `delayed_data` objects can be created via [variable_choices()], [value_choices()],
 #' or [choices_selected()].
 #' @param sep (`character`) A separator string to split the `choices` or
-#' `selected` inputs into the values of the different columns
+#' `selected` inputs into the values of the different columns.
 #' @param choices (`character` or `numeric` or `logical` or (`delayed_data`) object.
-#' Named character vector to define the choices
-#' of a shiny [shiny::selectInput()]. These choices will be used to filter the
-#' dataset.
+#' Named character vector to define the choices of a shiny [shiny::selectInput()].
+#' These choices will be used to filter the dataset.
 #'
 #' These shall be filter values of the `vars` input separated by the separator(`sep`). Please
 #' watch out that the filter values have to follow the order of the `vars` input. In the following
@@ -27,30 +36,17 @@
 #' The `sep` input has to be `" - "` in this case.
 #'
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
-#'
 #' @param selected (`character` or `numeric` or `logical` or (`delayed_data` or `all_choices`) object.
 #' Named character vector to define the selected values of a shiny [shiny::selectInput()]
 #' (default values).
-#' This value will be displayed inside the shiny app upon start. The `all_choices`
-#' object indicates selecting all possible choices.
-#'
-#' @param drop_keys optional, (`logical`)
-#' whether to drop filter column from the dataset keys, `TRUE` on default.
-#'
-#' @param label optional (`character`). Define a label on top of this specific
+#' This value will be displayed inside the shiny app upon start.
+#' The `all_choices` object indicates selecting all possible choices.
+#' @param drop_keys (optional `logical`) whether to drop filter column from the
+#' dataset keys, `TRUE` on default.
+#' @param label (optional `character`). Define a label on top of this specific
 #' shiny [shiny::selectInput()]. The default value is `"Filter by"`.
 #'
 #' @return `filter_spec`-S3-class object or `delayed_filter_spec`-S3-class object.
-#'
-#' @details
-#'
-#' The `filter_spec` is used inside `teal` apps to allow filtering datasets
-#' for their key variables. Imagine having an adverse events table. It has
-#' the columns `PARAMCD` and `CNSR`. `PARAMCD` contains the levels
-#' `"OS"`, `"PFS"`, `"EFS"`. `CNSR` contains the levels `"0"` and `"1"`.
-#' The first example should show how a `filter_spec` setup will influence
-#' the drop-down menu the app user will see.
-#'
 #'
 #' @examples
 #' # for Adverse Events table
@@ -184,9 +180,9 @@ filter_spec <- function(vars,
 
 #' Data extract dynamic filter specification
 #'
-#' This function returns a configuration for the `data_extract_ui` module. This function covers
-#' the configuration of filtering datasets (so called `filter_spec`), which then is used to build
-#' the UI element in the `teal` app.
+#' Builds a configuration for the `data_extract_ui` module. This function covers
+#' the configuration of filtering datasets (so called `filter_spec`), which then
+#' is used to build the UI element in the `teal` app.
 #'
 #' @inheritParams filter_spec
 #' @param vars_choices (`character` or `delayed_data`)

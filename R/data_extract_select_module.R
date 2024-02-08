@@ -1,10 +1,12 @@
 #' Returns a `shiny.tag.list` object with the UI for a `select_spec` object
 #'
 #' @param select (`select_spec`) A definition of a select spec element.
-#'  Setting [select_spec()] with `ordered = TRUE` makes this selector responsive to the variable
-#'  selection order.
-#' @param id (`character(1)`) The shiny `inputId` of the element
-#' @return `shiny.tag.list` with the UI
+#' Setting [select_spec()] with `ordered = TRUE` makes this selector responsive
+#' to the variable selection order.
+#' @param id (`character(1)`) The shiny `inputId` of the element.
+#'
+#' @return `shiny.tag.list` with the UI.
+#'
 #' @examples
 #' # use non-exported function from teal.transform
 #' data_extract_select_ui <- getFromNamespace("data_extract_select_ui", "teal.transform")

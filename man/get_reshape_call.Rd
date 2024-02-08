@@ -19,15 +19,15 @@ When using a reactive named list, the names must be identical to the shiny
 ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
 \item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 }
 \value{
-(\code{list}) list of multiple \code{dplyr} calls that reshape data
+List of multiple \code{dplyr} calls that reshape data.
 }
 \description{
 Returns \code{dplyr} reshape call

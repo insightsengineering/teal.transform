@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_dplyr_call.R
 \name{get_filter_call}
 \alias{get_filter_call}
-\title{Returns \code{dplyr} filter call}
+\title{Build a \code{dplyr} filter call}
 \usage{
 get_filter_call(filter, dataname = NULL, datasets = NULL)
 }
@@ -14,10 +14,10 @@ get_filter_call(filter, dataname = NULL, datasets = NULL)
 \item{datasets}{(\code{NULL} or named \code{list}).}
 }
 \value{
-(\code{call}) \code{dplyr} filter call
+\code{dplyr} filter \code{call}.
 }
 \description{
-Returns \code{dplyr} filter call
+Build a \code{dplyr} filter call
 }
 \examples{
 # use non-exported function from teal.transform

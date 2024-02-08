@@ -9,6 +9,9 @@ get_pivot_longer_col(selector)
 \arguments{
 \item{selector}{one element of selector_list obtained by \code{get_dplyr_call_data}.}
 }
+\value{
+A \code{character} vector of all the selected columns that are not a \code{keys} element.
+}
 \description{
 Get values names which are spread into columns.
 }

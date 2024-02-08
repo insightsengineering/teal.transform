@@ -11,24 +11,29 @@ data_extract_spec(dataname, select = NULL, filter = NULL, reshape = FALSE)
 The name of the dataset to be extracted.}
 
 \item{select}{(\code{NULL}, \code{select_spec}-S3 class or \code{delayed_select_spec})
-Columns to be selected from the input dataset
-mentioned in \code{dataname}. The setup can be created using \link{select_spec} function.}
+Columns to be selected from the input dataset mentioned in \code{dataname}.
+The setup can be created using \link{select_spec} function.}
 
 \item{filter}{(\code{NULL} or \code{filter_spec} or its respective delayed version)
 Setup of the filtering of key columns inside the dataset.
 This setup can be created using the \link{filter_spec} function.
-Please note that if both select and filter are set to NULL, then the result will be a filter spec UI with all
-variables as possible choices and a select spec with multiple set to \code{TRUE}.}
+Please note that if both select and filter are set to NULL, then the result
+will be a filter spec UI with all variables as possible choices and a select
+spec with multiple set to \code{TRUE}.}
 
 \item{reshape}{(\code{logical})
-whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
+whether reshape long to wide.
+Note that it will be used only in case of long dataset with multiple
 keys selected in filter part.}
+}
+\value{
+\code{data_extract_spec} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The Data Extract input can be used to filter and select columns from a data
-set. This function enables such an input in \code{teal}.
+The Data Extract input can be used to filter and select columns from a data set.
+This function enables such an input in \code{teal}.
 Please use the constructor function \link{data_extract_spec} to set it up.
 
 Note that no checks based on columns can be done because the data is only referred to by name.

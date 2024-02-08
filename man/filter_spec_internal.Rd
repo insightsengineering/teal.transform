@@ -75,9 +75,8 @@ if true allow to change the selected variables in the UI element; otherwise, do 
 if true allow to select multiple variables in the UI elements; otherwise, do not allow.}
 
 \item{choices}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data}) object.
-Named character vector to define the choices
-of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. These choices will be used to filter the
-dataset.
+Named character vector to define the choices of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
+These choices will be used to filter the dataset.
 
 These shall be filter values of the \code{vars} input separated by the separator(\code{sep}). Please
 watch out that the filter values have to follow the order of the \code{vars} input. In the following
@@ -94,10 +93,10 @@ The \code{sep} input has to be \code{" - "} in this case.
 \item{selected}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data} or \code{all_choices}) object.
 Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}
 (default values).
-This value will be displayed inside the shiny app upon start. The \code{all_choices}
-object indicates selecting all possible choices.}
+This value will be displayed inside the shiny app upon start.
+The \code{all_choices} object indicates selecting all possible choices.}
 
-\item{label}{optional (\code{character}). Define a label on top of this specific
+\item{label}{(optional \code{character}). Define a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
 \item{fixed}{(\code{logical})
@@ -107,10 +106,10 @@ if true allow to change the initially selected values of the variables; otherwis
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or
-\code{selected} inputs into the values of the different columns}
+\code{selected} inputs into the values of the different columns.}
 
-\item{drop_keys}{optional, (\code{logical})
-whether to drop filter column from the dataset keys, \code{TRUE} on default.}
+\item{drop_keys}{(optional \code{logical}) whether to drop filter column from the
+dataset keys, \code{TRUE} on default.}
 
 \item{dataname}{(\code{character})
 the name of the dataset this filter covers. Set during the initialization of the \code{teal} application.}
@@ -123,9 +122,9 @@ TRUE if this filter was already consumed by the server function; FALSE otherwise
 \code{filter_spec} or \code{delayed_filter_spec} S3-class object.
 }
 \description{
-This function returns a configuration for the \code{data_extract_ui} module. This function covers
-the configuration of filtering datasets (so called \code{filter_spec}), which then is used to build
-the UI element in the \code{teal} app.
+Builds a configuration for the \code{data_extract_ui} module. This function covers
+the configuration of filtering datasets (so called \code{filter_spec}), which then
+is used to build the UI element in the \code{teal} app.
 }
 \examples{
 # use non-exported function from teal.transform

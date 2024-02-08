@@ -18,7 +18,7 @@ ids of the respective
 }
 \value{
 (\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging
+selections, reshapes etc. All necessary data for merging.
 }
 \description{
 Simplifies selector_list into aggregated list with one element per

@@ -1,12 +1,17 @@
 #' Returns a reactive list with values read from the inputs of `data_extract_spec`
 #'
-#' @details Reads the UI inputs of a single `data_extract_spec` object in
-#' a running `teal` application. Returns a reactive list of reactive values
-#' read from the input. The returned list has keys corresponding to the UI
-#' inputs: `select`, `filters`, `always_selected`, `reshape`.
+#' @details
+#' Reads the UI inputs of a single `data_extract_spec` object in a running
+#' `teal` application.
+#' Returns a reactive list of reactive values read from the input.
+#'
+#' The returned list has keys corresponding to the UI inputs:
+#' `select`, `filters`, `always_selected`, `reshape`.
 #'
 #' @inheritParams data_extract_single_srv
-#' @return `shiny::reactive` the reactive list with reactive values read from the UI
+#'
+#' @return `shiny::reactive` the reactive list with reactive values read from the UI.
+#'
 #' @keywords internal
 #'
 data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, select_validation_rule = NULL,

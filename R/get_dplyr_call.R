@@ -2,10 +2,12 @@
 #'
 #' Simplifies selector_list into aggregated list with one element per
 #' same selector - same dataset, same filter configuration and same reshape status
+#'
 #' @inheritParams get_merge_call
 #'
 #' @return (`list`) simplified selectors with aggregated set of filters,
-#' selections, reshapes etc. All necessary data for merging
+#' selections, reshapes etc. All necessary data for merging.
+#'
 #' @keywords internal
 #'
 get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
@@ -119,14 +121,14 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 
 #' Parses filter, select, rename and reshape call
 #'
-#' Parse filter, select, rename and reshape call
 #' @inheritParams get_dplyr_call_data
-#' @param idx optional (`integer`) current selector index in all selectors list
-#' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
-#' selections, reshapes etc. All necessary data for merging
-#' @param data (`NULL` or named `list`).
 #'
-#' @return (`call`) filter, select, rename and reshape call
+#' @param idx optional (`integer`) current selector index in all selectors list.
+#' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
+#' selections, reshapes etc. All necessary data for merging.
+#' @param data (`NULL` or named `list`) of datasets.
+#'
+#' @return (`call`) filter, select, rename and reshape call.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -202,6 +204,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'   ))
 #' )
 #' @keywords internal
+#'
 get_dplyr_call <- function(selector_list,
                            idx = 1L,
                            join_keys = teal.data::join_keys(),
@@ -248,9 +251,9 @@ get_dplyr_call <- function(selector_list,
 
 #' Parse `dplyr` select call
 #'
-#' @param select (`character`) vector of selected column names
+#' @param select (`character`) vector of selected column names.
 #'
-#' @return (`call`) `dplyr` select call
+#' @return `dplyr` select `call`.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -258,6 +261,7 @@ get_dplyr_call <- function(selector_list,
 #'
 #' get_select_call(letters)
 #' @keywords internal
+#'
 get_select_call <- function(select) {
   logger::log_trace("get_select_call called with: { paste(select, collapse = ', ') } columns.")
   if (is.null(select) || length(select) == 0) {
@@ -269,12 +273,13 @@ get_select_call <- function(select) {
   as.call(c(list(quote(dplyr::select)), lapply(select, as.name)))
 }
 
-#' Returns `dplyr` filter call
+#' Build a `dplyr` filter call
 #'
 #' @param filter (`list`) Either list of lists or list with `select` and `selected` items.
 #' @param dataname (`NULL` or `character`) name of dataset.
 #' @param datasets (`NULL` or named `list`).
-#' @return (`call`) `dplyr` filter call
+#'
+#' @return `dplyr` filter `call`.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -288,6 +293,7 @@ get_select_call <- function(select) {
 #'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
 #' ))
 #' @keywords internal
+#'
 get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
   logger::log_trace(
     paste(
@@ -410,13 +416,11 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 
 #' Returns `dplyr` rename call
 #'
-#' Rename is used only if there are duplicated columns
+#' Rename is used only if there are duplicated columns.
 #'
 #' @inheritParams get_dplyr_call
 #'
-#' @return (`call`) `dplyr` rename call
-#'
-#' @references get_rename_dict
+#' @return (`call`) `dplyr` rename call.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -494,7 +498,7 @@ get_rename_call <- function(selector_list = list(),
 #'
 #' @inheritParams get_dplyr_call
 #'
-#' @return (`list`) list of multiple `dplyr` calls that reshape data
+#' @return List of multiple `dplyr` calls that reshape data.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -574,7 +578,11 @@ get_reshape_call <- function(selector_list = list(),
 #' Get pivot longer  columns
 #'
 #' Get values names which are spread into columns.
+#'
 #' @param selector one element of selector_list obtained by `get_dplyr_call_data`.
+#'
+#' @return A `character` vector of all the selected columns that are not a `keys` element.
+#'
 #' @keywords internal
 #'
 get_pivot_longer_col <- function(selector) {
@@ -586,7 +594,11 @@ get_pivot_longer_col <- function(selector) {
 #'
 #' Get key names which spreads values into columns. Reshape is done only
 #' on keys which are in `filter_spec`.
+#'
 #' @inheritParams get_pivot_longer_col
+#'
+#' @return A `character` vector of all the selector's keys that are defined in the filters.
+#'
 #' @keywords internal
 #'
 get_reshape_unite_col <- function(selector) {
@@ -600,7 +612,11 @@ get_reshape_unite_col <- function(selector) {
 #' Get unite columns values
 #'
 #' Get key values (levels) of the unite columns.
+#'
 #' @inheritParams get_pivot_longer_col
+#'
+#' @return A `character` vector of keys of the unite columns.
+#'
 #' @keywords internal
 #'
 get_reshape_unite_vals <- function(selector) {

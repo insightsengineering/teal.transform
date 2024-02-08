@@ -11,16 +11,16 @@ data_extract_single_srv(id, datasets, single_data_extract_spec)
 
 \item{datasets}{(\verb{named list}) a list of reactive \code{data.frame} type objects.}
 
-\item{single_data_extract_spec}{(\code{data_extract_spec}) the \code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
+\item{single_data_extract_spec}{(\code{data_extract_spec}) the
+\code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
 }
 \value{
-\code{NULL}
+\code{NULL}.
 }
 \description{
 The server function for a single \code{data_extract_spec} object
 }
 \details{
-The Shiny server function for handling a single
-\link{data_extract_spec} object.
+The Shiny server function for handling a single \link{data_extract_spec} object.
 }
 \keyword{internal}

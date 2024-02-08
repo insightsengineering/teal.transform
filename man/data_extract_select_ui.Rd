@@ -8,13 +8,13 @@ data_extract_select_ui(select, id = "select")
 }
 \arguments{
 \item{select}{(\code{select_spec}) A definition of a select spec element.
-Setting \code{\link[=select_spec]{select_spec()}} with \code{ordered = TRUE} makes this selector responsive to the variable
-selection order.}
+Setting \code{\link[=select_spec]{select_spec()}} with \code{ordered = TRUE} makes this selector responsive
+to the variable selection order.}
 
-\item{id}{(\code{character(1)}) The shiny \code{inputId} of the element}
+\item{id}{(\code{character(1)}) The shiny \code{inputId} of the element.}
 }
 \value{
-\code{shiny.tag.list} with the UI
+\code{shiny.tag.list} with the UI.
 }
 \description{
 Returns a \code{shiny.tag.list} object with the UI for a \code{select_spec} object

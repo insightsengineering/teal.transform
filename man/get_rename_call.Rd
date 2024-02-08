@@ -19,18 +19,18 @@ When using a reactive named list, the names must be identical to the shiny
 ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
 \item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 }
 \value{
-(\code{call}) \code{dplyr} rename call
+(\code{call}) \code{dplyr} rename call.
 }
 \description{
-Rename is used only if there are duplicated columns
+Rename is used only if there are duplicated columns.
 }
 \examples{
 # use non-exported function from teal.transform
@@ -74,8 +74,5 @@ get_rename_call(x, 1L)
 get_rename_call(x, 2L)
 get_rename_call(x, 3L)
 get_rename_call(x, 4L)
-}
-\references{
-get_rename_dict
 }
 \keyword{internal}

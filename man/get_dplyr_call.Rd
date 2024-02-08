@@ -20,20 +20,20 @@ When using a reactive named list, the names must be identical to the shiny
 ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
 \item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 
-\item{data}{(\code{NULL} or named \code{list}).}
+\item{data}{(\code{NULL} or named \code{list}) of datasets.}
 }
 \value{
-(\code{call}) filter, select, rename and reshape call
+(\code{call}) filter, select, rename and reshape call.
 }
 \description{
-Parse filter, select, rename and reshape call
+Parses filter, select, rename and reshape call
 }
 \examples{
 # use non-exported function from teal.transform

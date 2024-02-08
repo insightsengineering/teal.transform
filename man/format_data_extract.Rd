@@ -7,16 +7,17 @@
 format_data_extract(data_extract)
 }
 \arguments{
-\item{data_extract}{\code{list} the list output of \code{data_extract_srv}}
+\item{data_extract}{\code{list} the list output of \code{data_extract_srv}.}
 }
 \value{
-\code{character(1)} the string representation
+A string (\code{character(1)}) representation of the \code{data_extract} object.
 }
 \description{
 Returns a human-readable string representation of an extracted \code{data_extract_spec} object.
 }
 \details{
-This function formats the output of \code{\link{data_extract_srv}}. See the example for more information.
+This function formats the output of \code{\link{data_extract_srv}}.
+See the example for more information.
 }
 \examples{
 simple_des <- data_extract_spec(

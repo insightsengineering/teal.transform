@@ -22,9 +22,8 @@ key variables of the data set to be filtered.
 or \code{\link[=choices_selected]{choices_selected()}}.}
 
 \item{choices}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data}) object.
-Named character vector to define the choices
-of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. These choices will be used to filter the
-dataset.
+Named character vector to define the choices of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
+These choices will be used to filter the dataset.
 
 These shall be filter values of the \code{vars} input separated by the separator(\code{sep}). Please
 watch out that the filter values have to follow the order of the \code{vars} input. In the following
@@ -41,26 +40,27 @@ The \code{sep} input has to be \code{" - "} in this case.
 \item{selected}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data} or \code{all_choices}) object.
 Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}
 (default values).
-This value will be displayed inside the shiny app upon start. The \code{all_choices}
-object indicates selecting all possible choices.}
+This value will be displayed inside the shiny app upon start.
+The \code{all_choices} object indicates selecting all possible choices.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
-\item{label}{optional (\code{character}). Define a label on top of this specific
+\item{label}{(optional \code{character}). Define a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or
-\code{selected} inputs into the values of the different columns}
+\code{selected} inputs into the values of the different columns.}
 
-\item{drop_keys}{optional, (\code{logical})
-whether to drop filter column from the dataset keys, \code{TRUE} on default.}
+\item{drop_keys}{(optional \code{logical}) whether to drop filter column from the
+dataset keys, \code{TRUE} on default.}
 }
 \value{
 \code{filter_spec}-S3-class object or \code{delayed_filter_spec}-S3-class object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 It consists in choices and additionally the variable names for the choices
 }
 \details{

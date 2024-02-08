@@ -1,4 +1,4 @@
-#' Check data extract spec
+#' Check data extract specification
 #'
 #' @param data_extract_spec (`list`) of `data_extract_spec`.
 #'
