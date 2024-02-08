@@ -1,44 +1,38 @@
 #' Column selection input specification
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' `select_spec` is used inside `teal` to create a [shiny::selectInput()]
 #' that will select columns from a dataset.
 #'
-#' @param choices (`character`) or (`delayed_data`) object.
-#'   Named character vector to define the choices
-#'   of a shiny [shiny::selectInput()]. These have to be columns in the
-#'   dataset defined in the [data_extract_spec()] where this is called.
-#'   `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
+#' @rdname select_spec
 #'
-#' @param selected optional (`character` or `NULL` or `all_choices` or `delayed_data` object).
+#' @param choices (`character` or `delayed_data`) object.
+#' Named character vector to define the choices of a shiny [shiny::selectInput()].
+#' These have to be columns in the dataset defined in the [data_extract_spec()]
+#' where this is called.
+#' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
+#' @param selected (optional `character`, `NULL`, `all_choices` or `delayed_data`).
 #' Named character vector to define the selected values of a shiny [shiny::selectInput()].
 #' Passing an `all_choices()` object indicates selecting all possible choices.
 #' Defaults to the first value of `choices` or `NULL` for delayed data loading.
-#'
 #' @param multiple (`logical`) Whether multiple values shall be allowed in the
-#'  shiny [shiny::selectInput()].
-#'
-#' @param fixed optional (`logical`). [data_extract_spec()] specific feature to
-#'   hide the choices selected in case they are not needed. Setting fixed to `TRUE`
-#'   will not allow the user to select columns. It will then lead to a selection of
-#'   columns in the dataset that is defined by the developer of the app.
-#'
+#' shiny [shiny::selectInput()].
+#' @param fixed (optional `logical`). [data_extract_spec()] specific feature to
+#' hide the choices selected in case they are not needed. Setting fixed to `TRUE`
+#' will not allow the user to select columns. It will then lead to a selection of
+#' columns in the dataset that is defined by the developer of the app.
 #' @param always_selected (`character`) Additional column names from the data set that should
-#'   always be selected
-#'
+#' always be selected
 #' @param ordered (`logical(1)`) Flags whether selection order should be tracked.
-#'
-#' @param label optional (`character`). Define a label on top of this specific
+#' @param label (optional `character`). Define a label on top of this specific
 #' shiny [shiny::selectInput()]. The default value is `"Select"`.
 #'
 #' @return A `select_spec`-S3 class object or `delayed_select_spec`-S3-class object.
 #' It contains all input values.
+#'
 #' If `select_spec`, then the function double checks the `choices` and `selected` inputs.
-#'
-#'
-#' @rdname select_spec
-#'
-#' @export
 #'
 #' @examples
 #' # Selection with just one column allowed
@@ -87,6 +81,8 @@
 #' # Both below objects are semantically the same
 #' select_spec(choices = variable_choices("ADSL"), selected = variable_choices("ADSL"))
 #' select_spec(choices = variable_choices("ADSL"), selected = all_choices())
+#' @export
+#'
 select_spec <- function(choices,
                         selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
                         multiple = length(selected) > 1 || inherits(selected, "all_choices"),
@@ -112,6 +108,7 @@ select_spec <- function(choices,
 
 #' @rdname select_spec
 #' @export
+#'
 select_spec.delayed_data <- function(choices, # nolint
                                      selected = NULL,
                                      multiple = length(selected) > 1,
@@ -138,6 +135,7 @@ select_spec.delayed_data <- function(choices, # nolint
 
 #' @rdname select_spec
 #' @export
+#'
 select_spec.default <- function(choices, # nolint
                                 selected = choices[1],
                                 multiple = length(selected) > 1,

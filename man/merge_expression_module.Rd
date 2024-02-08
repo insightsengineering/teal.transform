@@ -43,7 +43,7 @@ converted to reactive \code{data.frame} objects internally.}
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
-\item{data_extract}{(named \code{list} of \code{data_extract_spec})}
+\item{data_extract}{(named \code{list} of \code{data_extract_spec}).}
 
 \item{merge_function}{(\code{character(1)})
 A character string of a function that accepts the arguments \code{x}, \code{y} and
@@ -56,7 +56,7 @@ Name of the analysis dataset.}
 UI function.}
 }
 \value{
-reactive expression with output from \code{\link[=merge_expression_srv]{merge_expression_srv()}}.
+Reactive expression with output from \code{\link[=merge_expression_srv]{merge_expression_srv()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

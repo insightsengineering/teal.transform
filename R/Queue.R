@@ -1,6 +1,6 @@
 # Queue ====
 
-#' @title R6 Class - A First-In-First-Out Abstract Data Type
+#' R6 Class - A First-In-First-Out Abstract Data Type
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
@@ -21,9 +21,9 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Adds element(s) to `Queue`.
     #'
-    #' @param new_elements vector of elements to add
+    #' @param new_elements vector of elements to add.
     #'
-    #' @return self invisibly
+    #' @return Self, invisibly.
     #'
     push = function(new_elements) {
       for (i in seq_along(new_elements)) {
@@ -36,7 +36,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns all contents of the `Queue` object.
     #'
-    #' @return single vector containing all `Queue` contents
+    #' @return Single vector containing all `Queue` contents.
     #'
     get = function() {
       private$array
@@ -44,8 +44,8 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns the first (oldest) element of the `Queue` and removes it.
     #'
-    #' @return
-    #' vector of length 1 containing the first element of `Queue` or NULL if `Queue` is empty
+    #' @return vector of length 1 containing the first element of `Queue`
+    #' or `NULL` if `Queue` is empty.
     #'
     pop = function() {
       returned_element <- self$get()[1L]
@@ -56,9 +56,9 @@ Queue <- R6::R6Class( # nolint
     #' Removes the oldest occurrence of specified element(s) from `Queue`.
     #' Relies on implicit type conversions of R identify elements to remove.
     #'
-    #' @param elements vector of elements to remove from `Queue`
+    #' @param elements vector of elements to remove from `Queue`.
     #'
-    #' @return self invisibly
+    #' @return Self, invisibly.
     #'
     remove = function(elements) {
       for (el in elements) {
@@ -70,7 +70,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Removes all elements from `Queue`.
     #'
-    #' @return self invisibly
+    #' @return Self, invisibly.
     #'
     empty = function() {
       private$array <- c()
@@ -79,7 +79,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns the number of elements in `Queue`.
     #'
-    #' @return integer of length 1
+    #' @return Integer of length 1.
     #'
     size = function() {
       length(self$get())
@@ -87,7 +87,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Prints this `Queue`.
     #'
-    #' @param ... additional arguments to this method, ignored
+    #' @param ... Additional arguments to this method, ignored.
     #'
     #' @return invisibly self
     print = function(...) {

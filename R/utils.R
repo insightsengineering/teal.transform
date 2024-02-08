@@ -1,11 +1,15 @@
-# also returns a list if only a single element
-#' Split by separator
+#' Split by separator (matched exactly)
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
-#' @param x (`character`) Character (single)
-#' @param sep (`character`) Separator
+#' @param x (`character`) Character vector, each element of which is to be split.
+#' Other inputs, including a factor return themselves.
+#' @param sep (`character`) separator to use for splitting.
+#'
+#' @return List of character vectors split by `sep`. Self if `x` is not a `character`.
+#'
 #' @export
+#'
 split_by_sep <- function(x, sep) {
   stopifnot(is.atomic(x))
   if (is.character(x)) {
@@ -17,10 +21,11 @@ split_by_sep <- function(x, sep) {
 
 #' Extract labels from choices basing on attributes and names
 #'
-#' @param choices (`list` or `vector`) select choices
-#' @param values optional, choices subset for which labels should be extracted, `NULL` for all choices
+#' @param choices (`list` or `vector`) select choices.
+#' @param values optional, choices subset for which labels should be extracted, `NULL` for all choices.
 #'
-#' @return (`character`) vector with labels
+#' @return `character` vector with labels.
+#'
 #' @keywords internal
 #'
 extract_choices_labels <- function(choices, values = NULL) {
@@ -44,18 +49,19 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'
 #' This function takes the output from `data_extract_multiple_srv` and
 #' collates the `shinyvalidate::InputValidator`s returned into a single
-#' `validator` and enables this
+#' `validator` and enables this.
 #'
 #' @param iv (`shinyvalidate::InputValidator`) A `validator`.
 #' @param selector_list (`reactive` named list of `reactives`).
-#'   Typically this is the output from `data_extract_multiple_srv`.
-#'   The `validators` in this list (specifically `selector_list()[[validator_names]]()iv`)
-#'   will be added into `iv`.
+#' Typically this is the output from `data_extract_multiple_srv`.
+#' The `validators` in this list (specifically `selector_list()[[validator_names]]()iv`)
+#' will be added into `iv`.
 #' @param validator_names (`character` or `NULL`). If `character` then only `validators`
-#'   in the elements of `selector_list()` whose name is in this list will be added. If `NULL`
-#'   all `validators` will be added
+#' in the elements of `selector_list()` whose name is in this list will be added. If `NULL`
+#' all `validators` will be added
+#'
 #' @return (`shinyvalidate::InputValidator`) enabled `iv` with appropriate `validators` added into it.
-#' @export
+#'
 #' @examples
 #' library(shiny)
 #' library(shinyvalidate)
@@ -141,6 +147,8 @@ extract_choices_labels <- function(choices, values = NULL) {
 #' if (interactive()) {
 #'   shinyApp(app$ui, app$server)
 #' }
+#' @export
+#'
 compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {
   if (is.null(validator_names)) {
     validator_names <- names(selector_list())
@@ -157,6 +165,14 @@ compose_and_enable_validators <- function(iv, selector_list, validator_names = N
   iv
 }
 
+#' Ensures datasets is a list of reactive expression
+#'
+#' @param datasets (`reactive` `teal_data` object or `list`) of `data.frame`
+#' wrapped or not in a reactive expression.
+#'
+#' @return List of reactive expression that contains all the individual `datasets`.
+#'
+#' @noRd
 convert_teal_data <- function(datasets) {
   if (is.list(datasets)) {
     sapply(X = datasets, simplify = FALSE, FUN = function(x) {

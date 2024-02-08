@@ -24,7 +24,7 @@ all \code{validators} will be added}
 \description{
 This function takes the output from \code{data_extract_multiple_srv} and
 collates the \code{shinyvalidate::InputValidator}s returned into a single
-\code{validator} and enables this
+\code{validator} and enables this.
 }
 \examples{
 library(shiny)

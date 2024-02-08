@@ -39,12 +39,12 @@ Adds element(s) to \code{Queue}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_elements}}{vector of elements to add}
+\item{\code{new_elements}}{vector of elements to add.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-self invisibly
+Self, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -57,7 +57,7 @@ Returns all contents of the \code{Queue} object.
 }
 
 \subsection{Returns}{
-single vector containing all \code{Queue} contents
+Single vector containing all \code{Queue} contents.
 }
 }
 \if{html}{\out{<hr>}}
@@ -70,7 +70,8 @@ Returns the first (oldest) element of the \code{Queue} and removes it.
 }
 
 \subsection{Returns}{
-vector of length 1 containing the first element of \code{Queue} or NULL if \code{Queue} is empty
+vector of length 1 containing the first element of \code{Queue}
+or \code{NULL} if \code{Queue} is empty.
 }
 }
 \if{html}{\out{<hr>}}
@@ -86,12 +87,12 @@ Relies on implicit type conversions of R identify elements to remove.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{elements}}{vector of elements to remove from \code{Queue}}
+\item{\code{elements}}{vector of elements to remove from \code{Queue}.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-self invisibly
+Self, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -104,7 +105,7 @@ Removes all elements from \code{Queue}.
 }
 
 \subsection{Returns}{
-self invisibly
+Self, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -117,7 +118,7 @@ Returns the number of elements in \code{Queue}.
 }
 
 \subsection{Returns}{
-integer of length 1
+Integer of length 1.
 }
 }
 \if{html}{\out{<hr>}}
@@ -132,7 +133,7 @@ Prints this \code{Queue}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{additional arguments to this method, ignored}
+\item{\code{...}}{Additional arguments to this method, ignored.}
 }
 \if{html}{\out{</div>}}
 }

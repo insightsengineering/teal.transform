@@ -11,9 +11,9 @@ get_anl_relabel_call(columns_source, datasets, anl_name = "ANL")
 where names are column names, values are labels + additional attribute \code{dataname}}
 
 \item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
-object containing data as a list of \code{data.frame}. When passing a list of
-non-reactive \code{data.frame} objects, they are converted to reactive
-\code{data.frame} objects internally.}
+object containing data as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame} objects, they are
+converted to reactive \code{data.frame} objects internally.}
 
 \item{anl_name}{(\code{character(1)})
 Name of the analysis dataset.}

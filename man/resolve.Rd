@@ -7,12 +7,12 @@
 resolve(x, datasets, keys = NULL)
 }
 \arguments{
-\item{x}{Object of class \code{delayed_data} to resolve.}
+\item{x}{(\code{delayed_data}) object to resolve.}
 
-\item{datasets}{A named list of type \code{data.frame} to use for evaluation.}
+\item{datasets}{(named \code{list} of \code{data.frame}) to use in evaluation.}
 
-\item{keys}{A named list of type \code{character} to be used as the keys for each dataset. The names of this
-list must be exactly the same as for datasets.}
+\item{keys}{(named \code{list} of \code{character}) to be used as the keys for each dataset.
+The names of this list must be exactly the same as for datasets.}
 }
 \value{
 Resolved object.
@@ -21,10 +21,8 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-# use non-exported function from teal.transform
-resolve <- getFromNamespace("resolve", "teal.transform")
-
 ADSL <- teal.transform::rADSL
+
 attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 data_list <- list(ADSL = shiny::reactive(ADSL))
 keys <- list(ADSL = attr(ADSL, "keys"))

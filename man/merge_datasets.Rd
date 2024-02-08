@@ -21,9 +21,9 @@ ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
 \item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
-object containing data as a list of \code{data.frame}. When passing a list of
-non-reactive \code{data.frame} objects, they are converted to reactive
-\code{data.frame} objects internally.}
+object containing data as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame} objects, they are
+converted to reactive \code{data.frame} objects internally.}
 
 \item{join_keys}{(\code{join_keys})
 of variables used as join keys for each of the datasets in \code{datasets}.

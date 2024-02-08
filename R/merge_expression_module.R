@@ -1,7 +1,8 @@
 #' Merge expression module
 #'
-#' @description `r lifecycle::badge("experimental")`
-#' @details This function is a convenient wrapper to combine `data_extract_multiple_srv()` and
+#' `r lifecycle::badge("experimental")`
+#'
+#' This function is a convenient wrapper to combine `data_extract_multiple_srv()` and
 #' `merge_expression_srv()` when no additional processing is required.
 #' Compare the example below with that found in [merge_expression_srv()].
 #'
@@ -13,14 +14,14 @@
 #' @param join_keys (`join_keys`)
 #' of variables used as join keys for each of the datasets in `datasets`.
 #' This will be used to extract the `keys` of every dataset.
-#' @param data_extract (named `list` of `data_extract_spec`)
+#' @param data_extract (named `list` of `data_extract_spec`).
 #' @param merge_function (`character(1)`)
 #' A character string of a function that accepts the arguments `x`, `y` and
 #' `by` to perform the merging of datasets.
 #' @param anl_name (`character(1)`)
 #' Name of the analysis dataset.
 #'
-#' @return reactive expression with output from [merge_expression_srv()].
+#' @return Reactive expression with output from [merge_expression_srv()].
 #'
 #' @seealso [merge_expression_srv()]
 #'
@@ -134,6 +135,7 @@
 #'   shinyApp(app$ui, app$server)
 #' }
 #' @export
+#'
 merge_expression_module <- function(datasets,
                                     join_keys = NULL,
                                     data_extract,
@@ -145,6 +147,7 @@ merge_expression_module <- function(datasets,
 
 #' @rdname merge_expression_module
 #' @export
+#'
 merge_expression_module.reactive <- function(datasets,
                                              join_keys = NULL,
                                              data_extract,
@@ -161,6 +164,7 @@ merge_expression_module.reactive <- function(datasets,
 
 #' @rdname merge_expression_module
 #' @export
+#'
 merge_expression_module.list <- function(datasets,
                                          join_keys = NULL,
                                          data_extract,
@@ -189,7 +193,6 @@ merge_expression_module.list <- function(datasets,
   )
 }
 
-
 #' Data merge module server
 #'
 #' `r lifecycle::badge("experimental")`
@@ -199,14 +202,7 @@ merge_expression_module.list <- function(datasets,
 #' or `data_extract_srv()` to influence the `selector_list` input.
 #' Compare the example below with that found in [merge_expression_module()].
 #'
-#' @inheritParams shiny::moduleServer
-#' @param datasets (named `list` of `reactive` or non-`reactive` `data.frame`)
-#' object containing data as a list of `data.frame`. When passing a list of
-#' non-reactive `data.frame` objects, they are converted to reactive
-#' `data.frame` objects internally.
-#' @param join_keys (`join_keys`)
-#' of variables used as join keys for each of the datasets in `datasets`.
-#' This will be used to extract the `keys` of every dataset.
+#' @inheritParams merge_expression_module
 #' @param selector_list (`reactive`)
 #' output from [data_extract_multiple_srv()] or a reactive named list of
 #' outputs from [data_extract_srv()].
@@ -219,11 +215,9 @@ merge_expression_module.list <- function(datasets,
 #' @param anl_name (`character(1)`)
 #'  Name of the analysis dataset.
 #'
-#' @return reactive expression with output from [merge_datasets()].
+#' @inherit merge_expression_module return
 #'
-#' @seealso [merge_expression_srv()]
-#'
-#' @export
+#' @seealso [merge_expression_module()]
 #'
 #' @examples
 #' library(shiny)
@@ -340,6 +334,8 @@ merge_expression_module.list <- function(datasets,
 #' if (interactive()) {
 #'   shinyApp(app$ui, app$server)
 #' }
+#' @export
+#'
 merge_expression_srv <- function(id = "merge_id",
                                  selector_list,
                                  datasets,
