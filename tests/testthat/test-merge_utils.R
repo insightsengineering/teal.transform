@@ -592,7 +592,7 @@ testthat::test_that("get_merge_call", {
   )
   testthat::expect_identical(
     get_merge_call(x),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   x <- list(
@@ -617,8 +617,8 @@ testthat::test_that("get_merge_call", {
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -644,9 +644,9 @@ testthat::test_that("get_merge_call", {
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
-      quote(ANL <- ANL_1), # nolint
+      quote(ANL <- ANL_1),
       quote(
-        ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")) # nolint
+        ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
       )
     )
   )
@@ -685,10 +685,10 @@ testthat::test_that("get_merge_call", {
   testthat::expect_identical(
     get_merge_call(x, jk),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
       quote(
-        ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT")) # nolint
+        ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
       )
     )
   )

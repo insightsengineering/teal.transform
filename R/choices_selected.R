@@ -185,7 +185,7 @@ choices_selected <- function(choices,
 #'
 #' @export
 #'
-is.choices_selected <- function(x) { # nolint
+is.choices_selected <- function(x) { # nolint: object_name_linter.
   inherits(x, "choices_selected")
 }
 
@@ -225,7 +225,7 @@ add_no_selected_choices <- function(x, multiple = FALSE) {
 #'
 #' @export
 #'
-no_selected_as_NULL <- function(x) { # nolint
+no_selected_as_NULL <- function(x) { # nolint: object_name_linter.
   if (is.null(x) || identical(x, no_select_keyword) || x == "") {
     NULL
   } else {

@@ -109,7 +109,7 @@ select_spec <- function(choices,
 #' @rdname select_spec
 #' @export
 #'
-select_spec.delayed_data <- function(choices, # nolint
+select_spec.delayed_data <- function(choices, # nolint: object_name_linter.
                                      selected = NULL,
                                      multiple = length(selected) > 1,
                                      fixed = FALSE,
@@ -136,7 +136,7 @@ select_spec.delayed_data <- function(choices, # nolint
 #' @rdname select_spec
 #' @export
 #'
-select_spec.default <- function(choices, # nolint
+select_spec.default <- function(choices, # nolint: object_name_linter.
                                 selected = choices[1],
                                 multiple = length(selected) > 1,
                                 fixed = FALSE,

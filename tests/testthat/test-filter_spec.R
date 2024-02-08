@@ -1,5 +1,5 @@
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- rADSL
+ADTTE <- rADTTE
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 primary_keys_list <- lapply(join_keys, function(x) x[[1]])
@@ -153,7 +153,7 @@ testthat::test_that("Dropping keys attribute", {
 
 testthat::test_that("delayed filter_spec", {
   set.seed(1)
-  ADSL <- data.frame( # nolint
+  ADSL <- data.frame(
     USUBJID = letters[1:10],
     SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
     stringsAsFactors = FALSE
@@ -218,7 +218,7 @@ testthat::test_that("filter_spec_internal", {
 })
 
 testthat::test_that("filter_spec_internal contains dataname", {
-  ADSL <- rADSL # nolint
+  ADSL <- rADSL
 
   x_filter <- filter_spec_internal(
     vars_choices = variable_choices(ADSL)
@@ -236,7 +236,7 @@ testthat::test_that("filter_spec_internal contains dataname", {
 
 testthat::test_that("delayed filter_spec works", {
   set.seed(1)
-  ADSL <- data.frame( # nolint
+  ADSL <- data.frame(
     USUBJID = letters[1:10],
     SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
     stringsAsFactors = FALSE

@@ -1,9 +1,9 @@
 # Contains integration tests between delayed data loading objects and
 # the objects responsible for loading, pulling and filtering the data
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
-ADAE <- rADAE # nolint
-ADRS <- rADRS # nolint
+ADSL <- rADSL
+ADTTE <- rADTTE
+ADAE <- rADAE
+ADRS <- rADRS
 
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADAE = reactive(ADAE), ADRS = reactive(ADRS))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADAE", "ADRS")]

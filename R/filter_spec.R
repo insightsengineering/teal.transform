@@ -285,7 +285,7 @@ filter_spec_internal <- function(vars_choices,
 
 #' @rdname filter_spec_internal
 #' @export
-filter_spec_internal.delayed_data <- function(vars_choices, # nolint
+filter_spec_internal.delayed_data <- function(vars_choices,
                                               vars_selected = NULL,
                                               vars_label = NULL,
                                               vars_fixed = FALSE,

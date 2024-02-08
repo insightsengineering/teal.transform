@@ -1,5 +1,5 @@
-adsl <- rADSL # nolint
-adtte <- rADTTE # nolint
+adsl <- rADSL
+adtte <- rADTTE
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
@@ -85,7 +85,7 @@ testthat::test_that("Multiple choices", {
 })
 
 testthat::test_that("resolve select_spec works", {
-  attr(adsl, "keys") <- c("STUDYID", "USUBJID") # nolint
+  attr(adsl, "keys") <- c("STUDYID", "USUBJID")
 
   expected_spec <- select_spec(
     choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),
@@ -207,7 +207,7 @@ testthat::test_that("default values", {
 
 # With resolve_delayed
 testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
-  attr(adsl, "keys") <- c("STUDYID", "USUBJID") # nolint
+  attr(adsl, "keys") <- c("STUDYID", "USUBJID")
 
   expected_spec <- select_spec(
     choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),

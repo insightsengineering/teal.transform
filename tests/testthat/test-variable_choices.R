@@ -1,5 +1,5 @@
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- rADSL
+ADTTE <- rADTTE
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 

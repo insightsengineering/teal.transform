@@ -98,7 +98,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
-    ANL <- reactive({ # nolint
+    ANL <- reactive({
       eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
@@ -119,8 +119,8 @@ where a list of necessary join keys per `data.frame` object is required:
 
 ```{r}
 # Define data.frame objects
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- rADSL
+ADTTE <- rADTTE
 
 # create a list of data.frame objects
 datasets <- list(ADSL = ADSL, ADTTE = ADTTE)

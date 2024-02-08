@@ -1,5 +1,5 @@
-ADLB <- rADLB # nolint
-ADTTE <- rADTTE # nolint
+ADLB <- rADLB
+ADTTE <- rADTTE
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(
@@ -23,9 +23,12 @@ testthat::test_that("Single filter", {
 
   testthat::expect_silent(input <- data_extract_single_ui(id = NULL, data_extract))
   testthat::expect_silent(filter <- input$children[[1]])
-  testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide")) # nolint
+  testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide"))
 
-  testthat::expect_equal(filter$children[[1]]$children[[2]]$children[[4]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple, "multiple") # nolint
+  testthat::expect_equal(
+    filter$children[[1]]$children[[2]]$children[[4]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple,
+    "multiple"
+  )
 
   # more tests - check levels of filtered variables
   # check also colummns selected

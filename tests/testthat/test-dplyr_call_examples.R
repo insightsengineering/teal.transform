@@ -1,4 +1,3 @@
-# nolint start
 # Different join keys ------
 testthat::test_that("Different join types", {
   merged_selectors1 <- merge_selectors(
@@ -31,24 +30,24 @@ testthat::test_that("Different join types", {
   testthat::expect_identical(
     get_merge_call(merged_selectors1[[1]], jk1, merge_function = "dplyr::left_join"),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::left_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::left_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
   testthat::expect_identical(
     get_merge_call(merged_selectors1[[1]], jk1, merge_function = "dplyr::inner_join"),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::inner_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::inner_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
   testthat::expect_identical(
     get_merge_call(merged_selectors1[[1]], jk1, merge_function = "merge.data.frame"),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- merge.data.frame(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- merge.data.frame(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -93,7 +92,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors1, jk1),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __2. one selector - multiple select -----
@@ -123,7 +122,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors2, jk2),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __3. two selectors -------
@@ -161,7 +160,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors3, jk3),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __4. multiple selectors -------
@@ -215,7 +214,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors4, jk4),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __5. multiple selectors with empty selections ------
@@ -269,7 +268,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors5, jk5),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __6. one selector - single select - filter -----
@@ -300,7 +299,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors6, jk6),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __7. one selector - single select - filter on key -----
@@ -331,7 +330,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors7, jk7),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __8. one selector - drop keys -----
@@ -362,7 +361,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors8, jk8),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __9. one selector - key dropped but selected -----
@@ -393,7 +392,7 @@ testthat::test_that("Single wide dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors9, jk9),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 })
 
@@ -446,8 +445,8 @@ testthat::test_that("Multiple wide dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors1[[1]], jk1),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -497,8 +496,8 @@ testthat::test_that("Multiple wide dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors2, jk2),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -573,9 +572,9 @@ testthat::test_that("Multiple wide dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors3, jk3),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -649,9 +648,9 @@ testthat::test_that("Multiple wide dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors4, jk4),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -734,9 +733,9 @@ testthat::test_that("Multiple wide dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors5, jk5),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 })
@@ -771,7 +770,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors1, jk1),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __1b. single variable - drop_keys = TRUE ----
@@ -802,7 +801,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors1, jk1),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __2. multiple variables ----
@@ -836,7 +835,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors2, jk2),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __3.a two selectors same filters (one filter not complete) ----
@@ -874,15 +873,14 @@ testthat::test_that("Single long dataset", {
     deparse(get_dplyr_call(merged_selectors3, join_keys = jk3), 120),
     deparse(quote(
       ADRS %>%
-        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in%
-          c("BASELINE", "SCREENING")) %>%
+        dplyr::filter(PARAMCD == "BESRSPI" & AVISIT %in% c("BASELINE", "SCREENING")) %>%
         dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AGE, SEX, BMRKR1)
     ), 120)
   )
 
   testthat::expect_identical(
     get_merge_call(merged_selectors3),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __3.b two selectors same filters (one filter not complete) ----
@@ -943,8 +941,8 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors3, jk3),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT")))
     )
   )
 
@@ -1003,8 +1001,8 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors4, jk4),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -1060,9 +1058,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors5, jk5),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
+    )
   )
 
   # __ 6. two selectors different filters -----
@@ -1120,9 +1118,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors6, jk6),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT")))
+    )
   )
 
   # __ 7. two selectors different filters - drop PARAMCD when filtered-out on different levels -----
@@ -1181,9 +1179,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors7, jk7),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "AVISIT")))
+    )
   )
 
 
@@ -1260,10 +1258,10 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors8, jk8),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "AVISIT")))
+    )
   )
 
   # __ 9. Reshape one filter -------
@@ -1302,7 +1300,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors9, jk9),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __ 10. Reshape two filters ------
@@ -1344,7 +1342,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors10, jk10),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __ 11. Reshape does not include non-key filter ------
@@ -1387,7 +1385,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors11, jk11),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __ 12. Reshape two selectors - same filters same select -------
@@ -1440,7 +1438,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors12, jk12),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __13. Reshape two selectors - different filters ------
@@ -1509,9 +1507,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors13, jk13),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
+    )
   )
 
   # __14. Reshape two datasets - different filters, one with empty select ------
@@ -1581,9 +1579,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors14, jk14),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
+    )
   )
 
   # __15. Reshape - key filter + non-key filter--------
@@ -1650,9 +1648,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors15, jk15),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
+    )
   )
 
   # __16. Reshape - multiple filters, one combined --------
@@ -1747,10 +1745,10 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors16, jk16),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
+    )
   )
 
   # __17. Reshape - multiple filters, one combined --------
@@ -1852,9 +1850,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors17, jk17),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -1894,7 +1892,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors18, jk18),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
 
@@ -1972,10 +1970,10 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors20, jk20),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
-    ) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID", "AVISIT")))
+    )
   )
 
   # __21. multiple variables (concatenated) - drop_keys = TRUE ----
@@ -2019,7 +2017,7 @@ testthat::test_that("Single long dataset", {
 
   testthat::expect_identical(
     get_merge_call(merged_selectors21, jk21),
-    list(quote(ANL <- ANL_1)) # nolint
+    list(quote(ANL <- ANL_1))
   )
 
   # __22. multiple selectors different filters - keys in select ------
@@ -2151,9 +2149,9 @@ testthat::test_that("Single long dataset", {
   testthat::expect_identical(
     get_merge_call(merged_selectors22, jk22),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 })
@@ -2207,8 +2205,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_identical(
     get_merge_call(merged_selectors1, jk1),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   ) # gonna be cartesian
 
@@ -2260,9 +2258,9 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors2, jk2),
     list(
-      quote(ANL <- ANL_1), # nolint
+      quote(ANL <- ANL_1),
       quote(
-        ANL <- dplyr::full_join(ANL, ANL_2, by = c(USUBJID = "STUDYID", STUDYID = "USUBJID")) %>% # nolint
+        ANL <- dplyr::full_join(ANL, ANL_2, by = c(USUBJID = "STUDYID", STUDYID = "USUBJID")) %>%
           dplyr::mutate(USUBJID = STUDYID, STUDYID = USUBJID)
       )
     )
@@ -2320,8 +2318,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors3, jk3),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   ) # gonna be cartesian
 
@@ -2377,8 +2375,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors4, jk4),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   ) # gonna be cartesian
 
@@ -2433,8 +2431,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors5, jk5),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   ) # gonna be cartesian
 
@@ -2499,8 +2497,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors6, jk6),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -2567,8 +2565,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors7, jk7),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -2617,13 +2615,15 @@ testthat::test_that("Multiple long datasets", {
     ),
     list(
       deparse(
-        quote(ADRS %>%
-          dplyr::filter(PARAMCD == "BESRSPI" & AVISIT == "SCREENING") %>%
-          dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
-          dplyr::rename(x1.AVAL = AVAL) %>%
-          tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
-          tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
-          tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")),
+        quote(
+          ADRS %>%
+            dplyr::filter(PARAMCD == "BESRSPI" & AVISIT == "SCREENING") %>%
+            dplyr::select(STUDYID, USUBJID, PARAMCD, AVISIT, AVAL) %>%
+            dplyr::rename(x1.AVAL = AVAL) %>%
+            tidyr::pivot_longer(cols = "x1.AVAL", names_to = "MEASURE", values_to = "VALUE") %>%
+            tidyr::unite(KEY, MEASURE, PARAMCD, AVISIT) %>%
+            tidyr::pivot_wider(names_from = "KEY", values_from = "VALUE")
+        ),
         width.cutoff = 120
       ),
       deparse(
@@ -2665,9 +2665,9 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors8, jk8),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -2773,10 +2773,10 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors9, jk9),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_4, by = c("STUDYID", "USUBJID", "AVISIT"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_4, by = c("STUDYID", "USUBJID", "AVISIT")))
     )
   )
   # __10. ADRS + ADTTE + ADSL + ADRS (same as first) ------
@@ -2856,9 +2856,9 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors10, jk10),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -2927,8 +2927,8 @@ testthat::test_that("Multiple long datasets", {
   testthat::expect_equal(
     get_merge_call(merged_selectors11, jk11),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 })
@@ -3010,8 +3010,8 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   testthat::expect_equal(
     get_merge_call(merged_selectors12, jk12),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "PARAMCD"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID", "PARAMCD")))
     )
   )
 
@@ -3084,8 +3084,8 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   testthat::expect_equal(
     get_merge_call(merged_selectors13, jk13),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -3162,9 +3162,9 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   testthat::expect_equal(
     get_merge_call(merged_selectors14, jk14),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -3247,9 +3247,9 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   testthat::expect_equal(
     get_merge_call(merged_selectors15, jk15),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))),
+      quote(ANL <- dplyr::full_join(ANL, ANL_3, by = c("STUDYID", "USUBJID")))
     )
   )
 
@@ -3312,17 +3312,17 @@ testthat::test_that("Multiple long - combined/concatenated filters", {
   testthat::expect_equal(
     get_merge_call(merged_selectors16, jk16),
     list(
-      quote(ANL <- ANL_1), # nolint
-      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID"))) # nolint
+      quote(ANL <- ANL_1),
+      quote(ANL <- dplyr::full_join(ANL, ANL_2, by = c("STUDYID", "USUBJID")))
     )
   )
 })
 
 # Universal example ------
 testthat::test_that("Universal example", {
-  X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9]) # nolint
-  Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], F = letters[5:7], G = letters[1:3]) # nolint
-  Z <- data.frame(C = c(4, 4:6), D = 1:4, E = letters[4:7], F = letters[6:9], G = letters[1:4]) # nolint
+  X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9]) # nolint object_name_linter.
+  Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], F = letters[5:7], G = letters[1:3]) # nolint object_name_linter.
+  Z <- data.frame(C = c(4, 4:6), D = 1:4, E = letters[4:7], F = letters[6:9], G = letters[1:4]) # nolint object_name_linter.
 
   selector_list <- list(
     list(
@@ -3382,4 +3382,3 @@ testthat::test_that("Universal example", {
     )
   )
 })
-# nolint end

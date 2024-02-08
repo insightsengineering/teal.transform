@@ -14,7 +14,7 @@
 #'
 #' @keywords internal
 #'
-Queue <- R6::R6Class( # nolint
+Queue <- R6::R6Class( # nolint: object_name_linter.
   classname = "Queue",
   # public methods ----
   public = list(
