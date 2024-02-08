@@ -42,7 +42,7 @@ extract_choices_labels <- function(choices, values = NULL) {
     res <- res[vapply(values, function(val) which(val == choices), numeric(1))]
   }
 
-  return(res)
+  res
 }
 
 #' Function to compose `validators` from `data_extract_multiple_srv`

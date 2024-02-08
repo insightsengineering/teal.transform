@@ -251,8 +251,7 @@ vector_reorder <- function(vec, idx) {
   }
 
   attributes(vec) <- vec_attrs
-
-  return(vec)
+  vec
 }
 
 vector_pop <- function(vec, idx) {
@@ -274,7 +273,7 @@ vector_pop <- function(vec, idx) {
 
   vec <- vec[-idx]
   attributes(vec) <- vec_attrs
-  return(vec)
+  vec
 }
 
 vector_remove_dups <- function(vec) {
@@ -283,12 +282,12 @@ vector_remove_dups <- function(vec) {
   idx <- which(duplicated(vec))
 
   if (length(idx) == 0) {
-    return(vec)
+    vec
   } else if (is.null(attributes(vec))) {
-    return(unique(vec))
+    unique(vec)
   } else if (identical(names(attributes(vec)), "names")) {
-    return(vec[-idx])
+    vec[-idx]
   } else {
-    return(vector_pop(vec, idx))
+    vector_pop(vec, idx)
   }
 }

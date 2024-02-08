@@ -332,7 +332,7 @@ filter_spec_internal.delayed_data <- function(vars_choices, # nolint
     checkmate::check_class(selected, "all_choices")
   )
 
-  out <- structure(
+  structure(
     list(
       vars_choices = vars_choices,
       vars_selected = vars_selected,
@@ -355,7 +355,6 @@ filter_spec_internal.delayed_data <- function(vars_choices, # nolint
       "delayed_data"
     )
   )
-  return(out)
 }
 
 #' @rdname filter_spec_internal
@@ -428,5 +427,5 @@ filter_spec_internal.default <- function(vars_choices,
   )
   class(res) <- "filter_spec"
 
-  return(res)
+  res
 }

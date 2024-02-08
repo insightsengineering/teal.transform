@@ -241,12 +241,10 @@ get_dplyr_call <- function(selector_list,
     NULL
   }
 
-  final_call <- Reduce(
+  Reduce(
     function(x, y) call("%>%", x, y),
     Filter(function(x) !is.null(x), c(dataname_filtered, filter_call, select_call, rename_call, reshape_call))
   )
-
-  return(final_call)
 }
 
 #' Parse `dplyr` select call

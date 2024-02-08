@@ -179,5 +179,5 @@ select_spec.default <- function(choices, # nolint
   )
   class(res) <- "select_spec"
 
-  return(res)
+  res
 }
