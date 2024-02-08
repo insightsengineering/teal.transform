@@ -18,14 +18,42 @@ When using a reactive named list, the names must be identical to the shiny
 ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{(optional \code{integer}) current selector index in all selectors list.}
 
-\item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,}
+\item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters.}
 }
 \value{
-(\code{call})
+\code{character} list of keys.
 }
 \description{
 Gets keys needed for join call of two selectors
+}
+\examples{
+# use non-exported function from teal.transform
+get_merge_key_i <- getFromNamespace("get_merge_key_i", "teal.transform")
+get_dplyr_call_data <- getFromNamespace("get_dplyr_call_data", "teal.transform")
+
+selector_list <- list(
+  list(
+    dataname = "X",
+    filters = NULL,
+    select = "E",
+    keys = c("A", "B"),
+    reshape = FALSE,
+    internal_id = "x"
+  ),
+  list(
+    dataname = "Y",
+    filters = NULL,
+    select = "G",
+    keys = c("A", "C"),
+    reshape = FALSE,
+    internal_id = "y"
+  )
+)
+
+join_keys <- teal.data::join_keys(teal.data::join_key("X", "Y", c("A", "B")))
+get_merge_key_i(selector_list, 2L, get_dplyr_call_data(selector_list, join_keys))
+
 }
 \keyword{internal}

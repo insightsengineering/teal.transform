@@ -20,9 +20,9 @@ When using a reactive named list, the names must be identical to the shiny
 ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining.}
 
-\item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,}
+\item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters.}
 
 \item{merge_function}{(\code{character(1)} or \code{reactive})
 A character string of a function that accepts the arguments
@@ -32,10 +32,11 @@ A character string of a function that accepts the arguments
 Name of the analysis dataset.}
 }
 \value{
-(\code{list} with \code{call} elements)
+List with merge \code{call} elements.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-Returns list of calls depending on selector(s) and type of the merge
-Order of merge is the same as in selectors passed to the function.
+
+Returns list of calls depending on selector(s) and type of the merge.
+The merge order is the same as in selectors passed to the function.
 }

@@ -7,13 +7,13 @@
 are_needed_keys_provided(join_keys, merged_selector_list)
 }
 \arguments{
-\item{join_keys}{(\code{join_keys}) the provided join keys}
+\item{join_keys}{(\code{join_keys}) the provided join keys.}
 
-\item{merged_selector_list}{(\code{list}) the specification of datasets' slices to merge}
+\item{merged_selector_list}{(\code{list}) the specification of datasets' slices to merge.}
 }
 \value{
-\code{TRUE} if all pairs of the slices have the corresponding keys;
-\code{FALSE} otherwise
+\code{TRUE} if all pairs of the slices have the corresponding keys and
+\code{FALSE} otherwise.
 }
 \description{
 Checks whether the provided slices have the corresponding join keys

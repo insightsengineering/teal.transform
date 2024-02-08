@@ -1,10 +1,12 @@
 #' Merge the datasets on the keys
 #'
-#' @description `r lifecycle::badge("experimental")`
-#' It combines/merges multiple datasets with specified keys attribute.
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
+#' Combines/merges multiple datasets with specified keys attribute.
 #'
-#' @details Internally this function uses calls to allow reproducibility.
+#' @details
+#' Internally this function uses calls to allow reproducibility.
 #'
 #' This function is often used inside a `teal` module server function with the
 #' `selectors` being the output of `data_extract_srv` or `data_extract_multiple_srv`.
@@ -26,21 +28,21 @@
 #' ```
 #'
 #' @inheritParams merge_expression_srv
-#' @return merged_dataset (`list`) containing:
-#' - `expr` (`list` of `call`) code needed to replicate merged dataset.
-#' - `columns_source` (`list`) of column names selected for particular selector.
-#'   Each list element contains named character vector where:
+#'
+#' @return `merged_dataset` list containing:
+#' * `expr` (`list` of `call`) code needed to replicate merged dataset;
+#' * `columns_source` (`list`) of column names selected for particular selector;
+#' Each list element contains named character vector where:
 #'   * Values are the names of the columns in the `ANL`. In case if the same column name is selected in more than one
 #'     selector it gets prefixed by the id of the selector. For example if two `data_extract` have id `x`, `y`, then
-#'     their duplicated selected variable (for example `AGE`) is prefixed to be `x.AGE` and `y.AGE`.
-#'   * Names of the vector denote names of the variables in the input dataset.
-#'   * `attr(,"dataname")` to indicate which dataset variable is merged from.
-#'   * `attr(, "always selected")` to denote the names of the variables which need to be always selected.
-#' - `keys` (`list`) the keys of the merged dataset.
-#' - `filter_info` (`list`) The information given by the user. This information
+#'     their duplicated selected variable (for example `AGE`) is prefixed to be `x.AGE` and `y.AGE`;
+#'   * Names of the vector denote names of the variables in the input dataset;
+#'   * `attr(,"dataname")` to indicate which dataset variable is merged from;
+#'   * `attr(, "always selected")` to denote the names of the variables which need to be always selected;
+#' * `keys` (`list`) the keys of the merged dataset;
+#' * `filter_info` (`list`) The information given by the user. This information
 #'    defines the filters that are applied on the data. Additionally it defines
 #'    the variables that are selected from the data sets.
-#' @export
 #'
 #' @examples
 #' library(shiny)
@@ -79,6 +81,7 @@
 #' )
 #'
 #' paste(merged_datasets$expr)
+#' @export
 #'
 merge_datasets <- function(selector_list, datasets, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
   logger::log_trace(
@@ -169,11 +172,12 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
   return(res)
 }
 
-#' Merge selectors - select item if all of `dataname`, reshape, filters and keys items are identical
+#' Merge selectors when `dataname`, `reshape`, `filters` and `keys` entries are identical
 #'
 #' @inheritParams merge_datasets
 #'
-#' @return error or nothing
+#' @return List of merged selectors or original parameter if the conditions to merge are
+#' not applicable.
 #'
 #' @examples
 #' # use non-exported function from teal.transform
@@ -261,11 +265,11 @@ merge_selectors <- function(selector_list) {
 #' Validate data_extracts in merge_datasets
 #'
 #' Validate selected inputs from data_extract before passing to data_merge to avoid
-#' `dplyr` errors or unexpected results
+#' `dplyr` errors or unexpected results.
 #'
 #' @inheritParams merge_datasets
 #'
-#' @return `NULL` if check is successful
+#' @return `NULL` if check is successful and `shiny` validate error otherwise.
 #'
 #' @keywords internal
 #'
@@ -290,11 +294,12 @@ check_data_merge_selectors <- function(selector_list) {
 #' `merged_selector_list` come from datasets, which don't have the
 #' appropriate join keys in `join_keys`.
 #'
-#' @param join_keys (`join_keys`) the provided join keys
-#' @param merged_selector_list (`list`) the specification of datasets' slices to merge
+#' @param join_keys (`join_keys`) the provided join keys.
+#' @param merged_selector_list (`list`) the specification of datasets' slices to merge.
 #'
-#' @return `TRUE` if the provided keys meet the requirements; the `shiny`
-#' validate error otherwise
+#' @return `TRUE` if the provided keys meet the requirement and `shiny`
+#' validate error otherwise.
+#'
 #' @keywords internal
 #'
 validate_keys_sufficient <- function(join_keys, merged_selector_list) {
@@ -320,8 +325,9 @@ validate_keys_sufficient <- function(join_keys, merged_selector_list) {
 #'
 #' @inheritParams validate_keys_sufficient
 #'
-#' @return `TRUE` if all pairs of the slices have the corresponding keys;
-#' `FALSE` otherwise
+#' @return `TRUE` if all pairs of the slices have the corresponding keys and
+#' `FALSE` otherwise.
+#'
 #' @keywords internal
 #'
 are_needed_keys_provided <- function(join_keys, merged_selector_list) {

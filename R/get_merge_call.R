@@ -1,15 +1,19 @@
 #' Get merge call from a list of selectors
 #'
-#' @description `r lifecycle::badge("stable")`
-#' Returns list of calls depending on selector(s) and type of the merge
-#' Order of merge is the same as in selectors passed to the function.
-#' @inheritParams merge_datasets
-#' @param join_keys (`join_keys`) nested list of keys used for joining
-#' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
-#' @return (`list` with `call` elements)
+#' Returns list of calls depending on selector(s) and type of the merge.
+#' The merge order is the same as in selectors passed to the function.
+#'
+#' @inheritParams merge_datasets
+#' @param join_keys (`join_keys`) nested list of keys used for joining.
+#' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters.
+#'
+#' @return List with merge `call` elements.
 #'
 #' @export
+#'
 get_merge_call <- function(selector_list,
                            join_keys = teal.data::join_keys(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
@@ -111,10 +115,12 @@ get_merge_call <- function(selector_list,
   return(anl_merge_calls)
 }
 
-#' Gets keys list from keys list
+#' Gets merge key pair list from keys list
 #'
 #' @inheritParams get_merge_call
-#' @return list of key pairs between all datasets
+#'
+#' @return List of merge key pairs between all datasets.
+#'
 #' @keywords internal
 #'
 get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
@@ -141,22 +147,23 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
 
 #' Gets keys vector from keys list
 #'
-#' @param selector_from (`list`) `data_extract_srv`
-#' @param selector_to (`list`) `data_extract_srv`
-#' @param key_from (`character`) keys used in the first selector while joining
-#'
 #' @details
-#' This function covers up to now 4 cases
+#' This function covers up to now 4 cases:
 #'
-#' * dataset without parent: Primary keys are returned
-#' * dataset source = dataset target:
+#' * Dataset without parent: Primary keys are returned;
+#' * Dataset source = dataset target:
 #' The primary keys subtracted of all key columns that get purely filtered.
-#' This means just one value would be left after filtering inside this column.
-#' Then it can be taken out.
-#' * target `dataname` is parent foreign keys
-#' * any other case foreign keys
+#' This means just one value would be left after filtering inside this column
+#' Then it can be taken out;
+#' * Target `dataname` is parent foreign keys;
+#' * Any other case foreign keys;
 #'
-#' @return (`character`)
+#' @param selector_from (`list`) of `data_extract_srv` objects.
+#' @param selector_to (`list`) of `data_extract_srv` objects.
+#' @param key_from (`character`) keys used in the first selector while joining.
+#'
+#' @return `character` vector of selector keys.
+#'
 #' @keywords internal
 #'
 get_merge_key_pair <- function(selector_from, selector_to, key_from) {
@@ -194,9 +201,37 @@ get_merge_key_pair <- function(selector_from, selector_to, key_from) {
 #' Gets keys needed for join call of two selectors
 #'
 #' @inheritParams get_merge_call
-#' @param idx optional (`integer`) current selector index in all selectors list
+#' @param idx (optional `integer`) current selector index in all selectors list.
 #'
-#' @return (`call`)
+#' @return `character` list of keys.
+#'
+#' @examples
+#' # use non-exported function from teal.transform
+#' get_merge_key_i <- getFromNamespace("get_merge_key_i", "teal.transform")
+#' get_dplyr_call_data <- getFromNamespace("get_dplyr_call_data", "teal.transform")
+#'
+#' selector_list <- list(
+#'   list(
+#'     dataname = "X",
+#'     filters = NULL,
+#'     select = "E",
+#'     keys = c("A", "B"),
+#'     reshape = FALSE,
+#'     internal_id = "x"
+#'   ),
+#'   list(
+#'     dataname = "Y",
+#'     filters = NULL,
+#'     select = "G",
+#'     keys = c("A", "C"),
+#'     reshape = FALSE,
+#'     internal_id = "y"
+#'   )
+#' )
+#'
+#' join_keys <- teal.data::join_keys(teal.data::join_key("X", "Y", c("A", "B")))
+#' get_merge_key_i(selector_list, 2L, get_dplyr_call_data(selector_list, join_keys))
+#'
 #' @keywords internal
 #'
 get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call_data(selector_list)) {
@@ -282,9 +317,13 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
 }
 
 #' Parses merge keys
+#'
 #' @inheritParams get_merge_call
-#' @param merge_key keys obtained from `get_merge_key_i`
-#' @param idx optional (`integer`) current selector index in all selectors list
+#' @param merge_key keys obtained from `get_merge_key_i`.
+#' @param idx optional (`integer`) current selector index in all selectors list.
+#'
+#' @return `call` with merge keys.
+#'
 #' @keywords internal
 #'
 parse_merge_key_i <- function(selector_list,
@@ -302,14 +341,20 @@ parse_merge_key_i <- function(selector_list,
 
 #' Names of filtered-out filters dropped from selection
 #'
-#' @details Names of filtered-out filters dropped from automatic selection
+#' @details
+#' Names of filtered-out filters dropped from automatic selection
 #' (key vars are automatically included in select).
 #' Dropped filter is filter which became not unique for all observations.
 #' This means that if variable is filtered to just one level,
-#' it's not a key anymore. Other variables used in filter should also be dropped from automatic
+#' it's not a key anymore.
+#'
+#' Other variables used in filter should also be dropped from automatic
 #' selection, unless they have been selected.
+#'
 #' @inheritParams get_pivot_longer_col
-#' @return names `character` of the filters which should be dropped from select call
+#'
+#' @return Vector of `character` names of the filters which should be dropped from select call.
+#'
 #' @keywords internal
 #'
 get_dropped_filters <- function(selector) {
@@ -336,7 +381,7 @@ get_dropped_filters <- function(selector) {
 #' `r lifecycle::badge("stable")`
 #'
 #' @inheritParams merge_datasets
-#' @param columns_source named `list`
+#' @param columns_source (named `list`)
 #' where names are column names, values are labels + additional attribute `dataname`
 #'
 #' @return (`call`) to relabel `dataset` and assign to `anl_name`.
@@ -402,14 +447,16 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
 
 #' Create relabel call from named character
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
 #' Function creates relabel call from named character.
 #'
-#' @param labels (`named character`)
+#' @param labels (named `character`)
 #' where name is name is function argument name and value is a function argument value.
 #'
-#' @return (`call`) object with relabel step
+#' @return `call` object with relabel step.
+#'
 #' @examples
 #' get_relabel_call(
 #'   labels = c(
@@ -446,10 +493,13 @@ get_relabel_call <- function(labels) {
 
 #' Get columns to relabel
 #'
-#' Get columns to relabel excluding these which has been reshaped (pivot_wider)
-#' @param columns_source `list`
-#' @param dplyr_call_data `list`
-#' @return columns_source `list` without columns which has been reshaped
+#' Get columns to relabel excluding these which has been reshaped (pivot_wider).
+#'
+#' @param columns_source (`list`)
+#' @param dplyr_call_data (`list`)
+#'
+#' @return `columns_source` list without columns that have been reshaped.
+#'
 #' @keywords internal
 #'
 get_relabel_cols <- function(columns_source, dplyr_call_data) {

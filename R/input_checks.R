@@ -2,15 +2,14 @@
 # In general, they are checking functions, in the sense that they call `stopifnot`
 # if the conditions are not met.
 
-#' Make sure that the extract spec has list form
+#' Make sure that the extract specification is in list format
 #'
-#' @md
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
-#' @param x `data_extract_spec` a single `data_extract_spec` or list of these
-#' @param allow_null `logical` whether x can be `NULL`
+#' @param x (`data_extract_spec` or `list`) of `data_extract_spec` elements.
+#' @param allow_null (`logical`) whether x can be `NULL`.
 #'
-#' @return x as a list if it is not already
+#' @return `x` as a list if it is not already.
 #'
 #' @export
 list_extract_spec <- function(x, allow_null = FALSE) {
@@ -25,17 +24,19 @@ list_extract_spec <- function(x, allow_null = FALSE) {
   x
 }
 
-#' Checks that the extract_input specification does not allow multiple
+#' Checks that the `extract_input` specification does not allow multiple
 #' selection
 #'
-#' @md
-#' @description `r lifecycle::badge("stable")`
-#'
-#' @param extract_input `data_extract_spec` a list of `data_extract_spec` or NULL
+#' `r lifecycle::badge("stable")`
 #'
 #' Stops if condition not met
 #'
+#' @param extract_input (`list` or `NULL`) a list of `data_extract_spec`
+#'
+#' @return Raises an error when check fails, otherwise, it returns `NULL`, invisibly.
+#'
 #' @export
+#'
 check_no_multiple_selection <- function(extract_input) {
   # bug in is_class_list when NULL
   checkmate::assert_list(extract_input, types = "data_extract_spec", null.ok = TRUE)

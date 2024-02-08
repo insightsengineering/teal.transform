@@ -37,20 +37,20 @@ A character string of a function that accepts the arguments
 Name of the analysis dataset.}
 }
 \value{
-merged_dataset (\code{list}) containing:
+\code{merged_dataset} list containing:
 \itemize{
-\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset.
-\item \code{columns_source} (\code{list}) of column names selected for particular selector.
+\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset;
+\item \code{columns_source} (\code{list}) of column names selected for particular selector;
 Each list element contains named character vector where:
 \itemize{
 \item Values are the names of the columns in the \code{ANL}. In case if the same column name is selected in more than one
 selector it gets prefixed by the id of the selector. For example if two \code{data_extract} have id \code{x}, \code{y}, then
-their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE}.
-\item Names of the vector denote names of the variables in the input dataset.
-\item \code{attr(,"dataname")} to indicate which dataset variable is merged from.
-\item \code{attr(, "always selected")} to denote the names of the variables which need to be always selected.
+their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE};
+\item Names of the vector denote names of the variables in the input dataset;
+\item \code{attr(,"dataname")} to indicate which dataset variable is merged from;
+\item \code{attr(, "always selected")} to denote the names of the variables which need to be always selected;
 }
-\item \code{keys} (\code{list}) the keys of the merged dataset.
+\item \code{keys} (\code{list}) the keys of the merged dataset;
 \item \code{filter_info} (\code{list}) The information given by the user. This information
 defines the filters that are applied on the data. Additionally it defines
 the variables that are selected from the data sets.
@@ -58,7 +58,8 @@ the variables that are selected from the data sets.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-It combines/merges multiple datasets with specified keys attribute.
+
+Combines/merges multiple datasets with specified keys attribute.
 }
 \details{
 Internally this function uses calls to allow reproducibility.
@@ -118,5 +119,4 @@ merged_datasets <- isolate(
 )
 
 paste(merged_datasets$expr)
-
 }

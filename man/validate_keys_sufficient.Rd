@@ -7,13 +7,13 @@
 validate_keys_sufficient(join_keys, merged_selector_list)
 }
 \arguments{
-\item{join_keys}{(\code{join_keys}) the provided join keys}
+\item{join_keys}{(\code{join_keys}) the provided join keys.}
 
-\item{merged_selector_list}{(\code{list}) the specification of datasets' slices to merge}
+\item{merged_selector_list}{(\code{list}) the specification of datasets' slices to merge.}
 }
 \value{
-\code{TRUE} if the provided keys meet the requirements; the \code{shiny}
-validate error otherwise
+\code{TRUE} if the provided keys meet the requirement and \code{shiny}
+validate error otherwise.
 }
 \description{
 Validates whether the provided keys are sufficient to merge the datasets slices

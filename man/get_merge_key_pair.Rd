@@ -7,28 +7,28 @@
 get_merge_key_pair(selector_from, selector_to, key_from)
 }
 \arguments{
-\item{selector_from}{(\code{list}) \code{data_extract_srv}}
+\item{selector_from}{(\code{list}) of \code{data_extract_srv} objects.}
 
-\item{selector_to}{(\code{list}) \code{data_extract_srv}}
+\item{selector_to}{(\code{list}) of \code{data_extract_srv} objects.}
 
-\item{key_from}{(\code{character}) keys used in the first selector while joining}
+\item{key_from}{(\code{character}) keys used in the first selector while joining.}
 }
 \value{
-(\code{character})
+\code{character} vector of selector keys.
 }
 \description{
 Gets keys vector from keys list
 }
 \details{
-This function covers up to now 4 cases
+This function covers up to now 4 cases:
 \itemize{
-\item dataset without parent: Primary keys are returned
-\item dataset source = dataset target:
+\item Dataset without parent: Primary keys are returned;
+\item Dataset source = dataset target:
 The primary keys subtracted of all key columns that get purely filtered.
-This means just one value would be left after filtering inside this column.
-Then it can be taken out.
-\item target \code{dataname} is parent foreign keys
-\item any other case foreign keys
+This means just one value would be left after filtering inside this column
+Then it can be taken out;
+\item Target \code{dataname} is parent foreign keys;
+\item Any other case foreign keys;
 }
 }
 \keyword{internal}

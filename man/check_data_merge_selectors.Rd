@@ -15,10 +15,10 @@ ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 }
 \value{
-\code{NULL} if check is successful
+\code{NULL} if check is successful and \code{shiny} validate error otherwise.
 }
 \description{
 Validate selected inputs from data_extract before passing to data_merge to avoid
-\code{dplyr} errors or unexpected results
+\code{dplyr} errors or unexpected results.
 }
 \keyword{internal}
