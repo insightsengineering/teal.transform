@@ -1,14 +1,17 @@
-#' Available datasets input
+#' Help text with available datasets input
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' Creates \link[shiny]{helpText} with the names of datasets
-#' available for current module.
+#' Creates [shiny::helpText()] with the names of available datasets for the
+#' current module.
 #'
-#' @param data_extracts list of data extracts for single variable
+#' @param data_extracts (`list`) of data extracts for single variable.
+#'
+#' @return [shiny::helpText()] object.
 #'
 #' @export
+#'
 datanames_input <- function(data_extracts) {
   datanames <- get_extract_datanames(data_extracts)
   helpText(
@@ -26,9 +29,12 @@ datanames_input <- function(data_extracts) {
 #' `data_extract_spec` and returns the unique `dataname` set.
 #'
 #' @param data_extracts A single `data_extract_spec` object or a list (of lists)
-#' of `data_extract_spec`
+#' of `data_extract_spec`.
+#'
+#' @return A character vector with the unique `dataname` set.
 #'
 #' @export
+#'
 get_extract_datanames <- function(data_extracts) {
   data_extracts <- if (inherits(data_extracts, "data_extract_spec")) {
     list(data_extracts)
@@ -62,14 +68,16 @@ get_extract_datanames <- function(data_extracts) {
 #'
 #' `r lifecycle::badge("stable")`
 #'
-#' @param ... either `data_extract_spec` objects or lists of `data_extract_spec` objects that do not contain
-#'   NULL
+#' @param ... either `data_extract_spec` objects or lists of `data_extract_spec`
+#' objects that do not contain `NULL`
 #'
-#' @return logical
+#' @return `TRUE` if all `data_extract_spec` objects come from the same dataset,
+#' `FALSE` otherwise.
 #'
 #' @export
+#'
 is_single_dataset <- function(...) {
   data_extract_spec <- list(...)
   dataset_names <- get_extract_datanames(data_extract_spec)
-  return(length(dataset_names) == 1)
+  length(dataset_names) == 1
 }

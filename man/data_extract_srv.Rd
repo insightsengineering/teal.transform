@@ -39,16 +39,19 @@ When passing a list of reactive or non-reactive \code{data.frame} objects, the a
 \item{data_extract_spec}{(\code{data_extract_spec} or a list of \code{data_extract_spec})
 A list of data filter and select information constructed by \link{data_extract_spec}.}
 
-\item{...}{an additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
+\item{...}{An additional argument \code{join_keys} is required when \code{datasets} is a list of \code{data.frame}.
 It shall contain the keys per dataset in \code{datasets}.}
 
-\item{join_keys}{(\code{join_keys} or \code{NULL}) of keys per dataset in \code{datasets}}
+\item{join_keys}{(\code{join_keys} or \code{NULL}) of keys per dataset in \code{datasets}.}
 
 \item{select_validation_rule}{(\code{NULL} or \code{function})
 Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}.
+
 You can use a validation function directly (i.e. \code{select_validation_rule = shinyvalidate::sv_required()})
 or for more fine-grained control use a function:
+
 \code{select_validation_rule = ~ if (length(.) > 2) "Error"}.
+
 If \code{NULL} then no validation will be added. See example for more details.}
 
 \item{filter_validation_rule}{(\code{NULL} or \code{function}) Same as
@@ -67,7 +70,7 @@ A reactive \code{list} containing following fields:
 \item \code{dataname}: The name of the data set.
 \item \code{internal_id}: The \code{id} of the corresponding shiny input element.
 \item \code{keys}: The names of the columns that can be used to merge the data set.
-\item \code{iv}: A \code{shinyvalidate::InputValidator} containing \code{validator} for this \code{data_extract}
+\item \code{iv}: A \code{shinyvalidate::InputValidator} containing \code{validator} for this \code{data_extract}.
 }
 }
 \description{

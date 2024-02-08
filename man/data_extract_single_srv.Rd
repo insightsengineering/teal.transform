@@ -7,7 +7,7 @@
 data_extract_single_srv(id, datasets, single_data_extract_spec)
 }
 \arguments{
-\item{id}{(\code{character}) id string}
+\item{id}{(\code{character}) id string.}
 
 \item{datasets}{(\verb{named list}) a list of reactive \code{data.frame} type objects.}
 

@@ -8,7 +8,10 @@ get_extract_datanames(data_extracts)
 }
 \arguments{
 \item{data_extracts}{A single \code{data_extract_spec} object or a list (of lists)
-of \code{data_extract_spec}}
+of \code{data_extract_spec}.}
+}
+\value{
+A character vector with the unique \code{dataname} set.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

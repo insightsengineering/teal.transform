@@ -7,12 +7,12 @@
 check_data_extract_spec_react(datasets, data_extract)
 }
 \arguments{
-\item{datasets}{(\code{FilteredData}) the object created using the \code{teal} API}
+\item{datasets}{(\code{FilteredData}) the object created using the \code{teal} API.}
 
-\item{data_extract}{(\code{list}) the output of the \code{data_extract} module}
+\item{data_extract}{(\code{list}) the output of the \code{data_extract} module.}
 }
 \value{
-\code{NULL}
+\code{NULL}.
 }
 \description{
 Checks if \code{dataname} argument exists as a dataset.

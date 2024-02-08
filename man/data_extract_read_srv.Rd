@@ -14,7 +14,7 @@ data_extract_read_srv(
 )
 }
 \arguments{
-\item{id}{(\code{character}) id string}
+\item{id}{(\code{character}) id string.}
 
 \item{datasets}{(\verb{named list}) a list of reactive \code{data.frame} type objects.}
 

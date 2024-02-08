@@ -7,12 +7,12 @@
 data_extract_filter_ui(filter, id = "filter")
 }
 \arguments{
-\item{filter}{(\code{filter_spec}) the object generated with \code{\link[=filter_spec]{filter_spec()}}}
+\item{filter}{(\code{filter_spec}) the object generated with \code{\link[=filter_spec]{filter_spec()}}.}
 
-\item{id}{(\code{character(1)}) the shiny \code{inputId} for the generated \code{shiny.tag}}
+\item{id}{(\code{character(1)}) the shiny \code{inputId} for the generated \code{shiny.tag}.}
 }
 \value{
-\code{shiny.tag} defining the \code{filter_spec}'s UI element
+\code{shiny.tag} defining the \code{filter_spec}'s UI element.
 }
 \description{
 Returns a \code{shiny.tag} object with the UI for a \code{filter_spec} object
