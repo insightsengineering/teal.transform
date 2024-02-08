@@ -38,7 +38,7 @@ Resolved object.
 
 }}
 \examples{
-ADSL <- teal.transform::rADSL
+ADSL <- rADSL
 shiny::isolate({
   data_list <- list(ADSL = shiny::reactive(ADSL))
 

@@ -10,7 +10,7 @@
 #' @return Resolved object.
 #'
 #' @examples
-#' ADSL <- teal.transform::rADSL
+#' ADSL <- rADSL
 #'
 #' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 #' data_list <- list(ADSL = shiny::reactive(ADSL))

@@ -1,5 +1,5 @@
-ADSL <- teal.transform::rADSL # nolint
-ADTTE <- teal.transform::rADTTE # nolint
+ADSL <- rADSL # nolint
+ADTTE <- rADTTE # nolint
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 primary_keys_list <- lapply(join_keys, function(x) x[[1]])
@@ -218,7 +218,7 @@ testthat::test_that("filter_spec_internal", {
 })
 
 testthat::test_that("filter_spec_internal contains dataname", {
-  ADSL <- teal.transform::rADSL # nolint
+  ADSL <- rADSL # nolint
 
   x_filter <- filter_spec_internal(
     vars_choices = variable_choices(ADSL)

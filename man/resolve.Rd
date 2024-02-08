@@ -21,7 +21,7 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-ADSL <- teal.transform::rADSL
+ADSL <- rADSL
 
 attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 data_list <- list(ADSL = shiny::reactive(ADSL))
