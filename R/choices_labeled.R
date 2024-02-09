@@ -106,7 +106,8 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     combined_labels <- combined_labels[ord]
     types <- types[ord]
   }
-  choices <- structure(
+
+  structure(
     choices,
     names = combined_labels,
     raw_labels = raw_labels,
@@ -114,8 +115,6 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     class = c("choices_labeled", "character"),
     types = types
   )
-
-  return(choices)
 }
 
 #' Wrapper on [choices_labeled] to label variables basing on existing labels in data
@@ -164,7 +163,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' # functional subset (with delayed data) - return only factor variables
 #' variable_choices("ADRS", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
-#'   return(names(data)[idx])
+#'   names(data)[idx]
 #' })
 #' @export
 #'
@@ -222,7 +221,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
     subset <- unique(subset)
   }
 
-  res <- if ("" %in% subset) {
+  if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
       labels = c("", unname(teal.data::col_labels(data, fill = fill))),
@@ -237,8 +236,6 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
       types = var_types
     )
   }
-
-  return(res)
 }
 
 #' Wrapper on [choices_labeled] to label variable values basing on other variable values
@@ -276,7 +273,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #'
 #' # functional subset
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = function(data) {
-#'   return(levels(data$PARAMCD)[1:2])
+#'   levels(data$PARAMCD)[1:2]
 #' })
 #' @export
 #'
@@ -302,7 +299,7 @@ value_choices.character <- function(data,
                                     var_label = NULL,
                                     subset = NULL,
                                     sep = " - ") {
-  out <- structure(
+  structure(
     list(
       data = data,
       var_choices = var_choices,
@@ -312,7 +309,6 @@ value_choices.character <- function(data,
     ),
     class = c("delayed_value_choices", "delayed_data", "choices_labeled")
   )
-  return(out)
 }
 
 #' @rdname value_choices
@@ -373,7 +369,7 @@ value_choices.data.frame <- function(data, # nolint
   attr(res, "sep") <- sep
   attr(res, "var_choices") <- var_choices
   attr(res, "var_label") <- var_label
-  return(res)
+  res
 }
 
 #' Print choices_labeled object
@@ -397,5 +393,5 @@ print.choices_labeled <- function(x, ...) {
     sep = "\n"
   )
 
-  return(invisible(x))
+  invisible(x)
 }

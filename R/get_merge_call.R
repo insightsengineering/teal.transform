@@ -112,7 +112,8 @@ get_merge_call <- function(selector_list,
       anl_merge_call_i
     )
   }
-  return(anl_merge_calls)
+
+  anl_merge_calls
 }
 
 #' Gets merge key pair list from keys list
@@ -443,7 +444,7 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
     relabel_call
   )
 
-  return(relabel_and_assign_call)
+  relabel_and_assign_call
 }
 
 #' Create relabel call from named character
@@ -482,12 +483,10 @@ get_relabel_call <- function(labels) {
   labels <- labels[!duplicated(names(labels))]
   labels <- labels[!is.na(labels)]
 
-  return(
-    as.call(
-      append(
-        quote(teal.data::col_relabel),
-        labels
-      )
+  as.call(
+    append(
+      quote(teal.data::col_relabel),
+      labels
     )
   )
 }
@@ -517,7 +516,7 @@ get_relabel_cols <- function(columns_source, dplyr_call_data) {
         return(NULL)
       }
       attr(column_source, "dataname") <- dataname
-      return(column_source)
+      column_source
     }
   )
 }

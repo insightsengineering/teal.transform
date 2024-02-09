@@ -104,7 +104,7 @@ no_select_keyword <- "-- no selection --"
 #' # with delayed data loading
 #' choices_selected(variable_choices("ADSL", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
-#'   return(names(data)[idx])
+#'   names(data)[idx]
 #' }))
 #'
 #' cs <- choices_selected(
@@ -142,11 +142,12 @@ choices_selected <- function(choices,
   }
 
   if (inherits(choices, "delayed_data")) {
-    out <- structure(
-      list(choices = choices, selected = selected, keep_order = keep_order, fixed = fixed),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+    return(
+      structure(
+        list(choices = choices, selected = selected, keep_order = keep_order, fixed = fixed),
+        class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+      )
     )
-    return(out)
   }
 
   if (!is.null(choices) && no_select_keyword %in% choices) {
@@ -254,8 +255,7 @@ vector_reorder <- function(vec, idx) {
   }
 
   attributes(vec) <- vec_attrs
-
-  return(vec)
+  vec
 }
 
 vector_pop <- function(vec, idx) {
@@ -277,7 +277,7 @@ vector_pop <- function(vec, idx) {
 
   vec <- vec[-idx]
   attributes(vec) <- vec_attrs
-  return(vec)
+  vec
 }
 
 vector_remove_dups <- function(vec) {
@@ -286,12 +286,12 @@ vector_remove_dups <- function(vec) {
   idx <- which(duplicated(vec))
 
   if (length(idx) == 0) {
-    return(vec)
+    vec
   } else if (is.null(attributes(vec))) {
-    return(unique(vec))
+    unique(vec)
   } else if (identical(names(attributes(vec)), "names")) {
-    return(vec[-idx])
+    vec[-idx]
   } else {
-    return(vector_pop(vec, idx))
+    vector_pop(vec, idx)
   }
 }

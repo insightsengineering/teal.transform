@@ -88,7 +88,8 @@ resolve.delayed_variable_choices <- function(x, datasets, keys) {
   if (inherits(x$subset, "function")) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
   }
-  return(do.call("variable_choices", x))
+
+  do.call("variable_choices", x)
 }
 
 #' @export
@@ -97,7 +98,8 @@ resolve.delayed_value_choices <- function(x, datasets, keys) {
   if (is.function(x$subset)) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
   }
-  return(do.call("value_choices", x))
+
+  do.call("value_choices", x)
 }
 
 #' @export
@@ -116,7 +118,7 @@ resolve.delayed_choices_selected <- function(x, datasets, keys) {
     x$selected <- x$selected[which(x$selected %in% x$choices)]
   }
 
-  return(do.call("choices_selected", x))
+  do.call("choices_selected", x)
 }
 
 #' @export
@@ -125,7 +127,8 @@ resolve.delayed_select_spec <- function(x, datasets, keys) {
   if (inherits(x$selected, "delayed_data")) {
     x$selected <- resolve(x$selected, datasets = datasets, keys)
   }
-  return(do.call("select_spec", x))
+
+  do.call("select_spec", x)
 }
 
 #' @export
@@ -143,7 +146,7 @@ resolve.delayed_filter_spec <- function(x, datasets, keys) {
     x$selected <- resolve(x$selected, datasets = datasets, keys)
   }
 
-  return(do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))]))
+  do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))])
 }
 
 #' @export
@@ -159,19 +162,18 @@ resolve.delayed_data_extract_spec <- function(x, datasets, keys) {
     x$filter[idx] <- lapply(x$filter[idx], resolve, datasets = datasets, keys = keys)
   }
 
-  return(do.call("data_extract_spec", x))
+  do.call("data_extract_spec", x)
 }
 
 #' @export
 resolve.list <- function(x, datasets, keys) {
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
-  res <- lapply(x, resolve, datasets = datasets, keys = keys)
-  return(res)
+  lapply(x, resolve, datasets = datasets, keys = keys)
 }
 
 #' @export
 resolve.default <- function(x, datasets, keys) {
-  return(x)
+  x
 }
 
 #' Resolve expression after delayed data are loaded
@@ -224,7 +226,7 @@ resolve_delayed_expr <- function(x, ds, is_value_choices) {
     }
   }
 
-  return(res)
+  res
 }
 
 #' @export
@@ -234,7 +236,8 @@ print.delayed_variable_choices <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, paste("variable_choices with delayed data:", x$data)))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -244,7 +247,8 @@ print.delayed_value_choices <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, paste("value_choices with delayed data: ", x$data)))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -254,7 +258,8 @@ print.delayed_choices_selected <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, paste("choices_selected with delayed data: ", x$choices$data)))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -264,7 +269,8 @@ print.delayed_select_spec <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, paste("select_spec with delayed data:", x$choices$data)))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -274,7 +280,8 @@ print.filter_spec <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, "filter_spec with delayed data:"))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -284,7 +291,8 @@ print.delayed_filter_spec <- function(x, indent = 0L, ...) {
   cat(indent_msg(indent, "filter_spec with delayed data:"))
   cat("\n")
   print_delayed_list(x, indent)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 #' @export
@@ -294,14 +302,16 @@ print.delayed_data_extract_spec <- function(x, indent = 0L, ...) {
   cat(paste("data_extract_spec with delayed data:", x$dataname))
   cat("\n\n")
   print_delayed_list(x)
-  return(invisible(NULL))
+
+  invisible(NULL)
 }
 
 indent_msg <- function(n, msg) {
   checkmate::assert_integer(n, len = 1, lower = 0, any.missing = FALSE)
   checkmate::assert_character(msg, min.len = 1, any.missing = FALSE)
   indent <- paste(rep("  ", n), collapse = "")
-  return(paste0(indent, msg))
+
+  paste0(indent, msg)
 }
 
 print_delayed_list <- function(obj, n = 0L) {
@@ -320,5 +330,6 @@ print_delayed_list <- function(obj, n = 0L) {
       cat("\n")
     }
   }
-  return(invisible(NULL))
+
+  invisible(NULL)
 }

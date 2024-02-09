@@ -170,7 +170,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     filter_info = filter_info
   )
   logger::log_trace("merge_datasets merge code executed resulting in { anl_name } dataset.")
-  return(res)
+  res
 }
 
 #' Merge selectors when `dataname`, `reshape`, `filters` and `keys` entries are identical
@@ -259,7 +259,7 @@ merge_selectors <- function(selector_list) {
     }
   }
 
-  return(list(res_list, res_map_id))
+  list(res_list, res_map_id)
 }
 
 

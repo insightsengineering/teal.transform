@@ -16,5 +16,5 @@ include_css_files <- function(pattern = "*") {
     system.file("css", package = "teal.transform", mustWork = TRUE),
     pattern = pattern, full.names = TRUE
   )
-  return(singleton(lapply(css_files, includeCSS)))
+  singleton(lapply(css_files, includeCSS))
 }

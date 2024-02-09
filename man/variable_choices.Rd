@@ -59,6 +59,6 @@ variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
 # functional subset (with delayed data) - return only factor variables
 variable_choices("ADRS", subset = function(data) {
   idx <- vapply(data, is.factor, logical(1))
-  return(names(data)[idx])
+  names(data)[idx]
 })
 }
