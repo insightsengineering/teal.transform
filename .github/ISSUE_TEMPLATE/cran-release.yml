@@ -62,7 +62,7 @@ body:
           git add <files your modified>
           # Commit the changes
           git commit -m "[skip vbump] <Your commit message>"
-          git push origin release-candidate-vX.Y.Z
+          git push origin release-candidate-vX.Y.Z`
           ```
 
         #### Test the release
