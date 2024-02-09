@@ -45,17 +45,18 @@ Duplicated elements from \code{choices} get removed.
 }
 \examples{
 library(shiny)
+library(teal.data)
 
 ADSL <- rADSL
 ADTTE <- rADTTE
 
-choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
+choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 
 # if only a subset of variables are needed, use subset argument
 choices3 <- choices_labeled(
   names(ADSL),
-  teal.data::col_labels(ADSL, fill = FALSE),
+  col_labels(ADSL, fill = FALSE),
   subset = c("ARMCD", "ARM")
 )
 
@@ -76,8 +77,9 @@ ui <- fluidPage(
     selected = choices3[1]
   )
 )
+server <- function(input, output) {}
 
 if (interactive()) {
-  shinyApp(ui = ui, server = function(input, output) {})
+  shinyApp(ui, server)
 }
 }

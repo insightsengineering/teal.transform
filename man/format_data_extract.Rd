@@ -20,33 +20,34 @@ This function formats the output of \code{\link{data_extract_srv}}.
 See the example for more information.
 }
 \examples{
+library(shiny)
 simple_des <- data_extract_spec(
   dataname = "iris",
   filter = filter_spec(vars = "Petal.Length", choices = c("1.4", "1.5")),
   select = select_spec(choices = c("Petal.Length", "Species"))
 )
 
-if (interactive()) {
-  shiny::shinyApp(
-    ui = shiny::fluidPage(
-      data_extract_ui(
-        id = "extract",
-        label = "data extract ui",
-        data_extract_spec = simple_des,
-        is_single_dataset = TRUE
-      ),
-      shiny::verbatimTextOutput("formatted_extract")
-    ),
-    server = function(input, output, session) {
-      extracted_input <- data_extract_srv(
-        id = "extract",
-        datasets = list(iris = iris),
-        data_extract_spec = simple_des
-      )
-      output$formatted_extract <- shiny::renderPrint({
-        cat(format_data_extract(extracted_input()))
-      })
-    }
+ui <- fluidPage(
+  data_extract_ui(
+    id = "extract",
+    label = "data extract ui",
+    data_extract_spec = simple_des,
+    is_single_dataset = TRUE
+  ),
+  verbatimTextOutput("formatted_extract")
+)
+server <- function(input, output, session) {
+  extracted_input <- data_extract_srv(
+    id = "extract",
+    datasets = list(iris = iris),
+    data_extract_spec = simple_des
   )
+  output$formatted_extract <- renderPrint({
+    cat(format_data_extract(extracted_input()))
+  })
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
 }
 }

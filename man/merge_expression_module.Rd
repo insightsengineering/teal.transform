@@ -68,6 +68,9 @@ Compare the example below with that found in \code{\link[=merge_expression_srv]{
 }
 \examples{
 library(shiny)
+library(teal.data)
+library(teal.widgets)
+
 ADSL <- data.frame(
   STUDYID = "A",
   USUBJID = LETTERS[1:10],
@@ -85,16 +88,15 @@ ADLB$AVAL <- rlnorm(120)
 ADLB$CHG <- rnorm(120)
 
 data_list <- list(
-  ADSL = ADSL,
-  ADLB = ADLB
+  ADSL = reactive(ADSL),
+  ADLB = reactive(ADLB)
 )
 
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 )
-
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
@@ -117,36 +119,37 @@ adlb_extract <- data_extract_spec(
     fixed = FALSE
   )
 )
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = div(
-        verbatimTextOutput("expr"),
-        dataTableOutput("data")
-      ),
-      encoding = tagList(
-        data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
-        data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    data_q <- teal.code::qenv()
 
-    data_q <- teal.code::eval_code(
-      data_q,
-      "ADSL <- data.frame(
+ui <- fluidPage(
+  standard_layout(
+    output = div(
+      verbatimTextOutput("expr"),
+      dataTableOutput("data")
+    ),
+    encoding = tagList(
+      data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
+      data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  data_q <- qenv()
+
+  data_q <- eval_code(
+    data_q,
+    "ADSL <- data.frame(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
         SEX = rep(c('F', 'M'), 5),
         AGE = rpois(10, 30),
         BMRKR1 = rlnorm(10)
       )"
-    )
+  )
 
-    data_q <- teal.code::eval_code(
-      data_q,
-      "ADLB <- expand.grid(
+  data_q <- eval_code(
+    data_q,
+    "ADLB <- expand.grid(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
         PARAMCD = c('ALT', 'CRP', 'IGA'),
@@ -154,26 +157,26 @@ app <- shinyApp(
         AVAL = rlnorm(120),
         CHG = rlnorm(120)
        )"
-    )
+  )
 
-    merged_data <- merge_expression_module(
-      data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      datasets = data_list,
-      join_keys = join_keys,
-      merge_function = "dplyr::left_join"
-    )
+  merged_data <- merge_expression_module(
+    data_extract = list(adsl_var = adsl_extract, adlb_var = adlb_extract),
+    datasets = data_list,
+    join_keys = join_keys,
+    merge_function = "dplyr::left_join"
+  )
 
-    code_merge <- reactive({
-      for (exp in merged_data()$expr) data_q <- teal.code::eval_code(data_q, exp)
-      data_q
-    })
+  code_merge <- reactive({
+    for (exp in merged_data()$expr) data_q <- eval_code(data_q, exp)
+    data_q
+  })
 
-    output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(code_merge()[["ANL"]])
-  }
-)
+  output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
+  output$data <- renderDataTable(code_merge()[["ANL"]])
+}
+
 if (interactive()) {
-  shinyApp(app$ui, app$server)
+  shinyApp(ui, server)
 }
 }
 \seealso{

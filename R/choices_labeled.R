@@ -21,17 +21,18 @@
 #'
 #' @examples
 #' library(shiny)
+#' library(teal.data)
 #'
 #' ADSL <- rADSL
 #' ADTTE <- rADTTE
 #'
-#' choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
+#' choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
 #'
 #' # if only a subset of variables are needed, use subset argument
 #' choices3 <- choices_labeled(
 #'   names(ADSL),
-#'   teal.data::col_labels(ADSL, fill = FALSE),
+#'   col_labels(ADSL, fill = FALSE),
 #'   subset = c("ARMCD", "ARM")
 #' )
 #'
@@ -52,9 +53,10 @@
 #'     selected = choices3[1]
 #'   )
 #' )
+#' server <- function(input, output) {}
 #'
 #' if (interactive()) {
-#'   shinyApp(ui = ui, server = function(input, output) {})
+#'   shinyApp(ui, server)
 #' }
 #' @export
 #'
@@ -144,6 +146,8 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' @return Named `character` vector with additional attributes or `delayed_data` object.
 #'
 #' @examples
+#' library(teal.data)
+#'
 #' ADRS <- rADRS
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
@@ -151,7 +155,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' variable_choices(
 #'   ADRS,
 #'   subset = c("", "PARAM", "PARAMCD"),
-#'   key = teal.data::default_cdisc_join_keys["ADRS", "ADRS"]
+#'   key = default_cdisc_join_keys["ADRS", "ADRS"]
 #' )
 #'
 #' # delayed version

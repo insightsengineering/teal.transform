@@ -40,7 +40,7 @@ x <- list(
   list(
     dataname = "ADSL",
     filters = NULL,
-    select = utils::head(letters, 3),
+    select = head(letters, 3),
     keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
@@ -56,7 +56,7 @@ x <- list(
   list(
     dataname = "ADSL",
     filters = NULL,
-    select = utils::tail(letters, 3),
+    select = tail(letters, 3),
     keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test3"

@@ -41,6 +41,8 @@ Named \code{character} vector with additional attributes or \code{delayed_data} 
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
+library(teal.data)
+
 ADRS <- rADRS
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
@@ -48,7 +50,7 @@ variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
 variable_choices(
   ADRS,
   subset = c("", "PARAM", "PARAMCD"),
-  key = teal.data::default_cdisc_join_keys["ADRS", "ADRS"]
+  key = default_cdisc_join_keys["ADRS", "ADRS"]
 )
 
 # delayed version

@@ -61,13 +61,14 @@ In case you want to keep your specific order of choices, set \code{keep_order} t
 }
 \examples{
 library(shiny)
+library(teal.widgets)
 
 # all_choices example - semantically the same objects
 choices_selected(choices = letters, selected = all_choices())
 choices_selected(choices = letters, selected = letters)
 
 choices_selected(
-  choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+  choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
   selected = "C"
 )
 
@@ -134,13 +135,15 @@ cs <- choices_selected(
 )
 
 ui <- fluidPage(
-  teal.widgets::optionalSelectInput(
+  optionalSelectInput(
     inputId = "id",
     choices = cs$choices,
     selected = cs$selected
   )
 )
+
+server <- function(input, output, session) {}
 if (interactive()) {
-  shinyApp(ui, server = function(input, output, session) {})
+  shinyApp(ui, server)
 }
 }
