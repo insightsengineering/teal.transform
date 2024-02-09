@@ -81,72 +81,72 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'
 #' data_list <- list(iris = reactive(iris))
 #'
-#' app <- shinyApp(
-#'   ui = fluidPage(
-#'     useShinyjs(),
-#'     standard_layout(
-#'       output = verbatimTextOutput("out1"),
-#'       encoding = tagList(
-#'         data_extract_ui(
-#'           id = "x_var",
-#'           label = "Please select an X column",
-#'           data_extract_spec = iris_extract
-#'         ),
-#'         data_extract_ui(
-#'           id = "y_var",
-#'           label = "Please select a Y column",
-#'           data_extract_spec = iris_extract
-#'         ),
-#'         data_extract_ui(
-#'           id = "col_var",
-#'           label = "Please select a color column",
-#'           data_extract_spec = iris_extract
-#'         )
+#' ui <- fluidPage(
+#'   useShinyjs(),
+#'   standard_layout(
+#'     output = verbatimTextOutput("out1"),
+#'     encoding = tagList(
+#'       data_extract_ui(
+#'         id = "x_var",
+#'         label = "Please select an X column",
+#'         data_extract_spec = iris_extract
+#'       ),
+#'       data_extract_ui(
+#'         id = "y_var",
+#'         label = "Please select a Y column",
+#'         data_extract_spec = iris_extract
+#'       ),
+#'       data_extract_ui(
+#'         id = "col_var",
+#'         label = "Please select a color column",
+#'         data_extract_spec = iris_extract
 #'       )
 #'     )
-#'   ),
-#'   server = function(input, output, session) {
-#'     exactly_2_validation <- function() {
-#'       ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
-#'     }
-#'
-#'
-#'     selector_list <- data_extract_multiple_srv(
-#'       list(x_var = iris_extract, y_var = iris_extract, col_var = iris_extract),
-#'       datasets = data_list,
-#'       select_validation_rule = list(
-#'         x_var = sv_required("Please select an X column"),
-#'         y_var = compose_rules(
-#'           sv_required("Exactly 2 'Y' column variables must be chosen"),
-#'           exactly_2_validation()
-#'         )
-#'       )
-#'     )
-#'     iv_r <- reactive({
-#'       iv <- InputValidator$new()
-#'       compose_and_enable_validators(
-#'         iv,
-#'         selector_list,
-#'         # if validator_names = NULL then all validators are used
-#'         # to turn on only "x_var" then set this argument to "x_var"
-#'         validator_names = NULL
-#'       )
-#'     })
-#'
-#'     output$out1 <- renderPrint({
-#'       if (iv_r()$is_valid()) {
-#'         ans <- lapply(selector_list(), function(x) {
-#'           cat(format_data_extract(x()), "\n\n")
-#'         })
-#'       } else {
-#'         "Check that you have made a valid selection"
-#'       }
-#'     })
-#'   }
+#'   )
 #' )
-#' if (interactive()) {
-#'   shinyApp(app$ui, app$server)
+#'
+#' server <- function(input, output, session) {
+#'   exactly_2_validation <- function() {
+#'     ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
+#'   }
+#'
+#'   selector_list <- data_extract_multiple_srv(
+#'     list(x_var = iris_extract, y_var = iris_extract, col_var = iris_extract),
+#'     datasets = data_list,
+#'     select_validation_rule = list(
+#'       x_var = sv_required("Please select an X column"),
+#'       y_var = compose_rules(
+#'         sv_required("Exactly 2 'Y' column variables must be chosen"),
+#'         exactly_2_validation()
+#'       )
+#'     )
+#'   )
+#'   iv_r <- reactive({
+#'     iv <- InputValidator$new()
+#'     compose_and_enable_validators(
+#'       iv,
+#'       selector_list,
+#'       # if validator_names = NULL then all validators are used
+#'       # to turn on only "x_var" then set this argument to "x_var"
+#'       validator_names = NULL
+#'     )
+#'   })
+#'
+#'   output$out1 <- renderPrint({
+#'     if (iv_r()$is_valid()) {
+#'       ans <- lapply(selector_list(), function(x) {
+#'         cat(format_data_extract(x()), "\n\n")
+#'       })
+#'     } else {
+#'       "Check that you have made a valid selection"
+#'     }
+#'   })
 #' }
+#'
+#' if (interactive()) {
+#'   shinyApp(ui, server)
+#' }
+#'
 #' @export
 #'
 compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {

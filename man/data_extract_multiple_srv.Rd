@@ -103,65 +103,65 @@ iris_filter <- data_extract_spec(
 
 data_list <- list(iris = reactive(iris))
 
-app <- shinyApp(
-  ui = fluidPage(
-    useShinyjs(),
-    standard_layout(
-      output = verbatimTextOutput("out1"),
-      encoding = tagList(
-        data_extract_ui(
-          id = "x_var",
-          label = "Please select an X column",
-          data_extract_spec = iris_select
-        ),
-        data_extract_ui(
-          id = "species_var",
-          label = "Please select 2 Species",
-          data_extract_spec = iris_filter
-        )
-      )
-    )
-  ),
-  server = function(input, output, session) {
-    exactly_2_validation <- function(msg) {
-      ~ if (length(.) != 2) msg
-    }
-
-
-    selector_list <- data_extract_multiple_srv(
-      list(x_var = iris_select, species_var = iris_filter),
-      datasets = data_list,
-      select_validation_rule = list(
-        x_var = sv_required("Please select an X column")
+ui <- fluidPage(
+  useShinyjs(),
+  standard_layout(
+    output = verbatimTextOutput("out1"),
+    encoding = tagList(
+      data_extract_ui(
+        id = "x_var",
+        label = "Please select an X column",
+        data_extract_spec = iris_select
       ),
-      filter_validation_rule = list(
-        species_var = compose_rules(
-          sv_required("Exactly 2 Species must be chosen"),
-          exactly_2_validation("Exactly 2 Species must be chosen")
-        )
+      data_extract_ui(
+        id = "species_var",
+        label = "Please select 2 Species",
+        data_extract_spec = iris_filter
       )
     )
-    iv_r <- reactive({
-      iv <- InputValidator$new()
-      compose_and_enable_validators(
-        iv,
-        selector_list,
-        validator_names = NULL
-      )
-    })
-
-    output$out1 <- renderPrint({
-      if (iv_r()$is_valid()) {
-        ans <- lapply(selector_list(), function(x) {
-          cat(format_data_extract(x()), "\n\n")
-        })
-      } else {
-        "Please fix errors in your selection"
-      }
-    })
-  }
+  )
 )
+
+server <- function(input, output, session) {
+  exactly_2_validation <- function(msg) {
+    ~ if (length(.) != 2) msg
+  }
+
+
+  selector_list <- data_extract_multiple_srv(
+    list(x_var = iris_select, species_var = iris_filter),
+    datasets = data_list,
+    select_validation_rule = list(
+      x_var = sv_required("Please select an X column")
+    ),
+    filter_validation_rule = list(
+      species_var = compose_rules(
+        sv_required("Exactly 2 Species must be chosen"),
+        exactly_2_validation("Exactly 2 Species must be chosen")
+      )
+    )
+  )
+  iv_r <- reactive({
+    iv <- InputValidator$new()
+    compose_and_enable_validators(
+      iv,
+      selector_list,
+      validator_names = NULL
+    )
+  })
+
+  output$out1 <- renderPrint({
+    if (iv_r()$is_valid()) {
+      ans <- lapply(selector_list(), function(x) {
+        cat(format_data_extract(x()), "\n\n")
+      })
+    } else {
+      "Please fix errors in your selection"
+    }
+  })
+}
+
 if (interactive()) {
-  shinyApp(app$ui, app$server)
+  shinyApp(ui, server)
 }
 }

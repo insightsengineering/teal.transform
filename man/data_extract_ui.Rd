@@ -49,6 +49,7 @@ The corresponding server module can be found in \code{\link[=data_extract_srv]{d
 }
 \examples{
 library(shiny)
+library(teal.widgets)
 
 adtte_filters <- filter_spec(
   vars = c("PARAMCD", "CNSR"),
@@ -71,7 +72,7 @@ response_spec <- data_extract_spec(
   )
 )
 # Call to use inside your teal module UI function
-teal.widgets::standard_layout(
+standard_layout(
   output = tableOutput("table"),
   encoding = div(
     data_extract_ui(

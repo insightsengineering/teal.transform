@@ -33,11 +33,12 @@ id_for_dataset <- function(dataname) {
 #' @return `shiny.tag` with the HTML code for the panel.
 #'
 #' @examples
+#' library(shiny)
 #' # use non-exported function from teal.transform
 #' cond_data_extract_single_ui <- getFromNamespace("cond_data_extract_single_ui", "teal.transform")
 #'
 #' cond_data_extract_single_ui(
-#'   shiny::NS("TEST"),
+#'   NS("TEST"),
 #'   data_extract_spec(dataname = "test")
 #' )
 #' @keywords internal
@@ -92,6 +93,7 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'
 #' @examples
 #' library(shiny)
+#' library(teal.widgets)
 #'
 #' adtte_filters <- filter_spec(
 #'   vars = c("PARAMCD", "CNSR"),
@@ -114,7 +116,7 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'   )
 #' )
 #' # Call to use inside your teal module UI function
-#' teal.widgets::standard_layout(
+#' standard_layout(
 #'   output = tableOutput("table"),
 #'   encoding = div(
 #'     data_extract_ui(
@@ -295,10 +297,12 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' @references [data_extract_srv]
 #'
 #' @examples
-#'
 #' library(shiny)
 #' library(shinyvalidate)
+#' library(teal.data)
+#' library(teal.widgets)
 #'
+#' # Sample ADSL dataset
 #' ADSL <- data.frame(
 #'   STUDYID = "A",
 #'   USUBJID = LETTERS[1:10],
@@ -307,6 +311,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #'   BMRKR1 = rlnorm(10)
 #' )
 #'
+#' # Specification for data extraction
 #' adsl_extract <- data_extract_spec(
 #'   dataname = "ADSL",
 #'   filter = filter_spec(vars = "SEX", choices = c("F", "M"), selected = "F"),
@@ -322,77 +327,78 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' # Using reactive list of data.frames
 #' data_list <- list(ADSL = reactive(ADSL))
 #'
-#' join_keys <- teal.data::join_keys(teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
+#' join_keys <- join_keys(join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 #'
-#' app <- shinyApp(
-#'   ui = fluidPage(
-#'     teal.widgets::standard_layout(
-#'       output = verbatimTextOutput("out1"),
-#'       encoding = tagList(
-#'         data_extract_ui(
-#'           id = "adsl_var",
-#'           label = "ADSL selection",
-#'           data_extract_spec = adsl_extract
-#'         )
+#' # App: data extraction with validation
+#' ui <- fluidPage(
+#'   standard_layout(
+#'     output = verbatimTextOutput("out1"),
+#'     encoding = tagList(
+#'       data_extract_ui(
+#'         id = "adsl_var",
+#'         label = "ADSL selection",
+#'         data_extract_spec = adsl_extract
 #'       )
 #'     )
-#'   ),
-#'   server = function(input, output, session) {
-#'     adsl_reactive_input <- data_extract_srv(
-#'       id = "adsl_var",
-#'       datasets = data_list,
-#'       data_extract_spec = adsl_extract,
-#'       join_keys = join_keys,
-#'       select_validation_rule = sv_required("Please select a variable.")
-#'     )
-#'
-#'     iv_r <- reactive({
-#'       iv <- InputValidator$new()
-#'       iv$add_validator(adsl_reactive_input()$iv)
-#'       iv$enable()
-#'       iv
-#'     })
-#'
-#'     output$out1 <- renderPrint({
-#'       if (iv_r()$is_valid()) {
-#'         cat(format_data_extract(adsl_reactive_input()))
-#'       } else {
-#'         "Please fix errors in your selection"
-#'       }
-#'     })
-#'   }
+#'   )
 #' )
-#' if (interactive()) {
-#'   shinyApp(app$ui, app$server)
+#' server <- function(input, output, session) {
+#'   adsl_reactive_input <- data_extract_srv(
+#'     id = "adsl_var",
+#'     datasets = data_list,
+#'     data_extract_spec = adsl_extract,
+#'     join_keys = join_keys,
+#'     select_validation_rule = sv_required("Please select a variable.")
+#'   )
+#'
+#'   iv_r <- reactive({
+#'     iv <- InputValidator$new()
+#'     iv$add_validator(adsl_reactive_input()$iv)
+#'     iv$enable()
+#'     iv
+#'   })
+#'
+#'   output$out1 <- renderPrint({
+#'     if (iv_r()$is_valid()) {
+#'       cat(format_data_extract(adsl_reactive_input()))
+#'     } else {
+#'       "Please fix errors in your selection"
+#'     }
+#'   })
 #' }
 #'
+#' if (interactive()) {
+#'   shinyApp(ui, server)
+#' }
 #'
-#' app <- shinyApp(
-#'   ui = fluidPage(
-#'     teal.widgets::standard_layout(
-#'       output = verbatimTextOutput("out1"),
-#'       encoding = tagList(
-#'         data_extract_ui(
-#'           id = "adsl_var",
-#'           label = "ADSL selection",
-#'           data_extract_spec = adsl_extract
-#'         )
+#' # App: simplified data extraction
+#' ui <- fluidPage(
+#'   standard_layout(
+#'     output = verbatimTextOutput("out1"),
+#'     encoding = tagList(
+#'       data_extract_ui(
+#'         id = "adsl_var",
+#'         label = "ADSL selection",
+#'         data_extract_spec = adsl_extract
 #'       )
 #'     )
-#'   ),
-#'   server = function(input, output, session) {
-#'     adsl_reactive_input <- data_extract_srv(
-#'       id = "adsl_var",
-#'       datasets = datasets,
-#'       data_extract_spec = adsl_extract
-#'     )
-#'
-#'     output$out1 <- renderPrint(adsl_reactive_input())
-#'   }
+#'   )
 #' )
-#' if (interactive()) {
-#'   shinyApp(app$ui, app$server)
+#'
+#' server <- function(input, output, session) {
+#'   adsl_reactive_input <- data_extract_srv(
+#'     id = "adsl_var",
+#'     datasets = data_list,
+#'     data_extract_spec = adsl_extract
+#'   )
+#'
+#'   output$out1 <- renderPrint(adsl_reactive_input())
 #' }
+#'
+#' if (interactive()) {
+#'   shinyApp(ui, server)
+#' }
+#'
 #' @export
 #'
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
@@ -616,66 +622,66 @@ data_extract_srv.list <- function(id,
 #'
 #' data_list <- list(iris = reactive(iris))
 #'
-#' app <- shinyApp(
-#'   ui = fluidPage(
-#'     useShinyjs(),
-#'     standard_layout(
-#'       output = verbatimTextOutput("out1"),
-#'       encoding = tagList(
-#'         data_extract_ui(
-#'           id = "x_var",
-#'           label = "Please select an X column",
-#'           data_extract_spec = iris_select
-#'         ),
-#'         data_extract_ui(
-#'           id = "species_var",
-#'           label = "Please select 2 Species",
-#'           data_extract_spec = iris_filter
-#'         )
-#'       )
-#'     )
-#'   ),
-#'   server = function(input, output, session) {
-#'     exactly_2_validation <- function(msg) {
-#'       ~ if (length(.) != 2) msg
-#'     }
-#'
-#'
-#'     selector_list <- data_extract_multiple_srv(
-#'       list(x_var = iris_select, species_var = iris_filter),
-#'       datasets = data_list,
-#'       select_validation_rule = list(
-#'         x_var = sv_required("Please select an X column")
+#' ui <- fluidPage(
+#'   useShinyjs(),
+#'   standard_layout(
+#'     output = verbatimTextOutput("out1"),
+#'     encoding = tagList(
+#'       data_extract_ui(
+#'         id = "x_var",
+#'         label = "Please select an X column",
+#'         data_extract_spec = iris_select
 #'       ),
-#'       filter_validation_rule = list(
-#'         species_var = compose_rules(
-#'           sv_required("Exactly 2 Species must be chosen"),
-#'           exactly_2_validation("Exactly 2 Species must be chosen")
-#'         )
+#'       data_extract_ui(
+#'         id = "species_var",
+#'         label = "Please select 2 Species",
+#'         data_extract_spec = iris_filter
 #'       )
 #'     )
-#'     iv_r <- reactive({
-#'       iv <- InputValidator$new()
-#'       compose_and_enable_validators(
-#'         iv,
-#'         selector_list,
-#'         validator_names = NULL
-#'       )
-#'     })
-#'
-#'     output$out1 <- renderPrint({
-#'       if (iv_r()$is_valid()) {
-#'         ans <- lapply(selector_list(), function(x) {
-#'           cat(format_data_extract(x()), "\n\n")
-#'         })
-#'       } else {
-#'         "Please fix errors in your selection"
-#'       }
-#'     })
-#'   }
+#'   )
 #' )
+#'
+#' server <- function(input, output, session) {
+#'   exactly_2_validation <- function(msg) {
+#'     ~ if (length(.) != 2) msg
+#'   }
+#'
+#'
+#'   selector_list <- data_extract_multiple_srv(
+#'     list(x_var = iris_select, species_var = iris_filter),
+#'     datasets = data_list,
+#'     select_validation_rule = list(
+#'       x_var = sv_required("Please select an X column")
+#'     ),
+#'     filter_validation_rule = list(
+#'       species_var = compose_rules(
+#'         sv_required("Exactly 2 Species must be chosen"),
+#'         exactly_2_validation("Exactly 2 Species must be chosen")
+#'       )
+#'     )
+#'   )
+#'   iv_r <- reactive({
+#'     iv <- InputValidator$new()
+#'     compose_and_enable_validators(
+#'       iv,
+#'       selector_list,
+#'       validator_names = NULL
+#'     )
+#'   })
+#'
+#'   output$out1 <- renderPrint({
+#'     if (iv_r()$is_valid()) {
+#'       ans <- lapply(selector_list(), function(x) {
+#'         cat(format_data_extract(x()), "\n\n")
+#'       })
+#'     } else {
+#'       "Please fix errors in your selection"
+#'     }
+#'   })
+#' }
+#'
 #' if (interactive()) {
-#'   shinyApp(app$ui, app$server)
+#'   shinyApp(ui, server)
 #' }
 #' @export
 #'
