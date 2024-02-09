@@ -84,10 +84,11 @@ merged_data <- merge_datasets(list(regressor(), response()))
 }
 \examples{
 library(shiny)
+library(teal.data)
 
 X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9])
 Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], G = letters[1:3])
-join_keys <- teal.data::join_keys(teal.data::join_key("X", "Y", c("A", "B")))
+join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
 
 selector_list <- list(
   list(

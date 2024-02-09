@@ -21,12 +21,13 @@ Resolved object.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
+library(shiny)
 ADSL <- rADSL
 
 attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
-data_list <- list(ADSL = shiny::reactive(ADSL))
+data_list <- list(ADSL = reactive(ADSL))
 keys <- list(ADSL = attr(ADSL, "keys"))
-shiny::isolate({
+isolate({
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1

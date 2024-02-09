@@ -29,6 +29,7 @@ ids of the respective
 Gets keys needed for join call of two selectors
 }
 \examples{
+library(teal.data)
 # use non-exported function from teal.transform
 get_merge_key_i <- getFromNamespace("get_merge_key_i", "teal.transform")
 get_dplyr_call_data <- getFromNamespace("get_dplyr_call_data", "teal.transform")
@@ -52,7 +53,7 @@ selector_list <- list(
   )
 )
 
-join_keys <- teal.data::join_keys(teal.data::join_key("X", "Y", c("A", "B")))
+join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
 get_merge_key_i(selector_list, 2L, get_dplyr_call_data(selector_list, join_keys))
 
 }

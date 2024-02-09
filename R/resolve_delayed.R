@@ -10,9 +10,10 @@
 #' @return Resolved object.
 #'
 #' @examples
+#' library(shiny)
 #' ADSL <- rADSL
-#' shiny::isolate({
-#'   data_list <- list(ADSL = shiny::reactive(ADSL))
+#' isolate({
+#'   data_list <- list(ADSL = reactive(ADSL))
 #'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
