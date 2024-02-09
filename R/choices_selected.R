@@ -103,7 +103,7 @@ no_select_keyword <- "-- no selection --"
 #' # with delayed data loading
 #' choices_selected(variable_choices("ADSL", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
-#'   return(names(data)[idx])
+#'   names(data)[idx]
 #' }))
 #'
 #' cs <- choices_selected(
