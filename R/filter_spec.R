@@ -409,23 +409,23 @@ filter_spec_internal.default <- function(vars_choices,
     checkmate::assert_subset(selected, choices)
   }
 
-  res <- list(
-    vars_choices = vars_choices,
-    vars_selected = vars_selected,
-    vars_label = vars_label,
-    vars_fixed = vars_fixed,
-    vars_multiple = vars_multiple,
-    choices = choices,
-    selected = selected,
-    label = label,
-    multiple = multiple,
-    fixed = fixed,
-    sep = sep,
-    drop_keys = drop_keys,
-    dataname = dataname, # modified by data_extract_spec
-    initialized = initialized
+  structure(
+    list(
+      vars_choices = vars_choices,
+      vars_selected = vars_selected,
+      vars_label = vars_label,
+      vars_fixed = vars_fixed,
+      vars_multiple = vars_multiple,
+      choices = choices,
+      selected = selected,
+      label = label,
+      multiple = multiple,
+      fixed = fixed,
+      sep = sep,
+      drop_keys = drop_keys,
+      dataname = dataname, # modified by data_extract_spec
+      initialized = initialized
+    ),
+    class = "filter_spec"
   )
-  class(res) <- "filter_spec"
-
-  res
 }

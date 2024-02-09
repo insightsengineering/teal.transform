@@ -173,11 +173,11 @@ select_spec.default <- function(choices, # nolint: object_name_linter.
     }
   }
 
-  res <- list(
-    choices = choices, selected = selected, multiple = multiple, fixed = fixed,
-    always_selected = always_selected, ordered = ordered, label = label
+  structure(
+    list(
+      choices = choices, selected = selected, multiple = multiple, fixed = fixed,
+      always_selected = always_selected, ordered = ordered, label = label
+    ),
+    class = "select_spec"
   )
-  class(res) <- "select_spec"
-
-  res
 }

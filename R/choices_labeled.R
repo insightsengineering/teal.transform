@@ -159,7 +159,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' # functional subset (with delayed data) - return only factor variables
 #' variable_choices("ADRS", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
-#'   return(names(data)[idx])
+#'   names(data)[idx]
 #' })
 #' @export
 #'
@@ -216,7 +216,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
     subset <- unique(subset)
   }
 
-  res <- if ("" %in% subset) {
+  if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
       labels = c("", unname(teal.data::col_labels(data, fill = fill))),
@@ -231,8 +231,6 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
       types = var_types
     )
   }
-
-  res
 }
 
 #' Wrapper on [choices_labeled] to label variable values basing on other variable values
@@ -270,7 +268,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #'
 #' # functional subset
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = function(data) {
-#'   return(levels(data$PARAMCD)[1:2])
+#'   levels(data$PARAMCD)[1:2]
 #' })
 #' @export
 #'
