@@ -217,7 +217,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
     subset <- unique(subset)
   }
 
-  res <- if ("" %in% subset) {
+  if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
       labels = c("", unname(teal.data::col_labels(data, fill = fill))),
@@ -232,8 +232,6 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
       types = var_types
     )
   }
-
-  res
 }
 
 #' Wrapper on [choices_labeled] to label variable values basing on other variable values

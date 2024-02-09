@@ -139,11 +139,12 @@ choices_selected <- function(choices,
   }
 
   if (inherits(choices, "delayed_data")) {
-    out <- structure(
-      list(choices = choices, selected = selected, keep_order = keep_order, fixed = fixed),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+    return(
+      structure(
+        list(choices = choices, selected = selected, keep_order = keep_order, fixed = fixed),
+        class = c("delayed_choices_selected", "delayed_data", "choices_selected")
+      )
     )
-    return(out)
   }
 
   if (!is.null(choices) && no_select_keyword %in% choices) {

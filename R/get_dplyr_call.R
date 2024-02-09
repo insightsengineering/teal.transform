@@ -637,12 +637,10 @@ get_reshape_unite_vals <- function(selector) {
   )
   unite_cols_vals <- unite_cols_vals[vapply(unite_cols_vals, length, integer(1)) > 0]
 
-  res <- if (length(unite_cols_vals) > 0) {
+  if (length(unite_cols_vals) > 0) {
     grid <- do.call(expand.grid, args = list(unite_cols_vals, stringsAsFactors = FALSE))
     apply(grid, 1, paste, collapse = "_")
   } else {
     character(0)
   }
-
-  res
 }
