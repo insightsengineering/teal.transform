@@ -19,16 +19,4 @@ get_filter_call(filter, dataname = NULL, datasets = NULL)
 \description{
 Build a \code{dplyr} filter call
 }
-\examples{
-# use non-exported function from teal.transform
-get_filter_call <- getFromNamespace("get_filter_call", "teal.transform")
-
-get_filter_call(
-  filter = list(list(columns = "SEX", selected = list(NA, "F", "M")))
-)
-get_filter_call(filter = list(
-  list(columns = "SEX", selected = list(NA, "F", "M")),
-  list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
-))
-}
 \keyword{internal}

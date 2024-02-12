@@ -32,15 +32,6 @@ id_for_dataset <- function(dataname) {
 #'
 #' @return `shiny.tag` with the HTML code for the panel.
 #'
-#' @examples
-#' library(shiny)
-#' # use non-exported function from teal.transform
-#' cond_data_extract_single_ui <- getFromNamespace("cond_data_extract_single_ui", "teal.transform")
-#'
-#' cond_data_extract_single_ui(
-#'   NS("TEST"),
-#'   data_extract_spec(dataname = "test")
-#' )
 #' @keywords internal
 #'
 cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {

@@ -21,10 +21,4 @@ Returns a \code{shiny.tag} object with the UI for a \code{filter_spec} object
 Creates two \code{optionSelectInput} elements (one for column and one for values) based
 on a definition of a \code{\link[=filter_spec]{filter_spec()}} object.
 }
-\examples{
-# use non-exported function from teal.transform
-data_extract_filter_ui <- getFromNamespace("data_extract_filter_ui", "teal.transform")
-
-data_extract_filter_ui(filter = filter_spec(vars = "test_var"), id = "test_id")
-}
 \keyword{internal}
