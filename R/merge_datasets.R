@@ -180,36 +180,6 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #' @return List of merged selectors or original parameter if the conditions to merge are
 #' not applicable.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
-#'
-#' selector_list <- list(
-#'   # ADSL - SEX
-#'   list(
-#'     filters = NULL, select = "AGE", always_selected = NULL,
-#'     reshape = FALSE, dataname = "ADSL",
-#'     internal_id = "adsl_var", keys = c("STUDYID", "USUBJID")
-#'   ),
-#'
-#'   # ADSL - AGE
-#'   list(
-#'     filters = NULL, select = "SEX", always_selected = NULL,
-#'     reshape = FALSE, dataname = "ADSL",
-#'     internal_id = "adsl_var2", keys = c("STUDYID", "USUBJID")
-#'   ),
-#'
-#'   # ADLB - AVAL
-#'   list(
-#'     filters = NULL, select = "AVAL", always_selected = NULL,
-#'     reshape = FALSE, dataname = "ADLB",
-#'     internal_id = "adlb_var", keys = c(
-#'       "STUDYID", "USUBJID",
-#'       "PARAMCD", "AVISIT"
-#'     )
-#'   )
-#' )
-#' merge_selectors(selector_list)
 #' @keywords internal
 #'
 merge_selectors <- function(selector_list) {

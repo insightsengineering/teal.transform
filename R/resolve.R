@@ -186,19 +186,6 @@ resolve.default <- function(x, datasets, keys) {
 #'
 #' @return Character vector - result of calling function `x` on dataset `ds`.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' resolve_delayed_expr <- getFromNamespace("resolve_delayed_expr", "teal.transform")
-#'
-#' # get only possible factor variables from mtcars dataset
-#' resolve_delayed_expr(
-#'   function(data) {
-#'     idx <- vapply(data, function(x) is.numeric(x) && length(unique(x)) <= 6, logical(1))
-#'     colnames(data)[idx]
-#'   },
-#'   ds = mtcars,
-#'   is_value_choices = FALSE
-#' )
 #' @keywords internal
 #'
 resolve_delayed_expr <- function(x, ds, is_value_choices) {

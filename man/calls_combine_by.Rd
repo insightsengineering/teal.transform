@@ -17,20 +17,4 @@ A combined \code{call}.
 \description{
 Combine list of calls by specific operator.
 }
-\examples{
-# use non-exported function from teal.transform
-calls_combine_by <- getFromNamespace("calls_combine_by", "teal.transform")
-call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
-call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
-
-calls_combine_by(
-  "&",
-  calls = list(
-    call_condition_choice("SEX", "F"),
-    call_condition_range("AGE", c(20, 50)),
-    call_condition_choice("ARM", "ARM: A"),
-    TRUE
-  )
-)
-}
 \keyword{internal}
