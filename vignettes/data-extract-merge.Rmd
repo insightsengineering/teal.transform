@@ -66,7 +66,7 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 #### Example module
 
 Here, we create the `merge_ui` and the `merge_srv` functions which will be used to create the UI and the server
-components of the shiny app, respectively.
+components of the `shiny` app, respectively.
 
 ```{r}
 merge_ui <- function(id, data_extracts) {
