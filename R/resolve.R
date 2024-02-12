@@ -2,6 +2,9 @@
 #'
 #' `r lifecycle::badge("stable")`
 #'
+#' @note This is an internal function that is used by [resolve_delayed()].
+#' All the methods are used internally only.
+#'
 #' @param x (`delayed_data`) object to resolve.
 #' @param datasets (named `list` of `data.frame`) to use in evaluation.
 #' @param keys (named `list` of `character`) to be used as the keys for each dataset.
@@ -9,63 +12,7 @@
 #'
 #' @return Resolved object.
 #'
-#' @examples
-#' library(shiny)
-#' ADSL <- rADSL
-#'
-#' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
-#' data_list <- list(ADSL = reactive(ADSL))
-#' keys <- list(ADSL = attr(ADSL, "keys"))
-#' isolate({
-#'   # value_choices example
-#'   v1 <- value_choices("ADSL", "SEX", "SEX")
-#'   v1
-#'   resolve(v1, data_list, keys)
-#'
-#'   # variable_choices example
-#'   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
-#'   v2
-#'   resolve(v2, data_list, keys)
-#'
-#'   # data_extract_spec example
-#'   adsl_filter <- filter_spec(
-#'     vars = variable_choices("ADSL", "SEX"),
-#'     sep = "-",
-#'     choices = value_choices("ADSL", "SEX", "SEX"),
-#'     selected = "F",
-#'     multiple = FALSE,
-#'     label = "Choose endpoint and Censor"
-#'   )
-#'
-#'   adsl_select <- select_spec(
-#'     label = "Select variable:",
-#'     choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-#'     selected = "BMRKR1",
-#'     multiple = FALSE,
-#'     fixed = FALSE
-#'   )
-#'
-#'   adsl_de <- data_extract_spec(
-#'     dataname = "ADSL",
-#'     select = adsl_select,
-#'     filter = adsl_filter
-#'   )
-#'
-#'   resolve(adsl_filter, data_list, keys)
-#'   resolve(adsl_select, data_list, keys)
-#'   resolve(adsl_de, data_list, keys)
-#'
-#'   # nested list (arm_ref_comp)
-#'   arm_ref_comp <- list(
-#'     ARMCD = list(
-#'       ref = variable_choices("ADSL"),
-#'       comp = variable_choices("ADSL")
-#'     )
-#'   )
-#'
-#'   resolve(arm_ref_comp, data_list, keys)
-#' })
-#' @export
+#' @keywords internal
 #'
 resolve <- function(x, datasets, keys = NULL) {
   checkmate::assert_list(datasets, types = "reactive", min.len = 1, names = "named")
@@ -79,6 +26,7 @@ resolve <- function(x, datasets, keys = NULL) {
   UseMethod("resolve")
 }
 
+#' @describeIn resolve Call [variable_choices()] on the delayed `variable_choices` object.
 #' @export
 resolve.delayed_variable_choices <- function(x, datasets, keys) {
   if (is.null(x$key)) {
@@ -92,6 +40,7 @@ resolve.delayed_variable_choices <- function(x, datasets, keys) {
   do.call("variable_choices", x)
 }
 
+#' @describeIn resolve Call [value_choices()] on the delayed `value_choices` object.
 #' @export
 resolve.delayed_value_choices <- function(x, datasets, keys) {
   x$data <- datasets[[x$data]]()
@@ -102,6 +51,7 @@ resolve.delayed_value_choices <- function(x, datasets, keys) {
   do.call("value_choices", x)
 }
 
+#' @describeIn resolve Call [select_spec()] on the delayed `choices_selected` object.
 #' @export
 resolve.delayed_choices_selected <- function(x, datasets, keys) {
   if (inherits(x$selected, "delayed_data")) {
@@ -121,6 +71,7 @@ resolve.delayed_choices_selected <- function(x, datasets, keys) {
   do.call("choices_selected", x)
 }
 
+#' @describeIn resolve Call [select_spec()] on the delayed specification.
 #' @export
 resolve.delayed_select_spec <- function(x, datasets, keys) {
   x$choices <- resolve(x$choices, datasets = datasets, keys)
@@ -131,6 +82,7 @@ resolve.delayed_select_spec <- function(x, datasets, keys) {
   do.call("select_spec", x)
 }
 
+#' @describeIn resolve Call [filter_spec()] on the delayed specification.
 #' @export
 resolve.delayed_filter_spec <- function(x, datasets, keys) {
   if (inherits(x$vars_choices, "delayed_data")) {
@@ -149,6 +101,7 @@ resolve.delayed_filter_spec <- function(x, datasets, keys) {
   do.call("filter_spec_internal", x[intersect(names(x), methods::formalArgs(filter_spec_internal))])
 }
 
+#' @describeIn resolve Call [data_extract_spec()] on the delayed specification.
 #' @export
 resolve.delayed_data_extract_spec <- function(x, datasets, keys) {
   x$select <- `if`(
@@ -165,12 +118,15 @@ resolve.delayed_data_extract_spec <- function(x, datasets, keys) {
   do.call("data_extract_spec", x)
 }
 
+#' @describeIn resolve Iterates over elements of the list and recursively calls
+#' `resolve`.
 #' @export
 resolve.list <- function(x, datasets, keys) {
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
   lapply(x, resolve, datasets = datasets, keys = keys)
 }
 
+#' @describeIn resolve Default method that does nothing and returns `x` itself.
 #' @export
 resolve.default <- function(x, datasets, keys) {
   x
