@@ -34,9 +34,11 @@ corresponding to every `data.frame` object.
 
 ```{r}
 library(teal.transform)
+library(teal.widgets)
+library(teal.data)
 library(shiny)
 
-adsl_extract <- teal.transform::data_extract_spec(
+adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
@@ -47,7 +49,7 @@ adsl_extract <- teal.transform::data_extract_spec(
   )
 )
 
-adtte_extract <- teal.transform::data_extract_spec(
+adtte_extract <- data_extract_spec(
   dataname = "ADTTE",
   select = select_spec(
     choices = c("AVAL", "ASEQ"),
@@ -61,18 +63,18 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
-  teal.widgets::standard_layout(
-    output = teal.widgets::white_small_well(
+  standard_layout(
+    output = white_small_well(
       verbatimTextOutput(ns("expr")),
       dataTableOutput(ns("data"))
     ),
     encoding = div(
-      teal.transform::data_extract_ui(
+      data_extract_ui(
         ns("adsl_extract"), # must correspond with data_extracts list names
         label = "ADSL extract",
         data_extracts[[1]]
       ),
-      teal.transform::data_extract_ui(
+      data_extract_ui(
         ns("adtte_extract"), # must correspond with data_extracts list names
         label = "ADTTE extract",
         data_extracts[[2]]
@@ -83,7 +85,7 @@ merge_ui <- function(id, data_extracts) {
 
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    merged_data <- teal.transform::merge_expression_module(
+    merged_data <- merge_expression_module(
       data_extract = data_extracts,
       datasets = datasets,
       join_keys = join_keys,
@@ -91,7 +93,8 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     )
 
     ANL <- reactive({ # nolint
-      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
+      data_list <- lapply(datasets, function(ds) ds())
+      eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
@@ -102,14 +105,17 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
 ADSL <- rADSL # nolint
 ADTTE <- rADTTE # nolint
 
-# create a list of data.frame objects
-datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
 
 # create  join_keys
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
 )
 ```
 
@@ -131,7 +137,7 @@ In the scenario above, if the user deselects the `ADTTE` variable, the merging b
 ```{r}
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets, join_keys)
+    selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
     reactive_selector_list <- reactive({
       if (is.null(selector_list()$adtte_extract) || length(selector_list()$adtte_extract()$select) == 0) {
         selector_list()[names(selector_list()) != "adtte_extract"]
@@ -140,7 +146,7 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       }
     })
 
-    merged_data <- teal.transform::merge_expression_srv(
+    merged_data <- merge_expression_srv(
       selector_list = reactive_selector_list,
       datasets = datasets,
       join_keys = join_keys,
@@ -148,7 +154,8 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     )
 
     ANL <- reactive({ # nolint
-      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
+      data_list <- lapply(datasets, function(ds) ds())
+      eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
