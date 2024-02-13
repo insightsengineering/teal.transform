@@ -130,10 +130,8 @@ choices_selected <- function(choices,
     checkmate::check_atomic(selected),
     checkmate::check_multi_class(selected, c("delayed_data", "all_choices"))
   )
-  checkmate::assert(
-    checkmate::check_flag(keep_order),
-    checkmate::check_flag(fixed)
-  )
+  checkmate::assert_flag(keep_order)
+  checkmate::assert_flag(fixed)
 
   if (inherits(selected, "all_choices")) selected <- choices
 
