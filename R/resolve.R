@@ -12,6 +12,64 @@
 #'
 #' @return Resolved object.
 #'
+#' @examples
+#' resolve <- getFromNamespace("resolve", "teal.transform")
+#' library(shiny)
+#' ADSL <- rADSL
+#'
+#' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
+#' data_list <- list(ADSL = reactive(ADSL))
+#' keys <- list(ADSL = attr(ADSL, "keys"))
+#' isolate({
+#'   # value_choices example
+#'   v1 <- value_choices("ADSL", "SEX", "SEX")
+#'   v1
+#'   resolve(v1, data_list, keys)
+#'
+#'   # variable_choices example
+#'   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
+#'   v2
+#'   resolve(v2, data_list, keys)
+#'
+#'   # data_extract_spec example
+#'   adsl_filter <- filter_spec(
+#'     vars = variable_choices("ADSL", "SEX"),
+#'     sep = "-",
+#'     choices = value_choices("ADSL", "SEX", "SEX"),
+#'     selected = "F",
+#'     multiple = FALSE,
+#'     label = "Choose endpoint and Censor"
+#'   )
+#'
+#'   adsl_select <- select_spec(
+#'     label = "Select variable:",
+#'     choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
+#'     selected = "BMRKR1",
+#'     multiple = FALSE,
+#'     fixed = FALSE
+#'   )
+#'
+#'   adsl_de <- data_extract_spec(
+#'     dataname = "ADSL",
+#'     select = adsl_select,
+#'     filter = adsl_filter
+#'   )
+#'
+#'   resolve(adsl_filter, data_list, keys)
+#'   resolve(adsl_select, data_list, keys)
+#'   resolve(adsl_de, data_list, keys)
+#'
+#'   # nested list (arm_ref_comp)
+#'   arm_ref_comp <- list(
+#'     ARMCD = list(
+#'       ref = variable_choices("ADSL"),
+#'       comp = variable_choices("ADSL")
+#'     )
+#'   )
+#'
+#'   resolve(arm_ref_comp, data_list, keys)
+#' })
+#'
 #' @keywords internal
 #'
 resolve <- function(x, datasets, keys = NULL) {
@@ -152,7 +210,7 @@ resolve_delayed_expr <- function(x, ds, is_value_choices) {
 
   # check returned value
   if (is_value_choices) {
-    if (!is.atomic(res) || anyDuplicated(res)) {
+    if (!checkmate::test_atomic(res) || anyDuplicated(res)) {
       stop(paste(
         "The following function must return a vector with unique values",
         "from the respective columns of the dataset.\n\n",

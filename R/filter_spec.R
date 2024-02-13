@@ -208,6 +208,28 @@ filter_spec <- function(vars,
 #'
 #' @seealso filter_spec
 #'
+#' @examples
+#' # use non-exported function from teal.transform
+#' filter_spec_internal <- getFromNamespace("filter_spec_internal", "teal.transform")
+#'
+#' filter_spec_internal(
+#'   vars_choices = c("PARAMCD", "AVISIT"),
+#'   vars_selected = "PARAMCD",
+#'   vars_multiple = TRUE
+#' )
+#'
+#' ADRS <- rADRS
+#' filter_spec_internal(
+#'   vars_choices = variable_choices(ADRS),
+#'   vars_selected = "PARAMCD",
+#'   vars_multiple = TRUE
+#' )
+#'
+#' filter_spec_internal(
+#'   vars_choices = variable_choices("ADRS"),
+#'   vars_selected = "PARAMCD",
+#'   vars_multiple = TRUE
+#' )
 #' @keywords internal
 #'
 filter_spec_internal <- function(vars_choices,
