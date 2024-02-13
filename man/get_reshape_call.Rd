@@ -32,4 +32,31 @@ List of multiple \code{dplyr} calls that reshape data.
 \description{
 Returns \code{dplyr} reshape call
 }
+\examples{
+# use non-exported function from teal.transform
+get_reshape_call <- getFromNamespace("get_reshape_call", "teal.transform")
+
+filters <- list(
+  columns = c("PARAMCD", "AVISIT"),
+  selected = list(c("ALT", "SCREENING"), c("ALT", "BASELINE"))
+)
+select <- "AVAL"
+internal_id <- "ADLB"
+
+x <- list(
+  list(
+    dataname = "ADLB",
+    filters = list(list(
+      columns = c("PARAMCD", "AVISIT"),
+      selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE")),
+      multiple = FALSE
+    )),
+    select = "AVAL",
+    keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
+    reshape = TRUE,
+    internal_id = "test"
+  )
+)
+get_reshape_call(x, 1L)
+}
 \keyword{internal}

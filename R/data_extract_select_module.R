@@ -7,6 +7,14 @@
 #'
 #' @return `shiny.tag.list` with the UI.
 #'
+#' @examples
+#' # use non-exported function from teal.transform
+#' data_extract_select_ui <- getFromNamespace("data_extract_select_ui", "teal.transform")
+#'
+#' data_extract_select_ui(
+#'   select = select_spec(choices = "test_choice"),
+#'   id = "test_id"
+#' )
 #' @keywords internal
 #'
 data_extract_select_ui <- function(select, id = "select") {

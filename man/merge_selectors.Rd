@@ -21,4 +21,35 @@ not applicable.
 \description{
 Merge selectors when \code{dataname}, \code{reshape}, \code{filters} and \code{keys} entries are identical
 }
+\examples{
+# use non-exported function from teal.transform
+merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
+
+selector_list <- list(
+  # ADSL - SEX
+  list(
+    filters = NULL, select = "AGE", always_selected = NULL,
+    reshape = FALSE, dataname = "ADSL",
+    internal_id = "adsl_var", keys = c("STUDYID", "USUBJID")
+  ),
+
+  # ADSL - AGE
+  list(
+    filters = NULL, select = "SEX", always_selected = NULL,
+    reshape = FALSE, dataname = "ADSL",
+    internal_id = "adsl_var2", keys = c("STUDYID", "USUBJID")
+  ),
+
+  # ADLB - AVAL
+  list(
+    filters = NULL, select = "AVAL", always_selected = NULL,
+    reshape = FALSE, dataname = "ADLB",
+    internal_id = "adlb_var", keys = c(
+      "STUDYID", "USUBJID",
+      "PARAMCD", "AVISIT"
+    )
+  )
+)
+merge_selectors(selector_list)
+}
 \keyword{internal}

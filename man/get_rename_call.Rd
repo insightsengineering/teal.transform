@@ -32,4 +32,47 @@ selections, reshapes etc. All necessary data for merging.}
 \description{
 Rename is used only if there are duplicated columns.
 }
+\examples{
+# use non-exported function from teal.transform
+get_rename_call <- getFromNamespace("get_rename_call", "teal.transform")
+
+x <- list(
+  list(
+    dataname = "ADSL",
+    filters = NULL,
+    select = head(letters, 3),
+    keys = c("STUDYID", "USUBJID"),
+    reshape = FALSE,
+    internal_id = "test1"
+  ),
+  list(
+    dataname = "ADSL",
+    filters = NULL,
+    select = letters,
+    keys = c("STUDYID", "USUBJID"),
+    reshape = FALSE,
+    internal_id = "test2"
+  ),
+  list(
+    dataname = "ADSL",
+    filters = NULL,
+    select = tail(letters, 3),
+    keys = c("STUDYID", "USUBJID"),
+    reshape = FALSE,
+    internal_id = "test3"
+  ),
+  list(
+    dataname = "ADSL",
+    filters = NULL,
+    select = c("aa", "bb"),
+    keys = c("STUDYID", "USUBJID"),
+    reshape = FALSE,
+    internal_id = "test4"
+  )
+)
+get_rename_call(x, 1L)
+get_rename_call(x, 2L)
+get_rename_call(x, 3L)
+get_rename_call(x, 4L)
+}
 \keyword{internal}

@@ -126,6 +126,29 @@ Builds a configuration for the \code{data_extract_ui} module. This function cove
 the configuration of filtering datasets (so called \code{filter_spec}), which then
 is used to build the UI element in the \code{teal} app.
 }
+\examples{
+# use non-exported function from teal.transform
+filter_spec_internal <- getFromNamespace("filter_spec_internal", "teal.transform")
+
+filter_spec_internal(
+  vars_choices = c("PARAMCD", "AVISIT"),
+  vars_selected = "PARAMCD",
+  vars_multiple = TRUE
+)
+
+ADRS <- rADRS
+filter_spec_internal(
+  vars_choices = variable_choices(ADRS),
+  vars_selected = "PARAMCD",
+  vars_multiple = TRUE
+)
+
+filter_spec_internal(
+  vars_choices = variable_choices("ADRS"),
+  vars_selected = "PARAMCD",
+  vars_multiple = TRUE
+)
+}
 \seealso{
 filter_spec
 }
