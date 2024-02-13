@@ -21,11 +21,11 @@ Combining datasets is an essential step when working with modules that involve m
 Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
 To support this, two functions are provided: `merge_expression_module` and `merge_expression_srv`, each tailored for different use cases.
 
-When no processing of the `data_extract` list is required, you can use the `merge_expression_module` function.
-This function reads the data and the list of `data_extract_spec` objects and applies the merging. 
-Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`.
-Further details are provided below. 
-In scenarios where additional processing of the `data_extract` list is necessary, 
+Use `merge_expression_module` when there is no need to process the `data_extract` list.
+This function reads the data and the list of `data_extract_spec` objects and applies the merging.
+Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`. 
+Further details are provided below.
+In scenarios where additional processing of the `data_extract` list is necessary,
 `merge_expression_srv()` can be used along with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
 
 The following sections provide examples for both scenarios.
