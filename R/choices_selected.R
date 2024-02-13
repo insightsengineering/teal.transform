@@ -130,8 +130,14 @@ choices_selected <- function(choices,
                              selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
                              keep_order = FALSE,
                              fixed = FALSE) {
-  stopifnot(is.atomic(choices) || inherits(choices, "delayed_data"))
-  stopifnot(is.atomic(selected) || inherits(selected, "delayed_data") || inherits(selected, "all_choices"))
+  checkmate::assert(
+    checkmate::check_atomic(choices),
+    checkmate::check_class(choices, "delayed_data")
+  )
+  checkmate::assert(
+    checkmate::check_atomic(selected),
+    checkmate::check_multi_class(selected, c("delayed_data", "all_choices"))
+  )
   checkmate::assert_flag(keep_order)
   checkmate::assert_flag(fixed)
 
@@ -240,7 +246,7 @@ no_selected_as_NULL <- function(x) { # nolint
 ## Non-exported utils functions ----
 ## Modify vectors and keep attributes
 vector_reorder <- function(vec, idx) {
-  stopifnot(is.atomic(vec))
+  checkmate::assert_atomic(vec)
   checkmate::assert_integer(idx, min.len = 1, lower = 1, any.missing = FALSE)
   stopifnot(length(vec) == length(idx))
 
@@ -259,7 +265,7 @@ vector_reorder <- function(vec, idx) {
 }
 
 vector_pop <- function(vec, idx) {
-  stopifnot(is.atomic(vec))
+  checkmate::assert_atomic(vec)
   checkmate::assert_integer(idx, lower = 1, any.missing = FALSE)
 
   if (length(idx) == 0) {
@@ -281,7 +287,7 @@ vector_pop <- function(vec, idx) {
 }
 
 vector_remove_dups <- function(vec) {
-  stopifnot(is.atomic(vec))
+  checkmate::assert_atomic(vec)
 
   idx <- which(duplicated(vec))
 
