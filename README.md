@@ -54,7 +54,7 @@ Below is a small example usage:
 
 ```r
 library(teal.transform)
-ADSL <- rADSL
+ADSL <- teal.transform::rADSL
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",

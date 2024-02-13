@@ -119,8 +119,8 @@ where a list of necessary join keys per `data.frame` object is required:
 
 ```{r}
 # Define data.frame objects
-ADSL <- rADSL # nolint
-ADTTE <- rADTTE # nolint
+ADSL <- teal.transform::rADSL # nolint
+ADTTE <- teal.transform::rADTTE # nolint
 
 # create a list of data.frame objects
 datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
