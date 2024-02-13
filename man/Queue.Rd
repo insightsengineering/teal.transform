@@ -7,7 +7,8 @@
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Abstract data type that stores and returns any number of elements.
-
+}
+\details{
 A \code{Queue} object stores all elements in a single vector,
 thus all data types can be stored, but silent coercion may occur.
 
@@ -118,7 +119,7 @@ Returns the number of elements in \code{Queue}.
 }
 
 \subsection{Returns}{
-Integer of length 1.
+\code{integer(1)}.
 }
 }
 \if{html}{\out{<hr>}}
