@@ -26,7 +26,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param new_elements vector of elements to add.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     push = function(new_elements) {
       for (i in seq_along(new_elements)) {
@@ -61,7 +61,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param elements vector of elements to remove from `Queue`.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     remove = function(elements) {
       for (el in elements) {
@@ -73,7 +73,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Removes all elements from `Queue`.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     empty = function() {
       private$array <- c()
@@ -92,7 +92,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param ... Additional arguments to this method, ignored.
     #'
-    #' @return invisibly self
+    #' @return `self`, invisibly.
     print = function(...) {
       cat(
         sprintf(

@@ -46,7 +46,7 @@ Adds element(s) to \code{Queue}.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Self, invisibly.
+\code{self}, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -94,7 +94,7 @@ Relies on implicit type conversions of R identify elements to remove.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Self, invisibly.
+\code{self}, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -107,7 +107,7 @@ Removes all elements from \code{Queue}.
 }
 
 \subsection{Returns}{
-Self, invisibly.
+\code{self}, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
@@ -140,7 +140,7 @@ Prints this \code{Queue}.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-invisibly self
+\code{self}, invisibly.
 }
 }
 \if{html}{\out{<hr>}}
