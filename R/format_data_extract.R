@@ -1,40 +1,44 @@
-#' @title Formatting data extracts
-#' @description Returns a human-readable string representation of an extracted `data_extract_spec` object.
+#' Formatting data extracts
 #'
-#' @details
-#' This function formats the output of [`data_extract_srv`]. See the example for more information.
+#' Returns a human-readable string representation of an extracted `data_extract_spec` object.
 #'
-#' @param data_extract `list` the list output of `data_extract_srv`
-#' @return `character(1)` the string representation
+#' This function formats the output of [`data_extract_srv`].
+#' See the example for more information.
+#'
+#' @param data_extract `list` the list output of `data_extract_srv`.
+
+#' @return A string (`character(1)`) representation of the `data_extract` object.
+#'
 #' @examples
+#' library(shiny)
 #' simple_des <- data_extract_spec(
 #'   dataname = "iris",
 #'   filter = filter_spec(vars = "Petal.Length", choices = c("1.4", "1.5")),
 #'   select = select_spec(choices = c("Petal.Length", "Species"))
 #' )
 #'
-#' if (interactive()) {
-#'   shiny::shinyApp(
-#'     ui = shiny::fluidPage(
-#'       data_extract_ui(
-#'         id = "extract",
-#'         label = "data extract ui",
-#'         data_extract_spec = simple_des,
-#'         is_single_dataset = TRUE
-#'       ),
-#'       shiny::verbatimTextOutput("formatted_extract")
-#'     ),
-#'     server = function(input, output, session) {
-#'       extracted_input <- data_extract_srv(
-#'         id = "extract",
-#'         datasets = list(iris = iris),
-#'         data_extract_spec = simple_des
-#'       )
-#'       output$formatted_extract <- shiny::renderPrint({
-#'         cat(format_data_extract(extracted_input()))
-#'       })
-#'     }
+#' ui <- fluidPage(
+#'   data_extract_ui(
+#'     id = "extract",
+#'     label = "data extract ui",
+#'     data_extract_spec = simple_des,
+#'     is_single_dataset = TRUE
+#'   ),
+#'   verbatimTextOutput("formatted_extract")
+#' )
+#' server <- function(input, output, session) {
+#'   extracted_input <- data_extract_srv(
+#'     id = "extract",
+#'     datasets = list(iris = iris),
+#'     data_extract_spec = simple_des
 #'   )
+#'   output$formatted_extract <- renderPrint({
+#'     cat(format_data_extract(extracted_input()))
+#'   })
+#' }
+#'
+#' if (interactive()) {
+#'   shinyApp(ui, server)
 #' }
 #' @export
 #'

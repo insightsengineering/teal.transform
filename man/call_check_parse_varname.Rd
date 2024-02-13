@@ -7,8 +7,11 @@
 call_check_parse_varname(varname)
 }
 \arguments{
-\item{varname}{(\code{name}, \code{call} or \code{character(1)})\cr
+\item{varname}{(\code{name}, \code{call} or \code{character(1)})
 name of the variable}
+}
+\value{
+the parsed \code{varname}.
 }
 \description{
 Checks \code{varname} type and parse if it's a \code{character}

@@ -2,17 +2,41 @@
 % Please edit documentation in R/resolve.R
 \name{resolve}
 \alias{resolve}
+\alias{resolve.delayed_variable_choices}
+\alias{resolve.delayed_value_choices}
+\alias{resolve.delayed_choices_selected}
+\alias{resolve.delayed_select_spec}
+\alias{resolve.delayed_filter_spec}
+\alias{resolve.delayed_data_extract_spec}
+\alias{resolve.list}
+\alias{resolve.default}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
 resolve(x, datasets, keys = NULL)
+
+\method{resolve}{delayed_variable_choices}(x, datasets, keys)
+
+\method{resolve}{delayed_value_choices}(x, datasets, keys)
+
+\method{resolve}{delayed_choices_selected}(x, datasets, keys)
+
+\method{resolve}{delayed_select_spec}(x, datasets, keys)
+
+\method{resolve}{delayed_filter_spec}(x, datasets, keys)
+
+\method{resolve}{delayed_data_extract_spec}(x, datasets, keys)
+
+\method{resolve}{list}(x, datasets, keys)
+
+\method{resolve}{default}(x, datasets, keys)
 }
 \arguments{
-\item{x}{Object of class \code{delayed_data} to resolve.}
+\item{x}{(\code{delayed_data}) object to resolve.}
 
-\item{datasets}{A named list of type \code{data.frame} to use for evaluation.}
+\item{datasets}{(named \code{list} of \code{data.frame}) to use in evaluation.}
 
-\item{keys}{A named list of type \code{character} to be used as the keys for each dataset. The names of this
-list must be exactly the same as for datasets.}
+\item{keys}{(named \code{list} of \code{character}) to be used as the keys for each dataset.
+The names of this list must be exactly the same as for datasets.}
 }
 \value{
 Resolved object.
@@ -20,21 +44,48 @@ Resolved object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{resolve(delayed_variable_choices)}: Call \code{\link[=variable_choices]{variable_choices()}} on the delayed \code{variable_choices} object.
+
+\item \code{resolve(delayed_value_choices)}: Call \code{\link[=value_choices]{value_choices()}} on the delayed \code{value_choices} object.
+
+\item \code{resolve(delayed_choices_selected)}: Call \code{\link[=select_spec]{select_spec()}} on the delayed \code{choices_selected} object.
+
+\item \code{resolve(delayed_select_spec)}: Call \code{\link[=select_spec]{select_spec()}} on the delayed specification.
+
+\item \code{resolve(delayed_filter_spec)}: Call \code{\link[=filter_spec]{filter_spec()}} on the delayed specification.
+
+\item \code{resolve(delayed_data_extract_spec)}: Call \code{\link[=data_extract_spec]{data_extract_spec()}} on the delayed specification.
+
+\item \code{resolve(list)}: Iterates over elements of the list and recursively calls
+\code{resolve}.
+
+\item \code{resolve(default)}: Default method that does nothing and returns \code{x} itself.
+
+}}
+\note{
+This is an internal function that is used by \code{\link[=resolve_delayed]{resolve_delayed()}}.
+All the methods are used internally only.
+}
 \examples{
+resolve <- getFromNamespace("resolve", "teal.transform")
+library(shiny)
 ADSL <- teal.transform::rADSL
+
 attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
-data_list <- list(ADSL = shiny::reactive(ADSL))
+data_list <- list(ADSL = reactive(ADSL))
 keys <- list(ADSL = attr(ADSL, "keys"))
-shiny::isolate({
+isolate({
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")
   v1
-  teal.transform:::resolve(v1, data_list, keys)
+  resolve(v1, data_list, keys)
 
   # variable_choices example
   v2 <- variable_choices("ADSL", c("BMRKR1", "BMRKR2"))
   v2
-  teal.transform:::resolve(v2, data_list, keys)
+  resolve(v2, data_list, keys)
 
   # data_extract_spec example
   adsl_filter <- filter_spec(
@@ -60,9 +111,9 @@ shiny::isolate({
     filter = adsl_filter
   )
 
-  teal.transform:::resolve(adsl_filter, data_list, keys)
-  teal.transform:::resolve(adsl_select, data_list, keys)
-  teal.transform:::resolve(adsl_de, data_list, keys)
+  resolve(adsl_filter, data_list, keys)
+  resolve(adsl_select, data_list, keys)
+  resolve(adsl_de, data_list, keys)
 
   # nested list (arm_ref_comp)
   arm_ref_comp <- list(
@@ -72,6 +123,8 @@ shiny::isolate({
     )
   )
 
-  teal.transform:::resolve(arm_ref_comp, data_list, keys)
+  resolve(arm_ref_comp, data_list, keys)
 })
+
 }
+\keyword{internal}

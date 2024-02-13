@@ -1,60 +1,52 @@
 #' Data extract filter specification
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' It consists in choices and additionally the variable names for the choices
 #'
-#' @export
-#'
-#' @inheritParams select_spec
-#'
-#' @param vars (\code{character}) or (\code{delayed_data}) object.
-#'   Character vector giving the columns to be filtered. These should be
-#'   key variables of the data set to be filtered.
-#'   \code{delayed_data} objects can be created via [variable_choices()], [value_choices()],
-#'   or \code{\link{choices_selected}}.
-#' @param sep (\code{character}) A separator string to split the \code{choices} or
-#'   \code{selected} inputs into the values of the different columns
-#' @param choices (\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data}) object.
-#'   Named character vector to define the choices
-#'   of a shiny \code{\link[shiny]{selectInput}}. These choices will be used to filter the
-#'   dataset.
-#'
-#'   These shall be filter values of the \code{vars} input separated by the separator(\code{sep}). Please
-#'   watch out that the filter values have to follow the order of the \code{vars} input. In the following
-#'   example we will show how to filter two columns:
-#'
-#'   \code{vars = c("PARAMCD","AVISIT")} and \code{choices = c("CRP - BASELINE", "ALT - BASELINE")}
-#'   will lead to a filtering of
-#'   \code{(PARAMCD == "CRP" & AVISIT == "BASELINE") | (PARAMCD == "ALT" & AVISIT == "BASELINE")}.
-#'
-#'   The \code{sep} input has to be \code{" - "} in this case.
-#'
-#'   \code{delayed_data} objects can be created via \code{\link{variable_choices}} or \code{\link{value_choices}}.
-#'
-#' @param selected (\code{character} or \code{numeric} or \code{logical} or
-#'  (\code{delayed_data} or (\code{all_choices})) object.
-#'  Named character vector to define the selected
-#'  values of a shiny \code{\link[shiny]{selectInput}} (default values). This value will
-#'  be displayed inside the shiny app upon start. The `all_choices` object indicates selecting
-#'  all possible choices.
-#'
-#' @param drop_keys optional, (\code{logical}) whether to drop filter column from the dataset keys,
-#'   \code{TRUE} on default.
-#'
-#' @param label optional (\code{character}). Define a label on top of this specific
-#' shiny \code{\link[shiny]{selectInput}}. The default value is \code{"Filter by"}.
-#'
-#' @return \code{filter_spec}-S3-class object or \code{delayed_filter_spec}-S3-class object.
-#'
 #' @details
-#'
-#' The \code{filter_spec} is used inside \code{teal} apps to allow filtering datasets
+#' The `filter_spec` is used inside `teal` apps to allow filtering datasets
 #' for their key variables. Imagine having an adverse events table. It has
-#' the columns \code{PARAMCD} and \code{CNSR}. \code{PARAMCD} contains the levels
-#' \code{"OS"}, \code{"PFS"}, \code{"EFS"}. \code{CNSR} contains the levels \code{"0"} and \code{"1"}.
-#' The first example should show how a \code{filter_spec} setup will influence
+#' the columns `PARAMCD` and `CNSR`. `PARAMCD` contains the levels
+#' `"OS"`, `"PFS"`, `"EFS"`. `CNSR` contains the levels `"0"` and `"1"`.
+#' The first example should show how a `filter_spec` setup will influence
 #' the drop-down menu the app user will see.
 #'
+#' @inheritParams select_spec
+#' @param vars (`character`) or (`delayed_data`) object.
+#' Character vector giving the columns to be filtered. These should be
+#' key variables of the data set to be filtered.
+#' `delayed_data` objects can be created via [variable_choices()], [value_choices()],
+#' or [choices_selected()].
+#' @param sep (`character`) A separator string to split the `choices` or
+#' `selected` inputs into the values of the different columns.
+#' @param choices (`character` or `numeric` or `logical` or (`delayed_data`) object.
+#' Named character vector to define the choices of a shiny [shiny::selectInput()].
+#' These choices will be used to filter the dataset.
+#'
+#' These shall be filter values of the `vars` input separated by the separator(`sep`). Please
+#' watch out that the filter values have to follow the order of the `vars` input. In the following
+#' example we will show how to filter two columns:
+#'
+#' `vars = c("PARAMCD","AVISIT")` and `choices = c("CRP - BASELINE", "ALT - BASELINE")`
+#' will lead to a filtering of
+#' `(PARAMCD == "CRP" & AVISIT == "BASELINE") | (PARAMCD == "ALT" & AVISIT == "BASELINE")`.
+#'
+#' The `sep` input has to be `" - "` in this case.
+#'
+#' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
+#' @param selected (`character` or `numeric` or `logical` or (`delayed_data` or `all_choices`) object.
+#' Named character vector to define the selected values of a shiny [shiny::selectInput()]
+#' (default values).
+#' This value will be displayed inside the shiny app upon start.
+#' The `all_choices` object indicates selecting all possible choices.
+#' @param drop_keys (optional `logical`) whether to drop filter column from the
+#' dataset keys, `TRUE` on default.
+#' @param label (optional `character`). Define a label on top of this specific
+#' shiny [shiny::selectInput()]. The default value is `"Filter by"`.
+#'
+#' @return `filter_spec`-S3-class object or `delayed_filter_spec`-S3-class object.
 #'
 #' @examples
 #' # for Adverse Events table
@@ -113,6 +105,8 @@
 #'   choices = value_choices("ADSL", "SEX"),
 #'   selected = all_choices()
 #' )
+#' @export
+#'
 filter_spec <- function(vars,
                         choices = NULL,
                         selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
@@ -186,54 +180,58 @@ filter_spec <- function(vars,
 
 #' Data extract dynamic filter specification
 #'
-#' This function returns a configuration for the \code{data_extract_ui} module. This function covers
-#' the configuration of filtering datasets (so called `filter_spec`), which then is used to build
-#' the UI element in the `teal` app.
+#' Builds a configuration for the `data_extract_ui` module. This function covers
+#' the configuration of filtering datasets (so called `filter_spec`), which then
+#' is used to build the UI element in the `teal` app.
 #'
 #' @inheritParams filter_spec
-#' @param vars_choices (`character` or `delayed_data`) \cr
-#'   the vector of dataset column names available to build dynamic filter
-#'   \code{delayed_data} objects can be created via \code{\link{variable_choices}}.
-#' @param vars_selected (`NULL` or named `character`) \cr
-#'   the selected column name out from `choices`.
-#' @param vars_label (`character`)\cr
-#'   the title printed on the UI element generated on the basis of this \code{filter_spec}.
-#' @param vars_fixed (`logical`)\cr
-#'   if true allow to change the selected variables in the UI element; otherwise, do not allow.
-#' @param vars_multiple (`logical`)\cr
-#'   if true allow to select multiple variables in the UI elements; otherwise, do not allow.
-#' @param fixed (`logical`)\cr
-#'   if true allow to change the initially selected values of the variables; otherwise, do not allow.
-#' @param dataname (`character`)\cr
-#'   the name of the dataset this filter covers. Set during the initialization of the teal application.
-#' @param initialized (`logical`)\cr
-#'   indicates whether this filter was already initialized in the application.
-#'   TRUE if this filter was already consumed by the server function; FALSE otherwise.
+#' @param vars_choices (`character` or `delayed_data`)
+#' the vector of dataset column names available to build dynamic filter
+#' `delayed_data` objects can be created via [variable_choices()].
+#' @param vars_selected (`NULL` or named `character`)
+#' the selected column name out from `choices`.
+#' @param vars_label (`character`)
+#' the title printed on the UI element generated on the basis of this `filter_spec`.
+#' @param vars_fixed (`logical`)
+#' if true allow to change the selected variables in the UI element; otherwise, do not allow.
+#' @param vars_multiple (`logical`)
+#' if true allow to select multiple variables in the UI elements; otherwise, do not allow.
+#' @param fixed (`logical`)
+#' if true allow to change the initially selected values of the variables; otherwise, do not allow.
+#' @param dataname (`character`)
+#' the name of the dataset this filter covers. Set during the initialization of the `teal` application.
+#' @param initialized (`logical`)
+#' indicates whether this filter was already initialized in the application.
+#' TRUE if this filter was already consumed by the server function; FALSE otherwise.
 #'
 #' @return `filter_spec` or `delayed_filter_spec` S3-class object.
-#' @keywords internal
 #'
 #' @seealso filter_spec
 #'
 #' @examples
-#' teal.transform:::filter_spec_internal(
+#' # use non-exported function from teal.transform
+#' filter_spec_internal <- getFromNamespace("filter_spec_internal", "teal.transform")
+#'
+#' filter_spec_internal(
 #'   vars_choices = c("PARAMCD", "AVISIT"),
 #'   vars_selected = "PARAMCD",
 #'   vars_multiple = TRUE
 #' )
 #'
 #' ADRS <- teal.transform::rADRS
-#' teal.transform:::filter_spec_internal(
+#' filter_spec_internal(
 #'   vars_choices = variable_choices(ADRS),
 #'   vars_selected = "PARAMCD",
 #'   vars_multiple = TRUE
 #' )
 #'
-#' teal.transform:::filter_spec_internal(
+#' filter_spec_internal(
 #'   vars_choices = variable_choices("ADRS"),
 #'   vars_selected = "PARAMCD",
 #'   vars_multiple = TRUE
 #' )
+#' @keywords internal
+#'
 filter_spec_internal <- function(vars_choices,
                                  vars_selected = NULL,
                                  vars_label = NULL,
@@ -334,7 +332,7 @@ filter_spec_internal.delayed_data <- function(vars_choices, # nolint
     checkmate::check_class(selected, "all_choices")
   )
 
-  out <- structure(
+  structure(
     list(
       vars_choices = vars_choices,
       vars_selected = vars_selected,
@@ -357,7 +355,6 @@ filter_spec_internal.delayed_data <- function(vars_choices, # nolint
       "delayed_data"
     )
   )
-  return(out)
 }
 
 #' @rdname filter_spec_internal
@@ -412,23 +409,23 @@ filter_spec_internal.default <- function(vars_choices,
     checkmate::assert_subset(selected, choices)
   }
 
-  res <- list(
-    vars_choices = vars_choices,
-    vars_selected = vars_selected,
-    vars_label = vars_label,
-    vars_fixed = vars_fixed,
-    vars_multiple = vars_multiple,
-    choices = choices,
-    selected = selected,
-    label = label,
-    multiple = multiple,
-    fixed = fixed,
-    sep = sep,
-    drop_keys = drop_keys,
-    dataname = dataname, # modified by data_extract_spec
-    initialized = initialized
+  structure(
+    list(
+      vars_choices = vars_choices,
+      vars_selected = vars_selected,
+      vars_label = vars_label,
+      vars_fixed = vars_fixed,
+      vars_multiple = vars_multiple,
+      choices = choices,
+      selected = selected,
+      label = label,
+      multiple = multiple,
+      fixed = fixed,
+      sep = sep,
+      drop_keys = drop_keys,
+      dataname = dataname, # modified by data_extract_spec
+      initialized = initialized
+    ),
+    class = "filter_spec"
   )
-  class(res) <- "filter_spec"
-
-  return(res)
 }

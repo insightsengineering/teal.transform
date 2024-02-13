@@ -7,12 +7,12 @@
 extract_choices_labels(choices, values = NULL)
 }
 \arguments{
-\item{choices}{(\code{list} or \code{vector}) select choices}
+\item{choices}{(\code{list} or \code{vector}) select choices.}
 
-\item{values}{optional, choices subset for which labels should be extracted, \code{NULL} for all choices}
+\item{values}{optional, choices subset for which labels should be extracted, \code{NULL} for all choices.}
 }
 \value{
-(\code{character}) vector with labels
+\code{character} vector with labels.
 }
 \description{
 Extract labels from choices basing on attributes and names

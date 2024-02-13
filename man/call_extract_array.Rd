@@ -7,35 +7,37 @@
 call_extract_array(dataname = ".", row = NULL, column = NULL, aisle = NULL)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})\cr}
+\item{dataname}{(\code{character(1)} or \code{name}).}
 
-\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
-optional, name of the \code{row} or condition}
+\item{row}{(optional \code{name}, \code{call}, \code{logical}, \code{integer} or \code{character})
+name of the \code{row} or condition.}
 
-\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
-optional, name of the \code{column} or condition}
+\item{column}{(optional \code{name}, \code{call}, \code{logical}, \code{integer} or \code{character})
+name of the \code{column} or condition.}
 
-\item{aisle}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
-optional, name of the \code{row} or condition}
+\item{aisle}{(optional \code{name}, \code{call}, \code{logical}, \code{integer} or \code{character})
+name of the \code{row} or condition.}
 }
 \value{
-\code{[} call with all conditions included
-
-specific \code{\link[base]{Extract}} \code{call} for 3-dimensional array
+\code{\link[=Extract]{Extract()}} \code{call} for 3-dimensional array in \code{x[i, j, k]} notation.
 }
 \description{
 Get call to subset and select array
 }
 \examples{
-teal.transform:::call_extract_array(
+# use non-exported function from teal.transform
+call_extract_array <- getFromNamespace("call_extract_array", "teal.transform")
+call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
+
+call_extract_array(
   dataname = "my_array",
-  row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
+  row = call_condition_choice("my_array$SEX", "M"),
   column = call("c", "SEX", "AGE"),
   aisle = "RNAseq_rnaaccess"
 )
-teal.transform:::call_extract_array(
+call_extract_array(
   "mae_object",
-  column = teal.transform:::call_condition_choice("SEX", "M")
+  column = call_condition_choice("SEX", "M")
 )
 }
 \keyword{internal}

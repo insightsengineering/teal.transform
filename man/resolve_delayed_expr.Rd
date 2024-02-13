@@ -20,17 +20,4 @@ Character vector - result of calling function \code{x} on dataset \code{ds}.
 \description{
 Resolve expression after delayed data are loaded
 }
-\examples{
-\dontrun{
-# get only possible factor variables from mtcars dataset
-resolve_delayed_expr(
-  function(data) {
-    idx <- vapply(data, function(x) is.numeric(x) && length(unique(x)) <= 6, logical(1))
-    colnames(data)[idx]
-  },
-  ds = mtcars,
-  is_value_choices = FALSE
-)
-}
-}
 \keyword{internal}

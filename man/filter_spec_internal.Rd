@@ -58,26 +58,25 @@ filter_spec_internal(
 )
 }
 \arguments{
-\item{vars_choices}{(\code{character} or \code{delayed_data}) \cr
+\item{vars_choices}{(\code{character} or \code{delayed_data})
 the vector of dataset column names available to build dynamic filter
-\code{delayed_data} objects can be created via \code{\link{variable_choices}}.}
+\code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}}.}
 
-\item{vars_selected}{(\code{NULL} or named \code{character}) \cr
+\item{vars_selected}{(\code{NULL} or named \code{character})
 the selected column name out from \code{choices}.}
 
-\item{vars_label}{(\code{character})\cr
+\item{vars_label}{(\code{character})
 the title printed on the UI element generated on the basis of this \code{filter_spec}.}
 
-\item{vars_fixed}{(\code{logical})\cr
+\item{vars_fixed}{(\code{logical})
 if true allow to change the selected variables in the UI element; otherwise, do not allow.}
 
-\item{vars_multiple}{(\code{logical})\cr
+\item{vars_multiple}{(\code{logical})
 if true allow to select multiple variables in the UI elements; otherwise, do not allow.}
 
 \item{choices}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data}) object.
-Named character vector to define the choices
-of a shiny \code{\link[shiny]{selectInput}}. These choices will be used to filter the
-dataset.
+Named character vector to define the choices of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
+These choices will be used to filter the dataset.
 
 These shall be filter values of the \code{vars} input separated by the separator(\code{sep}). Please
 watch out that the filter values have to follow the order of the \code{vars} input. In the following
@@ -89,34 +88,33 @@ will lead to a filtering of
 
 The \code{sep} input has to be \code{" - "} in this case.
 
-\code{delayed_data} objects can be created via \code{\link{variable_choices}} or \code{\link{value_choices}}.}
+\code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(\code{character} or \code{numeric} or \code{logical} or
-(\code{delayed_data} or (\code{all_choices})) object.
-Named character vector to define the selected
-values of a shiny \code{\link[shiny]{selectInput}} (default values). This value will
-be displayed inside the shiny app upon start. The \code{all_choices} object indicates selecting
-all possible choices.}
+\item{selected}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data} or \code{all_choices}) object.
+Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}
+(default values).
+This value will be displayed inside the shiny app upon start.
+The \code{all_choices} object indicates selecting all possible choices.}
 
-\item{label}{optional (\code{character}). Define a label on top of this specific
-shiny \code{\link[shiny]{selectInput}}. The default value is \code{"Filter by"}.}
+\item{label}{(optional \code{character}). Define a label on top of this specific
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
-\item{fixed}{(\code{logical})\cr
+\item{fixed}{(\code{logical})
 if true allow to change the initially selected values of the variables; otherwise, do not allow.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
-shiny \code{\link[shiny]{selectInput}}.}
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or
-\code{selected} inputs into the values of the different columns}
+\code{selected} inputs into the values of the different columns.}
 
-\item{drop_keys}{optional, (\code{logical}) whether to drop filter column from the dataset keys,
-\code{TRUE} on default.}
+\item{drop_keys}{(optional \code{logical}) whether to drop filter column from the
+dataset keys, \code{TRUE} on default.}
 
-\item{dataname}{(\code{character})\cr
-the name of the dataset this filter covers. Set during the initialization of the teal application.}
+\item{dataname}{(\code{character})
+the name of the dataset this filter covers. Set during the initialization of the \code{teal} application.}
 
-\item{initialized}{(\code{logical})\cr
+\item{initialized}{(\code{logical})
 indicates whether this filter was already initialized in the application.
 TRUE if this filter was already consumed by the server function; FALSE otherwise.}
 }
@@ -124,25 +122,28 @@ TRUE if this filter was already consumed by the server function; FALSE otherwise
 \code{filter_spec} or \code{delayed_filter_spec} S3-class object.
 }
 \description{
-This function returns a configuration for the \code{data_extract_ui} module. This function covers
-the configuration of filtering datasets (so called \code{filter_spec}), which then is used to build
-the UI element in the \code{teal} app.
+Builds a configuration for the \code{data_extract_ui} module. This function covers
+the configuration of filtering datasets (so called \code{filter_spec}), which then
+is used to build the UI element in the \code{teal} app.
 }
 \examples{
-teal.transform:::filter_spec_internal(
+# use non-exported function from teal.transform
+filter_spec_internal <- getFromNamespace("filter_spec_internal", "teal.transform")
+
+filter_spec_internal(
   vars_choices = c("PARAMCD", "AVISIT"),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE
 )
 
 ADRS <- teal.transform::rADRS
-teal.transform:::filter_spec_internal(
+filter_spec_internal(
   vars_choices = variable_choices(ADRS),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE
 )
 
-teal.transform:::filter_spec_internal(
+filter_spec_internal(
   vars_choices = variable_choices("ADRS"),
   vars_selected = "PARAMCD",
   vars_multiple = TRUE

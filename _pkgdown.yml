@@ -23,7 +23,7 @@ navbar:
 reference:
   - title: Data extract constructors
     desc: >-
-      Functions used to create transform instructions for teal applications.
+      Functions used to create transform instructions for `teal` applications.
     contents:
       - add_no_selected_choices
       - all_choices

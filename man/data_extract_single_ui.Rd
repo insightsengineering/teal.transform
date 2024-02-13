@@ -7,21 +7,25 @@
 data_extract_single_ui(id = NULL, single_data_extract_spec)
 }
 \arguments{
-\item{id}{(\code{character(1)}) the id of the module}
+\item{id}{(\code{character(1)}) the id of the module.}
 
-\item{single_data_extract_spec}{(\code{data_extract_spec}) the \code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
+\item{single_data_extract_spec}{(\code{data_extract_spec}) the
+\code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
 }
 \value{
-\code{shiny.tag} the HTML element defining the UI
+\code{shiny.tag} the HTML element defining the UI.
 }
 \description{
 Returns a \code{shiny.tag} with the UI elements for a \code{data_extract_spec}
 }
 \details{
-Creates a \code{shiny.tag} element defining the UI elements corresponding
-a single \code{data_extract_spec} object.
+Creates a \code{shiny.tag} element defining the UI elements corresponding to a
+single \code{data_extract_spec} object.
 }
 \examples{
-teal.transform:::data_extract_single_ui(id = "test", data_extract_spec("extract"))
+# use non-exported function from teal.transform
+data_extract_single_ui <- getFromNamespace("data_extract_single_ui", "teal.transform")
+
+data_extract_single_ui(id = "test", data_extract_spec("extract"))
 }
 \keyword{internal}

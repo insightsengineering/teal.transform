@@ -7,9 +7,12 @@
 add_no_selected_choices(x, multiple = FALSE)
 }
 \arguments{
-\item{x}{(\code{choices_selected}) output}
+\item{x}{(\code{choices_selected}) object.}
 
-\item{multiple}{(\code{logical}) whether multiple selections are allowed or not}
+\item{multiple}{(\code{logical(1)}) whether multiple selections are allowed or not.}
+}
+\value{
+\code{choices_selected} object with an empty option added to the choices.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

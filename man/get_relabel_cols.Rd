@@ -7,14 +7,14 @@
 get_relabel_cols(columns_source, dplyr_call_data)
 }
 \arguments{
-\item{columns_source}{\code{list}}
+\item{columns_source}{(\code{list})}
 
-\item{dplyr_call_data}{\code{list}}
+\item{dplyr_call_data}{(\code{list})}
 }
 \value{
-columns_source \code{list} without columns which has been reshaped
+\code{columns_source} list without columns that have been reshaped.
 }
 \description{
-Get columns to relabel excluding these which has been reshaped (pivot_wider)
+Get columns to relabel excluding these which has been reshaped (pivot_wider).
 }
 \keyword{internal}

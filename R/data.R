@@ -1,6 +1,5 @@
 #' Random adverse events
 #'
-#' @description Random adverse events
 #' @docType data
 #'
 #' @usage rADAE
@@ -13,7 +12,6 @@
 
 #' Random lab analysis
 #'
-#' @description Random lab analysis
 #' @docType data
 #'
 #' @usage rADLB
@@ -26,7 +24,6 @@
 
 #' Random response
 #'
-#' @description Random response
 #' @docType data
 #'
 #' @usage rADRS
@@ -39,7 +36,6 @@
 
 #' Random patient listing
 #'
-#' @description Random patient listing
 #' @docType data
 #'
 #' @usage rADSL
@@ -52,7 +48,6 @@
 
 #' Random Time to Event Analysis Dataset
 #'
-#' @description Random Time to Event Analysis Dataset
 #' @docType data
 #'
 #' @usage rADTTE

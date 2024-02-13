@@ -14,22 +14,25 @@ data_extract_read_srv(
 )
 }
 \arguments{
-\item{id}{(\code{character}) id string}
+\item{id}{(\code{character}) id string.}
 
 \item{datasets}{(\verb{named list}) a list of reactive \code{data.frame} type objects.}
 
-\item{single_data_extract_spec}{(\code{data_extract_spec}) the \code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
+\item{single_data_extract_spec}{(\code{data_extract_spec}) the
+\code{\link[=data_extract_spec]{data_extract_spec()}} object to handle.}
 }
 \value{
-\code{shiny::reactive} the reactive list with reactive values read from the UI
+\code{shiny::reactive} the reactive list with reactive values read from the UI.
 }
 \description{
 Returns a reactive list with values read from the inputs of \code{data_extract_spec}
 }
 \details{
-Reads the UI inputs of a single \code{data_extract_spec} object in
-a running \code{teal} application. Returns a reactive list of reactive values
-read from the input. The returned list has keys corresponding to the UI
-inputs: \code{select}, \code{filters}, \code{always_selected}, \code{reshape}.
+Reads the UI inputs of a single \code{data_extract_spec} object in a running
+\code{teal} application.
+Returns a reactive list of reactive values read from the input.
+
+The returned list has keys corresponding to the UI inputs:
+\code{select}, \code{filters}, \code{always_selected}, \code{reshape}.
 }
 \keyword{internal}

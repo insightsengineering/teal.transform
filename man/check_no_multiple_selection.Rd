@@ -2,16 +2,20 @@
 % Please edit documentation in R/input_checks.R
 \name{check_no_multiple_selection}
 \alias{check_no_multiple_selection}
-\title{Checks that the extract_input specification does not allow multiple
+\title{Checks that the \code{extract_input} specification does not allow multiple
 selection}
 \usage{
 check_no_multiple_selection(extract_input)
 }
 \arguments{
-\item{extract_input}{\code{data_extract_spec} a list of \code{data_extract_spec} or NULL
-
-Stops if condition not met}
+\item{extract_input}{(\code{list} or \code{NULL}) a list of \code{data_extract_spec}}
+}
+\value{
+Raises an error when check fails, otherwise, it returns \code{NULL}, invisibly.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
+Stops if condition not met
 }

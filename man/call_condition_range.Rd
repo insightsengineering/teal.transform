@@ -7,25 +7,27 @@
 call_condition_range(varname, range)
 }
 \arguments{
-\item{varname}{(\code{name} or \code{character(1)})\cr
-name of the variable}
+\item{varname}{(\code{name} or \code{character(1)})
+name of the variable.}
 
-\item{range}{(\code{numeric(2)})\cr
-range of the variable}
+\item{range}{(\code{numeric(2)})
+range of the variable.}
 }
 \value{
-call
-
-a \code{call}
+\code{call}.
 }
 \description{
-Compose \code{numeric} range condition call from inputs
+Compose \code{numeric} range condition call from inputs.
 }
 \examples{
-teal.transform:::call_condition_range("AGE", range = c(1, 2))
-teal.transform:::call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
-teal.transform:::call_condition_range(
-  teal.transform:::call_extract_list("ADSL", "AGE"),
+# use non-exported function from teal.transform
+call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
+call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
+
+call_condition_range("AGE", range = c(1, 2))
+call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
+call_condition_range(
+  call_extract_list("ADSL", "AGE"),
   range = c(-1.2, 2.1)
 )
 }

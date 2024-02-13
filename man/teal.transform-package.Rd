@@ -4,7 +4,7 @@
 \name{teal.transform-package}
 \alias{teal.transform}
 \alias{teal.transform-package}
-\title{teal.transform: Functions for extracting and merging data in the \code{teal} framework}
+\title{\code{teal.transform}: Functions for extracting and merging data in the \code{teal} framework}
 \description{
 A standardized user interface for column selection, that facilitates dataset merging in 'teal' framework.
 }
