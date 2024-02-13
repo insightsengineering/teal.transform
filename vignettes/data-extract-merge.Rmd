@@ -100,12 +100,12 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
-    
+
     ANL <- reactive({
       data_list <- lapply(datasets, function(ds) ds())
       eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
     })
-    
+
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
   })
