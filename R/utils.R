@@ -7,7 +7,7 @@
 #' @param sep (`character`) Separator
 #' @export
 split_by_sep <- function(x, sep) {
-  stopifnot(is.atomic(x))
+  checkmate::assert_atomic(x)
   if (is.character(x)) {
     strsplit(x, sep, fixed = TRUE)
   } else {
