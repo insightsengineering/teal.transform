@@ -19,7 +19,6 @@ URL: https://insightsengineering.github.io/teal.transform/,
     https://github.com/insightsengineering/teal.transform/
 BugReports: https://github.com/insightsengineering/teal.transform/issues
 Depends:
-    magrittr (>= 1.5),
     R (>= 3.6)
 Imports:
     checkmate (>= 2.1.0),

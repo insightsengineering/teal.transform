@@ -3,6 +3,6 @@
 "_PACKAGE"
 
 #' @import shiny
-#' @importFrom magrittr %>%
 #' @importFrom lifecycle badge
+#' @importFrom dplyr %>%
 NULL
