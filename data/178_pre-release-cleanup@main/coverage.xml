@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.81125687685146" branch-rate="0" lines-covered="1917" lines-valid="2363" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-02-13 14:24:35.275204">
+<coverage line-rate="0.81125687685146" branch-rate="0" lines-covered="1917" lines-valid="2363" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-02-13 14:34:03.562423">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
@@ -4747,46 +4747,44 @@
           <methods>
             <method name="push" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="30" hits="11" branch="false"/>
-                <line number="32" hits="52" branch="false"/>
-                <line number="35" hits="11" branch="false"/>
+                <line number="32" hits="11" branch="false"/>
+                <line number="34" hits="52" branch="false"/>
+                <line number="37" hits="11" branch="false"/>
               </lines>
             </method>
             <method name="get" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="43" hits="21" branch="false"/>
+                <line number="45" hits="21" branch="false"/>
               </lines>
             </method>
             <method name="pop" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="52" hits="1" branch="false"/>
-                <line number="53" hits="1" branch="false"/>
                 <line number="54" hits="1" branch="false"/>
+                <line number="55" hits="1" branch="false"/>
+                <line number="56" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="remove" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="65" hits="7" branch="false"/>
-                <line number="66" hits="6" branch="false"/>
-                <line number="67" hits="5" branch="false"/>
-                <line number="69" hits="7" branch="false"/>
+                <line number="67" hits="7" branch="false"/>
+                <line number="68" hits="6" branch="false"/>
+                <line number="69" hits="5" branch="false"/>
+                <line number="71" hits="7" branch="false"/>
               </lines>
             </method>
             <method name="empty" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="77" hits="1" branch="false"/>
-                <line number="78" hits="1" branch="false"/>
+                <line number="79" hits="1" branch="false"/>
+                <line number="80" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="size" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="86" hits="4" branch="false"/>
+                <line number="88" hits="4" branch="false"/>
               </lines>
             </method>
             <method name="print" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="95" hits="1" branch="false"/>
-                <line number="96" hits="1" branch="false"/>
                 <line number="97" hits="1" branch="false"/>
                 <line number="98" hits="1" branch="false"/>
                 <line number="99" hits="1" branch="false"/>
@@ -4794,26 +4792,26 @@
                 <line number="101" hits="1" branch="false"/>
                 <line number="102" hits="1" branch="false"/>
                 <line number="103" hits="1" branch="false"/>
+                <line number="104" hits="1" branch="false"/>
+                <line number="105" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="30" hits="11" branch="false"/>
-            <line number="32" hits="52" branch="false"/>
-            <line number="35" hits="11" branch="false"/>
-            <line number="43" hits="21" branch="false"/>
-            <line number="52" hits="1" branch="false"/>
-            <line number="53" hits="1" branch="false"/>
+            <line number="32" hits="11" branch="false"/>
+            <line number="34" hits="52" branch="false"/>
+            <line number="37" hits="11" branch="false"/>
+            <line number="45" hits="21" branch="false"/>
             <line number="54" hits="1" branch="false"/>
-            <line number="65" hits="7" branch="false"/>
-            <line number="66" hits="6" branch="false"/>
-            <line number="67" hits="5" branch="false"/>
-            <line number="69" hits="7" branch="false"/>
-            <line number="77" hits="1" branch="false"/>
-            <line number="78" hits="1" branch="false"/>
-            <line number="86" hits="4" branch="false"/>
-            <line number="95" hits="1" branch="false"/>
-            <line number="96" hits="1" branch="false"/>
+            <line number="55" hits="1" branch="false"/>
+            <line number="56" hits="1" branch="false"/>
+            <line number="67" hits="7" branch="false"/>
+            <line number="68" hits="6" branch="false"/>
+            <line number="69" hits="5" branch="false"/>
+            <line number="71" hits="7" branch="false"/>
+            <line number="79" hits="1" branch="false"/>
+            <line number="80" hits="1" branch="false"/>
+            <line number="88" hits="4" branch="false"/>
             <line number="97" hits="1" branch="false"/>
             <line number="98" hits="1" branch="false"/>
             <line number="99" hits="1" branch="false"/>
@@ -4821,6 +4819,8 @@
             <line number="101" hits="1" branch="false"/>
             <line number="102" hits="1" branch="false"/>
             <line number="103" hits="1" branch="false"/>
+            <line number="104" hits="1" branch="false"/>
+            <line number="105" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="resolve_delayed.R" filename="R/resolve_delayed.R" line-rate="0.75" branch-rate="0" complexity="0">
