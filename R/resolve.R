@@ -201,7 +201,7 @@ resolve_delayed_expr <- function(x, ds, is_value_choices) {
 
   # check returned value
   if (is_value_choices) {
-    if (!isTRUE(checkmate::check_atomic(res)) || anyDuplicated(res)) {
+    if (!isTRUE(checkmate::test_atomic(res)) || anyDuplicated(res)) {
       stop(paste(
         "The following function must return a vector with unique values",
         "from the respective columns of the dataset.\n\n",
