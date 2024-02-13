@@ -1,17 +1,20 @@
 # Queue ====
 
 #' R6 Class - A First-In-First-Out Abstract Data Type
+#' @docType class
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
 #' Abstract data type that stores and returns any number of elements.
 #'
+#' @details
 #' A `Queue` object stores all elements in a single vector,
 #' thus all data types can be stored, but silent coercion may occur.
 #'
 #' Elements are returned in the same order that they were added.
 #'
+#' @name Queue
 #' @keywords internal
 #'
 Queue <- R6::R6Class( # nolint
@@ -23,7 +26,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param new_elements vector of elements to add.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     push = function(new_elements) {
       for (i in seq_along(new_elements)) {
@@ -58,7 +61,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param elements vector of elements to remove from `Queue`.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     remove = function(elements) {
       for (el in elements) {
@@ -70,7 +73,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Removes all elements from `Queue`.
     #'
-    #' @return Self, invisibly.
+    #' @return `self`, invisibly.
     #'
     empty = function() {
       private$array <- c()
@@ -79,7 +82,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns the number of elements in `Queue`.
     #'
-    #' @return Integer of length 1.
+    #' @return `integer(1)`.
     #'
     size = function() {
       length(self$get())
@@ -89,7 +92,7 @@ Queue <- R6::R6Class( # nolint
     #'
     #' @param ... Additional arguments to this method, ignored.
     #'
-    #' @return invisibly self
+    #' @return `self`, invisibly.
     print = function(...) {
       cat(
         sprintf(
