@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' library(shiny)
-#' ADSL <- rADSL
+#' ADSL <- teal.transform::rADSL
 #' isolate({
 #'   data_list <- list(ADSL = reactive(ADSL))
 #'

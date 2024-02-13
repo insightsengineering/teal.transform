@@ -14,3 +14,6 @@ usethis::use_data(rADSL)
 
 rADTTE <- synthetic_cdisc_data("latest")$adtte
 usethis::use_data(rADTTE)
+
+# Use <pkg>:: prefix in examples/tests/vignettes when accessing rAD## data
+# objects in case similar dataset is also exported exist in other packages.

@@ -1,6 +1,11 @@
 # teal.transform
 
 <!-- start badges -->
+[![CRAN Version](https://www.r-pkg.org/badges/version/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Last Month Downloads](http://cranlogs.r-pkg.org/badges/last-month/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Last Week Downloads](http://cranlogs.r-pkg.org/badges/last-week/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+
 [![Check 🛠](https://github.com/insightsengineering/teal.transform/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/main/unit-test-report/)
 [![Docs 📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/latest-tag/)
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/teal.transform/main/coverage-report/)
@@ -25,7 +30,7 @@ This package contains functions and shiny modules for extracting and merging dat
 
 ```r
 # stable versions
-install.packages('teal.slice')
+install.packages('teal.transform')
 
 # install.packages("pak")
 pak::pak("insightsengineering/teal.transform@*release")
@@ -49,7 +54,7 @@ Below is a small example usage:
 
 ```r
 library(teal.transform)
-ADSL <- rADSL
+ADSL <- teal.transform::rADSL
 
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
@@ -73,7 +78,7 @@ shinyApp(ui, server)
 
 ## Getting help
 
-If you encounter a bug or you have a feature request - please file an issue. For questions, discussions and staying up to date, please use the "teal" channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
+If you encounter a bug or have a feature request, please file an issue. For questions, discussions, and staying up to date, please use the `teal` channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
 
 ## Stargazers and Forkers
 

@@ -15,7 +15,7 @@
 #' @examples
 #' resolve <- getFromNamespace("resolve", "teal.transform")
 #' library(shiny)
-#' ADSL <- rADSL
+#' ADSL <- teal.transform::rADSL
 #'
 #' attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 #' data_list <- list(ADSL = reactive(ADSL))
