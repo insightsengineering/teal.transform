@@ -27,7 +27,7 @@ Many `teal` modules leverage `data_extract_spec` objects and modules to handle u
 ### `data_extract_spec`
 
 The role of `data_extract_spec` is twofold: to create a UI component in a `shiny` application and to pass user input 
-from the UI to the module itself. Let's delve into how it fulfills both these responsibilities.
+from the UI to the module itself. Let's delve into how it fulfills both of these responsibilities.
 
 #### Example module
 
