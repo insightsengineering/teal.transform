@@ -1,6 +1,7 @@
 # Queue ====
 
 #' R6 Class - A First-In-First-Out Abstract Data Type
+#' @docType class
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
@@ -13,6 +14,7 @@
 #'
 #' Elements are returned in the same order that they were added.
 #'
+#' @name Queue
 #' @keywords internal
 #'
 Queue <- R6::R6Class( # nolint
