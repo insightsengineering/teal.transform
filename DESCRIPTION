@@ -45,7 +45,7 @@ VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
-Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
+Config/Needs/verdepcheck: mllg/checkmate,
     tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
     rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs,
     rstudio/shinyvalidate, insightsengineering/teal.data,
