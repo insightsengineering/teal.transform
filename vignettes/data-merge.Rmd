@@ -17,15 +17,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-Combining datasets is an essential step when working with modules that involve multiple datasets. Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets. To support this, two functions are provided: `merge_expression_module` and `merge_expression_srv`, each tailored for different use cases.
+Combining datasets is an essential step when working with modules that involve multiple datasets.
+Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
+To support this, two functions are provided: `merge_expression_module` and `merge_expression_srv`, each tailored for different use cases.
 
-When no processing of the `data_extract` list is required, you can use the `merge_expression_module` function. This function reads the data and the list of `data_extract_spec` objects and applies the merging. Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`. Further details are provided below. In scenarios where additional processing of the `data_extract` list is necessary, `merge_expression_srv()` can be used along with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
+When no processing of the `data_extract` list is required, you can use the `merge_expression_module` function.
+This function reads the data and the list of `data_extract_spec` objects and applies the merging. 
+Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`.
+Further details are provided below. 
+In scenarios where additional processing of the `data_extract` list is necessary, 
+`merge_expression_srv()` can be used along with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
 
 The following sections provide examples for both scenarios.
 
 ### `merge_expression_module`
 
-Using `merge_expression_module` alone requires a list of `data_extract_spec` objects for the `data_extract` argument, a list of reactive or non-reactive `data.frame` objects, and a list of join keys corresponding to each `data.frame` object.
+Using `merge_expression_module` alone requires a list of `data_extract_spec` objects for the `data_extract` argument,
+a list of reactive or non-reactive `data.frame` objects, and a list of join keys corresponding to each `data.frame` object.
 
 #### App code
 
@@ -129,7 +137,10 @@ shinyApp(
 
 ### `data_extract_multiple_srv` + `merge_expression_srv`
 
-In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still occur, even though `ADTTE` is not used or needed. Here, the developer might update the `selector_list` input reactively so that it gets updated based on conditions set by the developer. Below, we reuse the input from above and update the app server so that the `adtte_extract` is removed from the selector_list input when no `ADTTE` variable is selected. The `reactive_selector_list` is then passed to `merge_expression_srv`:
+In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still occur, even though `ADTTE` is not used or needed.
+Here, the developer might update the `selector_list` input reactively so that it gets updated based on conditions set by the developer. 
+Below, we reuse the input from above and update the app server so that the `adtte_extract` is removed from the selector_list input when no `ADTTE` variable is selected.
+The `reactive_selector_list` is then passed to `merge_expression_srv`:
 
 ```{r}
 merge_module <- function(id, datasets, data_extracts, join_keys) {
@@ -190,5 +201,8 @@ These elements can be further used inside the server to retrieve and use informa
 
 ## Merging of non `CDISC` datasets
 
-General datasets do not have the same relationships as `CDISC` datasets, so these relationships must be specified using the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys).
-The data merge module respects the relationships given by the user. In the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.
+General datasets do not have the same relationships as `CDISC` datasets, so these relationships must be specified using the `join_keys` functions. 
+For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys).
+The data merge module respects the relationships given by the user. 
+In the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. 
+Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.

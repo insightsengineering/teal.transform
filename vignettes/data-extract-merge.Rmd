@@ -18,8 +18,8 @@ knitr::opts_chunk$set(
 ```
 
 `teal.transform` provides `merge_expression_srv`, which converts `data_extract_srv` into `R` expressions to transform data 
-for analytical purposes. For example, you may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE`, filtered 
-for rows where `PARAMCD` is `OS`, and then merge the results using the primary keys to create an analysis dataset `ANL`. 
+for analytical purposes. 
+For example, you may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE`, filtered for rows where `PARAMCD` is `OS`, and then merge the results using the primary keys to create an analysis dataset `ANL`.
 This diagram illustrates the concept:
 
 ```{r echo=FALSE, out.width='100%'}
@@ -113,7 +113,8 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 ```
 
 Output from `data_extract_srv` (`reactive`) should be passed to `merge_expression_srv` together with `datasets`
-(list of reactive `data.frame` objects) and `join_keys` object. `merge_expression_srv` returns a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
+(list of reactive `data.frame` objects) and `join_keys` object.
+`merge_expression_srv` returns a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
 
 #### Example data
 

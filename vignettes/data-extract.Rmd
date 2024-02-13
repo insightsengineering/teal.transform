@@ -22,18 +22,20 @@ In such cases, relinquishing control of the application to users requires develo
 With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
 analyze within the module.
 
-Many `teal` modules leverage `data_extract_spec` objects and modules to handle user input. Examples can be found in `teal.modules.general` and `teal.modules.clinical`.
+Many `teal` modules leverage `data_extract_spec` objects and modules to handle user input.
+Examples can be found in `teal.modules.general` and `teal.modules.clinical`.
 
 ### `data_extract_spec`
 
 The role of `data_extract_spec` is twofold: to create a UI component in a `shiny` application and to pass user input 
-from the UI to the module itself. Let's delve into how it fulfills both of these responsibilities.
+from the UI to the module itself. 
+Let's delve into how it fulfills both of these responsibilities.
 
 #### Example module
 
 To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
-utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects. This module creates a UI 
-component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module. 
+utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
+This module creates a UI component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module. 
 For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
 
 ```{r}
@@ -89,8 +91,8 @@ join_keys <- join_keys(
 ```
 
 Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
-and a second one to select a variable from `c("BMRKR1", "AGE")`. `data_extract_spec` object is handed over to the `shiny`
-app and gives instructions to generate UI components.
+and a second one to select a variable from `c("BMRKR1", "AGE")`.
+`data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
 
 ```{r}
 simple_des <- data_extract_spec(
