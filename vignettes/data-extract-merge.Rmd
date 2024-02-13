@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `teal.transform` package provides `merge_expression_srv` which converts `data_extract_srv` into `R` expression to transform data
+`teal.transform` provides `merge_expression_srv` which converts `data_extract_srv` into `R` expression to transform data
 for analytical purposes. For example, we may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE` filtered
 for rows where `PARAMCD` is `OS` and merge the results (using the primary keys) to create an analysis dataset
 `ANL` to be used in the module, as this diagram shows:
