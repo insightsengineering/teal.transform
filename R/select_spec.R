@@ -116,8 +116,16 @@ select_spec.delayed_data <- function(choices, # nolint
                                      always_selected = NULL,
                                      ordered = FALSE,
                                      label = NULL) {
-  stopifnot(is.null(selected) || is.atomic(selected) || inherits(selected, "delayed_data"))
-  stopifnot(is.null(choices) || is.atomic(choices) || inherits(choices, "delayed_data"))
+  checkmate::assert(
+    checkmate::check_null(selected),
+    checkmate::check_atomic(selected),
+    checkmate::check_class(selected, "delayed_data")
+  )
+  checkmate::assert(
+    checkmate::check_null(choices),
+    checkmate::check_atomic(choices),
+    checkmate::check_class(choices, "delayed_data")
+  )
 
   structure(
     list(
@@ -143,8 +151,14 @@ select_spec.default <- function(choices, # nolint
                                 always_selected = NULL,
                                 ordered = FALSE,
                                 label = NULL) {
-  stopifnot(is.null(choices) || is.atomic(choices))
-  stopifnot(is.null(selected) || is.atomic(selected))
+  checkmate::assert(
+    checkmate::check_null(choices),
+    checkmate::check_atomic(choices)
+  )
+  checkmate::assert(
+    checkmate::check_null(selected),
+    checkmate::check_atomic(selected)
+  )
 
   # if names is NULL, shiny will put strange labels (with quotes etc.) in the selectInputs, so we set it to the values
   if (is.null(names(choices))) {
@@ -153,7 +167,7 @@ select_spec.default <- function(choices, # nolint
 
   # Deal with selected
   if (length(selected) > 0) {
-    stopifnot(is.atomic(selected))
+    checkmate::assert_atomic(selected)
     checkmate::assert_subset(selected, choices)
     stopifnot(multiple || length(selected) == 1)
     if (is.null(names(selected))) {

@@ -43,7 +43,7 @@ Named \code{character} vector with additional attributes or \code{delayed_data} 
 \examples{
 library(teal.data)
 
-ADRS <- rADRS
+ADRS <- teal.transform::rADRS
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
