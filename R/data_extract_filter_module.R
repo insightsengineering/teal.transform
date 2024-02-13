@@ -8,6 +8,11 @@
 #'
 #' @return `shiny.tag` defining the `filter_spec`'s UI element.
 #'
+#' @examples
+#' # use non-exported function from teal.transform
+#' data_extract_filter_ui <- getFromNamespace("data_extract_filter_ui", "teal.transform")
+#'
+#' data_extract_filter_ui(filter = filter_spec(vars = "test_var"), id = "test_id")
 #' @keywords internal
 #'
 data_extract_filter_ui <- function(filter, id = "filter") {
@@ -135,6 +140,18 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 #' @inheritParams data_extract_filter_srv
 #'
 #' @return named `list` with two slots `choices` and `selected`.
+#'
+#' @examples
+#' library(shiny)
+#' # use non-exported function from teal.transform
+#' get_initial_filter_values <- getFromNamespace("get_initial_filter_values", "teal.transform")
+#'
+#' filtered_data_list <- list(iris = reactive(head(iris)))
+#' filter <- filter_spec(vars = colnames(iris)[1])
+#' filter$dataname <- "iris"
+#' isolate(
+#'   get_initial_filter_values(filter = filter, datasets = filtered_data_list)
+#' )
 #'
 #' @keywords internal
 #'

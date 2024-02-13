@@ -22,4 +22,10 @@ Returns a \code{shiny.tag} with the UI elements for a \code{data_extract_spec}
 Creates a \code{shiny.tag} element defining the UI elements corresponding to a
 single \code{data_extract_spec} object.
 }
+\examples{
+# use non-exported function from teal.transform
+data_extract_single_ui <- getFromNamespace("data_extract_single_ui", "teal.transform")
+
+data_extract_single_ui(id = "test", data_extract_spec("extract"))
+}
 \keyword{internal}
