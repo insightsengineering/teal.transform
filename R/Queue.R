@@ -7,6 +7,7 @@
 #'
 #' Abstract data type that stores and returns any number of elements.
 #'
+#' @details
 #' A `Queue` object stores all elements in a single vector,
 #' thus all data types can be stored, but silent coercion may occur.
 #'
@@ -79,7 +80,7 @@ Queue <- R6::R6Class( # nolint
     #' @description
     #' Returns the number of elements in `Queue`.
     #'
-    #' @return Integer of length 1.
+    #' @return `integer(1)`.
     #'
     size = function() {
       length(self$get())
