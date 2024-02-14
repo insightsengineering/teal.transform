@@ -29,8 +29,6 @@ icons to the \link{choices_selected} drop down box (e.g. "numeric").}
 }
 \value{
 Named \code{character} vector.
-
-\code{x}, invisibly.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

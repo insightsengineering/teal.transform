@@ -34,7 +34,7 @@ be on top of the drop-down field.}
 \item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
-\code{choices_selected} list object, encapsulating the specified
+\code{choices_selected} returns list of \code{choices_selected}, encapsulating the specified
 \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
 
 \code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
