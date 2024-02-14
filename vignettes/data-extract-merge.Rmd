@@ -100,7 +100,6 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
       join_keys = join_keys,
       merge_function = "dplyr::left_join"
     )
-
     ANL <- reactive({
       data_list <- lapply(datasets, function(ds) ds())
       eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
@@ -125,8 +124,8 @@ along with a list of necessary join keys per `data.frame` object:
 
 ```{r}
 # Define data.frame objects
-ADSL <- teal.transform::rADSL # nolint
-ADTTE <- teal.transform::rADTTE # nolint
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
 
 # create a list of reactive data.frame objects
 datasets <- list(

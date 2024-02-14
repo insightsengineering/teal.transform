@@ -57,7 +57,7 @@ get_merge_call <- function(selector_list,
     anl_merge_call_i <- call(
       "<-",
       as.name(anl_name),
-      { # nolint
+      {
         merge_key_i <- get_merge_key_i(idx = idx, dplyr_call_data = dplyr_call_data)
         is_merge_key_pair <- vapply(merge_key_i, function(x) length(names(x)) == 1, logical(1))
 

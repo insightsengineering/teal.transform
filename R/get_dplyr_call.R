@@ -82,7 +82,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
       all_cols
     )
 
-    pivot_longer_unite_cols_renamed <- if (rlang::is_empty(unite_vals)) { # nolint
+    pivot_longer_unite_cols_renamed <- if (rlang::is_empty(unite_vals)) { # nolint: object_length_linter.
       pivot_longer_cols_renamed
     } else {
       Reduce(

@@ -37,7 +37,7 @@ be on top of the drop-down field.}
 \code{choices_selected} list object, encapsulating the specified
 \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
 
-\code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
+\code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

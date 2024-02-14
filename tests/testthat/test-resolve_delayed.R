@@ -1,5 +1,5 @@
-adsl <- teal.transform::rADSL # nolint
-adtte <- teal.transform::rADTTE # nolint
+adsl <- teal.transform::rADSL
+adtte <- teal.transform::rADTTE
 
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE")]
@@ -9,17 +9,17 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
   # 1) single argument called "data"
   testthat::expect_error(
-    resolve_delayed_expr(function() {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function() {}, ds = adsl, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(a) {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(a) {}, ds = adsl, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(data, a) {}, ds = adsl, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(data, a) {}, ds = adsl, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have exactly 1 formal arg",
     fixed = TRUE
   )
