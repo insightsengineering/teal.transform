@@ -34,7 +34,7 @@ Named \code{character} vector.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This is often useful for \link{choices_selected} as it marks up the drop-down boxes
+This is often useful for \code{\link[=choices_selected]{choices_selected()}} as it marks up the drop-down boxes
 for \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -47,8 +47,6 @@ additional settings such as to order the choices with the selected elements appe
 or whether to block the user from making selections.
 
 Can be used in \code{ui} input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 Please note that the order of selected will always follow the order of choices. The \code{keep_order}

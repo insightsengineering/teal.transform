@@ -7,7 +7,7 @@
 call_check_parse_varname(varname)
 }
 \arguments{
-\item{varname}{(\code{name}, \code{call} or \code{character(1)})
+\item{varname}{(\code{name} or \code{call} or \code{character(1)})
 name of the variable}
 }
 \value{
