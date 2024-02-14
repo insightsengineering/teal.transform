@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
-#' This function is a convenient wrapper to combine `data_extract_multiple_srv()` and
+#' Convenient wrapper to combine `data_extract_multiple_srv()` and
 #' `merge_expression_srv()` when no additional processing is required.
 #' Compare the example below with that found in [merge_expression_srv()].
 #'

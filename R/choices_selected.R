@@ -34,7 +34,7 @@ no_select_keyword <- "-- no selection --"
 #' be on top of the drop-down field.
 #' @param fixed (optional `logical`) Whether to block user to select choices.
 #'
-#' @return `choices_selected` list object, encapsulating the specified
+#' @return `choices_selected` returns list of `choices_selected`, encapsulating the specified
 #' `choices`, `selected`, `keep_order` and `fixed`.
 #'
 #' @examples
