@@ -191,8 +191,7 @@ variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = 
 
 #' @rdname variable_choices
 #' @export
-variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) { # nolint
-
+variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE),
     checkmate::check_function(subset, null.ok = TRUE)
@@ -316,7 +315,7 @@ value_choices.character <- function(data,
 
 #' @rdname value_choices
 #' @export
-value_choices.data.frame <- function(data, # nolint
+value_choices.data.frame <- function(data,
                                      var_choices,
                                      var_label = NULL,
                                      subset = NULL,

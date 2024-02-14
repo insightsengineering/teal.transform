@@ -1,5 +1,5 @@
-ADSL <- teal.transform::rADSL # nolint
-ADTTE <- teal.transform::rADTTE # nolint
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
 
 arm_ref_comp <- list(
   ARMCD = list(
@@ -26,17 +26,17 @@ testthat::test_that("resolve_delayed_expr works correctly", {
   # function assumptions check
   # 1) single argument called "data"
   testthat::expect_error(
-    resolve_delayed_expr(function() {}, ds = ADSL, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function() {}, ds = ADSL, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(a) {}, ds = ADSL, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(a) {}, ds = ADSL, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have formal arguments: data.",
     fixed = TRUE
   )
   testthat::expect_error(
-    resolve_delayed_expr(function(data, a) {}, ds = ADSL, is_value_choices = FALSE), # nolint
+    resolve_delayed_expr(function(data, a) {}, ds = ADSL, is_value_choices = FALSE),
     regexp = "Assertion on 'x' failed: Must have exactly 1 formal arg",
     fixed = TRUE
   )
