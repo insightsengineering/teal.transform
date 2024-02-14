@@ -43,7 +43,7 @@ These have to be columns in the dataset defined in the \code{\link[=data_extract
 where this is called.
 \code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(optional \code{character}, \code{NULL}, \code{all_choices} or \code{delayed_data}).
+\item{selected}{(optional \code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data}).
 Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 Passing an \code{all_choices()} object indicates selecting all possible choices.
 Defaults to the first value of \code{choices} or \code{NULL} for delayed data loading.}

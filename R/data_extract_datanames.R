@@ -28,10 +28,10 @@ datanames_input <- function(data_extracts) {
 #' Fetches `dataname` slot per `data_extract_spec` from a list of
 #' `data_extract_spec` and returns the unique `dataname` set.
 #'
-#' @param data_extracts A single `data_extract_spec` object or a list (of lists)
+#' @param data_extracts (`data_extract_spec(1)`) object or a list (of lists)
 #' of `data_extract_spec`.
 #'
-#' @return A character vector with the unique `dataname` set.
+#' @return `character` vector with the unique `dataname` set.
 #'
 #' @export
 #'

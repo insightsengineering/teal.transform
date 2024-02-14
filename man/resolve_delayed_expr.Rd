@@ -15,7 +15,7 @@ It must take only a single argument "data" and return character vector with colu
 \item{is_value_choices}{(\code{logical}) Determines which check of the returned value will be applied.}
 }
 \value{
-Character vector - result of calling function \code{x} on dataset \code{ds}.
+\code{character} vector - result of calling function \code{x} on dataset \code{ds}.
 }
 \description{
 Resolve expression after delayed data are loaded

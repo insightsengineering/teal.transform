@@ -7,7 +7,7 @@
 #'
 #' @param data_extract `list` the list output of `data_extract_srv`.
 
-#' @return A string (`character(1)`) representation of the `data_extract` object.
+#' @return `character(1)` representation of the `data_extract` object.
 #'
 #' @examples
 #' library(shiny)

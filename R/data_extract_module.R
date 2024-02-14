@@ -719,7 +719,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #' @rdname data_extract_multiple_srv
 #'
 #' @param join_keys (`join_keys` or `NULL`) of join keys per dataset in `datasets`.
-#' @param select_validation_rule (`NULL`, `function` or `named list` of `function`)
+#' @param select_validation_rule (`NULL` or `function` or `named list` of `function`)
 #' Should there be any `shinyvalidate` input validation of the select parts of the `data_extract_ui`.
 #' If all `data_extract` require the same validation function then this can be used directly
 #' (i.e. `select_validation_rule = shinyvalidate::sv_required()`).
@@ -731,9 +731,9 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #' If `NULL` then no validation will be added.
 #'
 #' See example for more details.
-#' @param filter_validation_rule (`NULL`, `function` or `named list` of `function`) Same as
+#' @param filter_validation_rule (`NULL` or `function` or `named list` of `function`) Same as
 #' `select_validation_rule` but for the filter (values) part of the `data_extract_ui`.
-#' @param dataset_validation_rule (`NULL`, `function` or `named list` of `function`) Same as
+#' @param dataset_validation_rule (`NULL` or `function` or `named list` of `function`) Same as
 #' `select_validation_rule` but for the choose dataset part of the `data_extract_ui`
 #'
 #' @export

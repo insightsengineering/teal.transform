@@ -10,7 +10,7 @@ data_extract_spec(dataname, select = NULL, filter = NULL, reshape = FALSE)
 \item{dataname}{(\code{character})
 The name of the dataset to be extracted.}
 
-\item{select}{(\code{NULL}, \code{select_spec}-S3 class or \code{delayed_select_spec})
+\item{select}{(\code{NULL} or \code{select_spec}-S3 class or \code{delayed_select_spec})
 Columns to be selected from the input dataset mentioned in \code{dataname}.
 The setup can be created using \link{select_spec} function.}
 

@@ -22,7 +22,8 @@ split_by_sep <- function(x, sep) {
 #' Extract labels from choices basing on attributes and names
 #'
 #' @param choices (`list` or `vector`) select choices.
-#' @param values optional, choices subset for which labels should be extracted, `NULL` for all choices.
+#' @param values (optional `list` or `vector`) with subset of `choices` for which
+#' labels should be extracted, `NULL` for all choices.
 #'
 #' @return `character` vector with labels.
 #'
@@ -167,7 +168,7 @@ compose_and_enable_validators <- function(iv, selector_list, validator_names = N
 
 #' Ensures datasets is a list of reactive expression
 #'
-#' @param datasets (`reactive` `teal_data` object or `list`) of `data.frame`
+#' @param datasets (`reactive` or `teal_data` object or `list`) of `data.frame`
 #' wrapped or not in a reactive expression.
 #'
 #' @return List of reactive expression that contains all the individual `datasets`.

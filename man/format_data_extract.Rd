@@ -10,7 +10,7 @@ format_data_extract(data_extract)
 \item{data_extract}{\code{list} the list output of \code{data_extract_srv}.}
 }
 \value{
-A string (\code{character(1)}) representation of the \code{data_extract} object.
+\code{character(1)} representation of the \code{data_extract} object.
 }
 \description{
 Returns a human-readable string representation of an extracted \code{data_extract_spec} object.

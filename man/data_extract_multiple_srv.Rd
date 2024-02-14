@@ -45,7 +45,7 @@ It shall contain the keys per dataset in \code{datasets}.}
 
 \item{join_keys}{(\code{join_keys} or \code{NULL}) of join keys per dataset in \code{datasets}.}
 
-\item{select_validation_rule}{(\code{NULL}, \code{function} or \verb{named list} of \code{function})
+\item{select_validation_rule}{(\code{NULL} or \code{function} or \verb{named list} of \code{function})
 Should there be any \code{shinyvalidate} input validation of the select parts of the \code{data_extract_ui}.
 If all \code{data_extract} require the same validation function then this can be used directly
 (i.e. \code{select_validation_rule = shinyvalidate::sv_required()}).
@@ -58,10 +58,10 @@ If \code{NULL} then no validation will be added.
 
 See example for more details.}
 
-\item{filter_validation_rule}{(\code{NULL}, \code{function} or \verb{named list} of \code{function}) Same as
+\item{filter_validation_rule}{(\code{NULL} or \code{function} or \verb{named list} of \code{function}) Same as
 \code{select_validation_rule} but for the filter (values) part of the \code{data_extract_ui}.}
 
-\item{dataset_validation_rule}{(\code{NULL}, \code{function} or \verb{named list} of \code{function}) Same as
+\item{dataset_validation_rule}{(\code{NULL} or \code{function} or \verb{named list} of \code{function}) Same as
 \code{select_validation_rule} but for the choose dataset part of the \code{data_extract_ui}}
 }
 \value{
