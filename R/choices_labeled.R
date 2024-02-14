@@ -384,8 +384,6 @@ value_choices.data.frame <- function(data,
 #' @param x an object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #'
-#' @return `x`, invisibly.
-#'
 #' @export
 #'
 print.choices_labeled <- function(x, ...) {
