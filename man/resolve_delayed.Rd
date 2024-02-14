@@ -2,9 +2,19 @@
 % Please edit documentation in R/resolve_delayed.R
 \name{resolve_delayed}
 \alias{resolve_delayed}
+\alias{resolve_delayed.FilteredData}
+\alias{resolve_delayed.list}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
 resolve_delayed(x, datasets, keys)
+
+\method{resolve_delayed}{FilteredData}(
+  x,
+  datasets,
+  keys = sapply(datasets$datanames(), datasets$get_keys, simplify = FALSE)
+)
+
+\method{resolve_delayed}{list}(x, datasets, keys = NULL)
 }
 \arguments{
 \item{x}{(\code{delayed_data}, \code{list}) to resolve.}
@@ -12,7 +22,7 @@ resolve_delayed(x, datasets, keys)
 \item{datasets}{(\code{FilteredData} or named \code{list}) to use as a reference to resolve \code{x}.}
 
 \item{keys}{(named \code{list}) with primary keys for each dataset from \code{datasets}. \code{names(keys)}
-should match \code{names(datasets)}}
+should match \code{names(datasets)}.}
 }
 \value{
 Resolved object.
@@ -20,10 +30,18 @@ Resolved object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{resolve_delayed(FilteredData)}: Default values for \code{keys} parameters is extracted from \code{datasets}.
+
+\item \code{resolve_delayed(list)}: Generic method when \code{datasets} argument is a named list.
+
+}}
 \examples{
+library(shiny)
 ADSL <- teal.transform::rADSL
-shiny::isolate({
-  data_list <- list(ADSL = shiny::reactive(ADSL))
+isolate({
+  data_list <- list(ADSL = reactive(ADSL))
 
   # value_choices example
   v1 <- value_choices("ADSL", "SEX", "SEX")

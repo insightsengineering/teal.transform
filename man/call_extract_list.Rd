@@ -7,26 +7,26 @@
 call_extract_list(dataname, varname, dollar = TRUE)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})\cr
-name of the object}
+\item{dataname}{(\code{character(1)} or \code{name}) name of the object.}
 
-\item{varname}{(\code{character(1)} or \code{name})\cr
-name of the slot in data}
+\item{varname}{(\code{character(1)} or \code{name}) name of the slot in data.}
 
-\item{dollar}{(\code{logical(1)})\cr
-whether returned call should use \code{$} or \code{[[} operator}
+\item{dollar}{(\code{logical(1)}) whether returned call should use \code{$} or \code{[[} operator.}
 }
 \value{
-\code{$} or \code{[[} call
+\code{\link[=Extract]{Extract()}} \code{call} in \code{$} or \code{[[} notation (depending on parameters).
 }
 \description{
 Compose extract call with \code{$} operator
 }
 \examples{
-teal.transform:::call_extract_list("ADSL", "SEX")
-teal.transform:::call_extract_list("ADSL", "named element")
-teal.transform:::call_extract_list(as.name("ADSL"), as.name("AGE"))
-teal.transform:::call_extract_list(as.name("weird name"), as.name("AGE"))
-teal.transform:::call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
+# use non-exported function from teal.transform
+call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
+
+call_extract_list("ADSL", "SEX")
+call_extract_list("ADSL", "named element")
+call_extract_list(as.name("ADSL"), as.name("AGE"))
+call_extract_list(as.name("weird name"), as.name("AGE"))
+call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
 }
 \keyword{internal}

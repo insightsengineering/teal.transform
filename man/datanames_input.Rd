@@ -2,15 +2,19 @@
 % Please edit documentation in R/data_extract_datanames.R
 \name{datanames_input}
 \alias{datanames_input}
-\title{Available datasets input}
+\title{Help text with available datasets input}
 \usage{
 datanames_input(data_extracts)
 }
 \arguments{
-\item{data_extracts}{list of data extracts for single variable}
+\item{data_extracts}{(\code{list}) of data extracts for single variable.}
+}
+\value{
+\code{shiny.tag} defining help-text element that can be added to a UI element.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-Creates \link[shiny]{helpText} with the names of datasets
-available for current module.
+
+Creates \code{\link[shiny:helpText]{shiny::helpText()}} with the names of available datasets for the
+current module.
 }

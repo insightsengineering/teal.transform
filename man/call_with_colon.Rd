@@ -8,34 +8,37 @@ call_with_colon(name, ..., unlist_args = list())
 }
 \arguments{
 \item{name}{\code{character} function name, possibly using namespace colon \code{::}, also
-works with \code{:::} (sometimes needed, but strongly discouraged)}
+works with \code{:::} (sometimes needed, but strongly discouraged).}
 
-\item{...}{arguments to pass to function with name \code{name}}
+\item{...}{arguments to pass to function with name \code{name}.}
 
 \item{unlist_args}{\code{list} extra arguments passed in a single list,
-avoids the use of \code{do.call} with this function}
+avoids the use of \code{do.call} with this function.}
+}
+\value{
+\code{call}.
 }
 \description{
-The arguments in ... need to be quoted because they will be evaluated otherwise
+The dot arguments in \code{...} need to be quoted because they will be evaluated otherwise.
 }
 \examples{
+# use non-exported function from teal.transform
+call_with_colon <- getFromNamespace("call_with_colon", "teal.transform")
 
-print_call_and_eval <- function(x) {
-  eval(print(x))
-}
+print_call_and_eval <- function(x) eval(print(x))
 
 print_call_and_eval(
-  teal.transform:::call_with_colon("glue::glue", "x = {x}", x = 10)
+  call_with_colon("glue::glue", "x = {x}", x = 10)
 )
-\dontrun{
+
 # mtcars$cyl evaluated
 print_call_and_eval(
-  teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
+  call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
 )
 
 # mtcars$cyl argument not evaluated immediately (in call expression)
 print_call_and_eval(
-  teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), quote(cyl == 6))
+  call_with_colon("dplyr::filter", as.name("mtcars"), quote(cyl == 6))
 )
 
 # does not work because argument is evaluated and the
@@ -47,12 +50,11 @@ call("filter", as.name("mtcars"), mtcars$cyl == 6)
 
 nb_args <- function(...) nargs()
 print_call_and_eval(
-  teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args3 = 3))
+  call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args3 = 3))
 )
 # duplicate arguments
 print_call_and_eval(
-  teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
+  call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
 )
-}
 }
 \keyword{internal}

@@ -7,14 +7,15 @@
 include_css_files(pattern = "*")
 }
 \arguments{
-\item{pattern}{(\code{character}) pattern of files to be included}
+\item{pattern}{(\code{character}) pattern of files to be included.}
 }
 \value{
-HTML code that includes \code{CSS} files
+HTML code that includes \code{CSS} files.
 }
 \description{
 \code{system.file} should not be used to access files in other packages, it does
-not work with \code{devtools}. Therefore, we redefine this method in each package
-as needed. Thus, we do not export this method
+not work with \code{devtools}.
+As a result, this method is individually redefined as required in each package.
+Therefore, this function is not exported.
 }
 \keyword{internal}

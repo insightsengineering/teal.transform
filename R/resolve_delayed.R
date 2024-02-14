@@ -1,20 +1,19 @@
 #' Resolve delayed inputs by evaluating the code within the provided datasets
 #'
-#' @description `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")`
 #'
 #' @param x (`delayed_data`, `list`) to resolve.
 #' @param datasets (`FilteredData` or named `list`) to use as a reference to resolve `x`.
 #' @param keys (named `list`) with primary keys for each dataset from `datasets`. `names(keys)`
-#'   should match `names(datasets)`
+#' should match `names(datasets)`.
 #'
 #' @return Resolved object.
 #'
-#' @export
-#'
 #' @examples
+#' library(shiny)
 #' ADSL <- teal.transform::rADSL
-#' shiny::isolate({
-#'   data_list <- list(ADSL = shiny::reactive(ADSL))
+#' isolate({
+#'   data_list <- list(ADSL = reactive(ADSL))
 #'
 #'   # value_choices example
 #'   v1 <- value_choices("ADSL", "SEX", "SEX")
@@ -64,11 +63,13 @@
 #'
 #'   resolve_delayed(arm_ref_comp, datasets = data_list)
 #' })
+#' @export
+#'
 resolve_delayed <- function(x, datasets, keys) {
   UseMethod("resolve_delayed", datasets)
 }
 
-
+#' @describeIn resolve_delayed Default values for `keys` parameters is extracted from `datasets`.
 #' @export
 resolve_delayed.FilteredData <- function(x,
                                          datasets,
@@ -79,6 +80,7 @@ resolve_delayed.FilteredData <- function(x,
   resolve(x, datasets_list, keys)
 }
 
+#' @describeIn resolve_delayed Generic method when `datasets` argument is a named list.
 #' @export
 resolve_delayed.list <- function(x, datasets, keys = NULL) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), min.len = 1, names = "named")

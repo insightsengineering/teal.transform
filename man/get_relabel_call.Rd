@@ -7,14 +7,15 @@
 get_relabel_call(labels)
 }
 \arguments{
-\item{labels}{(\verb{named character})\cr
+\item{labels}{(named \code{character})
 where name is name is function argument name and value is a function argument value.}
 }
 \value{
-(\code{call}) object with relabel step
+\code{call} object with relabel step.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Function creates relabel call from named character.
 }
 \examples{

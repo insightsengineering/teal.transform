@@ -12,30 +12,35 @@ get_rename_call(
 )
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
-\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining.}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 }
 \value{
-(\code{call}) \code{dplyr} rename call
+(\code{call}) \code{dplyr} rename call.
 }
 \description{
-Rename is used only if there are duplicated columns
+Rename is used only if there are duplicated columns.
 }
 \examples{
+# use non-exported function from teal.transform
+get_rename_call <- getFromNamespace("get_rename_call", "teal.transform")
+
 x <- list(
   list(
     dataname = "ADSL",
     filters = NULL,
-    select = utils::head(letters, 3),
+    select = head(letters, 3),
     keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test1"
@@ -51,7 +56,7 @@ x <- list(
   list(
     dataname = "ADSL",
     filters = NULL,
-    select = utils::tail(letters, 3),
+    select = tail(letters, 3),
     keys = c("STUDYID", "USUBJID"),
     reshape = FALSE,
     internal_id = "test3"
@@ -65,12 +70,9 @@ x <- list(
     internal_id = "test4"
   )
 )
-teal.transform:::get_rename_call(x, 1L)
-teal.transform:::get_rename_call(x, 2L)
-teal.transform:::get_rename_call(x, 3L)
-teal.transform:::get_rename_call(x, 4L)
-}
-\references{
-get_rename_dict
+get_rename_call(x, 1L)
+get_rename_call(x, 2L)
+get_rename_call(x, 3L)
+get_rename_call(x, 4L)
 }
 \keyword{internal}

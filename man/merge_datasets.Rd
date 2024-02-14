@@ -13,41 +13,44 @@ merge_datasets(
 )
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
-object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
+object containing data as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(\code{join_keys})\cr
+\item{join_keys}{(\code{join_keys})
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
-\item{merge_function}{(\code{character(1)} or \code{reactive})\cr
+\item{merge_function}{(\code{character(1)} or \code{reactive})
 A character string of a function that accepts the arguments
 \code{x}, \code{y} and \code{by} to perform the merging of datasets.}
 
-\item{anl_name}{(\code{character(1)})\cr
+\item{anl_name}{(\code{character(1)})
 Name of the analysis dataset.}
 }
 \value{
-merged_dataset (\code{list}) containing:
+\code{merged_dataset} list containing:
 \itemize{
-\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset.
-\item \code{columns_source} (\code{list}) of column names selected for particular selector.
+\item \code{expr} (\code{list} of \code{call}) code needed to replicate merged dataset;
+\item \code{columns_source} (\code{list}) of column names selected for particular selector;
 Each list element contains named character vector where:
 \itemize{
 \item Values are the names of the columns in the \code{ANL}. In case if the same column name is selected in more than one
 selector it gets prefixed by the id of the selector. For example if two \code{data_extract} have id \code{x}, \code{y}, then
-their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE}.
-\item Names of the vector denote names of the variables in the input dataset.
-\item \code{attr(,"dataname")} to indicate which dataset variable is merged from.
-\item \code{attr(, "always selected")} to denote the names of the variables which need to be always selected.
+their duplicated selected variable (for example \code{AGE}) is prefixed to be \code{x.AGE} and \code{y.AGE};
+\item Names of the vector denote names of the variables in the input dataset;
+\item \code{attr(,"dataname")} to indicate which dataset variable is merged from;
+\item \code{attr(, "always selected")} to denote the names of the variables which need to be always selected;
 }
-\item \code{keys} (\code{list}) the keys of the merged dataset.
+\item \code{keys} (\code{list}) the keys of the merged dataset;
 \item \code{filter_info} (\code{list}) The information given by the user. This information
 defines the filters that are applied on the data. Additionally it defines
 the variables that are selected from the data sets.
@@ -55,14 +58,17 @@ the variables that are selected from the data sets.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-It combines/merges multiple datasets with specified keys attribute.
+
+Combines/merges multiple datasets with specified keys attribute.
 }
 \details{
 Internally this function uses calls to allow reproducibility.
-}
-\examples{
-\dontrun{
-# inside teal module server function
+
+This function is often used inside a \code{teal} module server function with the
+\code{selectors} being the output of \code{data_extract_srv} or \code{data_extract_multiple_srv}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# inside teal module server function
+
 response <- data_extract_srv(
   id = "reponse",
   data_extract_spec = response_spec,
@@ -74,5 +80,44 @@ regressor <- data_extract_srv(
   datasets = datasets
 )
 merged_data <- merge_datasets(list(regressor(), response()))
+}\if{html}{\out{</div>}}
 }
+\examples{
+library(shiny)
+library(teal.data)
+
+X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9])
+Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], G = letters[1:3])
+join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
+
+selector_list <- list(
+  list(
+    dataname = "X",
+    filters = NULL,
+    select = "E",
+    keys = c("A", "B"),
+    reshape = FALSE,
+    internal_id = "x"
+  ),
+  list(
+    dataname = "Y",
+    filters = NULL,
+    select = "G",
+    keys = c("A", "C"),
+    reshape = FALSE,
+    internal_id = "y"
+  )
+)
+
+data_list <- list(X = reactive(X), Y = reactive(Y))
+
+merged_datasets <- isolate(
+  merge_datasets(
+    selector_list = selector_list,
+    datasets = data_list,
+    join_keys = join_keys
+  )
+)
+
+paste(merged_datasets$expr)
 }

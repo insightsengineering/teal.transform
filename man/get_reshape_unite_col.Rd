@@ -9,6 +9,9 @@ get_reshape_unite_col(selector)
 \arguments{
 \item{selector}{one element of selector_list obtained by \code{get_dplyr_call_data}.}
 }
+\value{
+A \code{character} vector of all the selector's keys that are defined in the filters.
+}
 \description{
 Get key names which spreads values into columns. Reshape is done only
 on keys which are in \code{filter_spec}.

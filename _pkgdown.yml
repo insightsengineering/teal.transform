@@ -23,7 +23,7 @@ navbar:
 reference:
   - title: Data extract constructors
     desc: >-
-      Functions used to create transform instructions for teal applications.
+      Functions used to create transform instructions for `teal` applications.
     contents:
       - add_no_selected_choices
       - all_choices
@@ -41,7 +41,8 @@ reference:
       - resolve
       - resolve_delayed
   - title: Data extract modules
-    desc: teal modules to generate transform expressions
+    desc: >-
+      `teal` modules to generate transform expressions
     contents:
       - data_extract_multiple_srv
       - data_extract_ui

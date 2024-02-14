@@ -7,26 +7,28 @@
 call_condition_range_posixct(varname, range, timezone = Sys.timezone())
 }
 \arguments{
-\item{varname}{(\code{name} or \code{character(1)})\cr
-name of the variable}
+\item{varname}{(\code{name} or \code{character(1)}) name of the variable.}
 
-\item{range}{(\code{POSIXct})\cr
-range of the variable. Be aware that output
-uses truncated range format \code{"\%Y-\%m-\%d \%H:\%M:\%S"}, which means that
-some precision might be lost.}
+\item{range}{(\code{POSIXct}) range of the variable.
+Be aware that output uses truncated range format \code{"\%Y-\%m-\%d \%H:\%M:\%S"},
+which means that some precision might be lost.}
 
-\item{timezone}{(\code{character(1)})\cr
-specifies the time zone to be used for the conversion.
+\item{timezone}{(\code{character(1)}) specifies the time zone to be used for the conversion.
 By default \code{Sys.timezone()} is used.}
 }
 \value{
-a \code{call}
+\code{call}.
 }
 \description{
 Compose \code{POSIXct} range condition call from inputs.
 }
 \examples{
-teal.transform:::call_condition_range_posixct(
+# use non-exported function from teal.transform
+call_condition_range_posixct <- getFromNamespace(
+  "call_condition_range_posixct", "teal.transform"
+)
+
+call_condition_range_posixct(
   varname = as.name("datetime"),
   range = c(Sys.time(), Sys.time() + 1),
   timezone = "UTC"

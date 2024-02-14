@@ -1,31 +1,19 @@
 #' Merge the datasets on the keys
 #'
-#' @description `r lifecycle::badge("experimental")`
-#' It combines/merges multiple datasets with specified keys attribute.
+#' @description
+#' `r lifecycle::badge("experimental")`
 #'
+#' Combines/merges multiple datasets with specified keys attribute.
 #'
-#' @details Internally this function uses calls to allow reproducibility.
+#' @details
+#' Internally this function uses calls to allow reproducibility.
 #'
-#' @inheritParams merge_expression_srv
-#' @return merged_dataset (`list`) containing:
-#' - `expr` (`list` of `call`) code needed to replicate merged dataset.
-#' - `columns_source` (`list`) of column names selected for particular selector.
-#'   Each list element contains named character vector where:
-#'   * Values are the names of the columns in the `ANL`. In case if the same column name is selected in more than one
-#'     selector it gets prefixed by the id of the selector. For example if two `data_extract` have id `x`, `y`, then
-#'     their duplicated selected variable (for example `AGE`) is prefixed to be `x.AGE` and `y.AGE`.
-#'   * Names of the vector denote names of the variables in the input dataset.
-#'   * `attr(,"dataname")` to indicate which dataset variable is merged from.
-#'   * `attr(, "always selected")` to denote the names of the variables which need to be always selected.
-#' - `keys` (`list`) the keys of the merged dataset.
-#' - `filter_info` (`list`) The information given by the user. This information
-#'    defines the filters that are applied on the data. Additionally it defines
-#'    the variables that are selected from the data sets.
-#' @export
+#' This function is often used inside a `teal` module server function with the
+#' `selectors` being the output of `data_extract_srv` or `data_extract_multiple_srv`.
 #'
-#' @examples
-#' \dontrun{
+#' ```
 #' # inside teal module server function
+#'
 #' response <- data_extract_srv(
 #'   id = "reponse",
 #'   data_extract_spec = response_spec,
@@ -37,7 +25,65 @@
 #'   datasets = datasets
 #' )
 #' merged_data <- merge_datasets(list(regressor(), response()))
-#' }
+#' ```
+#'
+#' @inheritParams merge_expression_srv
+#'
+#' @return `merged_dataset` list containing:
+#' * `expr` (`list` of `call`) code needed to replicate merged dataset;
+#' * `columns_source` (`list`) of column names selected for particular selector;
+#' Each list element contains named character vector where:
+#'   * Values are the names of the columns in the `ANL`. In case if the same column name is selected in more than one
+#'     selector it gets prefixed by the id of the selector. For example if two `data_extract` have id `x`, `y`, then
+#'     their duplicated selected variable (for example `AGE`) is prefixed to be `x.AGE` and `y.AGE`;
+#'   * Names of the vector denote names of the variables in the input dataset;
+#'   * `attr(,"dataname")` to indicate which dataset variable is merged from;
+#'   * `attr(, "always selected")` to denote the names of the variables which need to be always selected;
+#' * `keys` (`list`) the keys of the merged dataset;
+#' * `filter_info` (`list`) The information given by the user. This information
+#'    defines the filters that are applied on the data. Additionally it defines
+#'    the variables that are selected from the data sets.
+#'
+#' @examples
+#' library(shiny)
+#' library(teal.data)
+#'
+#' X <- data.frame(A = c(1, 1:3), B = 2:5, D = 1:4, E = letters[1:4], G = letters[6:9])
+#' Y <- data.frame(A = c(1, 1, 2), B = 2:4, C = c(4, 4:5), E = letters[4:6], G = letters[1:3])
+#' join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
+#'
+#' selector_list <- list(
+#'   list(
+#'     dataname = "X",
+#'     filters = NULL,
+#'     select = "E",
+#'     keys = c("A", "B"),
+#'     reshape = FALSE,
+#'     internal_id = "x"
+#'   ),
+#'   list(
+#'     dataname = "Y",
+#'     filters = NULL,
+#'     select = "G",
+#'     keys = c("A", "C"),
+#'     reshape = FALSE,
+#'     internal_id = "y"
+#'   )
+#' )
+#'
+#' data_list <- list(X = reactive(X), Y = reactive(Y))
+#'
+#' merged_datasets <- isolate(
+#'   merge_datasets(
+#'     selector_list = selector_list,
+#'     datasets = data_list,
+#'     join_keys = join_keys
+#'   )
+#' )
+#'
+#' paste(merged_datasets$expr)
+#' @export
+#'
 merge_datasets <- function(selector_list, datasets, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
   logger::log_trace(
     paste(
@@ -83,8 +129,6 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     SIMPLIFY = FALSE
   )
 
-  selector_datanames <- unique(vapply(merged_selector_list, `[[`, character(1), "dataname"))
-
   dplyr_calls <- lapply(seq_along(merged_selector_list), function(idx) {
     dplyr_call <- get_dplyr_call(
       selector_list = merged_selector_list,
@@ -124,17 +168,20 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     filter_info = filter_info
   )
   logger::log_trace("merge_datasets merge code executed resulting in { anl_name } dataset.")
-  return(res)
+  res
 }
 
-#' Merge selectors - select item if all of `dataname`, reshape, filters and keys items are identical
+#' Merge selectors when `dataname`, `reshape`, `filters` and `keys` entries are identical
 #'
 #' @inheritParams merge_datasets
 #'
-#' @return error or nothing
-#' @keywords internal
+#' @return List of merged selectors or original parameter if the conditions to merge are
+#' not applicable.
 #'
 #' @examples
+#' # use non-exported function from teal.transform
+#' merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
+#'
 #' selector_list <- list(
 #'   # ADSL - SEX
 #'   list(
@@ -160,8 +207,9 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #'     )
 #'   )
 #' )
-#' merged_selectors <- teal.transform:::merge_selectors(selector_list)
-#' merged_selectors
+#' merge_selectors(selector_list)
+#' @keywords internal
+#'
 merge_selectors <- function(selector_list) {
   logger::log_trace("merge_selectors called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_list(selector_list, min.len = 1)
@@ -209,17 +257,21 @@ merge_selectors <- function(selector_list) {
     }
   }
 
-  return(list(res_list, res_map_id))
+  list(res_list, res_map_id)
 }
 
 
 #' Validate data_extracts in merge_datasets
 #'
 #' Validate selected inputs from data_extract before passing to data_merge to avoid
-#' \code{dplyr} errors or unexpected results
+#' `dplyr` errors or unexpected results.
+#'
 #' @inheritParams merge_datasets
-#' @return \code{NULL} if check is successful
+#'
+#' @return `NULL` if check is successful and `shiny` validate error otherwise.
+#'
 #' @keywords internal
+#'
 check_data_merge_selectors <- function(selector_list) {
   # check if reshape n empt select or just primary keys
   lapply(selector_list, function(x) {
@@ -241,12 +293,14 @@ check_data_merge_selectors <- function(selector_list) {
 #' `merged_selector_list` come from datasets, which don't have the
 #' appropriate join keys in `join_keys`.
 #'
-#' @param join_keys (`join_keys`) the provided join keys
-#' @param merged_selector_list (`list`) the specification of datasets' slices to merge
+#' @param join_keys (`join_keys`) the provided join keys.
+#' @param merged_selector_list (`list`) the specification of datasets' slices to merge.
 #'
-#' @return `TRUE` if the provided keys meet the requirements; the `shiny`
-#' validate error otherwise
+#' @return `TRUE` if the provided keys meet the requirement and `shiny`
+#' validate error otherwise.
+#'
 #' @keywords internal
+#'
 validate_keys_sufficient <- function(join_keys, merged_selector_list) {
   validate(
     need(
@@ -270,9 +324,11 @@ validate_keys_sufficient <- function(join_keys, merged_selector_list) {
 #'
 #' @inheritParams validate_keys_sufficient
 #'
-#' @return `TRUE` if all pairs of the slices have the corresponding keys;
-#' `FALSE` otherwise
+#' @return `TRUE` if all pairs of the slices have the corresponding keys and
+#' `FALSE` otherwise.
+#'
 #' @keywords internal
+#'
 are_needed_keys_provided <- function(join_keys, merged_selector_list) {
   # because one slice doesn't have to be merged with anything
   if (length(merged_selector_list) <= 1) {

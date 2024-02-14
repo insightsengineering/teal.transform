@@ -37,39 +37,45 @@ merge_expression_srv(
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})\cr
-object containing data as a list of \code{data.frame}. When passing a list of non-reactive \code{data.frame} objects, they are
+\item{datasets}{(named \code{list} of \code{reactive} or non-\code{reactive} \code{data.frame})
+object containing data as a list of \code{data.frame}.
+When passing a list of non-reactive \code{data.frame} objects, they are
 converted to reactive \code{data.frame} objects internally.}
 
-\item{join_keys}{(\code{join_keys})\cr
+\item{join_keys}{(\code{join_keys})
 of variables used as join keys for each of the datasets in \code{datasets}.
 This will be used to extract the \code{keys} of every dataset.}
 
-\item{merge_function}{(\code{character(1)} or \code{reactive})\cr
+\item{merge_function}{(\code{character(1)} or \code{reactive})
 A character string of a function that accepts the arguments
 \code{x}, \code{y} and \code{by} to perform the merging of datasets.}
 
-\item{anl_name}{(\code{character(1)})\cr
+\item{anl_name}{(\code{character(1)})
 Name of the analysis dataset.}
 }
 \value{
-reactive expression with output from \code{\link[=merge_datasets]{merge_datasets()}}.
+Reactive expression with output from \code{\link[=merge_expression_srv]{merge_expression_srv()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-When additional processing of the \code{data_extract} list input is required, \code{merge_expression_srv()} can be
-combined with \code{data_extract_multiple_srv()} or \code{data_extract_srv()} to influence the \code{selector_list} input.
+When additional processing of the \code{data_extract} list input is required,
+\code{merge_expression_srv()} can be combined with \code{data_extract_multiple_srv()}
+or \code{data_extract_srv()} to influence the \code{selector_list} input.
 Compare the example below with that found in \code{\link[=merge_expression_module]{merge_expression_module()}}.
 }
 \examples{
 library(shiny)
+library(teal.data)
+library(teal.widgets)
 
 ADSL <- data.frame(
   STUDYID = "A",
@@ -89,14 +95,14 @@ ADLB$AVAL <- rlnorm(120)
 ADLB$CHG <- rlnorm(120)
 
 data_list <- list(
-  ADSL = ADSL,
-  ADLB = ADLB
+  ADSL = reactive(ADSL),
+  ADLB = reactive(ADLB)
 )
 
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
 )
 
 adsl_extract <- data_extract_spec(
@@ -121,36 +127,36 @@ adlb_extract <- data_extract_spec(
   )
 )
 
-app <- shinyApp(
-  ui = fluidPage(
-    teal.widgets::standard_layout(
-      output = div(
-        verbatimTextOutput("expr"),
-        dataTableOutput("data")
-      ),
-      encoding = tagList(
-        data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
-        data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
-      )
+ui <- fluidPage(
+  standard_layout(
+    output = div(
+      verbatimTextOutput("expr"),
+      dataTableOutput("data")
+    ),
+    encoding = tagList(
+      data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
+      data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
     )
-  ),
-  server = function(input, output, session) {
-    data_q <- teal.code::qenv()
+  )
+)
 
-    data_q <- teal.code::eval_code(
-      data_q,
-      "ADSL <- data.frame(
+server <- function(input, output, session) {
+  data_q <- qenv()
+
+  data_q <- eval_code(
+    data_q,
+    "ADSL <- data.frame(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
         SEX = rep(c('F', 'M'), 5),
         AGE = rpois(10, 30),
         BMRKR1 = rlnorm(10)
       )"
-    )
+  )
 
-    data_q <- teal.code::eval_code(
-      data_q,
-      "ADLB <- expand.grid(
+  data_q <- eval_code(
+    data_q,
+    "ADLB <- expand.grid(
         STUDYID = 'A',
         USUBJID = LETTERS[1:10],
         PARAMCD = c('ALT', 'CRP', 'IGA'),
@@ -158,32 +164,32 @@ app <- shinyApp(
         AVAL = rlnorm(120),
         CHG = rlnorm(120)
       )"
-    )
+  )
 
-    selector_list <- data_extract_multiple_srv(
-      list(adsl_var = adsl_extract, adlb_var = adlb_extract),
-      datasets = data_list
-    )
-    merged_data <- merge_expression_srv(
-      selector_list = selector_list,
-      datasets = data_list,
-      join_keys = join_keys,
-      merge_function = "dplyr::left_join"
-    )
+  selector_list <- data_extract_multiple_srv(
+    list(adsl_var = adsl_extract, adlb_var = adlb_extract),
+    datasets = data_list
+  )
+  merged_data <- merge_expression_srv(
+    selector_list = selector_list,
+    datasets = data_list,
+    join_keys = join_keys,
+    merge_function = "dplyr::left_join"
+  )
 
-    code_merge <- reactive({
-      for (exp in merged_data()$expr) data_q <- teal.code::eval_code(data_q, exp)
-      data_q
-    })
+  code_merge <- reactive({
+    for (exp in merged_data()$expr) data_q <- eval_code(data_q, exp)
+    data_q
+  })
 
-    output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
-    output$data <- renderDataTable(code_merge()[["ANL"]])
-  }
-)
-\dontrun{
-shinyApp(app$ui, app$server)
+  output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
+  output$data <- renderDataTable(code_merge()[["ANL"]])
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
 }
 }
 \seealso{
-\code{\link[=merge_expression_srv]{merge_expression_srv()}}
+\code{\link[=merge_expression_module]{merge_expression_module()}}
 }

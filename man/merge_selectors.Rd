@@ -2,23 +2,29 @@
 % Please edit documentation in R/merge_datasets.R
 \name{merge_selectors}
 \alias{merge_selectors}
-\title{Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical}
+\title{Merge selectors when \code{dataname}, \code{reshape}, \code{filters} and \code{keys} entries are identical}
 \usage{
 merge_selectors(selector_list)
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 }
 \value{
-error or nothing
+List of merged selectors or original parameter if the conditions to merge are
+not applicable.
 }
 \description{
-Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical
+Merge selectors when \code{dataname}, \code{reshape}, \code{filters} and \code{keys} entries are identical
 }
 \examples{
+# use non-exported function from teal.transform
+merge_selectors <- getFromNamespace("merge_selectors", "teal.transform")
+
 selector_list <- list(
   # ADSL - SEX
   list(
@@ -44,7 +50,6 @@ selector_list <- list(
     )
   )
 )
-merged_selectors <- teal.transform:::merge_selectors(selector_list)
-merged_selectors
+merge_selectors(selector_list)
 }
 \keyword{internal}

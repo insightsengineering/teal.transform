@@ -4,7 +4,7 @@
 \alias{value_choices}
 \alias{value_choices.character}
 \alias{value_choices.data.frame}
-\title{Wrapper on \link{choices_labeled} to label variable values basing on other variable values}
+\title{Value labeling and filtering based on variable relationship}
 \usage{
 value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 
@@ -17,23 +17,26 @@ value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 If \code{data.frame}, then data to extract labels from.
 If \code{character}, then name of the dataset to extract data from once available.}
 
-\item{var_choices}{(\code{character} or \code{NULL}) vector with choices column names}
+\item{var_choices}{(\code{character} or \code{NULL}) vector with choices column names.}
 
-\item{var_label}{(\code{character}) vector with labels column names}
+\item{var_label}{(\code{character}) vector with labels column names.}
 
 \item{subset}{(\code{character} or \code{function})
 If \code{character}, vector with values to subset.
 If \code{function}, then this function is used to determine the possible columns (e.g. all factor columns).
 In this case, the function must take only single argument "data" and return a character vector.
+
 See examples for more details.}
 
-\item{sep}{(\code{character}) separator used in case of multiple column names}
+\item{sep}{(\code{character}) separator used in case of multiple column names.}
 }
 \value{
-named character vector or \code{delayed_data} object
+named character vector or \code{delayed_data} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Wrapper on \link{choices_labeled} to label variable values basing on other variable values.
 }
 \examples{
 ADRS <- teal.transform::rADRS
@@ -49,6 +52,6 @@ value_choices("ADRS", c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 
 # functional subset
 value_choices(ADRS, "PARAMCD", "PARAM", subset = function(data) {
-  return(levels(data$PARAMCD)[1:2])
+  levels(data$PARAMCD)[1:2]
 })
 }
