@@ -183,10 +183,7 @@ choices_selected <- function(choices,
   )
 }
 
-#' Check if an object is a choices_selected class
-#'
-#'
-#' @rdname choices_selected
+#' @describeIn choices_selected Check if an object is a choices_selected class
 #'
 #' @param x (`choices_selected`) object to check.
 #'

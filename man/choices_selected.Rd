@@ -57,6 +57,11 @@ argument is set to false which will run the following code inside:
 
 In case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
 }
+\section{Functions}{
+\itemize{
+\item \code{is.choices_selected()}: Check if an object is a choices_selected class
+
+}}
 \examples{
 library(shiny)
 library(teal.widgets)
