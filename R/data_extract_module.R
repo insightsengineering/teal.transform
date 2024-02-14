@@ -5,7 +5,8 @@
 #' @return Raises an error when check fails, otherwise, it returns the `data_extract_spec`
 #' parameter, invisibly and unchanged.
 #'
-#' @noRd
+#' @keywords internal
+#'
 check_data_extract_spec <- function(data_extract_spec) {
   checkmate::assert_list(data_extract_spec, types = "data_extract_spec", null.ok = TRUE)
 }
@@ -16,7 +17,8 @@ check_data_extract_spec <- function(data_extract_spec) {
 #'
 #' @return `character(1)`.
 #'
-#' @noRd
+#' @keywords internal
+#'
 id_for_dataset <- function(dataname) {
   paste0("dataset_", dataname, "_singleextract")
 }

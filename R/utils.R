@@ -173,7 +173,8 @@ compose_and_enable_validators <- function(iv, selector_list, validator_names = N
 #'
 #' @return List of `reactive` expressions that contains all the individual `datasets`.
 #'
-#' @noRd
+#' @keywords internal
+#'
 convert_teal_data <- function(datasets) {
   if (is.list(datasets)) {
     sapply(X = datasets, simplify = FALSE, FUN = function(x) {
