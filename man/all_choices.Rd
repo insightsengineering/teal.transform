@@ -2,8 +2,7 @@
 % Please edit documentation in R/all_choices.R
 \name{all_choices}
 \alias{all_choices}
-\title{An S3 structure representing the selection of all possible choices in a
-\code{filter_spec}, \code{select_spec} or \code{choices_selected} object}
+\title{Bare constructor for \code{all_choices} object}
 \usage{
 all_choices()
 }
@@ -12,6 +11,9 @@ all_choices()
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+An S3 structure representing the selection of all possible choices in a
+\code{filter_spec}, \code{select_spec} or \code{choices_selected} object
 }
 \examples{
 # Both structures are semantically identical

@@ -14,7 +14,7 @@
 #' the drop-down menu the app user will see.
 #'
 #' @inheritParams select_spec
-#' @param vars (`character`) or (`delayed_data`) object.
+#' @param vars (`character` or `delayed_data`) object.
 #' Character vector giving the columns to be filtered. These should be
 #' key variables of the data set to be filtered.
 #' `delayed_data` objects can be created via [variable_choices()], [value_choices()],

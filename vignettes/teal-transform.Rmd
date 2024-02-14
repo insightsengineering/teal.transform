@@ -19,7 +19,8 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `teal.transform` package is an integral component of the `teal` framework. It serves a dual purpose:
+The `teal.transform` package is an integral component of the `teal` framework.
+It serves a dual purpose:
 
 - For `teal` module developers, it offers a standardized user interface for column selection from datasets and facilitates dataset merging, resulting in the creation of analysis datasets for use within their modules.
 - For `teal` application developers, it provides a means to specify which dataset columns can be accessed through the user interface, streamlining column selection within their applications.

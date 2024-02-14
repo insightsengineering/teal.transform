@@ -2,7 +2,7 @@
 #'
 #' Checks `varname` type and parse if it's a `character`
 #'
-#' @param varname (`name`, `call` or `character(1)`)
+#' @param varname (`name` or `call` or `character(1)`)
 #' name of the variable
 #'
 #' @returns the parsed `varname`.
@@ -35,7 +35,7 @@ call_check_parse_varname <- function(varname) {
 #'
 #' Compose choices condition call from inputs.
 #'
-#' @param varname (`name`, `call` or `character(1)`)
+#' @param varname (`name` or `call` or `character(1)`)
 #' name of the variable.
 #' @param choices (`vector`)
 #' `varname` values to match using the `==` (single value) or `%in%` (vector)
@@ -245,11 +245,11 @@ call_condition_range_date <- function(varname, range) {
 #' Get call to subset and select array
 #'
 #' @param dataname (`character(1)` or `name`).
-#' @param row (optional `name`, `call`, `logical`, `integer` or `character`)
+#' @param row (optional `name` or `call` or `logical` or `integer` or `character`)
 #' name of the `row` or condition.
-#' @param column (optional `name`, `call`, `logical`, `integer` or `character`)
+#' @param column (optional `name` or `call` or `logical`, `integer` or `character`)
 #' name of the `column` or condition.
-#' @param aisle (optional `name`, `call`, `logical`, `integer` or `character`)
+#' @param aisle (optional `name` or `call` or `logical` or `integer` or `character`)
 #' name of the `row` or condition.
 #'
 #' @return [Extract()] `call` for 3-dimensional array in `x[i, j, k]` notation.
@@ -310,9 +310,9 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 #' Get call to subset and select matrix
 #'
 #' @param dataname (`character(1)` or `name`).
-#' @param row (optional `name`, `call`, `logical`, `integer` or `character`)
+#' @param row (optional `name` or `call` or `logical` or `integer` or `character`)
 #' name of the `row` or condition.
-#' @param column (optional `name`, `call`, `logical`, `integer` or `character`)
+#' @param column (optional `name` or `call` or `logical` or `integer` or `character`)
 #' name of the `column` or condition.
 #'
 #' @return [Extract()] `call` for matrix in `x[i, j]` notation.

@@ -34,10 +34,10 @@ be on top of the drop-down field.}
 \item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
-Object of class \code{choices_selected} and of type list which contains the specified
-\code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
+\code{choices_selected} returns object of class \code{choices_selected} and of
+type list which contains the specified \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
 
-\code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
+\code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -47,8 +47,6 @@ additional settings such as to order the choices with the selected elements appe
 or whether to block the user from making selections.
 
 Can be used in \code{ui} input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 Please note that the order of selected will always follow the order of choices. The \code{keep_order}
@@ -59,6 +57,11 @@ argument is set to false which will run the following code inside:
 
 In case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
 }
+\section{Functions}{
+\itemize{
+\item \code{is.choices_selected()}: Check if an object is a choices_selected class
+
+}}
 \examples{
 library(shiny)
 library(teal.widgets)

@@ -3,19 +3,22 @@
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' This is often useful for [choices_selected] as it marks up the drop-down boxes
+#' This is often useful for [choices_selected()] as it marks up the drop-down boxes
 #' for [shiny::selectInput()].
 #'
-#' @param choices A character / factor / numeric / logical vector.
-#' @param labels character vector containing labels to be applied to `choices`.
+#' @details
+#' If either `choices` or `labels` are factors, they are coerced to character.
+#' Duplicated elements from `choices` get removed.
+#'
+#' @param choices (`character` or `factor` or `numeric` or `logical`) vector.
+#' @param labels (`character`) vector containing labels to be applied to `choices`.
 #' If `NA` then "Label Missing" will be used.
-#' @param subset a vector that is a subset of `choices`.
+#' @param subset (`character` or `factor` or `numeric` or `logical`) vector that
+#' is a subset of `choices`.
 #' This is useful if only a few variables need to be named.
 #' If this argument is used, the returned vector will match its order.
-#' @param types Character vector containing the types of the columns to be used for applying the appropriate
+#' @param types (`character`) vector containing the types of the columns to be used for applying the appropriate
 #' icons to the [choices_selected] drop down box (e.g. "numeric").
-#' @details If either `choices` or `labels` are factors, they are coerced to character.
-#' Duplicated elements from `choices` get removed.
 #'
 #' @return Named `character` vector.
 #'

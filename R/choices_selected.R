@@ -34,8 +34,8 @@ no_select_keyword <- "-- no selection --"
 #' be on top of the drop-down field.
 #' @param fixed (optional `logical`) Whether to block user to select choices.
 #'
-#' @return Object of class `choices_selected` and of type list which contains the specified
-#' `choices`, `selected`, `keep_order` and `fixed`.
+#' @return `choices_selected` returns object of class `choices_selected` and of
+#' type list which contains the specified `choices`, `selected`, `keep_order` and `fixed`.
 #'
 #' @examples
 #' library(shiny)
@@ -183,15 +183,11 @@ choices_selected <- function(choices,
   )
 }
 
-#' Check if an object is a choices_selected class
-#'
-#' `r lifecycle::badge("stable")`
-#'
-#' @rdname choices_selected
+#' @describeIn choices_selected Check if an object is a choices_selected class
 #'
 #' @param x (`choices_selected`) object to check.
 #'
-#' @return `TRUE` if `x` inherits from a `choices_selected` object, `FALSE` otherwise.
+#' @return `is.choices_selected` returns `TRUE` if `x` inherits from a `choices_selected` object, `FALSE` otherwise.
 #'
 #' @export
 #'
@@ -264,6 +260,10 @@ vector_reorder <- function(vec, idx) {
   vec
 }
 
+#' Remove item(s) and their attributes from vector
+#' @keywords internal
+#' @noRd
+#'
 vector_pop <- function(vec, idx) {
   checkmate::assert_atomic(vec)
   checkmate::assert_integer(idx, lower = 1, any.missing = FALSE)
@@ -286,6 +286,10 @@ vector_pop <- function(vec, idx) {
   vec
 }
 
+#' Remove duplicate elements or elements with the same name from a vector
+#' @keywords internal
+#' @noRd
+#'
 vector_remove_dups <- function(vec) {
   checkmate::assert_atomic(vec)
 

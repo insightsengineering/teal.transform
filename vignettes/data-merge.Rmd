@@ -17,26 +17,33 @@ knitr::opts_chunk$set(
 )
 ```
 
-Combining datasets is a crucial step when using modules with more than one dataset. In the context of `teal`, we use
-the term "merge" to combine datasets where two functions are offered `merge_expression_module` and `merge_expression_srv`. Depending on the specific scenario, one or the other shall be used.
+Combining datasets is an essential step when working with modules that involve multiple datasets.
+Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
+To support this, two functions are provided: `merge_expression_module` and `merge_expression_srv`, each tailored for different use cases.
 
-When no processing of the `data_extract` list is required, the `merge_expression_module` function is used to read the data and the `data_extract_spec`'s list and apply the merging. It is a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()` see below for more details.
-With additional processing of the `data_extract` list input, `merge_expression_srv()` can be combined with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
+Use `merge_expression_module` when there is no need to process the `data_extract` list.
+This function reads the data and the list of `data_extract_spec` objects and applies the merging.
+Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`. 
+Further details are provided below.
+In scenarios where additional processing of the `data_extract` list is necessary,
+`merge_expression_srv()` can be used along with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
 
-In the coming sections, we will show examples of both scenarios.
+The following sections provide examples for both scenarios.
 
 ### `merge_expression_module`
 
-With `merge_expression_module` solely, all you would need is a list of `data_extract_spec` objects for the `data_extract` argument, a list of reactive or non-reactive `data.frame` objects and a list of join keys
-corresponding to every `data.frame` object.
+Using `merge_expression_module` alone requires a list of `data_extract_spec` objects for the `data_extract` argument,
+a list of reactive or non-reactive `data.frame` objects, and a list of join keys corresponding to each `data.frame` object.
 
 #### App code
 
 ```{r}
 library(teal.transform)
+library(teal.widgets)
+library(teal.data)
 library(shiny)
 
-adsl_extract <- teal.transform::data_extract_spec(
+adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
@@ -47,7 +54,7 @@ adsl_extract <- teal.transform::data_extract_spec(
   )
 )
 
-adtte_extract <- teal.transform::data_extract_spec(
+adtte_extract <- data_extract_spec(
   dataname = "ADTTE",
   select = select_spec(
     choices = c("AVAL", "ASEQ"),
@@ -61,18 +68,18 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
-  teal.widgets::standard_layout(
-    output = teal.widgets::white_small_well(
+  standard_layout(
+    output = white_small_well(
       verbatimTextOutput(ns("expr")),
       dataTableOutput(ns("data"))
     ),
     encoding = div(
-      teal.transform::data_extract_ui(
+      data_extract_ui(
         ns("adsl_extract"), # must correspond with data_extracts list names
         label = "ADSL extract",
         data_extracts[[1]]
       ),
-      teal.transform::data_extract_ui(
+      data_extract_ui(
         ns("adtte_extract"), # must correspond with data_extracts list names
         label = "ADTTE extract",
         data_extracts[[2]]
@@ -83,7 +90,7 @@ merge_ui <- function(id, data_extracts) {
 
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    merged_data <- teal.transform::merge_expression_module(
+    merged_data <- merge_expression_module(
       data_extract = data_extracts,
       datasets = datasets,
       join_keys = join_keys,
@@ -91,7 +98,8 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     )
 
     ANL <- reactive({
-      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
+      data_list <- lapply(datasets, function(ds) ds())
+      eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
@@ -102,14 +110,17 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
 ADSL <- teal.transform::rADSL
 ADTTE <- teal.transform::rADTTE
 
-# create a list of data.frame objects
-datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
 
 # create  join_keys
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
 )
 ```
 
@@ -126,12 +137,15 @@ shinyApp(
 
 ### `data_extract_multiple_srv` + `merge_expression_srv`
 
-In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still take place even though `ADTTE` is not used or needed here. Here, the developer might update the `selector_list` input in a reactive manner so that it gets updated based on conditions set by the developer. Below, we reuse the input from above and we update the `app` server so that the `adtte_extract` is removed from the `selector_list` input when no `ADTTE` variable is selected and the `reactive_selector_list` is passed to `merge_expression_srv`:
+In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still occur, even though `ADTTE` is not used or needed.
+Here, the developer might update the `selector_list` input in a reactive manner so that it gets updated based on conditions set by the developer. 
+Below, we reuse the input from above and update the app server so that the `adtte_extract` is removed from the selector_list input when no `ADTTE` variable is selected.
+The `reactive_selector_list` is then passed to `merge_expression_srv`:
 
 ```{r}
 merge_module <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
-    selector_list <- teal.transform::data_extract_multiple_srv(data_extracts, datasets, join_keys)
+    selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
     reactive_selector_list <- reactive({
       if (is.null(selector_list()$adtte_extract) || length(selector_list()$adtte_extract()$select) == 0) {
         selector_list()[names(selector_list()) != "adtte_extract"]
@@ -140,7 +154,7 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
       }
     })
 
-    merged_data <- teal.transform::merge_expression_srv(
+    merged_data <- merge_expression_srv(
       selector_list = reactive_selector_list,
       datasets = datasets,
       join_keys = join_keys,
@@ -148,7 +162,8 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     )
 
     ANL <- reactive({
-      eval(envir = list2env(datasets), expr = as.expression(merged_data()$expr))
+      data_list <- lapply(datasets, function(ds) ds())
+      eval(envir = list2env(data_list), expr = as.expression(merged_data()$expr))
     })
     output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
     output$data <- renderDataTable(ANL())
@@ -169,22 +184,25 @@ shinyApp(
 
 `merge_expression_module` is replaced here with three parts:
 
-1) `selector_list`: output of `data_extract_multiple_srv` which loops over the list of data_extract given and runs `data_extract_srv` for each one returning a list of reactive objects.
-2) `reactive_selector_list`: intermediate reactive list updating `selector_list` content
-3) `merged_data`: output of `merge_expression_srv` using `reactive_selector_list` as input
+1) `selector_list`: the output of `data_extract_multiple_srv`, which loops over the list of `data_extract` given and runs `data_extract_srv` for each one, returning a list of reactive objects.
+2) `reactive_selector_list`: an intermediate reactive list updating `selector_list` content.
+3) `merged_data`: the output of `merge_expression_srv` using `reactive_selector_list` as input.
 
 ### Output from merging
 
 Both merge functions, `merge_expression_srv` and `merge_expression_module`, return a reactive object which contains a list of the following elements:
 
--  `expr`: code needed to replicate merged dataset
--  `columns_source`: list of columns selected per selector
--  `keys`: the keys of the merged dataset
--  `filter_info`: filters that are applied on the data
+-  `expr`: code needed to replicate merged dataset.
+-  `columns_source`: list of columns selected per selector.
+-  `keys`: the keys of the merged dataset.
+-  `filter_info`: filters that are applied on the data.
 
-These elements can be further used inside the server to retrieve and use information about the selections, data, filters, ...
+These elements can be further used inside the server to retrieve and use information about the selections, data, filters, etc.
 
 ## Merging of non `CDISC` datasets
 
-General datasets do not share the same relationships as `CDISC` datasets thus these relationships must be specified by the `join_keys` functions. For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys).
-The data merge module respects the relationships given by the user and in the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.
+General datasets do not have the same relationships as `CDISC` datasets, so these relationships must be specified using the `join_keys` functions. 
+For more information, please refer to the `Join Keys` [vignette](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys).
+The data merge module respects the relationships given by the user. 
+In the case of multiple datasets to merge, the order is specified by the order of elements in the `data_extract` argument of the `merge_expression_module` function. 
+Merging groups of datasets with complex relationships can quickly become challenging to specify so please take extra care when setting this up.

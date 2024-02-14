@@ -15,7 +15,7 @@ filter_spec(
 )
 }
 \arguments{
-\item{vars}{(\code{character}) or (\code{delayed_data}) object.
+\item{vars}{(\code{character} or \code{delayed_data}) object.
 Character vector giving the columns to be filtered. These should be
 key variables of the data set to be filtered.
 \code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}}, \code{\link[=value_choices]{value_choices()}},

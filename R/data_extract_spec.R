@@ -16,7 +16,7 @@
 #'
 #' @param dataname (`character`)
 #' The name of the dataset to be extracted.
-#' @param select (`NULL`, `select_spec`-S3 class or `delayed_select_spec`)
+#' @param select (`NULL` or `select_spec`-S3 class or `delayed_select_spec`)
 #' Columns to be selected from the input dataset mentioned in `dataname`.
 #' The setup can be created using [select_spec] function.
 #' @param filter (`NULL` or `filter_spec` or its respective delayed version)

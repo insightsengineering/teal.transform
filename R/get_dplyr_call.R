@@ -401,6 +401,10 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
   }
 }
 
+#' Remove duplicated columns
+#' @keywords internal
+#' @noRd
+#'
 rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
   all_cols_dups <- all_cols[duplicated(all_cols)]
   vapply(

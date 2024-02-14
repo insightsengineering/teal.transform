@@ -13,7 +13,7 @@
 #' These have to be columns in the dataset defined in the [data_extract_spec()]
 #' where this is called.
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
-#' @param selected (optional `character`, `NULL`, `all_choices` or `delayed_data`).
+#' @param selected (optional `character` or `NULL` or `all_choices` or `delayed_data`).
 #' Named character vector to define the selected values of a shiny [shiny::selectInput()].
 #' Passing an `all_choices()` object indicates selecting all possible choices.
 #' Defaults to the first value of `choices` or `NULL` for delayed data loading.

@@ -17,35 +17,37 @@ knitr::opts_chunk$set(
 )
 ```
 
-There are times when an app developer wants to showcase more than just one fixed slice of their dataset in their
-custom module. Relinquishing control of the application to a user demands the developer gives their users a degree
-of freedom. In case of analyzing data, `teal` allows app developers to open up their applications to users, letting them
-decide exactly what app data to analyze in the module.
+There are times when an app developer wants to offer users more flexibility in analyzing data within their custom module. 
+In such cases, relinquishing control of the application to users requires developers to provide a degree of freedom. 
+With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
+analyze within the module.
 
-A lot of `teal` modules use `data_extract_spec` objects and modules to tackle user input. You can find many examples in
-e.g. `teal.modules.general` and `teal.modules.clinical`.
-
+Many `teal` modules leverage `data_extract_spec` objects and modules to handle user input.
+Examples can be found in `teal.modules.general` and `teal.modules.clinical`.
 
 ### `data_extract_spec`
 
-`data_extract_spec`'s task is two-fold: create a UI component in a `shiny` application and pass the user input from the
- UI to the module itself. Having that formulated, let's have a look at how it supports both its responsibilities.
+The role of `data_extract_spec` is twofold: to create a UI component in a `shiny` application and to pass user input 
+from the UI to the module itself. 
+Let's delve into how it fulfills both of these responsibilities.
 
 #### Example module
 
-In order to showcase different initialization options of `data_extract_spec`, first we define a `shiny` module which
-uses `data_extract_ui` and `data_extract_srv` designed to handle `data_extract_spec` objects. The module creates a UI
-component for a single `data_extract_spec` and prints a list of values returned from `data_extract_srv` module. Please see
-package documentation for more information about `data_extract_ui` and `data_extract_srv`.
+To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
+utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
+This module creates a UI component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module. 
+For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
 
 ```{r}
 library(teal.transform)
+library(teal.widgets)
+library(teal.data)
 library(shiny)
 
 extract_ui <- function(id, data_extract) {
   ns <- NS(id)
-  teal.widgets::standard_layout(
-    output = teal.widgets::white_small_well(verbatimTextOutput(ns("output"))),
+  standard_layout(
+    output = white_small_well(verbatimTextOutput(ns("output"))),
     encoding = data_extract_ui(ns("data_extract"), label = "variable", data_extract)
   )
 }
@@ -66,29 +68,31 @@ extract_srv <- function(id, datasets, data_extract, join_keys) {
 
 #### Example data
 
-`data_extract_srv` module depends on either a list of reactive or non-reactive `data.frame` objects. Here, we show the
-usage of a list of `data.frame` objects as input to `datasets`
-where a list of necessary join keys per `data.frame` object is required:
+The `data_extract_srv` module depends on a list of reactive or non-reactive `data.frame` objects. 
+Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`, 
+along with a list of necessary join keys per `data.frame` object:
 
 ```{r}
 # Define data.frame objects
 ADSL <- teal.transform::rADSL
 ADTTE <- teal.transform::rADTTE
 
-# create a list of data.frame objects
-datasets <- list(ADSL = ADSL, ADTTE = ADTTE)
-
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
 # create join_keys
-join_keys <- teal.data::join_keys(
-  teal.data::join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  teal.data::join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
 )
 ```
 
 Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
-and a second one to select a variable from `c("BMRKR1", "AGE")`. `data_extract_spec` object is handed over to the shiny
-app and gives instructions to generate UI components.
+and a second one to select a variable from `c("BMRKR1", "AGE")`.
+`data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
 
 ```{r}
 simple_des <- data_extract_spec(
@@ -100,7 +104,7 @@ simple_des <- data_extract_spec(
 
 #### Shiny app
 
-Finally, we pass `extract_ui` to the `ui` of the `shinyApp` and we use `extract_srv` in the server function of the `shinyApp`:
+Finally, we include `extract_ui` in the UI of the `shinyApp`, and utilize `extract_srv` in the server function of the `shinyApp`:
 
 ```{r eval=FALSE}
 shinyApp(

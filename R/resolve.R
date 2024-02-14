@@ -198,7 +198,7 @@ resolve.default <- function(x, datasets, keys) {
 #' @param ds (`data.frame`) Dataset.
 #' @param is_value_choices (`logical`) Determines which check of the returned value will be applied.
 #'
-#' @return Character vector - result of calling function `x` on dataset `ds`.
+#' @return `character` vector - result of calling function `x` on dataset `ds`.
 #'
 #' @keywords internal
 #'
@@ -307,6 +307,10 @@ print.delayed_data_extract_spec <- function(x, indent = 0L, ...) {
   invisible(NULL)
 }
 
+#' Create indented message
+#' @keywords internal
+#' @noRd
+#'
 indent_msg <- function(n, msg) {
   checkmate::assert_integer(n, len = 1, lower = 0, any.missing = FALSE)
   checkmate::assert_character(msg, min.len = 1, any.missing = FALSE)
@@ -315,6 +319,10 @@ indent_msg <- function(n, msg) {
   paste0(indent, msg)
 }
 
+#' Common function to print a `delayed_data` object
+#' @keywords internal
+#' @noRd
+#'
 print_delayed_list <- function(obj, n = 0L) {
   checkmate::assert_integer(n, len = 1, lower = 0, any.missing = FALSE)
   stopifnot(is.list(obj))
