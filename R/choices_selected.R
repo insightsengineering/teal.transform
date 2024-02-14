@@ -263,6 +263,10 @@ vector_reorder <- function(vec, idx) {
   vec
 }
 
+#' Remove item(s) and their attributes from vector
+#' @keywords internal
+#' @noRd
+#'
 vector_pop <- function(vec, idx) {
   checkmate::assert_atomic(vec)
   checkmate::assert_integer(idx, lower = 1, any.missing = FALSE)
@@ -285,6 +289,10 @@ vector_pop <- function(vec, idx) {
   vec
 }
 
+#' Remove duplicate elements or elements with the same name from a vector
+#' @keywords internal
+#' @noRd
+#'
 vector_remove_dups <- function(vec) {
   checkmate::assert_atomic(vec)
 
