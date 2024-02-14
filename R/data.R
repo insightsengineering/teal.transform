@@ -46,7 +46,7 @@
 #' @name rADSL
 "rADSL"
 
-#' Random Time to Event Analysis Dataset
+#' Random time to event analysis dataset
 #'
 #' @docType data
 #'

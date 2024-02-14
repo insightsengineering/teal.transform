@@ -1,5 +1,6 @@
 #' Merge expression module
 #'
+#' @description
 #' `r lifecycle::badge("experimental")`
 #'
 #' This function is a convenient wrapper to combine `data_extract_multiple_srv()` and

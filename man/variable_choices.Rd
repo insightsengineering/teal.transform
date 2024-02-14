@@ -4,7 +4,7 @@
 \alias{variable_choices}
 \alias{variable_choices.character}
 \alias{variable_choices.data.frame}
-\title{Wrapper on \link{choices_labeled} to label variables basing on existing labels in data}
+\title{Variable label extraction and custom selection from data}
 \usage{
 variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
 
@@ -39,6 +39,8 @@ Named \code{character} vector with additional attributes or \code{delayed_data} 
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Wrapper on \link{choices_labeled} to label variables basing on existing labels in data.
 }
 \examples{
 library(teal.data)

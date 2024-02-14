@@ -17,5 +17,5 @@ Raises an error when check fails, otherwise, it returns \code{NULL}, invisibly.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
-Stops if condition not met
+Stops if condition not met.
 }

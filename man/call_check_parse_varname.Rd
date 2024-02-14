@@ -14,6 +14,6 @@ name of the variable}
 the parsed \code{varname}.
 }
 \description{
-Checks \code{varname} type and parse if it's a \code{character}
+Checks \code{varname} type and parse if it's a \code{character}.
 }
 \keyword{internal}

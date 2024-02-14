@@ -1,6 +1,6 @@
 #' Checks `varname` argument and convert to call
 #'
-#' Checks `varname` type and parse if it's a `character`
+#' Checks `varname` type and parse if it's a `character`.
 #'
 #' @param varname (`name` or `call` or `character(1)`)
 #' name of the variable
@@ -35,22 +35,24 @@ call_check_parse_varname <- function(varname) {
 #'
 #' Compose choices condition call from inputs.
 #'
+#' @details
+#' `choices` can be vector of any type but for some output might be converted:
+#' * `factor` call is composed on choices converted to `character`;
+#' * `Date` call is composed on choices converted to `character` using
+#' `format(choices)`;
+#' * `POSIXct`, `POSIXlt` call is composed on choices converted to `character` using
+#' `format(choices)`.
+#'
+#' One has to be careful here as formatted date-time variable might loose
+#' some precision (see `format` argument in [format.POSIXlt()] and output call
+#' could be insufficient for exact comparison. In this case one should specify
+#' `varname = trunc(<varname>)` and possibly convert `choices` to `character`).
+#'
 #' @param varname (`name` or `call` or `character(1)`)
 #' name of the variable.
 #' @param choices (`vector`)
 #' `varname` values to match using the `==` (single value) or `%in%` (vector)
 #' condition.
-#' `choices` can be vector of any type but for some output might be converted:
-#' * `factor` call is composed on choices converted to `character`;
-#' * `Date` call is composed on choices converted to `character` using
-#' `format(choices)`;
-#' * `POSIXct`, `POSIXlt` Call is composed on choices converted to `character` using
-#' `format(choices)`.
-#'
-#'     One has to be careful here as formatted date-time variable might loose
-#'     some precision (see `format` argument in [format.POSIXlt()] and output call
-#'     could be insufficient for exact comparison. In this case one should specify
-#'     `varname = trunc(<varname>)` and possibly convert `choices` to `character`).
 #'
 #' @return `call`.
 #'

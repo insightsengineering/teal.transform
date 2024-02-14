@@ -1,13 +1,13 @@
-#' Data Extract input for `teal` modules
+#' Data extract input for `teal` modules
 #'
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' The Data Extract input can be used to filter and select columns from a data set.
+#' The Data extract input can be used to filter and select columns from a data set.
 #' This function enables such an input in `teal`.
 #' Please use the constructor function [data_extract_spec] to set it up.
 #'
-#' Note that no checks based on columns can be done because the data is only referred to by name.
+#' @note No checks based on columns can be done because the data is only referred to by name.
 #'
 #' @rdname data_extract_spec
 #'
@@ -22,7 +22,7 @@
 #' @param filter (`NULL` or `filter_spec` or its respective delayed version)
 #' Setup of the filtering of key columns inside the dataset.
 #' This setup can be created using the [filter_spec] function.
-#' Please note that if both select and filter are set to NULL, then the result
+#' Please note that if both select and filter are set to `NULL`, then the result
 #' will be a filter spec UI with all variables as possible choices and a select
 #' spec with multiple set to `TRUE`.
 #' @param reshape (`logical`)

@@ -17,5 +17,5 @@ of \code{data_extract_spec}.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Fetches \code{dataname} slot per \code{data_extract_spec} from a list of
-\code{data_extract_spec} and returns the unique \code{dataname} set.
+\code{data_extract_spec}.
 }

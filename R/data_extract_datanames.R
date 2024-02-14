@@ -8,7 +8,7 @@
 #'
 #' @param data_extracts (`list`) of data extracts for single variable.
 #'
-#' @return [shiny::helpText()] object.
+#' @return `shiny.tag` defining help-text element that can be added to a UI element.
 #'
 #' @export
 #'
@@ -26,7 +26,7 @@ datanames_input <- function(data_extracts) {
 #' `r lifecycle::badge("stable")`
 #'
 #' Fetches `dataname` slot per `data_extract_spec` from a list of
-#' `data_extract_spec` and returns the unique `dataname` set.
+#' `data_extract_spec`.
 #'
 #' @param data_extracts (`data_extract_spec(1)`) object or a list (of lists)
 #' of `data_extract_spec`.
@@ -64,9 +64,12 @@ get_extract_datanames <- function(data_extracts) {
   unique(unlist(datanames))
 }
 
-#' Checks if the input `data_extract_spec` objects all come from the same dataset
+#' Verify uniform dataset source across data extract specification
 #'
-#' `r lifecycle::badge("stable")`
+#' @description
+#'  `r lifecycle::badge("stable")`
+#'
+#' Checks if the input `data_extract_spec` objects all come from the same dataset.
 #'
 #' @param ... either `data_extract_spec` objects or lists of `data_extract_spec`
 #' objects that do not contain `NULL`

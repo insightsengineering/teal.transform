@@ -9,7 +9,7 @@ no_select_keyword <- "-- no selection --"
 #' additional settings such as to order the choices with the selected elements appearing first
 #' or whether to block the user from making selections.
 #'
-#' Can be used in `ui` input elements such as [teal.widgets::optionalSelectInput()].
+#' Can be used in UI input elements such as [teal.widgets::optionalSelectInput()].
 #'
 #' @details
 #' Please note that the order of selected will always follow the order of choices. The `keep_order`
@@ -34,9 +34,8 @@ no_select_keyword <- "-- no selection --"
 #' be on top of the drop-down field.
 #' @param fixed (optional `logical`) Whether to block user to select choices.
 #'
-#' @return Object of class `choices_selected` and of type list which contains the specified
+#' @return `choices_selected` list object, encapsulating the specified
 #' `choices`, `selected`, `keep_order` and `fixed`.
-#'
 #' @examples
 #' library(shiny)
 #' library(teal.widgets)
@@ -240,7 +239,10 @@ no_selected_as_NULL <- function(x) { # nolint
 }
 
 ## Non-exported utils functions ----
-## Modify vectors and keep attributes
+#' Modify vectors and keep attributes
+#' @keywords internal
+#' @noRd
+#'
 vector_reorder <- function(vec, idx) {
   checkmate::assert_atomic(vec)
   checkmate::assert_integer(idx, min.len = 1, lower = 1, any.missing = FALSE)

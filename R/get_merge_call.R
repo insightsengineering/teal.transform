@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' Returns list of calls depending on selector(s) and type of the merge.
+#' Function creates list of calls depending on selector(s) and type of the merge.
 #' The merge order is the same as in selectors passed to the function.
 #'
 #' @inheritParams merge_datasets

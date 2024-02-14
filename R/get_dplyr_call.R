@@ -1,7 +1,7 @@
 #' Aggregates data extract selectors
 #'
-#' Simplifies selector_list into aggregated list with one element per
-#' same selector - same dataset, same filter configuration and same reshape status
+#' Simplifies `selector_list` into aggregated list with one element per
+#' same selector - same dataset, same filter configuration and same reshape status.
 #'
 #' @inheritParams get_merge_call
 #'

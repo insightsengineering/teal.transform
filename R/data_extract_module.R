@@ -584,7 +584,7 @@ data_extract_srv.list <- function(id, datasets, data_extract_spec, join_keys = N
 #'
 #' See example for details.
 #'
-#' @return reactive named list containing outputs from [data_extract_srv()].
+#' @return reactive named `list` containing outputs from [data_extract_srv()].
 #' Output list names are the same as `data_extract` input argument.
 #'
 #' @examples

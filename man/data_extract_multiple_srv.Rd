@@ -65,7 +65,7 @@ See example for more details.}
 \code{select_validation_rule} but for the choose dataset part of the \code{data_extract_ui}}
 }
 \value{
-reactive named list containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+reactive named \code{list} containing outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
 Output list names are the same as \code{data_extract} input argument.
 }
 \description{

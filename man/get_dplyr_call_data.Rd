@@ -21,7 +21,7 @@ ids of the respective
 selections, reshapes etc. All necessary data for merging.
 }
 \description{
-Simplifies selector_list into aggregated list with one element per
-same selector - same dataset, same filter configuration and same reshape status
+Simplifies \code{selector_list} into aggregated list with one element per
+same selector - same dataset, same filter configuration and same reshape status.
 }
 \keyword{internal}
