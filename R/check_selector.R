@@ -5,7 +5,8 @@
 #' @return Raises an error when check fails, otherwise, it returns the `dataname`
 #' parameter, invisibly and unchanged.
 #'
-#' @noRd
+#' @keywords internal
+#'
 check_selector_dataname <- function(dataname) {
   checkmate::assert_string(dataname)
 }

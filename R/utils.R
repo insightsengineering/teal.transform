@@ -168,7 +168,7 @@ compose_and_enable_validators <- function(iv, selector_list, validator_names = N
 
 #' Ensures datasets is a list of reactive expression
 #'
-#' @param datasets (`reactive` or `teal_data` object or `list`) of `data.frame`
+#' @param datasets (`reactive` or `teal_data` or `list`) of `data.frame`
 #' wrapped or not in a reactive expression.
 #'
 #' @return List of `reactive` expressions that contains all the individual `datasets`.
