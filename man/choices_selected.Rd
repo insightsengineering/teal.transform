@@ -34,10 +34,10 @@ be on top of the drop-down field.}
 \item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
-Object of class \code{choices_selected} and of type list which contains the specified
-\code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
+\code{choices_selected} returns object of class \code{choices_selected} and of
+type list which contains the specified \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
 
-\code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
+\code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -34,8 +34,8 @@ no_select_keyword <- "-- no selection --"
 #' be on top of the drop-down field.
 #' @param fixed (optional `logical`) Whether to block user to select choices.
 #'
-#' @return Object of class `choices_selected` and of type list which contains the specified
-#' `choices`, `selected`, `keep_order` and `fixed`.
+#' @return `choices_selected` returns object of class `choices_selected` and of
+#' type list which contains the specified `choices`, `selected`, `keep_order` and `fixed`.
 #'
 #' @examples
 #' library(shiny)
@@ -187,7 +187,7 @@ choices_selected <- function(choices,
 #'
 #' @param x (`choices_selected`) object to check.
 #'
-#' @return `TRUE` if `x` inherits from a `choices_selected` object, `FALSE` otherwise.
+#' @return `is.choices_selected` returns `TRUE` if `x` inherits from a `choices_selected` object, `FALSE` otherwise.
 #'
 #' @export
 #'
