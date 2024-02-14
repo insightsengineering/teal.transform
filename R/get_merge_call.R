@@ -206,34 +206,6 @@ get_merge_key_pair <- function(selector_from, selector_to, key_from) {
 #'
 #' @return `character` list of keys.
 #'
-#' @examples
-#' library(teal.data)
-#' # use non-exported function from teal.transform
-#' get_merge_key_i <- getFromNamespace("get_merge_key_i", "teal.transform")
-#' get_dplyr_call_data <- getFromNamespace("get_dplyr_call_data", "teal.transform")
-#'
-#' selector_list <- list(
-#'   list(
-#'     dataname = "X",
-#'     filters = NULL,
-#'     select = "E",
-#'     keys = c("A", "B"),
-#'     reshape = FALSE,
-#'     internal_id = "x"
-#'   ),
-#'   list(
-#'     dataname = "Y",
-#'     filters = NULL,
-#'     select = "G",
-#'     keys = c("A", "C"),
-#'     reshape = FALSE,
-#'     internal_id = "y"
-#'   )
-#' )
-#'
-#' join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
-#' get_merge_key_i(selector_list, 2L, get_dplyr_call_data(selector_list, join_keys))
-#'
 #' @keywords internal
 #'
 get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call_data(selector_list)) {

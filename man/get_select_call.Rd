@@ -15,10 +15,4 @@ get_select_call(select)
 \description{
 Parse \code{dplyr} select call
 }
-\examples{
-# use non-exported function from teal.transform
-get_select_call <- getFromNamespace("get_select_call", "teal.transform")
-
-get_select_call(letters)
-}
 \keyword{internal}

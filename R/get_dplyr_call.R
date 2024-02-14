@@ -130,79 +130,6 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'
 #' @return (`call`) filter, select, rename and reshape call.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' get_dplyr_call <- getFromNamespace("get_dplyr_call", "teal.transform")
-#'
-#' # one dataset
-#' get_dplyr_call(
-#'   list(list(
-#'     dataname = "ADSL",
-#'     filters = NULL,
-#'     select = character(0),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test1"
-#'   ))
-#' )
-#' get_dplyr_call(
-#'   list(list(
-#'     dataname = "ADSL",
-#'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
-#'     select = character(0),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test1"
-#'   ))
-#' )
-#' get_dplyr_call(
-#'   list(list(
-#'     dataname = "ADSL",
-#'     filters = list(list(columns = "SEX", selected = list("F", "M"))),
-#'     select = c("AVAL"),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test1"
-#'   ))
-#' )
-#'
-#' # two datasets with rename part
-#' get_dplyr_call(
-#'   list(
-#'     list(
-#'       dataname = "ADSL",
-#'       filters = NULL,
-#'       select = c("COL_1", "COL_2"),
-#'       keys = c("STUDYID", "USUBJID"),
-#'       reshape = FALSE,
-#'       internal_id = "test1"
-#'     ),
-#'     list(
-#'       dataname = "ADSL",
-#'       filters = NULL,
-#'       select = c("COL_2", "COL_3"),
-#'       keys = c("STUDYID", "USUBJID"),
-#'       reshape = FALSE,
-#'       internal_id = "test2"
-#'     )
-#'   ),
-#'   idx = 1L
-#' )
-#'
-#' # long dataset with reshape part
-#' get_dplyr_call(
-#'   list(list(
-#'     dataname = "ADLB",
-#'     filters = list(list(
-#'       columns = c("PARAMCD", "AVISIT"),
-#'       selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE"))
-#'     )),
-#'     select = c("AVAL"),
-#'     keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
-#'     reshape = TRUE,
-#'     internal_id = "test1"
-#'   ))
-#' )
 #' @keywords internal
 #'
 get_dplyr_call <- function(selector_list,
@@ -253,11 +180,6 @@ get_dplyr_call <- function(selector_list,
 #'
 #' @return `dplyr` select `call`.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' get_select_call <- getFromNamespace("get_select_call", "teal.transform")
-#'
-#' get_select_call(letters)
 #' @keywords internal
 #'
 get_select_call <- function(select) {
@@ -279,17 +201,6 @@ get_select_call <- function(select) {
 #'
 #' @return `dplyr` filter `call`.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' get_filter_call <- getFromNamespace("get_filter_call", "teal.transform")
-#'
-#' get_filter_call(
-#'   filter = list(list(columns = "SEX", selected = list(NA, "F", "M")))
-#' )
-#' get_filter_call(filter = list(
-#'   list(columns = "SEX", selected = list(NA, "F", "M")),
-#'   list(columns = "VAR", selected = list("LEVEL1", "LEVEL2"))
-#' ))
 #' @keywords internal
 #'
 get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
@@ -424,48 +335,6 @@ rename_duplicated_cols <- function(x, internal_id, selected_cols, all_cols) {
 #'
 #' @return (`call`) `dplyr` rename call.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' get_rename_call <- getFromNamespace("get_rename_call", "teal.transform")
-#'
-#' x <- list(
-#'   list(
-#'     dataname = "ADSL",
-#'     filters = NULL,
-#'     select = head(letters, 3),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test1"
-#'   ),
-#'   list(
-#'     dataname = "ADSL",
-#'     filters = NULL,
-#'     select = letters,
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test2"
-#'   ),
-#'   list(
-#'     dataname = "ADSL",
-#'     filters = NULL,
-#'     select = tail(letters, 3),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test3"
-#'   ),
-#'   list(
-#'     dataname = "ADSL",
-#'     filters = NULL,
-#'     select = c("aa", "bb"),
-#'     keys = c("STUDYID", "USUBJID"),
-#'     reshape = FALSE,
-#'     internal_id = "test4"
-#'   )
-#' )
-#' get_rename_call(x, 1L)
-#' get_rename_call(x, 2L)
-#' get_rename_call(x, 3L)
-#' get_rename_call(x, 4L)
 #' @keywords internal
 #'
 get_rename_call <- function(selector_list = list(),
@@ -502,32 +371,6 @@ get_rename_call <- function(selector_list = list(),
 #'
 #' @return List of multiple `dplyr` calls that reshape data.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' get_reshape_call <- getFromNamespace("get_reshape_call", "teal.transform")
-#'
-#' filters <- list(
-#'   columns = c("PARAMCD", "AVISIT"),
-#'   selected = list(c("ALT", "SCREENING"), c("ALT", "BASELINE"))
-#' )
-#' select <- "AVAL"
-#' internal_id <- "ADLB"
-#'
-#' x <- list(
-#'   list(
-#'     dataname = "ADLB",
-#'     filters = list(list(
-#'       columns = c("PARAMCD", "AVISIT"),
-#'       selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE")),
-#'       multiple = FALSE
-#'     )),
-#'     select = "AVAL",
-#'     keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
-#'     reshape = TRUE,
-#'     internal_id = "test"
-#'   )
-#' )
-#' get_reshape_call(x, 1L)
 #' @keywords internal
 #'
 get_reshape_call <- function(selector_list = list(),
