@@ -88,13 +88,40 @@
     <loc>https://insightsengineering.github.io/teal.transform/reference/calls_combine_by.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_data_extract_spec.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/check_data_extract_spec_react.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/check_data_merge_selectors.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_merge_function.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/check_no_multiple_selection.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_dataname.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_filters.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_internal_id.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_keys.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_reshape.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/check_selector_select.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/choices_labeled.html</loc>
@@ -107,6 +134,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/cond_data_extract_single_ui.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/convert_teal_data.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/data_extract_filter_srv.html</loc>
@@ -212,6 +242,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/get_select_call.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/teal.transform/reference/id_for_dataset.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/teal.transform/reference/include_css_files.html</loc>

@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,16 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -105,42 +95,47 @@ CoreDev</h4>
 
     
     
-<p>Combining datasets is a crucial step when using modules with more
-than one dataset. In the context of <code>teal</code>, we use the term
-“merge” to combine datasets where two functions are offered
+<p>Combining datasets is an essential step when working with modules
+that involve multiple datasets. Within the context of <code>teal</code>,
+we use the term “merge” to refer to the process of combining datasets.
+To support this, two functions are provided:
 <code>merge_expression_module</code> and
-<code>merge_expression_srv</code>. Depending on the specific scenario,
-one or the other shall be used.</p>
-<p>When no processing of the <code>data_extract</code> list is required,
-the <code>merge_expression_module</code> function is used to read the
-data and the <code>data_extract_spec</code>’s list and apply the
-merging. It is a wrapper that combines
+<code>merge_expression_srv</code>, each tailored for different use
+cases.</p>
+<p>Use <code>merge_expression_module</code> when there is no need to
+process the <code>data_extract</code> list. This function reads the data
+and the list of <code>data_extract_spec</code> objects and applies the
+merging. Essentially, it serves as a wrapper that combines
 <code><a href="../reference/data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> and
-<code><a href="../reference/merge_expression_srv.html">merge_expression_srv()</a></code> see below for more details. With
-additional processing of the <code>data_extract</code> list input,
-<code><a href="../reference/merge_expression_srv.html">merge_expression_srv()</a></code> can be combined with
+<code><a href="../reference/merge_expression_srv.html">merge_expression_srv()</a></code>. Further details are provided below.
+In scenarios where additional processing of the
+<code>data_extract</code> list is necessary,
+<code><a href="../reference/merge_expression_srv.html">merge_expression_srv()</a></code> can be used along with
 <code><a href="../reference/data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> or
 <code><a href="../reference/data_extract_srv.html">data_extract_srv()</a></code> to customize the
 <code>selector_list</code> input.</p>
-<p>In the coming sections, we will show examples of both scenarios.</p>
+<p>The following sections provide examples for both scenarios.</p>
 <div class="section level3">
 <h3 id="merge_expression_module">
 <code>merge_expression_module</code><a class="anchor" aria-label="anchor" href="#merge_expression_module"></a>
 </h3>
-<p>With <code>merge_expression_module</code> solely, all you would need
-is a list of <code>data_extract_spec</code> objects for the
-<code>data_extract</code> argument, a list of reactive or non-reactive
-<code>data.frame</code> objects and a list of join keys corresponding to
-every <code>data.frame</code> object.</p>
+<p>Using <code>merge_expression_module</code> alone requires a list of
+<code>data_extract_spec</code> objects for the <code>data_extract</code>
+argument, a list of reactive or non-reactive <code>data.frame</code>
+objects, and a list of join keys corresponding to each
+<code>data.frame</code> object.</p>
 <div class="section level4">
 <h4 id="app-code">App code<a class="anchor" aria-label="anchor" href="#app-code"></a>
 </h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.transform/">teal.transform</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: magrittr</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.widgets/" class="external-link">teal.widgets</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.data/" class="external-link">teal.data</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: teal.code</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">adsl_extract</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span>
+<span><span class="va">adsl_extract</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span>
 <span>  dataname <span class="op">=</span> <span class="st">"ADSL"</span>,</span>
 <span>  select <span class="op">=</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
 <span>    label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span>
@@ -151,7 +146,7 @@ every <code>data.frame</code> object.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">adtte_extract</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span>
+<span><span class="va">adtte_extract</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span>
 <span>  dataname <span class="op">=</span> <span class="st">"ADTTE"</span>,</span>
 <span>  select <span class="op">=</span> <span class="fu"><a href="../reference/select_spec.html">select_spec</a></span><span class="op">(</span></span>
 <span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"ASEQ"</span><span class="op">)</span>,</span>
@@ -165,18 +160,18 @@ every <code>data.frame</code> object.</p>
 <span></span>
 <span><span class="va">merge_ui</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span>, <span class="va">data_extracts</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">ns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/NS.html" class="external-link">NS</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
-<span>  <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span>
-<span>    output <span class="op">=</span> <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/white_small_well.html" class="external-link">white_small_well</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span>
+<span>    output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/white_small_well.html" class="external-link">white_small_well</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="fu">ns</span><span class="op">(</span><span class="st">"expr"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">dataTableOutput</a></span><span class="op">(</span><span class="fu">ns</span><span class="op">(</span><span class="st">"data"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html" class="external-link">div</a></span><span class="op">(</span></span>
-<span>      <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span>
 <span>        <span class="fu">ns</span><span class="op">(</span><span class="st">"adsl_extract"</span><span class="op">)</span>, <span class="co"># must correspond with data_extracts list names</span></span>
 <span>        label <span class="op">=</span> <span class="st">"ADSL extract"</span>,</span>
 <span>        <span class="va">data_extracts</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="../reference/data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span>
 <span>        <span class="fu">ns</span><span class="op">(</span><span class="st">"adtte_extract"</span><span class="op">)</span>, <span class="co"># must correspond with data_extracts list names</span></span>
 <span>        label <span class="op">=</span> <span class="st">"ADTTE extract"</span>,</span>
 <span>        <span class="va">data_extracts</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
@@ -187,15 +182,16 @@ every <code>data.frame</code> object.</p>
 <span></span>
 <span><span class="va">merge_module</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span>, <span class="va">datasets</span>, <span class="va">data_extracts</span>, <span class="va">join_keys</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">moduleServer</a></span><span class="op">(</span><span class="va">id</span>, <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_expression_module.html">merge_expression_module</a></span><span class="op">(</span></span>
+<span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_expression_module.html">merge_expression_module</a></span><span class="op">(</span></span>
 <span>      data_extract <span class="op">=</span> <span class="va">data_extracts</span>,</span>
 <span>      datasets <span class="op">=</span> <span class="va">datasets</span>,</span>
 <span>      join_keys <span class="op">=</span> <span class="va">join_keys</span>,</span>
 <span>      merge_function <span class="op">=</span> <span class="st">"dplyr::left_join"</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span>    <span class="va">ANL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span> <span class="co"># nolint</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list2env.html" class="external-link">list2env</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">as.expression</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">ANL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>      <span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">ds</span><span class="op">)</span> <span class="fu">ds</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list2env.html" class="external-link">list2env</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">as.expression</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderText</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">ANL</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -203,17 +199,20 @@ every <code>data.frame</code> object.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Define data.frame objects</span></span>
-<span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADSL.html">rADSL</a></span> <span class="co"># nolint</span></span>
-<span><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADTTE.html">rADTTE</a></span> <span class="co"># nolint</span></span>
+<span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADSL.html">rADSL</a></span></span>
+<span><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADTTE.html">rADTTE</a></span></span>
 <span></span>
-<span><span class="co"># create a list of data.frame objects</span></span>
-<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="va">ADSL</span>, ADTTE <span class="op">=</span> <span class="va">ADTTE</span><span class="op">)</span></span>
+<span><span class="co"># create a list of reactive data.frame objects</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span>,</span>
+<span>  ADTTE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADTTE</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create  join_keys</span></span>
-<span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span></span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADTTE"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADTTE"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -235,19 +234,18 @@ every <code>data.frame</code> object.</p>
 </h3>
 <p>In the scenario above, if the user deselects the <code>ADTTE</code>
 variable, the merging between <code>ADTTE</code> and <code>ADSL</code>
-would still take place even though <code>ADTTE</code> is not used or
-needed here. Here, the developer might update the
-<code>selector_list</code> input in a reactive manner so that it gets
-updated based on conditions set by the developer. Below, we reuse the
-input from above and we update the <code>app</code> server so that the
-<code>adtte_extract</code> is removed from the
-<code>selector_list</code> input when no <code>ADTTE</code> variable is
-selected and the <code>reactive_selector_list</code> is passed to
+would still occur, even though <code>ADTTE</code> is not used or needed.
+Here, the developer might update the <code>selector_list</code> input in
+a reactive manner so that it gets updated based on conditions set by the
+developer. Below, we reuse the input from above and update the app
+server so that the <code>adtte_extract</code> is removed from the
+selector_list input when no <code>ADTTE</code> variable is selected. The
+<code>reactive_selector_list</code> is then passed to
 <code>merge_expression_srv</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">merge_module</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span>, <span class="va">datasets</span>, <span class="va">data_extracts</span>, <span class="va">join_keys</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">moduleServer</a></span><span class="op">(</span><span class="va">id</span>, <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">selector_list</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/data_extract_multiple_srv.html">data_extract_multiple_srv</a></span><span class="op">(</span><span class="va">data_extracts</span>, <span class="va">datasets</span>, <span class="va">join_keys</span><span class="op">)</span></span>
+<span>    <span class="va">selector_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_extract_multiple_srv.html">data_extract_multiple_srv</a></span><span class="op">(</span><span class="va">data_extracts</span>, <span class="va">datasets</span>, <span class="va">join_keys</span><span class="op">)</span></span>
 <span>    <span class="va">reactive_selector_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="fu">selector_list</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">adtte_extract</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">selector_list</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">adtte_extract</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">select</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>        <span class="fu">selector_list</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">selector_list</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"adtte_extract"</span><span class="op">]</span></span>
@@ -256,15 +254,16 @@ selected and the <code>reactive_selector_list</code> is passed to
 <span>      <span class="op">}</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_expression_srv.html">merge_expression_srv</a></span><span class="op">(</span></span>
+<span>    <span class="va">merged_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_expression_srv.html">merge_expression_srv</a></span><span class="op">(</span></span>
 <span>      selector_list <span class="op">=</span> <span class="va">reactive_selector_list</span>,</span>
 <span>      datasets <span class="op">=</span> <span class="va">datasets</span>,</span>
 <span>      join_keys <span class="op">=</span> <span class="va">join_keys</span>,</span>
 <span>      merge_function <span class="op">=</span> <span class="st">"dplyr::left_join"</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span>    <span class="va">ANL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span> <span class="co"># nolint</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list2env.html" class="external-link">list2env</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">as.expression</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">ANL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>      <span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">ds</span><span class="op">)</span> <span class="fu">ds</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span>envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list2env.html" class="external-link">list2env</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span>, expr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">as.expression</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderText</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu">merged_data</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">expr</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable</a></span><span class="op">(</span><span class="fu">ANL</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -284,17 +283,17 @@ selected and the <code>reactive_selector_list</code> is passed to
 parts:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>selector_list</code>: output of
-<code>data_extract_multiple_srv</code> which loops over the list of
-data_extract given and runs <code>data_extract_srv</code> for each one
-returning a list of reactive objects.</li>
+<code>selector_list</code>: the output of
+<code>data_extract_multiple_srv</code>, which loops over the list of
+<code>data_extract</code> given and runs <code>data_extract_srv</code>
+for each one, returning a list of reactive objects.</li>
 <li>
-<code>reactive_selector_list</code>: intermediate reactive list
-updating <code>selector_list</code> content</li>
+<code>reactive_selector_list</code>: an intermediate reactive list
+updating <code>selector_list</code> content.</li>
 <li>
-<code>merged_data</code>: output of
+<code>merged_data</code>: the output of
 <code>merge_expression_srv</code> using
-<code>reactive_selector_list</code> as input</li>
+<code>reactive_selector_list</code> as input.</li>
 </ol>
 </div>
 </div>
@@ -306,27 +305,27 @@ updating <code>selector_list</code> content</li>
 contains a list of the following elements:</p>
 <ul>
 <li>
-<code>expr</code>: code needed to replicate merged dataset</li>
+<code>expr</code>: code needed to replicate merged dataset.</li>
 <li>
 <code>columns_source</code>: list of columns selected per
-selector</li>
+selector.</li>
 <li>
-<code>keys</code>: the keys of the merged dataset</li>
+<code>keys</code>: the keys of the merged dataset.</li>
 <li>
-<code>filter_info</code>: filters that are applied on the data</li>
+<code>filter_info</code>: filters that are applied on the data.</li>
 </ul>
 <p>These elements can be further used inside the server to retrieve and
-use information about the selections, data, filters, …</p>
+use information about the selections, data, filters, etc.</p>
 </div>
 <div class="section level2">
 <h2 id="merging-of-non-cdisc-datasets">Merging of non <code>CDISC</code> datasets<a class="anchor" aria-label="anchor" href="#merging-of-non-cdisc-datasets"></a>
 </h2>
-<p>General datasets do not share the same relationships as
-<code>CDISC</code> datasets thus these relationships must be specified
-by the <code>join_keys</code> functions. For more information, please
+<p>General datasets do not have the same relationships as
+<code>CDISC</code> datasets, so these relationships must be specified
+using the <code>join_keys</code> functions. For more information, please
 refer to the <code>Join Keys</code> <a href="https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys" class="external-link">vignette</a>.
-The data merge module respects the relationships given by the user and
-in the case of multiple datasets to merge, the order is specified by the
+The data merge module respects the relationships given by the user. In
+the case of multiple datasets to merge, the order is specified by the
 order of elements in the <code>data_extract</code> argument of the
 <code>merge_expression_module</code> function. Merging groups of
 datasets with complex relationships can quickly become challenging to

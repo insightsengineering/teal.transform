@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -90,35 +80,40 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>selector_list</dt>
-<dd><p>(<code>reactive</code>)<br>
-output from <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> or a reactive named list of outputs from <code><a href="data_extract_srv.html">data_extract_srv()</a></code>.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+<dd><p>(<code>reactive</code>)
+output from <code><a href="data_extract_multiple_srv.html">data_extract_multiple_srv()</a></code> or a reactive named list of
+outputs from <code><a href="data_extract_srv.html">data_extract_srv()</a></code>.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 <code><a href="data_extract_ui.html">data_extract_ui()</a></code>.</p></dd>
 
 
 <dt>idx</dt>
-<dd><p>optional (<code>integer</code>) current selector index in all selectors list</p></dd>
+<dd><p>optional (<code>integer</code>) current selector index in all selectors list.</p></dd>
 
 
 <dt>join_keys</dt>
-<dd><p>(<code>join_keys</code>) nested list of keys used for joining</p></dd>
+<dd><p>(<code>join_keys</code>) nested list of keys used for joining.</p></dd>
 
 
 <dt>dplyr_call_data</dt>
 <dd><p>(<code>list</code>) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging</p></dd>
+selections, reshapes etc. All necessary data for merging.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>(<code>list</code>) list of multiple <code>dplyr</code> calls that reshape data</p>
+<p>List of multiple <code>dplyr</code> calls that reshape data.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">filters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># use non-exported function from teal.transform</span></span></span>
+<span class="r-in"><span><span class="va">get_reshape_call</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"get_reshape_call"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PARAMCD"</span>, <span class="st">"AVISIT"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  selected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALT"</span>, <span class="st">"SCREENING"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ALT"</span>, <span class="st">"BASELINE"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -139,7 +134,7 @@ selections, reshapes etc. All necessary data for merging</p></dd>
 <span class="r-in"><span>    internal_id <span class="op">=</span> <span class="st">"test"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">teal.transform</span><span class="fu">:::</span><span class="fu">get_reshape_call</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_reshape_call</span><span class="op">(</span><span class="va">x</span>, <span class="fl">1L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tidyr::pivot_longer(cols = "AVAL", names_to = "MEASURE", values_to = "VALUE")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

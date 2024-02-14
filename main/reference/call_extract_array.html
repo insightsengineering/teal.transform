@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -85,48 +75,49 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dataname</dt>
-<dd><p>(<code>character(1)</code> or <code>name</code>)<br></p></dd>
+<dd><p>(<code>character(1)</code> or <code>name</code>).</p></dd>
 
 
 <dt>row</dt>
-<dd><p>(<code>name</code>, <code>call</code>, <code>logical</code>, <code>integer</code>, <code>character</code>)<br>
-optional, name of the <code>row</code> or condition</p></dd>
+<dd><p>(optional <code>name</code> or <code>call</code> or <code>logical</code> or <code>integer</code> or <code>character</code>)
+name of the <code>row</code> or condition.</p></dd>
 
 
 <dt>column</dt>
-<dd><p>(<code>name</code>, <code>call</code>, <code>logical</code>, <code>integer</code>, <code>character</code>)<br>
-optional, name of the <code>column</code> or condition</p></dd>
+<dd><p>(optional <code>name</code> or <code>call</code> or <code>logical</code>, <code>integer</code> or <code>character</code>)
+name of the <code>column</code> or condition.</p></dd>
 
 
 <dt>aisle</dt>
-<dd><p>(<code>name</code>, <code>call</code>, <code>logical</code>, <code>integer</code>, <code>character</code>)<br>
-optional, name of the <code>row</code> or condition</p></dd>
+<dd><p>(optional <code>name</code> or <code>call</code> or <code>logical</code> or <code>integer</code> or <code>character</code>)
+name of the <code>row</code> or condition.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>[</code> call with all conditions included</p>
-
-
-<p>specific <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">Extract</a></code></p>
+<p><code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">Extract()</a></code></p>
 <p></p>
-<p><code>call</code> for 3-dimensional array</p>
+<p><code>call</code> for 3-dimensional array in <code>x[i, j, k]</code> notation.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">teal.transform</span><span class="fu">:::</span><span class="fu">call_extract_array</span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># use non-exported function from teal.transform</span></span></span>
+<span class="r-in"><span><span class="va">call_extract_array</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"call_extract_array"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">call_condition_choice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"call_condition_choice"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">call_extract_array</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  dataname <span class="op">=</span> <span class="st">"my_array"</span>,</span></span>
-<span class="r-in"><span>  row <span class="op">=</span> <span class="fu">teal.transform</span><span class="fu">:::</span><span class="fu"><a href="call_condition_choice.html">call_condition_choice</a></span><span class="op">(</span><span class="st">"my_array$SEX"</span>, <span class="st">"M"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  row <span class="op">=</span> <span class="fu"><a href="call_condition_choice.html">call_condition_choice</a></span><span class="op">(</span><span class="st">"my_array$SEX"</span>, <span class="st">"M"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"c"</span>, <span class="st">"SEX"</span>, <span class="st">"AGE"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  aisle <span class="op">=</span> <span class="st">"RNAseq_rnaaccess"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> my_array[my_array$SEX == "M", c("SEX", "AGE"), "RNAseq_rnaaccess"]</span>
-<span class="r-in"><span><span class="fu">teal.transform</span><span class="fu">:::</span><span class="fu">call_extract_array</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">call_extract_array</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"mae_object"</span>,</span></span>
-<span class="r-in"><span>  column <span class="op">=</span> <span class="fu">teal.transform</span><span class="fu">:::</span><span class="fu"><a href="call_condition_choice.html">call_condition_choice</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"M"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  column <span class="op">=</span> <span class="fu"><a href="call_condition_choice.html">call_condition_choice</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"M"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mae_object[, SEX == "M", ]</span>
 </code></pre></div>

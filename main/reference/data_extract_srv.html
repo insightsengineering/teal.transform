@@ -12,7 +12,7 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,16 +37,6 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -76,8 +66,8 @@ Extracting details of the selection(s) in data_extract_ui elements."><!-- mathja
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a>
-Extracting details of the selection(s) in <a href="data_extract_ui.html">data_extract_ui</a> elements.</p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
+<p>Extracting details of the selection(s) in <a href="data_extract_ui.html">data_extract_ui</a> elements.</p>
     </div>
 
     <div class="section level2">
@@ -114,33 +104,33 @@ UI function.</p></dd>
 
 
 <dt>datasets</dt>
-<dd><p>(<code>FilteredData</code> or <code>list</code> of <code>reactive</code> or non-<code>reactive</code> <code>data.frame</code>)<br>
+<dd><p>(<code>FilteredData</code> or <code>list</code> of <code>reactive</code> or non-<code>reactive</code> <code>data.frame</code>)
 object containing data either in the form of <code>FilteredData</code> or as a list of <code>data.frame</code>.
 When passing a list of non-reactive <code>data.frame</code> objects, they are converted to reactive <code>data.frame</code>s internally.
 When passing a list of reactive or non-reactive <code>data.frame</code> objects, the argument <code>join_keys</code> is required also.</p></dd>
 
 
 <dt>data_extract_spec</dt>
-<dd><p>(<code>data_extract_spec</code> or a list of <code>data_extract_spec</code>)<br>
+<dd><p>(<code>data_extract_spec</code> or a list of <code>data_extract_spec</code>)
 A list of data filter and select information constructed by <a href="data_extract_spec.html">data_extract_spec</a>.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>an additional argument <code>join_keys</code> is required when <code>datasets</code> is a list of <code>data.frame</code>.
+<dd><p>An additional argument <code>join_keys</code> is required when <code>datasets</code> is a list of <code>data.frame</code>.
 It shall contain the keys per dataset in <code>datasets</code>.</p></dd>
 
 
 <dt>join_keys</dt>
-<dd><p>(<code>join_keys</code> or <code>NULL</code>) of keys per dataset in <code>datasets</code></p></dd>
+<dd><p>(<code>join_keys</code> or <code>NULL</code>) of keys per dataset in <code>datasets</code>.</p></dd>
 
 
 <dt>select_validation_rule</dt>
 <dd><p>(<code>NULL</code> or <code>function</code>)
-Should there be any <code>shinyvalidate</code> input validation of the select parts of the <code>data_extract_ui</code>.
-You can use a validation function directly (i.e. <code>select_validation_rule = shinyvalidate::sv_required()</code>)
-or for more fine-grained control use a function:
-<code>select_validation_rule = ~ if (length(.) &gt; 2) "Error"</code>.
-If <code>NULL</code> then no validation will be added. See example for more details.</p></dd>
+Should there be any <code>shinyvalidate</code> input validation of the select parts of the <code>data_extract_ui</code>.</p>
+<p>You can use a validation function directly (i.e. <code>select_validation_rule = shinyvalidate::sv_required()</code>)
+or for more fine-grained control use a function:</p>
+<p><code>select_validation_rule = ~ if (length(.) &gt; 2) "Error"</code>.</p>
+<p>If <code>NULL</code> then no validation will be added. See example for more details.</p></dd>
 
 
 <dt>filter_validation_rule</dt>
@@ -157,17 +147,14 @@ If <code>NULL</code> then no validation will be added. See example for more deta
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A reactive <code>list</code> containing following fields:</p>
-
-
-<ul><li><p><code>filters</code>: A list with the information on the filters that are applied to the data set.</p></li>
+<p>A reactive <code>list</code> containing following fields:</p><ul><li><p><code>filters</code>: A list with the information on the filters that are applied to the data set.</p></li>
 <li><p><code>select</code>: The variables that are selected from the dataset.</p></li>
 <li><p><code>always_selected</code>: The column names from the data set that should always be selected.</p></li>
 <li><p><code>reshape</code>: Whether reshape long to wide should be applied or not.</p></li>
 <li><p><code>dataname</code>: The name of the data set.</p></li>
 <li><p><code>internal_id</code>: The <code>id</code> of the corresponding shiny input element.</p></li>
 <li><p><code>keys</code>: The names of the columns that can be used to merge the data set.</p></li>
-<li><p><code>iv</code>:A <code><a href="https://rstudio.github.io/shinyvalidate/reference/InputValidator.html" class="external-link">shinyvalidate::InputValidator</a></code> containing <code>validator</code> for this <code>data_extract</code></p></li>
+<li><p><code>iv</code>: A <code><a href="https://rstudio.github.io/shinyvalidate/reference/InputValidator.html" class="external-link">shinyvalidate::InputValidator</a></code> containing <code>validator</code> for this <code>data_extract</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -176,10 +163,12 @@ If <code>NULL</code> then no validation will be added. See example for more deta
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/shinyvalidate/" class="external-link">shinyvalidate</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.data/" class="external-link">teal.data</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.widgets/" class="external-link">teal.widgets</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Sample ADSL dataset</span></span></span>
 <span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  STUDYID <span class="op">=</span> <span class="st">"A"</span>,</span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,</span></span>
@@ -188,6 +177,7 @@ If <code>NULL</code> then no validation will be added. See example for more deta
 <span class="r-in"><span>  BMRKR1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specification for data extraction</span></span></span>
 <span class="r-in"><span><span class="va">adsl_extract</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  dataname <span class="op">=</span> <span class="st">"ADSL"</span>,</span></span>
 <span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="filter_spec.html">filter_spec</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"SEX"</span>, choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F"</span>, <span class="st">"M"</span><span class="op">)</span>, selected <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span>,</span></span>
@@ -203,77 +193,78 @@ If <code>NULL</code> then no validation will be added. See example for more deta
 <span class="r-in"><span><span class="co"># Using reactive list of data.frames</span></span></span>
 <span class="r-in"><span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span><span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  ui <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"out1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>          id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
-<span class="r-in"><span>          label <span class="op">=</span> <span class="st">"ADSL selection"</span>,</span></span>
-<span class="r-in"><span>          data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
-<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># App: data extraction with validation</span></span></span>
+<span class="r-in"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"out1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
+<span class="r-in"><span>        label <span class="op">=</span> <span class="st">"ADSL selection"</span>,</span></span>
+<span class="r-in"><span>        data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
 <span class="r-in"><span>      <span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">adsl_reactive_input</span> <span class="op">&lt;-</span> <span class="fu">data_extract_srv</span><span class="op">(</span></span></span>
-<span class="r-in"><span>      id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
-<span class="r-in"><span>      datasets <span class="op">=</span> <span class="va">data_list</span>,</span></span>
-<span class="r-in"><span>      data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span>,</span></span>
-<span class="r-in"><span>      join_keys <span class="op">=</span> <span class="va">join_keys</span>,</span></span>
-<span class="r-in"><span>      select_validation_rule <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/shinyvalidate/reference/sv_required.html" class="external-link">sv_required</a></span><span class="op">(</span><span class="st">"Please select a variable."</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">iv_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span>      <span class="va">iv</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rstudio.github.io/shinyvalidate/reference/InputValidator.html" class="external-link">InputValidator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="va">iv</span><span class="op">$</span><span class="fu">add_validator</span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">iv</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="va">iv</span><span class="op">$</span><span class="fu">enable</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="va">iv</span></span></span>
-<span class="r-in"><span>    <span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span>      <span class="kw">if</span> <span class="op">(</span><span class="fu">iv_r</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">is_valid</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="format_data_extract.html">format_data_extract</a></span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>        <span class="st">"Please fix errors in your selection"</span></span></span>
-<span class="r-in"><span>      <span class="op">}</span></span></span>
-<span class="r-in"><span>    <span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">$</span><span class="va">ui</span>, <span class="va">app</span><span class="op">$</span><span class="va">server</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">adsl_reactive_input</span> <span class="op">&lt;-</span> <span class="fu">data_extract_srv</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
+<span class="r-in"><span>    datasets <span class="op">=</span> <span class="va">data_list</span>,</span></span>
+<span class="r-in"><span>    data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span>,</span></span>
+<span class="r-in"><span>    join_keys <span class="op">=</span> <span class="va">join_keys</span>,</span></span>
+<span class="r-in"><span>    select_validation_rule <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/shinyvalidate/reference/sv_required.html" class="external-link">sv_required</a></span><span class="op">(</span><span class="st">"Please select a variable."</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">iv_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">iv</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rstudio.github.io/shinyvalidate/reference/InputValidator.html" class="external-link">InputValidator</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">iv</span><span class="op">$</span><span class="fu">add_validator</span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">iv</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">iv</span><span class="op">$</span><span class="fu">enable</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">iv</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">output</span><span class="op">$</span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu">iv_r</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">is_valid</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="format_data_extract.html">format_data_extract</a></span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="st">"Please fix errors in your selection"</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  ui <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"out1"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>        <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>          id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
-<span class="r-in"><span>          label <span class="op">=</span> <span class="st">"ADSL selection"</span>,</span></span>
-<span class="r-in"><span>          data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
-<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># App: simplified data extraction</span></span></span>
+<span class="r-in"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"out1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    encoding <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
+<span class="r-in"><span>        label <span class="op">=</span> <span class="st">"ADSL selection"</span>,</span></span>
+<span class="r-in"><span>        data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
 <span class="r-in"><span>      <span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">adsl_reactive_input</span> <span class="op">&lt;-</span> <span class="fu">data_extract_srv</span><span class="op">(</span></span></span>
-<span class="r-in"><span>      id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
-<span class="r-in"><span>      datasets <span class="op">=</span> <span class="va">datasets</span>,</span></span>
-<span class="r-in"><span>      data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">output</span><span class="op">$</span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">$</span><span class="va">ui</span>, <span class="va">app</span><span class="op">$</span><span class="va">server</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">adsl_reactive_input</span> <span class="op">&lt;-</span> <span class="fu">data_extract_srv</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"adsl_var"</span>,</span></span>
+<span class="r-in"><span>    datasets <span class="op">=</span> <span class="va">data_list</span>,</span></span>
+<span class="r-in"><span>    data_extract_spec <span class="op">=</span> <span class="va">adsl_extract</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">output</span><span class="op">$</span><span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="fu">adsl_reactive_input</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

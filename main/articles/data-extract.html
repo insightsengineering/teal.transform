@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,16 +53,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -105,46 +95,48 @@ CoreDev</h4>
 
     
     
-<p>There are times when an app developer wants to showcase more than
-just one fixed slice of their dataset in their custom module.
-Relinquishing control of the application to a user demands the developer
-gives their users a degree of freedom. In case of analyzing data,
-<code>teal</code> allows app developers to open up their applications to
-users, letting them decide exactly what app data to analyze in the
-module.</p>
-<p>A lot of <code>teal</code> modules use <code>data_extract_spec</code>
-objects and modules to tackle user input. You can find many examples in
-e.g. <code>teal.modules.general</code> and
+<p>There are times when an app developer wants to offer users more
+flexibility in analyzing data within their custom module. In such cases,
+relinquishing control of the application to users requires developers to
+provide a degree of freedom. With <code>teal</code>, app developers can
+open up their applications to users, allowing them to decide exactly
+which app data to analyze within the module.</p>
+<p>Many <code>teal</code> modules leverage
+<code>data_extract_spec</code> objects and modules to handle user input.
+Examples can be found in <code>teal.modules.general</code> and
 <code>teal.modules.clinical</code>.</p>
 <div class="section level3">
 <h3 id="data_extract_spec">
 <code>data_extract_spec</code><a class="anchor" aria-label="anchor" href="#data_extract_spec"></a>
 </h3>
-<p><code>data_extract_spec</code>’s task is two-fold: create a UI
-component in a <code>shiny</code> application and pass the user input
-from the UI to the module itself. Having that formulated, let’s have a
-look at how it supports both its responsibilities.</p>
+<p>The role of <code>data_extract_spec</code> is twofold: to create a UI
+component in a <code>shiny</code> application and to pass user input
+from the UI to the module itself. Let’s delve into how it fulfills both
+of these responsibilities.</p>
 <div class="section level4">
 <h4 id="example-module">Example module<a class="anchor" aria-label="anchor" href="#example-module"></a>
 </h4>
-<p>In order to showcase different initialization options of
-<code>data_extract_spec</code>, first we define a <code>shiny</code>
-module which uses <code>data_extract_ui</code> and
-<code>data_extract_srv</code> designed to handle
-<code>data_extract_spec</code> objects. The module creates a UI
-component for a single <code>data_extract_spec</code> and prints a list
-of values returned from <code>data_extract_srv</code> module. Please see
-package documentation for more information about
-<code>data_extract_ui</code> and <code>data_extract_srv</code>.</p>
+<p>To demonstrate different initialization options of
+<code>data_extract_spec</code>, let’s first define a <code>shiny</code>
+module that utilizes <code>data_extract_ui</code> and
+<code>data_extract_srv</code> to handle <code>data_extract_spec</code>
+objects. This module creates a UI component for a single
+<code>data_extract_spec</code> and prints a list of values returned from
+the <code>data_extract_srv</code> module. For more information about
+<code>data_extract_ui</code> and <code>data_extract_srv</code>, please
+refer to the package documentation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.transform/">teal.transform</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: magrittr</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.widgets/" class="external-link">teal.widgets</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/teal.data/" class="external-link">teal.data</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: teal.code</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">extract_ui</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">id</span>, <span class="va">data_extract</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">ns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/NS.html" class="external-link">NS</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
-<span>  <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span>
-<span>    output <span class="op">=</span> <span class="fu">teal.widgets</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/white_small_well.html" class="external-link">white_small_well</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="fu">ns</span><span class="op">(</span><span class="st">"output"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/standard_layout.html" class="external-link">standard_layout</a></span><span class="op">(</span></span>
+<span>    output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/teal.widgets/man/white_small_well.html" class="external-link">white_small_well</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html" class="external-link">verbatimTextOutput</a></span><span class="op">(</span><span class="fu">ns</span><span class="op">(</span><span class="st">"output"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    encoding <span class="op">=</span> <span class="fu"><a href="../reference/data_extract_ui.html">data_extract_ui</a></span><span class="op">(</span><span class="fu">ns</span><span class="op">(</span><span class="st">"data_extract"</span><span class="op">)</span>, label <span class="op">=</span> <span class="st">"variable"</span>, <span class="va">data_extract</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -164,30 +156,33 @@ package documentation for more information about
 <div class="section level4">
 <h4 id="example-data">Example data<a class="anchor" aria-label="anchor" href="#example-data"></a>
 </h4>
-<p><code>data_extract_srv</code> module depends on either a list of
-reactive or non-reactive <code>data.frame</code> objects. Here, we show
-the usage of a list of <code>data.frame</code> objects as input to
-<code>datasets</code> where a list of necessary join keys per
-<code>data.frame</code> object is required:</p>
+<p>The <code>data_extract_srv</code> module depends on a list of
+reactive or non-reactive <code>data.frame</code> objects. Here, we
+demonstrate the usage of a list of reactive <code>data.frame</code>
+objects as input to <code>datasets</code>, along with a list of
+necessary join keys per <code>data.frame</code> object:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define data.frame objects</span></span>
-<span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADSL.html">rADSL</a></span> <span class="co"># nolint</span></span>
-<span><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADTTE.html">rADTTE</a></span> <span class="co"># nolint</span></span>
+<span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADSL.html">rADSL</a></span></span>
+<span><span class="va">ADTTE</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="../reference/rADTTE.html">rADTTE</a></span></span>
 <span></span>
-<span><span class="co"># create a list of data.frame objects</span></span>
-<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="va">ADSL</span>, ADTTE <span class="op">=</span> <span class="va">ADTTE</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co"># create a list of reactive data.frame objects</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span>,</span>
+<span>  ADTTE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADTTE</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># create join_keys</span></span>
-<span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span></span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu">teal.data</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADTTE"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">join_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html" class="external-link">join_keys</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/teal.data/latest-tag/reference/join_key.html" class="external-link">join_key</a></span><span class="op">(</span><span class="st">"ADTTE"</span>, <span class="st">"ADTTE"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span>, <span class="st">"PARAMCD"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Consider the following example, where we create two UI elements, one
 to filter on a specific level from <code>SEX</code> variable, and a
 second one to select a variable from <code>c("BMRKR1", "AGE")</code>.
-<code>data_extract_spec</code> object is handed over to the shiny app
-and gives instructions to generate UI components.</p>
+<code>data_extract_spec</code> object is handed over to the
+<code>shiny</code> app and gives instructions to generate UI
+components.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simple_des</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span>
 <span>  dataname <span class="op">=</span> <span class="st">"ADSL"</span>,</span>
@@ -198,8 +193,8 @@ and gives instructions to generate UI components.</p>
 <div class="section level4">
 <h4 id="shiny-app">Shiny app<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h4>
-<p>Finally, we pass <code>extract_ui</code> to the <code>ui</code> of
-the <code>shinyApp</code> and we use <code>extract_srv</code> in the
+<p>Finally, we include <code>extract_ui</code> in the UI of the
+<code>shinyApp</code>, and utilize <code>extract_srv</code> in the
 server function of the <code>shinyApp</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span>
