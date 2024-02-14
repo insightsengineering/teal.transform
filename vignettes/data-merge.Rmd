@@ -138,7 +138,7 @@ shinyApp(
 ### `data_extract_multiple_srv` + `merge_expression_srv`
 
 In the scenario above, if the user deselects the `ADTTE` variable, the merging between `ADTTE` and `ADSL` would still occur, even though `ADTTE` is not used or needed.
-Here, the developer might update the `selector_list` input reactively so that it gets updated based on conditions set by the developer. 
+Here, the developer might update the `selector_list` input in a reactive manner so that it gets updated based on conditions set by the developer. 
 Below, we reuse the input from above and update the app server so that the `adtte_extract` is removed from the selector_list input when no `ADTTE` variable is selected.
 The `reactive_selector_list` is then passed to `merge_expression_srv`:
 
