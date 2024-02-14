@@ -360,8 +360,8 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
         }
 
         data_used <- datasets[[attr(selector, "dataname")]]
-        labels <- teal.data::col_labels(data_used(), fill = FALSE)
-        column_labels <- labels[intersect(colnames(data_used()), column_names)]
+        labels <- teal.data::col_labels(data_used, fill = FALSE)
+        column_labels <- labels[intersect(colnames(data_used), column_names)]
 
         # NULL for no labels at all, character(0) for no labels for a given columns
         return(

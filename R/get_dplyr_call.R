@@ -286,7 +286,7 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
       "{ paste(sapply(filter, function(x) x$columns), collapse = ', ') } filters."
     )
   )
-  checkmate::assert_list(datasets, types = "reactive", names = "named", null.ok = TRUE)
+  checkmate::assert_list(datasets, types = c("data.frame"), min.len = 1, names = "named")
   if (is.null(filter)) {
     return(NULL)
   }
@@ -303,7 +303,7 @@ get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
     }
 
     keys <- filter$columns
-    datas_vars <- if (!is.null(datasets)) datasets[[dataname]]() else NULL
+    datas_vars <- if (!is.null(datasets)) datasets[[dataname]] else NULL
 
     if (!is.null(datas_vars)) {
       u_variables <- unique(apply(datas_vars[, keys, drop = FALSE], 1, function(x) paste(x, collapse = "-")))
