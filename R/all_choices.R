@@ -1,7 +1,10 @@
+#' Bare constructor for `all_choices` object
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' An S3 structure representing the selection of all possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' @return `all_choices` object.
 #'
@@ -22,6 +25,7 @@
 #' choices_selected(choices = letters, selected = letters)
 #' choices_selected(choices = letters, selected = all_choices())
 #' @export
+#'
 all_choices <- function() {
   structure(list(), class = "all_choices")
 }
