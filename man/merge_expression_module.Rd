@@ -60,8 +60,7 @@ Reactive expression with output from \code{\link[=merge_expression_srv]{merge_ex
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-}
-\details{
+
 This function is a convenient wrapper to combine \code{data_extract_multiple_srv()} and
 \code{merge_expression_srv()} when no additional processing is required.
 Compare the example below with that found in \code{\link[=merge_expression_srv]{merge_expression_srv()}}.

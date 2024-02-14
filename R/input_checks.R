@@ -29,7 +29,7 @@ list_extract_spec <- function(x, allow_null = FALSE) {
 #'
 #' `r lifecycle::badge("stable")`
 #'
-#' Stops if condition not met
+#' Stops if condition not met.
 #'
 #' @param extract_input (`list` or `NULL`) a list of `data_extract_spec`
 #'

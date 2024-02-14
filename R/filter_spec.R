@@ -3,7 +3,7 @@
 #' @description
 #' `r lifecycle::badge("stable")`
 #'
-#' It consists in choices and additionally the variable names for the choices
+#' It consists in choices and additionally the variable names for the choices.
 #'
 #' @details
 #' The `filter_spec` is used inside `teal` apps to allow filtering datasets

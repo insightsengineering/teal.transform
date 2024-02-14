@@ -61,7 +61,7 @@ dataset keys, \code{TRUE} on default.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-It consists in choices and additionally the variable names for the choices
+It consists in choices and additionally the variable names for the choices.
 }
 \details{
 The \code{filter_spec} is used inside \code{teal} apps to allow filtering datasets

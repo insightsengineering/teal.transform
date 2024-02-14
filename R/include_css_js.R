@@ -2,8 +2,8 @@
 #'
 #' `system.file` should not be used to access files in other packages, it does
 #' not work with `devtools`.
-#' Therefore, we redefine this method in each package as needed.
-#' Thus, we do not export this method
+#' As a result, this method is individually redefined as required in each package.
+#' Therefore, this function is not exported.
 #'
 #' @param pattern (`character`) pattern of files to be included.
 #'

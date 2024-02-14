@@ -120,10 +120,12 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   )
 }
 
-#' Wrapper on [choices_labeled] to label variables basing on existing labels in data
+#' Variable label extraction and custom selection from data
 #'
+#' @description
 #' `r lifecycle::badge("stable")`
 #'
+#' Wrapper on [choices_labeled] to label variables basing on existing labels in data.
 #'
 #' @rdname variable_choices
 #'
@@ -240,9 +242,12 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
   }
 }
 
-#' Wrapper on [choices_labeled] to label variable values basing on other variable values
+#' Value labeling and filtering based on variable relationship
 #'
+#' @description
 #' `r lifecycle::badge("stable")`
+#'
+#' Wrapper on [choices_labeled] to label variable values basing on other variable values.
 #'
 #' @rdname value_choices
 #'
@@ -374,16 +379,10 @@ value_choices.data.frame <- function(data,
   res
 }
 
-#' Print choices_labeled object
-#'
-#' `r lifecycle::badge("stable")`
-#'
-#' @rdname choices_labeled
+#' @describeIn choices_labeled Print choices_labeled object
 #'
 #' @param x an object used to select a method.
 #' @param ... further arguments passed to or from other methods.
-#'
-#' @return `x`, invisibly.
 #'
 #' @export
 #'

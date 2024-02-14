@@ -129,8 +129,6 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     SIMPLIFY = FALSE
   )
 
-  selector_datanames <- unique(vapply(merged_selector_list, `[[`, character(1), "dataname"))
-
   dplyr_calls <- lapply(seq_along(merged_selector_list), function(idx) {
     dplyr_call <- get_dplyr_call(
       selector_list = merged_selector_list,

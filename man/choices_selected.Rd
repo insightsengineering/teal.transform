@@ -34,8 +34,8 @@ be on top of the drop-down field.}
 \item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
-\code{choices_selected} returns object of class \code{choices_selected} and of
-type list which contains the specified \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
+\code{choices_selected} list object, encapsulating the specified
+\code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
 
 \code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
@@ -46,7 +46,7 @@ Construct a single list containing available choices, the default selected value
 additional settings such as to order the choices with the selected elements appearing first
 or whether to block the user from making selections.
 
-Can be used in \code{ui} input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
+Can be used in UI input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
 }
 \details{
 Please note that the order of selected will always follow the order of choices. The \code{keep_order}

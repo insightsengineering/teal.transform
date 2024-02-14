@@ -4,7 +4,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' An S3 structure representing the selection of all possible choices in a
-#' `filter_spec`, `select_spec` or `choices_selected` object
+#' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
 #' @return `all_choices` object.
 #'

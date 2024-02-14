@@ -10,7 +10,7 @@ datanames_input(data_extracts)
 \item{data_extracts}{(\code{list}) of data extracts for single variable.}
 }
 \value{
-\code{\link[shiny:helpText]{shiny::helpText()}} object.
+\code{shiny.tag} defining help-text element that can be added to a UI element.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
