@@ -185,7 +185,6 @@ choices_selected <- function(choices,
 
 #' Check if an object is a choices_selected class
 #'
-#' `r lifecycle::badge("stable")`
 #'
 #' @rdname choices_selected
 #'
