@@ -28,7 +28,7 @@ It serves a dual purpose:
 ## Data Extraction and Data Merging
 
 The primary goal of `teal.transform` to to provide functions that help in abstracting the process of Data Extraction and Data Merging in UI elements of the shiny app.
-This helps in reducing the amount of code required to create a UI elements that directly transform the data required on which some analysis is performed.
+This helps in reducing the amount of code required to create a UI elements that directly transform the data to perform the required analysis. This is how the app user gains flexibility to transform their data right from the UI.
 
 To explore the combined use of data extraction and merging to see the full use of `teal.transform`, please explore the [Combining data-extract with data-merge](data-extract-merge.html) vignette.
 
