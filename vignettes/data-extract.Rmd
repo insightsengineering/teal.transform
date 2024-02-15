@@ -17,13 +17,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+_Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
+
 There are times when an app developer wants to offer users more flexibility in analyzing data within their custom module. 
-In such cases, relinquishing control of the application to users requires developers to provide a degree of freedom. 
+In these situations, the developers need to let the users control the application by giving the users some degree of freedom.
 With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
 analyze within the module.
 
-Many `teal` modules leverage `data_extract_spec` objects and modules to handle user input.
-Examples can be found in `teal.modules.general` and `teal.modules.clinical`.
+A `teal` module can leverage by using the `data_extract_spec` objects and to handle and process the user input.
+Examples can be found in the `teal.modules.clinical`.
 
 ### `data_extract_spec`
 
@@ -40,15 +42,20 @@ For more information about `data_extract_ui` and `data_extract_srv`, please refe
 
 ```{r}
 library(teal.transform)
-library(teal.widgets)
 library(teal.data)
 library(shiny)
 
 extract_ui <- function(id, data_extract) {
   ns <- NS(id)
-  standard_layout(
-    output = white_small_well(verbatimTextOutput(ns("output"))),
-    encoding = data_extract_ui(ns("data_extract"), label = "variable", data_extract)
+  sidebarLayout(
+    sidebarPanel(
+      h3("Encoding"),
+      data_extract_ui(ns("data_extract"), label = "variable", data_extract)
+    ),
+    mainPanel(
+      h3("Output"),
+      verbatimTextOutput(ns("output"))
+    )
   )
 }
 

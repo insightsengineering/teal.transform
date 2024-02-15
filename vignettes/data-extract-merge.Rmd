@@ -17,20 +17,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-`teal.transform` provides `merge_expression_srv`, which converts `data_extract_srv` into `R` expressions to transform data 
-for analytical purposes. 
-For example, you may wish to select `AGE` from `ADSL` and select `AVAL` from `ADTTE`, filtered for rows where `PARAMCD` is `OS`, and then merge the results using the primary keys to create an analysis dataset `ANL`.
-This diagram illustrates the concept:
+_Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
 
-```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics("./images/data_extract_spec/basic_concept.png")
-```
+`teal.transform` provides functions that help in transforming the data based on the shiny app user's input from the UI.
+The UI inputs are translated into `R` expressions to transform the data for analytical purposes.
+This gives the app user flexibility to transform the data as per their requirements.
+
+For example, let's try to create an analysis dataset `ANL` by:
+
+1. Selecting the column `AGE` from `ADSL`
+2. Selecting the column `AVAL` and filtering the rows where `PARAMCD` is `OS` from `ADTTE`
+3. Merging the results from the above datasets using the primary keys.
+
+<img src="images/basic_concept.svg" alt="Basic Concept of teal.transform" style="width: 100%;" />
+
+
+Let's see how to achieve this dynamic `select`, `filter`, and `merge` operations in a shiny app using `teal.transform`.
+
+#### Step 1/5 - Creating the data extract
 
 In the following code block, we create a `data_extract_spec` object for each dataset, as illustrated above.
 
 ```{r}
 library(teal.transform)
-library(teal.widgets)
 library(teal.data)
 library(shiny)
 
@@ -63,34 +72,49 @@ adtte_extract <- data_extract_spec(
 data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
 ```
 
-#### Example module
+#### Step 2/5 - Creating the UI
 
-Here, we define the `merge_ui` and `merge_srv` functions, which will be used to create the UI and the server
-components of the `shiny` app, respectively.
+Here, we define the `merge_ui` function, which will be used to create the UI components for the `shiny` app.
+
+Note that we take in the list of `data_extract` objects as input, and make use of the `data_extract_ui` function to create our UI.
 
 ```{r}
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
-  standard_layout(
-    output = white_small_well(
+  sidebarLayout(
+    sidebarPanel(
+      h3("Encoding"),
+      div(
+        data_extract_ui(
+          ns("adsl_extract"), # must correspond with data_extracts list names
+          label = "ADSL extract",
+          data_extracts[[1]]
+        ),
+        data_extract_ui(
+          ns("adtte_extract"), # must correspond with data_extracts list names
+          label = "ADTTE extract",
+          data_extracts[[2]]
+        )
+      )
+    ),
+    mainPanel(
+      h3("Output"),
       verbatimTextOutput(ns("expr")),
       dataTableOutput(ns("data"))
-    ),
-    encoding = div(
-      data_extract_ui(
-        ns("adsl_extract"), # must correspond with data_extracts list names
-        label = "ADSL extract",
-        data_extracts[[1]]
-      ),
-      data_extract_ui(
-        ns("adtte_extract"), # must correspond with data_extracts list names
-        label = "ADTTE extract",
-        data_extracts[[2]]
-      )
     )
   )
 }
+```
 
+#### Step 3/5 - Creating the Server Logic
+
+Here, we define the `merge_srv` function, which will be used to create the server logic for the `shiny` app.
+
+This function gets the `datasets` as a list of reactive `data.frame`, the list of `data_extract` objects, and the `join_keys` object as input.
+We make use of the `merge_expression_srv` function to get a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
+We render this expression and evaluate it to get the final `ANL` dataset which is also rendered as a table in our UI.
+
+```{r}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
@@ -111,11 +135,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 }
 ```
 
-Output from `data_extract_srv` (`reactive`) should be passed to `merge_expression_srv` together with `datasets`
-(list of reactive `data.frame` objects) and `join_keys` object.
-`merge_expression_srv` returns a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
-
-#### Example data
+#### Step 4/5 - Preparing the Data
 
 The `data_extract_srv` module depends on a list of reactive or non-reactive `data.frame` objects. 
 Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`,
@@ -141,9 +161,9 @@ join_keys <- join_keys(
 )
 ```
 
-#### Shiny app
+#### Step 5/5 - Creating the Shiny App
 
-Finally, we include `merge_ui` and `merge_srv` to the UI and server component of the `shinyApp`, respectively,
+Finally, we include `merge_ui` and `merge_srv` in the UI and server components of the `shinyApp`, respectively,
 using the `data_extract`s defined in the first code block and the `datasets` object:
 
 ```{r eval=FALSE}
