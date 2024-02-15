@@ -6,3 +6,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom lifecycle badge
 NULL
+
+#' @export
+dplyr::`%>%`
