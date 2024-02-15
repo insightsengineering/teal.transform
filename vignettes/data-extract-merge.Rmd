@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-_Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
-
 `teal.transform` provides functions that help in transforming the data based on the shiny app user's input from the UI.
 The UI inputs are translated into `R` expressions to transform the data for analytical purposes.
 This gives the app user flexibility to transform the data as per their requirements.

@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-_Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
-
 The teal app developer has the capability to provide the level of data transformation options in the teal app.
 This vignette provides an overview of how this can be achieved.
 
@@ -35,7 +33,7 @@ Fundamentally a `data_extract_spec` object has information that would allow to d
 2. Filter the data  based on the user's selection.
 3. Reshape the data into long or wide format.
 
-To construct a `data_extract_spec` object use the `data_extract_spec` function and these helper functions: `select_spec`, `filter_spec`, `variable_choices`, and `value_choices`.
+To construct a `data_extract_spec` object use the `data_extract_spec()` function. These helper functions might come handy: `select_spec()`, `filter_spec()`, `variable_choices()`, and `value_choices()`.
 
 You can refer to this diagram to get a quick view of how to use these functions. For more detailed explaination please refer to the function documentation.
 

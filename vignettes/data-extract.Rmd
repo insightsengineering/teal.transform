@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-_Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
-
 There are times when an app developer wants to offer users more flexibility in analyzing data within their custom module. 
 With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
 analyze within the module.
