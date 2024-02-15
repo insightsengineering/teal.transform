@@ -19,16 +19,4 @@ range of the variable.}
 \description{
 Compose \code{numeric} range condition call from inputs.
 }
-\examples{
-# use non-exported function from teal.transform
-call_condition_range <- getFromNamespace("call_condition_range", "teal.transform")
-call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
-
-call_condition_range("AGE", range = c(1, 2))
-call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
-call_condition_range(
-  call_extract_list("ADSL", "AGE"),
-  range = c(-1.2, 2.1)
-)
-}
 \keyword{internal}
