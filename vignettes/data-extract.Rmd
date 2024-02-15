@@ -20,11 +20,10 @@ knitr::opts_chunk$set(
 _Note that `teal.transform` is about to undergo a refactor so the functions in this vignette are subject to change._
 
 There are times when an app developer wants to offer users more flexibility in analyzing data within their custom module. 
-In these situations, the developers need to let the users control the application by giving the users some degree of freedom.
 With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
 analyze within the module.
 
-A `teal` module can leverage by using the `data_extract_spec` objects and to handle and process the user input.
+A `teal` module can leverage using the `data_extract_spec` objects to handle and process the user input.
 Examples can be found in the `teal.modules.clinical` package.
 
 ### `data_extract_spec`
