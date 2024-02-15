@@ -22,7 +22,7 @@ With `teal`, app developers can open up their applications to users, allowing th
 analyze within the module.
 
 A `teal` module can leverage using the `data_extract_spec` objects to handle and process the user input.
-Examples can be found in the `teal.modules.clinical` package.
+Examples can be found in the [modules from the `teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/latest-tag/reference/index.html).
 
 ### `data_extract_spec`
 
