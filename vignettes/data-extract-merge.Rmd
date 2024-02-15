@@ -172,3 +172,5 @@ shinyApp(
   }
 )
 ```
+
+<img src="images/app-data-extract-merge.png" alt="Shiny app output for Data Extract and Merge" style="width: 100%;" />

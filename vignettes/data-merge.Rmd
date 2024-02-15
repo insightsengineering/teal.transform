@@ -148,6 +148,9 @@ shinyApp(
 )
 ```
 
+<img src="images/app-data-merge-1.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
+
+
 <hr>
 
 ### `data_extract_multiple_srv` + `merge_expression_srv`
@@ -198,6 +201,8 @@ shinyApp(
   }
 )
 ```
+
+<img src="images/app-data-merge-2.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
 
 `merge_expression_module` is replaced here with three parts:
 

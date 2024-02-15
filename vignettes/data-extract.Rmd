@@ -30,7 +30,7 @@ The role of `data_extract_spec` is twofold: to create a UI component in a `shiny
 from the UI to the module itself. 
 Let's delve into how it fulfills both of these responsibilities.
 
-#### Example module
+#### Step 1/4 - Creating the Shiny UI and Server Modules
 
 To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
 utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
@@ -70,7 +70,7 @@ extract_srv <- function(id, datasets, data_extract, join_keys) {
 ```
 
 
-#### Example data
+#### Step 2/4 - Preparing the Data
 
 The `data_extract_srv` module depends on a list of reactive or non-reactive `data.frame` objects. 
 Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`, 
@@ -94,6 +94,8 @@ join_keys <- join_keys(
 )
 ```
 
+#### Step 3/4 - Creating a `data_extract_spec` Object
+
 Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
 and a second one to select a variable from `c("BMRKR1", "AGE")`.
 `data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
@@ -106,7 +108,7 @@ simple_des <- data_extract_spec(
 )
 ```
 
-#### Shiny app
+#### Step 4/4 - Creating the Shiny App
 
 Finally, we include `extract_ui` in the UI of the `shinyApp`, and utilize `extract_srv` in the server function of the `shinyApp`:
 
@@ -118,3 +120,5 @@ shinyApp(
   }
 )
 ```
+
+<img src="images/app-data-extract.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
