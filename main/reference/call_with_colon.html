@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -105,76 +95,6 @@ avoids the use of <code>do.call</code> with this function.</p></dd>
 <p><code>call</code>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># use non-exported function from teal.transform</span></span></span>
-<span class="r-in"><span><span class="va">call_with_colon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"call_with_colon"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">print_call_and_eval</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">print_call_and_eval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">call_with_colon</span><span class="op">(</span><span class="st">"glue::glue"</span>, <span class="st">"x = {x}"</span>, x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glue::glue("x = {x}", x = 10)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> x = 10</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># mtcars$cyl evaluated</span></span></span>
-<span class="r-in"><span><span class="fu">print_call_and_eval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">call_with_colon</span><span class="op">(</span><span class="st">"dplyr::filter"</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.name</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dplyr::filter(mtcars, c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Valiant        18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280       19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280C      17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># mtcars$cyl argument not evaluated immediately (in call expression)</span></span></span>
-<span class="r-in"><span><span class="fu">print_call_and_eval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">call_with_colon</span><span class="op">(</span><span class="st">"dplyr::filter"</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.name</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dplyr::filter(mtcars, cyl == 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Valiant        18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280       19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Merc 280C      17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># does not work because argument is evaluated and the</span></span></span>
-<span class="r-in"><span><span class="co"># non-dplyr filter does not look inside mtcars</span></span></span>
-<span class="r-in"><span><span class="co"># cannot eval because it does not pass checks because of non-standard evaluation</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.name</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> filter(mtcars, cyl == 6)</span>
-<span class="r-in"><span><span class="co"># works, but non-dplyr filter is taken</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.name</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> filter(mtcars, c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE))</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">nb_args</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/nargs.html" class="external-link">nargs</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">print_call_and_eval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">call_with_colon</span><span class="op">(</span><span class="st">"nb_args"</span>, arg1 <span class="op">=</span> <span class="fl">1</span>, unlist_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arg2 <span class="op">=</span> <span class="fl">2</span>, args3 <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nb_args(arg1 = 1, arg2 = 2, args3 = 3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"><span><span class="co"># duplicate arguments</span></span></span>
-<span class="r-in"><span><span class="fu">print_call_and_eval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">call_with_colon</span><span class="op">(</span><span class="st">"nb_args"</span>, arg1 <span class="op">=</span> <span class="fl">1</span>, unlist_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arg2 <span class="op">=</span> <span class="fl">2</span>, args2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nb_args(arg1 = 1, arg2 = 2, args2 = 2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

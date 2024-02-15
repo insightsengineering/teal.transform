@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,16 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -146,189 +136,6 @@ The names of this list must be exactly the same as for datasets.</p></dd>
 All the methods are used internally only.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">resolve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"resolve"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ADSL</span> <span class="op">&lt;-</span> <span class="fu">teal.transform</span><span class="fu">::</span><span class="va"><a href="rADSL.html">rADSL</a></span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ADSL</span>, <span class="st">"keys"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"STUDYID"</span>, <span class="st">"USUBJID"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="va">ADSL</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ADSL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ADSL</span>, <span class="st">"keys"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/isolate.html" class="external-link">isolate</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="co"># value_choices example</span></span></span>
-<span class="r-in"><span>  <span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="value_choices.html">value_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"SEX"</span>, <span class="st">"SEX"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">v1</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">v1</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># variable_choices example</span></span></span>
-<span class="r-in"><span>  <span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">v2</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">v2</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># data_extract_spec example</span></span></span>
-<span class="r-in"><span>  <span class="va">adsl_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="filter_spec.html">filter_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    vars <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"SEX"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    sep <span class="op">=</span> <span class="st">"-"</span>,</span></span>
-<span class="r-in"><span>    choices <span class="op">=</span> <span class="fu"><a href="value_choices.html">value_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="st">"SEX"</span>, <span class="st">"SEX"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    selected <span class="op">=</span> <span class="st">"F"</span>,</span></span>
-<span class="r-in"><span>    multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Choose endpoint and Censor"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">adsl_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="select_spec.html">select_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"Select variable:"</span>,</span></span>
-<span class="r-in"><span>    choices <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BMRKR1"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    selected <span class="op">=</span> <span class="st">"BMRKR1"</span>,</span></span>
-<span class="r-in"><span>    multiple <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>    fixed <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">adsl_de</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    dataname <span class="op">=</span> <span class="st">"ADSL"</span>,</span></span>
-<span class="r-in"><span>    select <span class="op">=</span> <span class="va">adsl_select</span>,</span></span>
-<span class="r-in"><span>    filter <span class="op">=</span> <span class="va">adsl_filter</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">adsl_filter</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">adsl_select</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">adsl_de</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># nested list (arm_ref_comp)</span></span></span>
-<span class="r-in"><span>  <span class="va">arm_ref_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    ARMCD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      ref <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      comp <span class="op">=</span> <span class="fu"><a href="variable_choices.html">variable_choices</a></span><span class="op">(</span><span class="st">"ADSL"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu">resolve</span><span class="op">(</span><span class="va">arm_ref_comp</span>, <span class="va">data_list</span>, <span class="va">keys</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ARMCD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ARMCD$ref</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 55 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> USUBJID: Unique Subject Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SUBJID: Subject Identifier for the Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SITEID: Study Site Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGE: Age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> COUNTRY: Country</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHFL: Subject Death Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVID: Investigator Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVNAM: Investigator Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM: Description of Planned Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02P: Planned Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02A: Actual Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR1: Continuous Level Biomarker 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2: Categorical Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ITTFL: Intent-To-Treat Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAFFL: Safety Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMEASIFL: Response Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BEP01FL: Biomarker Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AEWITHFL: AE Leading to Drug Withdrawal Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RANDDT: Date of Randomization</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTSDTM: Datetime of First Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTEDTM: Datetime of Last Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01SDTM: Datetime of First Exposure to Treatment in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01EDTM: Datetime of Last Exposure in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02SDTM: Datetime of First Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02EDTM: Datetime of Last Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01SDTM: Period 01 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01EDTM: Period 01 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02SDTM: Period 02 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02EDTM: Period 02 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSSTT: End of Study Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOTSTT: End of Treatment Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDT: End of Study Date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDY: End of Study Relative Day</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DCSREAS: Reason for Discontinuation from Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHDT: Date of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAUS: Cause of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAT: Cause of Death Category</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHELD: Elapsed Days from Last Dose to Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHGR1: Last Dose to Death - Days Elapsed Grp 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LSTALVDT: Date Last Known Alive</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHADY: Relative Day of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADTHAUT: Autopsy Performed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ARMCD$comp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 55 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STUDYID: Study Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> USUBJID: Unique Subject Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SUBJID: Subject Identifier for the Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SITEID: Study Site Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGE: Age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> COUNTRY: Country</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHFL: Subject Death Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVID: Investigator Identifier</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INVNAM: Investigator Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM: Description of Planned Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02P: Planned Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02A: Actual Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR1: Continuous Level Biomarker 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2: Categorical Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ITTFL: Intent-To-Treat Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAFFL: Safety Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMEASIFL: Response Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BEP01FL: Biomarker Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AEWITHFL: AE Leading to Drug Withdrawal Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RANDDT: Date of Randomization</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTSDTM: Datetime of First Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRTEDTM: Datetime of Last Exposure to Treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01SDTM: Datetime of First Exposure to Treatment in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01EDTM: Datetime of Last Exposure in Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02SDTM: Datetime of First Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02EDTM: Datetime of Last Exposure to Treatment in Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01SDTM: Period 01 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP01EDTM: Period 01 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02SDTM: Period 02 Start Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AP02EDTM: Period 02 End Datetime</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSSTT: End of Study Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOTSTT: End of Treatment Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDT: End of Study Date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSDY: End of Study Relative Day</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DCSREAS: Reason for Discontinuation from Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHDT: Date of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAUS: Cause of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAT: Cause of Death Category</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHELD: Elapsed Days from Last Dose to Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHGR1: Last Dose to Death - Days Elapsed Grp 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LSTALVDT: Date Last Known Alive</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHADY: Relative Day of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADTHAUT: Autopsy Performed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

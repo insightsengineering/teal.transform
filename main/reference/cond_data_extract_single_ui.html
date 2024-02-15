@@ -14,7 +14,7 @@ conditionally on input[ns("dataset")] == dataname'><!-- mathjax --><script src="
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9018</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,16 +39,6 @@ conditionally on input[ns("dataset")] == dataname'><!-- mathjax --><script src="
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -107,97 +97,6 @@ for extraction of data during the application initialization.</p>
 <p><code>shiny.tag</code> with the HTML code for the panel.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># use non-exported function from teal.transform</span></span></span>
-<span class="r-in"><span><span class="va">cond_data_extract_single_ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"cond_data_extract_single_ui"</span>, <span class="st">"teal.transform"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">cond_data_extract_single_ui</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/NS.html" class="external-link">NS</a></span><span class="op">(</span><span class="st">"TEST"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="data_extract_spec.html">data_extract_spec</a></span><span class="op">(</span>dataname <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;div data-display-if="input[&amp;#39;TEST-dataset&amp;#39;] == &amp;#39;test&amp;#39;" data-ns-prefix=""&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="filter_spec"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#TEST-dataset_test_singleextract-filter1-col').on('change', function(e) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#TEST-dataset_test_singleextract-filter1-col_selected_text').html(select_concat);</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div id="TEST-dataset_test_singleextract-filter1-col_input" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;label class="control-label shiny-label-null" for="TEST-dataset_test_singleextract-filter1-col" id="TEST-dataset_test_singleextract-filter1-col-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" data-state-input="true" id="TEST-dataset_test_singleextract-filter1-col" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value=""&gt;&lt;/option&gt;&lt;/select&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div id="TEST-dataset_test_singleextract-filter1-col_fixed" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;label class="control-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;code id="TEST-dataset_test_singleextract-filter1-col_selected_text"&gt;NULL&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#TEST-dataset_test_singleextract-filter1-vals').on('change', function(e) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#TEST-dataset_test_singleextract-filter1-vals_selected_text').html(select_concat);</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div id="TEST-dataset_test_singleextract-filter1-vals_input" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;label class="control-label shiny-label-null" for="TEST-dataset_test_singleextract-filter1-vals" id="TEST-dataset_test_singleextract-filter1-vals-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-state-input="true" id="TEST-dataset_test_singleextract-filter1-vals" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value=""&gt;&lt;/option&gt;&lt;/select&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div id="TEST-dataset_test_singleextract-filter1-vals_fixed" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;label class="control-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;code id="TEST-dataset_test_singleextract-filter1-vals_selected_text"&gt;NULL&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           $('#TEST-dataset_test_singleextract-select').on('change', function(e) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             $('#TEST-dataset_test_singleextract-select_selected_text').html(select_concat);</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div id="TEST-dataset_test_singleextract-select_input" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;label class="control-label" id="TEST-dataset_test_singleextract-select-label" for="TEST-dataset_test_singleextract-select"&gt;Select&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-state-input="true" id="TEST-dataset_test_singleextract-select" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value=""&gt;&lt;/option&gt;&lt;/select&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div id="TEST-dataset_test_singleextract-select_fixed" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;label class="control-label"&gt;Select&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;code id="TEST-dataset_test_singleextract-select_selected_text"&gt;NULL&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div class="form-group shiny-input-container shinyjs-disabled shinyjs-hide"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="checkbox"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;input id="TEST-dataset_test_singleextract-reshape" type="checkbox" class="shiny-input-checkbox"/&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;span&gt;Reshape long to wide format&lt;/span&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/div&gt;</span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
