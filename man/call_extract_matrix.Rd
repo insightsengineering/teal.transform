@@ -21,19 +21,4 @@ name of the \code{column} or condition.}
 \description{
 Get call to subset and select matrix
 }
-\examples{
-# use non-exported function from teal.transform
-call_extract_matrix <- getFromNamespace("call_extract_matrix", "teal.transform")
-call_condition_choice <- getFromNamespace("call_condition_choice", "teal.transform")
-
-call_extract_matrix(
-  dataname = "my_array",
-  row = call_condition_choice("my_array$SEX", "M"),
-  column = call("c", "SEX", "AGE")
-)
-call_extract_matrix(
-  "mae_object",
-  column = call_condition_choice("SEX", "M")
-)
-}
 \keyword{internal}

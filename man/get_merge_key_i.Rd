@@ -28,33 +28,4 @@ ids of the respective
 \description{
 Gets keys needed for join call of two selectors
 }
-\examples{
-library(teal.data)
-# use non-exported function from teal.transform
-get_merge_key_i <- getFromNamespace("get_merge_key_i", "teal.transform")
-get_dplyr_call_data <- getFromNamespace("get_dplyr_call_data", "teal.transform")
-
-selector_list <- list(
-  list(
-    dataname = "X",
-    filters = NULL,
-    select = "E",
-    keys = c("A", "B"),
-    reshape = FALSE,
-    internal_id = "x"
-  ),
-  list(
-    dataname = "Y",
-    filters = NULL,
-    select = "G",
-    keys = c("A", "C"),
-    reshape = FALSE,
-    internal_id = "y"
-  )
-)
-
-join_keys <- join_keys(join_key("X", "Y", c("A", "B")))
-get_merge_key_i(selector_list, 2L, get_dplyr_call_data(selector_list, join_keys))
-
-}
 \keyword{internal}

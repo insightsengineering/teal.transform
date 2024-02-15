@@ -10,11 +10,6 @@
 #'
 #' @return `shiny.tag` the HTML element defining the UI.
 #'
-#' @examples
-#' # use non-exported function from teal.transform
-#' data_extract_single_ui <- getFromNamespace("data_extract_single_ui", "teal.transform")
-#'
-#' data_extract_single_ui(id = "test", data_extract_spec("extract"))
 #' @keywords internal
 #'
 data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {

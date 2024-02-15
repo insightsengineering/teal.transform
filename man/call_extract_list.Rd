@@ -19,14 +19,4 @@ call_extract_list(dataname, varname, dollar = TRUE)
 \description{
 Compose extract call with \code{$} operator
 }
-\examples{
-# use non-exported function from teal.transform
-call_extract_list <- getFromNamespace("call_extract_list", "teal.transform")
-
-call_extract_list("ADSL", "SEX")
-call_extract_list("ADSL", "named element")
-call_extract_list(as.name("ADSL"), as.name("AGE"))
-call_extract_list(as.name("weird name"), as.name("AGE"))
-call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
-}
 \keyword{internal}
