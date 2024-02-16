@@ -132,7 +132,7 @@ Here, we define the `merge_srv` function, which will be used to create the serve
 
 This function takes as arguments the datasets (as a list of reactive `data.frame`), the data extract specifications created above (the `data_extract` list), and the `join_keys` object (read more about the `join_keys` in the [Join Keys vignette of `teal.data`](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys.html)).
 We make use of the `merge_expression_srv` function to get a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
-We render this expression and evaluate it to get the final `ANL` dataset which is also rendered as a table in our UI.
+We print this expression in the UI  and also evaluate it to get the final `ANL` dataset which is also displayed as a table in the UI.
 
 ```{r}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
