@@ -64,8 +64,8 @@ In the following code block, we create a `data_extract_spec` object for each dat
 It is created by the `data_extract_spec()` function which takes in four arguments:
 
 1. `dataname` is the name of the dataset to be extracted.
-2. `select` helps specify the columns from which we wish to allow the app user to select. It can be generated using the function `select_spec()`. In the case of `ADSL`, we restrict the selection to "AGE", "SEX", and "BMRKR1", with "AGE" being the default selection.
-3. `filter` helps specify the values of a variable we wish to filter during extraction. It can be generated using the function `filter_spec()`. In the case of `ADTTE`, we filter the variable PARAMCD by allowing users to choose from "CRSD", "EFS", "OS", and "PFS", with "OS" being the default filter.
+2. `select` helps specify the columns from which we wish to allow the app user to select. It can be generated using the function `select_spec()`. In the case of `ADSL`, we restrict the selection to `AGE`, `SEX`, and `BMRKR1`, with `AGE` being the default selection.
+3. `filter` helps specify the values of a variable we wish to filter during extraction. It can be generated using the function `filter_spec()`. In the case of `ADTTE`, we filter the variable PARAMCD by allowing users to choose from `CRSD`, `EFS`, `OS`, and `PFS`, with `OS` being the default filter.
 4. `reshape` is a boolean which helps to specify if the data needs to be rehaped from long to wide format. By default it is set to `FALSE`.
 
 ```{r}
