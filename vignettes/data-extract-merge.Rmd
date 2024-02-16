@@ -134,7 +134,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 
 #### Step 4/5 - Preparing the Data
 
-The `data_extract_srv` module depends on a list of reactive or non-reactive `data.frame` objects. 
+The `data_extract_srv` module takes as argument a list of reactive or non-reactive `data.frame`s. 
 Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`,
 along with a list of necessary join keys per `data.frame` object:
 
