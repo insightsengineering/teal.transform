@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.4.0.9019
-Date: 2024-02-15
+Version: 0.4.0.9020
+Date: 2024-02-16
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -19,7 +19,6 @@ URL: https://insightsengineering.github.io/teal.transform/,
     https://github.com/insightsengineering/teal.transform/
 BugReports: https://github.com/insightsengineering/teal.transform/issues
 Depends:
-    magrittr (>= 1.5),
     R (>= 3.6)
 Imports:
     checkmate (>= 2.1.0),
@@ -46,13 +45,12 @@ VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
-Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
-    tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
-    rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs,
-    rstudio/shinyvalidate, insightsengineering/teal.data,
-    insightsengineering/teal.logger, insightsengineering/teal.widgets,
-    tidyverse/tidyr, r-lib/tidyselect, yihui/knitr,
-    insightsengineering/teal.code, r-lib/testthat
+Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
+    r-lib/lifecycle, daroczig/logger, r-lib/rlang, rstudio/rmarkdown,
+    rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
+    insightsengineering/teal.data, insightsengineering/teal.logger,
+    insightsengineering/teal.widgets, tidyverse/tidyr, r-lib/tidyselect,
+    yihui/knitr, insightsengineering/teal.code, r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
