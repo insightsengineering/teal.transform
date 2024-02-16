@@ -107,7 +107,7 @@ merge_ui <- function(id, data_extracts) {
 
 Here, we define the `merge_srv` function, which will be used to create the server logic for the `shiny` app.
 
-This function gets the `datasets` as a list of reactive `data.frame`, the list of `data_extract` objects, and the `join_keys` object as input.
+This function takes as arguments the datasets (as a list of reactive `data.frame`), the data extract specifications created above (the `data_extract` list), and the `join_keys` object.
 We make use of the `merge_expression_srv` function to get a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
 We render this expression and evaluate it to get the final `ANL` dataset which is also rendered as a table in our UI.
 
