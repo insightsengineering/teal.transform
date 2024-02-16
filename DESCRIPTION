@@ -1,6 +1,6 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.4.0.9022
+Version: 0.5.0
 Date: 2024-02-16
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
@@ -31,7 +31,7 @@ Imports:
     shinyjs,
     shinyvalidate,
     stats,
-    teal.data (>= 0.3.0.9031),
+    teal.data (>= 0.5.0),
     teal.logger (>= 0.1.1),
     teal.widgets (>= 0.4.0),
     tidyr (>= 0.8.3),
@@ -39,7 +39,7 @@ Imports:
 Suggests:
     knitr (>= 1.42),
     rmarkdown (>= 2.19),
-    teal.code (>= 0.4.1.9009),
+    teal.code (>= 0.5.0),
     testthat (>= 3.1.5)
 VignetteBuilder:
     knitr
