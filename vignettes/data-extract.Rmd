@@ -17,13 +17,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-There are times when an app developer wants to offer users more flexibility in analyzing data within their custom module. 
-In such cases, relinquishing control of the application to users requires developers to provide a degree of freedom. 
 With `teal`, app developers can open up their applications to users, allowing them to decide exactly which app data to 
 analyze within the module.
 
-Many `teal` modules leverage `data_extract_spec` objects and modules to handle user input.
-Examples can be found in `teal.modules.general` and `teal.modules.clinical`.
+A `teal` module can leverage the use of `data_extract_spec` objects to handle and process the user input.
+Examples can be found in the [modules from the `teal.modules.clinical` package](https://insightsengineering.github.io/teal.modules.clinical/latest-tag/reference/index.html).
 
 ### `data_extract_spec`
 
@@ -31,48 +29,13 @@ The role of `data_extract_spec` is twofold: to create a UI component in a `shiny
 from the UI to the module itself. 
 Let's delve into how it fulfills both of these responsibilities.
 
-#### Example module
-
-To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
-utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
-This module creates a UI component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module. 
-For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
+#### Step 1/4 - Preparing the Data
 
 ```{r}
 library(teal.transform)
-library(teal.widgets)
 library(teal.data)
 library(shiny)
 
-extract_ui <- function(id, data_extract) {
-  ns <- NS(id)
-  standard_layout(
-    output = white_small_well(verbatimTextOutput(ns("output"))),
-    encoding = data_extract_ui(ns("data_extract"), label = "variable", data_extract)
-  )
-}
-
-extract_srv <- function(id, datasets, data_extract, join_keys) {
-  moduleServer(id, function(input, output, session) {
-    reactive_extract_input <- data_extract_srv("data_extract", datasets, data_extract, join_keys)
-    s <- reactive({
-      format_data_extract(reactive_extract_input())
-    })
-    output$output <- renderPrint({
-      cat(s())
-    })
-  })
-}
-```
-
-
-#### Example data
-
-The `data_extract_srv` module depends on a list of reactive or non-reactive `data.frame` objects. 
-Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`, 
-along with a list of necessary join keys per `data.frame` object:
-
-```{r}
 # Define data.frame objects
 ADSL <- teal.transform::rADSL
 ADTTE <- teal.transform::rADTTE
@@ -90,6 +53,8 @@ join_keys <- join_keys(
 )
 ```
 
+#### Step 2/4 - Creating a `data_extract_spec` Object
+
 Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
 and a second one to select a variable from `c("BMRKR1", "AGE")`.
 `data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
@@ -102,7 +67,42 @@ simple_des <- data_extract_spec(
 )
 ```
 
-#### Shiny app
+#### Step 3/4 - Creating the `shiny` UI and Server Modules
+
+To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
+utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
+This module creates a UI component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module. 
+For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
+
+```{r}
+extract_ui <- function(id, data_extract) {
+  ns <- NS(id)
+  sidebarLayout(
+    sidebarPanel(
+      h3("Encoding"),
+      data_extract_ui(ns("data_extract"), label = "variable", data_extract)
+    ),
+    mainPanel(
+      h3("Output"),
+      verbatimTextOutput(ns("output"))
+    )
+  )
+}
+
+extract_srv <- function(id, datasets, data_extract, join_keys) {
+  moduleServer(id, function(input, output, session) {
+    reactive_extract_input <- data_extract_srv("data_extract", datasets, data_extract, join_keys)
+    s <- reactive({
+      format_data_extract(reactive_extract_input())
+    })
+    output$output <- renderPrint({
+      cat(s())
+    })
+  })
+}
+```
+
+#### Step 4/4 - Creating the `shiny` App
 
 Finally, we include `extract_ui` in the UI of the `shinyApp`, and utilize `extract_srv` in the server function of the `shinyApp`:
 
@@ -114,3 +114,5 @@ shinyApp(
   }
 )
 ```
+
+<img src="images/app-data-extract.png" alt="Shiny app output for Data Extract" style="width: 100%;" />

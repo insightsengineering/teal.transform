@@ -17,16 +17,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-Combining datasets is an essential step when working with modules that involve multiple datasets.
-Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
-To support this, two functions are provided: `merge_expression_module` and `merge_expression_srv`, each tailored for different use cases.
+Joining datasets is an essential step when working with relational datasets.
 
-Use `merge_expression_module` when there is no need to process the `data_extract` list.
+To support this, two functions are provided depending on how to process the `data_extract_spec` object:
+
+1. `merge_expression_module` can be used when there is no need to process the list of `data_extract_spec`.
 This function reads the data and the list of `data_extract_spec` objects and applies the merging.
-Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`. 
-Further details are provided below.
-In scenarios where additional processing of the `data_extract` list is necessary,
-`merge_expression_srv()` can be used along with `data_extract_multiple_srv()` or `data_extract_srv()` to customize the `selector_list` input.
+Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`.
+2. `merge_expression_srv` and `data_extract_multiple_srv` can be used in scenarios where additional processing of the list of `data_extract_spec` is necessary or `data_extract_srv()` to customize the `selector_list` input.
 
 The following sections provide examples for both scenarios.
 
@@ -35,14 +33,35 @@ The following sections provide examples for both scenarios.
 Using `merge_expression_module` alone requires a list of `data_extract_spec` objects for the `data_extract` argument,
 a list of reactive or non-reactive `data.frame` objects, and a list of join keys corresponding to each `data.frame` object.
 
-#### App code
+#### Step 1/5 - Preparing the Data
 
 ```{r}
 library(teal.transform)
-library(teal.widgets)
 library(teal.data)
 library(shiny)
 
+# Define data.frame objects
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
+
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
+
+# create  join_keys
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+)
+```
+
+
+#### Step 2/5 - Creating the Data Extracts
+
+```{r}
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -65,30 +84,42 @@ adtte_extract <- data_extract_spec(
 )
 
 data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
+```
 
+#### Step 3/5 - Creating the UI
+
+```{r}
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
-  standard_layout(
-    output = white_small_well(
+  sidebarLayout(
+    sidebarPanel(
+      h3("Encoding"),
+      div(
+        data_extract_ui(
+          ns("adsl_extract"), # must correspond with data_extracts list names
+          label = "ADSL extract",
+          data_extracts[[1]]
+        ),
+        data_extract_ui(
+          ns("adtte_extract"), # must correspond with data_extracts list names
+          label = "ADTTE extract",
+          data_extracts[[2]]
+        )
+      )
+    ),
+    mainPanel(
+      h3("Output"),
       verbatimTextOutput(ns("expr")),
       dataTableOutput(ns("data"))
-    ),
-    encoding = div(
-      data_extract_ui(
-        ns("adsl_extract"), # must correspond with data_extracts list names
-        label = "ADSL extract",
-        data_extracts[[1]]
-      ),
-      data_extract_ui(
-        ns("adtte_extract"), # must correspond with data_extracts list names
-        label = "ADTTE extract",
-        data_extracts[[2]]
-      )
     )
   )
 }
+```
 
-merge_module <- function(id, datasets, data_extracts, join_keys) {
+#### Step 4/5 - Creating the Server Logic
+
+```{r}
+merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     merged_data <- merge_expression_module(
       data_extract = data_extracts,
@@ -105,35 +136,23 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
     output$data <- renderDataTable(ANL())
   })
 }
-
-# Define data.frame objects
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
-
-# create a list of reactive data.frame objects
-datasets <- list(
-  ADSL = reactive(ADSL),
-  ADTTE = reactive(ADTTE)
-)
-
-# create  join_keys
-join_keys <- join_keys(
-  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
-)
 ```
 
-#### Shiny app
+#### Step 5/5 - Creating the `shiny` App
 
 ```{r eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
-    merge_module("data_merge", datasets, data_extracts, join_keys)
+    merge_srv("data_merge", datasets, data_extracts, join_keys)
   }
 )
 ```
+
+<img src="images/app-data-merge-1.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
+
+
+<hr>
 
 ### `data_extract_multiple_srv` + `merge_expression_srv`
 
@@ -142,8 +161,10 @@ Here, the developer might update the `selector_list` input in a reactive manner 
 Below, we reuse the input from above and update the app server so that the `adtte_extract` is removed from the selector_list input when no `ADTTE` variable is selected.
 The `reactive_selector_list` is then passed to `merge_expression_srv`:
 
+#### Modifying the Server Logic
+
 ```{r}
-merge_module <- function(id, datasets, data_extracts, join_keys) {
+merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
     reactive_selector_list <- reactive({
@@ -171,16 +192,18 @@ merge_module <- function(id, datasets, data_extracts, join_keys) {
 }
 ```
 
-#### Shiny app
+#### Updating the `shiny` app
 
 ```{r eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
-    merge_module("data_merge", datasets, data_extracts, join_keys)
+    merge_srv("data_merge", datasets, data_extracts, join_keys)
   }
 )
 ```
+
+<img src="images/app-data-merge-2.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
 
 `merge_expression_module` is replaced here with three parts:
 
