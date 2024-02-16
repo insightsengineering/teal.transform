@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 `teal.transform` allows the app user to oversee transforming a relational set of data objects into the final dataset for analysis.
 User actions create a R expression that subsets and merges the input data.
 
-For example, let's try to create an analysis dataset `ANL` by:
+In the following example we will create an analysis dataset `ANL` by:
 
 1. Selecting the column `AGE` from `ADSL`
 2. Selecting the column `AVAL` and filtering the rows where `PARAMCD` is `OS` from `ADTTE`
@@ -28,8 +28,9 @@ For example, let's try to create an analysis dataset `ANL` by:
 
 <img src="images/basic_concept.svg" alt="Basic Concept of teal.transform" style="width: 100%;" />
 
+Note that primary key columns are maintained when selecting columns from datasets.
 
-Let's see how to achieve this dynamic `select`, `filter`, and `merge` operations in a shiny app using `teal.transform`.
+Let's see how to achieve this dynamic `select`, `filter`, and `merge` operations in a `shiny` app using `teal.transform`.
 
 #### Step 1/5 - Creating data extract specifications
 
@@ -107,7 +108,7 @@ merge_ui <- function(id, data_extracts) {
 
 Here, we define the `merge_srv` function, which will be used to create the server logic for the `shiny` app.
 
-This function takes as arguments the datasets (as a list of reactive `data.frame`), the data extract specifications created above (the `data_extract` list), and the `join_keys` object.
+This function takes as arguments the datasets (as a list of reactive `data.frame`), the data extract specifications created above (the `data_extract` list), and the `join_keys` object (read more about the `join_keys` in the [Join Keys vignette of `teal.data`](https://insightsengineering.github.io/teal.data/latest-tag/articles/join-keys.html)).
 We make use of the `merge_expression_srv` function to get a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
 We render this expression and evaluate it to get the final `ANL` dataset which is also rendered as a table in our UI.
 
@@ -134,11 +135,6 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 
 #### Step 4/5 - Preparing the Data
 
-The `data_extract_srv` module takes as argument a list of reactive or non-reactive `data.frame`s. 
-Here, we demonstrate the usage of a list of reactive `data.frame` objects as input to `datasets`,
-along with a list of necessary join keys per `data.frame` object:
-
-
 ```{r}
 # Define data.frame objects
 ADSL <- teal.transform::rADSL
@@ -158,7 +154,7 @@ join_keys <- join_keys(
 )
 ```
 
-#### Step 5/5 - Creating the Shiny App
+#### Step 5/5 - Creating the `shiny` App
 
 Finally, we include `merge_ui` and `merge_srv` in the UI and server components of the `shinyApp`, respectively,
 using the `data_extract`s defined in the first code block and the `datasets` object:

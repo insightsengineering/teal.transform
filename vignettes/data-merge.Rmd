@@ -137,7 +137,7 @@ join_keys <- join_keys(
 )
 ```
 
-#### Step 5/5 - Creating the Shiny App
+#### Step 5/5 - Creating the `shiny` App
 
 ```{r eval=FALSE}
 shinyApp(
@@ -191,7 +191,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 }
 ```
 
-#### Updating the Shiny app
+#### Updating the `shiny` app
 
 ```{r eval=FALSE}
 shinyApp(
