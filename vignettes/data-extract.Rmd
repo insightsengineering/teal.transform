@@ -30,7 +30,45 @@ The role of `data_extract_spec` is twofold: to create a UI component in a `shiny
 from the UI to the module itself. 
 Let's delve into how it fulfills both of these responsibilities.
 
-#### Step 1/4 - Creating the `shiny` UI and Server Modules
+#### Step 1/4 - Preparing the Data
+
+```{r}
+library(teal.transform)
+library(teal.data)
+library(shiny)
+
+# Define data.frame objects
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
+
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
+# create join_keys
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+)
+```
+
+#### Step 2/4 - Creating a `data_extract_spec` Object
+
+Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
+and a second one to select a variable from `c("BMRKR1", "AGE")`.
+`data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
+
+```{r}
+simple_des <- data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M")),
+  select = select_spec(choices = c("BMRKR1", "AGE"))
+)
+```
+
+#### Step 3/4 - Creating the `shiny` UI and Server Modules
 
 To demonstrate different initialization options of `data_extract_spec`, let's first define a `shiny` module that
 utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` objects.
@@ -38,10 +76,6 @@ This module creates a UI component for a single `data_extract_spec` and prints a
 For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
 
 ```{r}
-library(teal.transform)
-library(teal.data)
-library(shiny)
-
 extract_ui <- function(id, data_extract) {
   ns <- NS(id)
   sidebarLayout(
@@ -67,41 +101,6 @@ extract_srv <- function(id, datasets, data_extract, join_keys) {
     })
   })
 }
-```
-
-
-#### Step 2/4 - Preparing the Data
-
-```{r}
-# Define data.frame objects
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
-
-# create a list of reactive data.frame objects
-datasets <- list(
-  ADSL = reactive(ADSL),
-  ADTTE = reactive(ADTTE)
-)
-# create join_keys
-join_keys <- join_keys(
-  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
-)
-```
-
-#### Step 3/4 - Creating a `data_extract_spec` Object
-
-Consider the following example, where we create two UI elements, one to filter on a specific level from `SEX` variable,
-and a second one to select a variable from `c("BMRKR1", "AGE")`.
-`data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
-
-```{r}
-simple_des <- data_extract_spec(
-  dataname = "ADSL",
-  filter = filter_spec(vars = "SEX", choices = c("F", "M")),
-  select = select_spec(choices = c("BMRKR1", "AGE"))
-)
 ```
 
 #### Step 4/4 - Creating the `shiny` App

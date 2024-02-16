@@ -32,15 +32,37 @@ Note that primary key columns are maintained when selecting columns from dataset
 
 Let's see how to achieve this dynamic `select`, `filter`, and `merge` operations in a `shiny` app using `teal.transform`.
 
-#### Step 1/5 - Creating data extract specifications
-
-In the following code block, we create a `data_extract_spec` object for each dataset, as illustrated above.
+#### Step 1/5 - Preparing the Data
 
 ```{r}
 library(teal.transform)
 library(teal.data)
 library(shiny)
 
+# Define data.frame objects
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
+
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
+
+# create join_keys
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+)
+```
+
+
+#### Step 2/5 - Creating data extract specifications
+
+In the following code block, we create a `data_extract_spec` object for each dataset, as illustrated above.
+
+```{r}
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -70,7 +92,7 @@ adtte_extract <- data_extract_spec(
 data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
 ```
 
-#### Step 2/5 - Creating the UI
+#### Step 3/5 - Creating the UI
 
 Here, we define the `merge_ui` function, which will be used to create the UI components for the `shiny` app.
 
@@ -104,7 +126,7 @@ merge_ui <- function(id, data_extracts) {
 }
 ```
 
-#### Step 3/5 - Creating the Server Logic
+#### Step 4/5 - Creating the Server Logic
 
 Here, we define the `merge_srv` function, which will be used to create the server logic for the `shiny` app.
 
@@ -131,27 +153,6 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
     output$data <- renderDataTable(ANL())
   })
 }
-```
-
-#### Step 4/5 - Preparing the Data
-
-```{r}
-# Define data.frame objects
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
-
-# create a list of reactive data.frame objects
-datasets <- list(
-  ADSL = reactive(ADSL),
-  ADTTE = reactive(ADTTE)
-)
-
-# create join_keys
-join_keys <- join_keys(
-  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
-)
 ```
 
 #### Step 5/5 - Creating the `shiny` App

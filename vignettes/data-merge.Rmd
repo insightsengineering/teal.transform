@@ -19,12 +19,13 @@ knitr::opts_chunk$set(
 
 Combining datasets is an essential step when working with relational datasets.
 Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
-To support this, two functions are provided:
 
-1. `merge_expression_module` can be used when there is no need to process the `data_extract` list.
+To support this, two functions are provided depending on how to process the `data_extract_spec` object:
+
+1. `merge_expression_module` can be used when there is no need to process the list of `data_extract_spec`.
 This function reads the data and the list of `data_extract_spec` objects and applies the merging.
 Essentially, it serves as a wrapper that combines `data_extract_multiple_srv()` and `merge_expression_srv()`.
-2. `merge_expression_srv` and `data_extract_multiple_srv` can be used in scenarios where additional processing of the `data_extract` list is necessary or `data_extract_srv()` to customize the `selector_list` input.
+2. `merge_expression_srv` and `data_extract_multiple_srv` can be used in scenarios where additional processing of the list of `data_extract_spec` is necessary or `data_extract_srv()` to customize the `selector_list` input.
 
 The following sections provide examples for both scenarios.
 
@@ -33,13 +34,35 @@ The following sections provide examples for both scenarios.
 Using `merge_expression_module` alone requires a list of `data_extract_spec` objects for the `data_extract` argument,
 a list of reactive or non-reactive `data.frame` objects, and a list of join keys corresponding to each `data.frame` object.
 
-#### Step 1/5 - Creating the Data Extracts
+#### Step 1/5 - Preparing the Data
 
 ```{r}
 library(teal.transform)
 library(teal.data)
 library(shiny)
 
+# Define data.frame objects
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
+
+# create a list of reactive data.frame objects
+datasets <- list(
+  ADSL = reactive(ADSL),
+  ADTTE = reactive(ADTTE)
+)
+
+# create  join_keys
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
+  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
+)
+```
+
+
+#### Step 2/5 - Creating the Data Extracts
+
+```{r}
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -64,7 +87,7 @@ adtte_extract <- data_extract_spec(
 data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract)
 ```
 
-#### Step 2/5 - Creating the UI
+#### Step 3/5 - Creating the UI
 
 ```{r}
 merge_ui <- function(id, data_extracts) {
@@ -94,7 +117,7 @@ merge_ui <- function(id, data_extracts) {
 }
 ```
 
-#### Step 3/5 - Creating the Server Logic
+#### Step 4/5 - Creating the Server Logic
 
 ```{r}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
@@ -114,27 +137,6 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
     output$data <- renderDataTable(ANL())
   })
 }
-```
-
-#### Step 4/5 - Preparing the Data
-
-```{r}
-# Define data.frame objects
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
-
-# create a list of reactive data.frame objects
-datasets <- list(
-  ADSL = reactive(ADSL),
-  ADTTE = reactive(ADTTE)
-)
-
-# create  join_keys
-join_keys <- join_keys(
-  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
-  join_key("ADSL", "ADTTE", c("STUDYID", "USUBJID")),
-  join_key("ADTTE", "ADTTE", c("STUDYID", "USUBJID", "PARAMCD"))
-)
 ```
 
 #### Step 5/5 - Creating the `shiny` App
