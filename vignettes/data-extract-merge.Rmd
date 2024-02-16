@@ -67,7 +67,7 @@ adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
     label = "Select variable:",
-    choices = c("AGE", "BMRKR1"),
+    choices = c("AGE", "SEX", "BMRKR1"),
     selected = "AGE",
     multiple = TRUE,
     fixed = FALSE
@@ -77,7 +77,7 @@ adsl_extract <- data_extract_spec(
 adtte_extract <- data_extract_spec(
   dataname = "ADTTE",
   select = select_spec(
-    choices = c("AVAL", "ASEQ"),
+    choices = c("AVAL", "AVALC", "ASEQ"),
     selected = "AVAL",
     multiple = TRUE,
     fixed = FALSE
