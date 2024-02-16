@@ -26,7 +26,7 @@ Examples can be found in the [modules from the `teal.modules.clinical` package](
 ### `data_extract_spec`
 
 The role of `data_extract_spec` is twofold: to create a UI component in a `shiny` application and to pass user input 
-from the UI to the module itself. 
+from the UI to a custom server logic that can use this input to transform the data.
 Let's delve into how it fulfills both of these responsibilities.
 
 #### Step 1/4 - Preparing the Data
