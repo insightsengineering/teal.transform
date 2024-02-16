@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Combining datasets is an essential step when working with multiple datasets.
+Combining datasets is an essential step when working with relational datasets.
 Within the context of `teal`, we use the term "merge" to refer to the process of combining datasets.
 To support this, two functions are provided:
 
