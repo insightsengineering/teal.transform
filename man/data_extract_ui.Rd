@@ -82,5 +82,4 @@ standard_layout(
     )
   )
 )
-
 }

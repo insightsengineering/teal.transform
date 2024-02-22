@@ -119,7 +119,6 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'     )
 #'   )
 #' )
-#'
 #' @export
 #'
 data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FALSE) {
@@ -391,7 +390,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' if (interactive()) {
 #'   shinyApp(ui, server)
 #' }
-#'
 #' @export
 #'
 data_extract_srv <- function(id, datasets, data_extract_spec, ...) {
@@ -635,11 +633,6 @@ data_extract_srv.list <- function(id,
 #' )
 #'
 #' server <- function(input, output, session) {
-#'   exactly_2_validation <- function(msg) {
-#'     ~ if (length(.) != 2) msg
-#'   }
-#'
-#'
 #'   selector_list <- data_extract_multiple_srv(
 #'     list(x_var = iris_select, species_var = iris_filter),
 #'     datasets = data_list,
@@ -649,7 +642,7 @@ data_extract_srv.list <- function(id,
 #'     filter_validation_rule = list(
 #'       species_var = compose_rules(
 #'         sv_required("Exactly 2 Species must be chosen"),
-#'         exactly_2_validation("Exactly 2 Species must be chosen")
+#'         function(x) if (length(x) != 2) "Exactly 2 Species must be chosen"
 #'       )
 #'     )
 #'   )

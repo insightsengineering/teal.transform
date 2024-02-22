@@ -45,7 +45,7 @@ Wrapper on \link{choices_labeled} to label variables basing on existing labels i
 \examples{
 library(teal.data)
 
-ADRS <- teal.transform::rADRS
+ADRS <- rADRS
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))

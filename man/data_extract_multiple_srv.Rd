@@ -123,11 +123,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  exactly_2_validation <- function(msg) {
-    ~ if (length(.) != 2) msg
-  }
-
-
   selector_list <- data_extract_multiple_srv(
     list(x_var = iris_select, species_var = iris_filter),
     datasets = data_list,
@@ -137,7 +132,7 @@ server <- function(input, output, session) {
     filter_validation_rule = list(
       species_var = compose_rules(
         sv_required("Exactly 2 Species must be chosen"),
-        exactly_2_validation("Exactly 2 Species must be chosen")
+        function(x) if (length(x) != 2) "Exactly 2 Species must be chosen"
       )
     )
   )

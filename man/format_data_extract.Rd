@@ -21,6 +21,7 @@ See the example for more information.
 }
 \examples{
 library(shiny)
+
 simple_des <- data_extract_spec(
   dataname = "iris",
   filter = filter_spec(vars = "Petal.Length", choices = c("1.4", "1.5")),
