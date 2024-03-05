@@ -57,7 +57,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   if (!extract_spec_reshape) reshape_display <- shinyjs::hidden(reshape_display)
 
   ## all combined
-  div(filter_display, select_display, reshape_display)
+  tags$div(filter_display, select_display, reshape_display)
 }
 
 #' The server function for a single `data_extract_spec` object
