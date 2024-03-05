@@ -41,9 +41,9 @@
 #' (default values).
 #' This value will be displayed inside the shiny app upon start.
 #' The `all_choices` object indicates selecting all possible choices.
-#' @param drop_keys (optional `logical`) whether to drop filter column from the
+#' @param drop_keys (`logical`) optional, whether to drop filter column from the
 #' dataset keys, `TRUE` on default.
-#' @param label (optional `character`). Define a label on top of this specific
+#' @param label (`character`) optional, define a label on top of this specific
 #' shiny [shiny::selectInput()]. The default value is `"Filter by"`.
 #'
 #' @return `filter_spec`-S3-class object or `delayed_filter_spec`-S3-class object.

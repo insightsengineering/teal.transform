@@ -202,7 +202,7 @@ get_merge_key_pair <- function(selector_from, selector_to, key_from) {
 #' Gets keys needed for join call of two selectors
 #'
 #' @inheritParams get_merge_call
-#' @param idx (optional `integer`) current selector index in all selectors list.
+#' @param idx (`integer`) optional, current selector index in all selectors list.
 #'
 #' @return `character` list of keys.
 #'
@@ -294,7 +294,7 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
 #'
 #' @inheritParams get_merge_call
 #' @param merge_key keys obtained from `get_merge_key_i`.
-#' @param idx optional (`integer`) current selector index in all selectors list.
+#' @param idx (`integer`) optional, current selector index in all selectors list.
 #'
 #' @return `call` with merge keys.
 #'

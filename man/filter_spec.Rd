@@ -46,13 +46,13 @@ The \code{all_choices} object indicates selecting all possible choices.}
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
-\item{label}{(optional \code{character}). Define a label on top of this specific
+\item{label}{(\code{character}) optional, define a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or
 \code{selected} inputs into the values of the different columns.}
 
-\item{drop_keys}{(optional \code{logical}) whether to drop filter column from the
+\item{drop_keys}{(\code{logical}) optional, whether to drop filter column from the
 dataset keys, \code{TRUE} on default.}
 }
 \value{

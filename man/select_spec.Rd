@@ -43,15 +43,15 @@ These have to be columns in the dataset defined in the \code{\link[=data_extract
 where this is called.
 \code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(optional \code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data}).
-Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
+\item{selected}{(\code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data}) optional,
+named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 Passing an \code{all_choices()} object indicates selecting all possible choices.
 Defaults to the first value of \code{choices} or \code{NULL} for delayed data loading.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
-\item{fixed}{(optional \code{logical}). \code{\link[=data_extract_spec]{data_extract_spec()}} specific feature to
+\item{fixed}{(\code{logical}) optional, \code{\link[=data_extract_spec]{data_extract_spec()}} specific feature to
 hide the choices selected in case they are not needed. Setting fixed to \code{TRUE}
 will not allow the user to select columns. It will then lead to a selection of
 columns in the dataset that is defined by the developer of the app.}
@@ -61,7 +61,7 @@ always be selected}
 
 \item{ordered}{(\code{logical(1)}) Flags whether selection order should be tracked.}
 
-\item{label}{(optional \code{character}). Define a label on top of this specific
+\item{label}{(\code{character}) optional, define a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Select"}.}
 }
 \value{
