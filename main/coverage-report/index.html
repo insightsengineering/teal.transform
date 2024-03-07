@@ -5,7 +5,7 @@
 <style>body{background-color:white;}</style>
 <script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="lib/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="lib/datatables-binding-0.31/datatables.js"></script>
+<script src="lib/datatables-binding-0.32/datatables.js"></script>
 <script src="lib/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="lib/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="lib/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
@@ -106,8 +106,8 @@ table.table-condensed {
       </ul>
       <div class="tab-content" data-tabsetid="covr">
         <div class="tab-pane active" title="Files" data-value="Files" id="tab-covr-1">
-          <div class="datatables html-widget html-fill-item" id="htmlwidget-e6ef340a414f4bbe4c8c" style="width:100%;height:500px;"></div>
-          <script type="application/json" data-for="htmlwidget-e6ef340a414f4bbe4c8c">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/column_functions.R<\/a>","<a href=\"#\">R/zzz.R<\/a>","<a href=\"#\">R/call_utils.R<\/a>","<a href=\"#\">R/utils.R<\/a>","<a href=\"#\">R/data_extract_select_module.R<\/a>","<a href=\"#\">R/data_extract_filter_module.R<\/a>","<a href=\"#\">R/resolve.R<\/a>","<a href=\"#\">R/data_extract_datanames.R<\/a>","<a href=\"#\">R/resolve_delayed.R<\/a>","<a href=\"#\">R/data_extract_module.R<\/a>","<a href=\"#\">R/merge_expression_module.R<\/a>","<a href=\"#\">R/input_checks.R<\/a>","<a href=\"#\">R/choices_labeled.R<\/a>","<a href=\"#\">R/choices_selected.R<\/a>","<a href=\"#\">R/select_spec.R<\/a>","<a href=\"#\">R/get_merge_call.R<\/a>","<a href=\"#\">R/data_extract_read_module.R<\/a>","<a href=\"#\">R/format_data_extract.R<\/a>","<a href=\"#\">R/data_extract_single_module.R<\/a>","<a href=\"#\">R/merge_datasets.R<\/a>","<a href=\"#\">R/filter_spec.R<\/a>","<a href=\"#\">R/get_dplyr_call.R<\/a>","<a href=\"#\">R/check_selector.R<\/a>","<a href=\"#\">R/data_extract_spec.R<\/a>","<a href=\"#\">R/Queue.R<\/a>","<a href=\"#\">R/include_css_js.R<\/a>","<a href=\"#\">R/merge_data_utils.R<\/a>","<a href=\"#\">R/all_choices.R<\/a>"],[20,4,376,194,50,162,286,86,98,811,413,46,398,310,197,494,176,69,106,323,409,493,117,129,114,20,12,31],[3,2,120,32,25,82,108,24,13,220,51,11,130,74,56,201,97,16,45,114,168,230,27,26,21,4,2,1],[0,0,26,13,12,43,64,17,10,170,40,9,107,63,48,180,90,15,43,109,167,230,27,26,21,4,2,1],[3,2,94,19,13,39,44,7,3,50,11,2,23,11,8,21,7,1,2,5,1,0,0,0,0,0,0,0],["0","0","28","9","2","3","31","9","33","8","6","3","120","14","47","141","15","15","9","25","48","173","2840","58","6","1","73","12"],["0.00%","0.00%","21.67%","40.62%","48.00%","52.44%","59.26%","70.83%","76.92%","77.27%","78.43%","81.82%","82.31%","85.14%","85.71%","89.55%","92.78%","93.75%","95.56%","95.61%","99.40%","100.00%","100.00%","100.00%","100.00%","100.00%","100.00%","100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]},{"name":"File","targets":0},{"name":"Lines","targets":1},{"name":"Relevant","targets":2},{"name":"Covered","targets":3},{"name":"Missed","targets":4},{"name":"Hits / Line","targets":5},{"name":"Coverage","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}","selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
+          <div class="datatables html-widget html-fill-item" id="htmlwidget-b2af3e2994db57f30c37" style="width:100%;height:500px;"></div>
+          <script type="application/json" data-for="htmlwidget-b2af3e2994db57f30c37">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/column_functions.R<\/a>","<a href=\"#\">R/zzz.R<\/a>","<a href=\"#\">R/call_utils.R<\/a>","<a href=\"#\">R/utils.R<\/a>","<a href=\"#\">R/data_extract_select_module.R<\/a>","<a href=\"#\">R/data_extract_filter_module.R<\/a>","<a href=\"#\">R/resolve.R<\/a>","<a href=\"#\">R/data_extract_datanames.R<\/a>","<a href=\"#\">R/resolve_delayed.R<\/a>","<a href=\"#\">R/data_extract_module.R<\/a>","<a href=\"#\">R/merge_expression_module.R<\/a>","<a href=\"#\">R/input_checks.R<\/a>","<a href=\"#\">R/choices_labeled.R<\/a>","<a href=\"#\">R/choices_selected.R<\/a>","<a href=\"#\">R/select_spec.R<\/a>","<a href=\"#\">R/get_merge_call.R<\/a>","<a href=\"#\">R/data_extract_read_module.R<\/a>","<a href=\"#\">R/format_data_extract.R<\/a>","<a href=\"#\">R/data_extract_single_module.R<\/a>","<a href=\"#\">R/merge_datasets.R<\/a>","<a href=\"#\">R/filter_spec.R<\/a>","<a href=\"#\">R/get_dplyr_call.R<\/a>","<a href=\"#\">R/check_selector.R<\/a>","<a href=\"#\">R/data_extract_spec.R<\/a>","<a href=\"#\">R/Queue.R<\/a>","<a href=\"#\">R/include_css_js.R<\/a>","<a href=\"#\">R/merge_data_utils.R<\/a>","<a href=\"#\">R/all_choices.R<\/a>"],[20,4,376,194,50,162,286,86,98,811,413,46,398,310,197,494,176,69,106,323,409,493,117,129,114,20,12,31],[3,2,120,32,25,82,108,24,13,220,51,11,130,74,56,201,97,16,45,114,168,230,27,26,21,4,2,1],[0,0,26,13,12,43,64,17,10,170,40,9,107,63,48,180,90,15,43,109,167,230,27,26,21,4,2,1],[3,2,94,19,13,39,44,7,3,50,11,2,23,11,8,21,7,1,2,5,1,0,0,0,0,0,0,0],["0","0","28","9","2","3","31","9","33","8","6","3","120","14","47","141","15","15","9","25","48","173","2840","58","6","1","73","12"],["0.00%","0.00%","21.67%","40.62%","48.00%","52.44%","59.26%","70.83%","76.92%","77.27%","78.43%","81.82%","82.31%","85.14%","85.71%","89.55%","92.78%","93.75%","95.56%","95.61%","99.40%","100.00%","100.00%","100.00%","100.00%","100.00%","100.00%","100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]},{"name":"File","targets":0},{"name":"Lines","targets":1},{"name":"Relevant","targets":2},{"name":"Covered","targets":3},{"name":"Missed","targets":4},{"name":"Hits / Line","targets":5},{"name":"Coverage","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}","selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
         </div>
         <div class="tab-pane" title="Source" data-value="Source" id="tab-covr-2">
           <div id="files">
@@ -3693,7 +3693,7 @@ table.table-condensed {
                     <td class="num">114</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   encoding = div(</pre>
+                      <pre class="language-r">#'   encoding = tags$div(</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -4120,7 +4120,7 @@ table.table-condensed {
                     <td class="num">175</td>
                     <td class="coverage">1<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    div(</pre>
+                      <pre class="language-r">    tags$div(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
@@ -32058,7 +32058,7 @@ table.table-condensed {
                     <td class="num">37</td>
                     <td class="coverage">6<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  div(</pre>
+                      <pre class="language-r">  tags$div(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
@@ -34919,7 +34919,7 @@ table.table-condensed {
                     <td class="num">85</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'     output = div(</pre>
+                      <pre class="language-r">#'     output = tags$div(</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -36305,7 +36305,7 @@ table.table-condensed {
                     <td class="num">283</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'     output = div(</pre>
+                      <pre class="language-r">#'     output = tags$div(</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -39240,7 +39240,7 @@ table.table-condensed {
                     <td class="num">22</td>
                     <td class="coverage">4<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    div,</pre>
+                      <pre class="language-r">    tags$div,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
@@ -39506,7 +39506,7 @@ table.table-condensed {
                     <td class="num">60</td>
                     <td class="coverage">4<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  div(filter_display, select_display, reshape_display)</pre>
+                      <pre class="language-r">  tags$div(filter_display, select_display, reshape_display)</pre>
                     </td>
                   </tr>
                   <tr class="never">
