@@ -94,7 +94,7 @@ merge_ui <- function(id, data_extracts) {
   sidebarLayout(
     sidebarPanel(
       h3("Encoding"),
-      div(
+      tags$div(
         data_extract_ui(
           ns("adsl_extract"), # must correspond with data_extracts list names
           label = "ADSL extract",

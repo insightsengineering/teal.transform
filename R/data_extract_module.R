@@ -111,7 +111,7 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #' # Call to use inside your teal module UI function
 #' standard_layout(
 #'   output = tableOutput("table"),
-#'   encoding = div(
+#'   encoding = tags$div(
 #'     data_extract_ui(
 #'       id = "regressor",
 #'       label = "Regressor Variable",
@@ -172,7 +172,7 @@ data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FA
   }
   tagList(
     include_css_files(pattern = "data_extract"),
-    div(
+    tags$div(
       class = "data-extract",
       tags$label(label),
       dataset_input,
