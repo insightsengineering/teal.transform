@@ -19,7 +19,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   ## filter input
   extract_spec_filter <- single_data_extract_spec$filter
   filter_display <- do.call(
-    div,
+    tags$div,
     lapply(
       seq_along(extract_spec_filter),
       function(idx) {
