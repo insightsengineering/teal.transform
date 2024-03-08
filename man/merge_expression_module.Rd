@@ -121,7 +121,7 @@ adlb_extract <- data_extract_spec(
 
 ui <- fluidPage(
   standard_layout(
-    output = div(
+    output = tags$div(
       verbatimTextOutput("expr"),
       dataTableOutput("data")
     ),

@@ -82,7 +82,7 @@
 #'
 #' ui <- fluidPage(
 #'   standard_layout(
-#'     output = div(
+#'     output = tags$div(
 #'       verbatimTextOutput("expr"),
 #'       dataTableOutput("data")
 #'     ),
@@ -280,7 +280,7 @@ merge_expression_module.list <- function(datasets,
 #'
 #' ui <- fluidPage(
 #'   standard_layout(
-#'     output = div(
+#'     output = tags$div(
 #'       verbatimTextOutput("expr"),
 #'       dataTableOutput("data")
 #'     ),
