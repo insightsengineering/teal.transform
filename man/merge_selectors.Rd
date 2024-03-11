@@ -2,49 +2,23 @@
 % Please edit documentation in R/merge_datasets.R
 \name{merge_selectors}
 \alias{merge_selectors}
-\title{Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical}
+\title{Merge selectors when \code{dataname}, \code{reshape}, \code{filters} and \code{keys} entries are identical}
 \usage{
 merge_selectors(selector_list)
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 }
 \value{
-error or nothing
+List of merged selectors or original parameter if the conditions to merge are
+not applicable.
 }
 \description{
-Merge selectors - select item if all of \code{dataname}, reshape, filters and keys items are identical
-}
-\examples{
-selector_list <- list(
-  # ADSL - SEX
-  list(
-    filters = NULL, select = "AGE", always_selected = NULL,
-    reshape = FALSE, dataname = "ADSL",
-    internal_id = "adsl_var", keys = c("STUDYID", "USUBJID")
-  ),
-
-  # ADSL - AGE
-  list(
-    filters = NULL, select = "SEX", always_selected = NULL,
-    reshape = FALSE, dataname = "ADSL",
-    internal_id = "adsl_var2", keys = c("STUDYID", "USUBJID")
-  ),
-
-  # ADLB - AVAL
-  list(
-    filters = NULL, select = "AVAL", always_selected = NULL,
-    reshape = FALSE, dataname = "ADLB",
-    internal_id = "adlb_var", keys = c(
-      "STUDYID", "USUBJID",
-      "PARAMCD", "AVISIT"
-    )
-  )
-)
-merged_selectors <- teal.transform:::merge_selectors(selector_list)
-merged_selectors
+Merge selectors when \code{dataname}, \code{reshape}, \code{filters} and \code{keys} entries are identical
 }
 \keyword{internal}

@@ -2,52 +2,54 @@
 % Please edit documentation in R/data_extract_module.R
 \name{data_extract_ui}
 \alias{data_extract_ui}
-\title{teal data extraction module user-interface}
+\title{\code{teal} data extraction module user-interface}
 \usage{
 data_extract_ui(id, label, data_extract_spec, is_single_dataset = FALSE)
 }
 \arguments{
-\item{id}{(\code{character}) shiny input unique identifier}
+\item{id}{(\code{character}) shiny input unique identifier.}
 
-\item{label}{(\code{character}) Label above the data extract input}
+\item{label}{(\code{character}) Label above the data extract input.}
 
 \item{data_extract_spec}{(\code{list} of \code{data_extract_spec})
-This is the outcome of listing \link{data_extract_spec}
-constructor calls.}
+This is the outcome of listing \code{\link[=data_extract_spec]{data_extract_spec()}} constructor calls.}
 
-\item{is_single_dataset}{(\code{logical}) FALSE to display the dataset widget}
+\item{is_single_dataset}{(\code{logical}) \code{FALSE} to display the dataset widget.}
 }
 \value{
-shiny \link[shiny:selectInput]{shiny::selectInput}\code{s} that allow to define how to extract data from
+Shiny \code{\link[shiny:selectInput]{shiny::selectInput}}\code{s} that allow to define how to extract data from
 a specific dataset. The input elements will be returned inside a \link[shiny:reexports]{shiny::div} container.
-
-There are three inputs that will be rendered
-\enumerate{
-\item{Dataset select}{ Optional. If more than one \link{data_extract_spec} is handed over
-to the function, a shiny \link[shiny:selectInput]{shiny::selectInput} will be rendered. Else just the name
-of the dataset is given.
-}
-\item{Filter Panel }{Optional. If the \link{data_extract_spec} contains a
-filter element a shiny \link[shiny:selectInput]{shiny::selectInput} will be rendered with the options to
-filter the dataset.
-}
-\item{Select panel }{A shiny \link[shiny:selectInput]{shiny::selectInput} to select columns from the dataset to
-go into the analysis.
-}
-}
-
-The output can be analyzed using \code{data_extract_srv(...)}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This functionality should be used in the encoding panel of your \code{teal} app. It will
-allow app-developers to specify a \link{data_extract_spec} object. This object should be used
-to teal module variables being filtered data from \code{CDISC} datasets. You can use this function in the same way as any
-\href{https://shiny.rstudio.com/articles/modules.html}{shiny module} UI. The corresponding server module
-can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
+}
+\details{
+There are three inputs that will be rendered
+\enumerate{
+\item Dataset select Optional. If more than one \link{data_extract_spec} is handed over
+to the function, a shiny \link[shiny:selectInput]{shiny::selectInput} will be rendered. Else just the name
+of the dataset is given.
+\item Filter Panel Optional. If the \link{data_extract_spec} contains a
+filter element a shiny \link[shiny:selectInput]{shiny::selectInput} will be rendered with the options to
+filter the dataset.
+\item Select panel A shiny \link[shiny:selectInput]{shiny::selectInput} to select columns from the dataset to
+go into the analysis.
+}
+
+The output can be analyzed using \code{data_extract_srv(...)}.
+
+This functionality should be used in the encoding panel of your \code{teal} app.
+It will allow app-developers to specify a \code{\link[=data_extract_spec]{data_extract_spec()}} object.
+This object should be used to \code{teal} module variables being filtered data
+from CDISC datasets.
+
+You can use this function in the same way as any
+\href{https://shiny.rstudio.com/articles/modules.html}{\verb{shiny module}} UI.
+The corresponding server module can be found in \code{\link[=data_extract_srv]{data_extract_srv()}}.
 }
 \examples{
 library(shiny)
+library(teal.widgets)
 
 adtte_filters <- filter_spec(
   vars = c("PARAMCD", "CNSR"),
@@ -70,9 +72,9 @@ response_spec <- data_extract_spec(
   )
 )
 # Call to use inside your teal module UI function
-teal.widgets::standard_layout(
+standard_layout(
   output = tableOutput("table"),
-  encoding = div(
+  encoding = tags$div(
     data_extract_ui(
       id = "regressor",
       label = "Regressor Variable",

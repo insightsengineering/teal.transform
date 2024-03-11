@@ -2,17 +2,17 @@
 % Please edit documentation in R/input_checks.R
 \name{list_extract_spec}
 \alias{list_extract_spec}
-\title{Make sure that the extract spec has list form}
+\title{Make sure that the extract specification is in list format}
 \usage{
 list_extract_spec(x, allow_null = FALSE)
 }
 \arguments{
-\item{x}{\code{data_extract_spec} a single \code{data_extract_spec} or list of these}
+\item{x}{(\code{data_extract_spec} or \code{list}) of \code{data_extract_spec} elements.}
 
-\item{allow_null}{\code{logical} whether x can be \code{NULL}}
+\item{allow_null}{(\code{logical}) whether x can be \code{NULL}.}
 }
 \value{
-x as a list if it is not already
+\code{x} as a list if it is not already.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

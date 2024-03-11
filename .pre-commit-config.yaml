@@ -19,7 +19,6 @@ repos:
           - dplyr
           - lifecycle
           - logger
-          - magrittr
           - methods
           - rlang
           - shiny

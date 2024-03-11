@@ -13,95 +13,26 @@ get_dplyr_call(
 )
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
-\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining.}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 
-\item{data}{(\code{NULL} or named \code{list}).}
+\item{data}{(\code{NULL} or named \code{list}) of datasets.}
 }
 \value{
-(\code{call}) filter, select, rename and reshape call
+(\code{call}) filter, select, rename and reshape call.
 }
 \description{
-Parse filter, select, rename and reshape call
-}
-\examples{
-# one dataset
-teal.transform:::get_dplyr_call(
-  list(list(
-    dataname = "ADSL",
-    filters = NULL,
-    select = character(0),
-    keys = c("STUDYID", "USUBJID"),
-    reshape = FALSE,
-    internal_id = "test1"
-  ))
-)
-teal.transform:::get_dplyr_call(
-  list(list(
-    dataname = "ADSL",
-    filters = list(list(columns = "SEX", selected = list("F", "M"))),
-    select = character(0),
-    keys = c("STUDYID", "USUBJID"),
-    reshape = FALSE,
-    internal_id = "test1"
-  ))
-)
-teal.transform:::get_dplyr_call(
-  list(list(
-    dataname = "ADSL",
-    filters = list(list(columns = "SEX", selected = list("F", "M"))),
-    select = c("AVAL"),
-    keys = c("STUDYID", "USUBJID"),
-    reshape = FALSE,
-    internal_id = "test1"
-  ))
-)
-
-# two datasets with rename part
-teal.transform:::get_dplyr_call(
-  list(
-    list(
-      dataname = "ADSL",
-      filters = NULL,
-      select = c("COL_1", "COL_2"),
-      keys = c("STUDYID", "USUBJID"),
-      reshape = FALSE,
-      internal_id = "test1"
-    ),
-    list(
-      dataname = "ADSL",
-      filters = NULL,
-      select = c("COL_2", "COL_3"),
-      keys = c("STUDYID", "USUBJID"),
-      reshape = FALSE,
-      internal_id = "test2"
-    )
-  ),
-  idx = 1L
-)
-
-# long dataset with reshape part
-teal.transform:::get_dplyr_call(
-  list(list(
-    dataname = "ADLB",
-    filters = list(list(
-      columns = c("PARAMCD", "AVISIT"),
-      selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE"))
-    )),
-    select = c("AVAL"),
-    keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
-    reshape = TRUE,
-    internal_id = "test1"
-  ))
-)
+Parses filter, select, rename and reshape call
 }
 \keyword{internal}

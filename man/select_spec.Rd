@@ -37,21 +37,21 @@ select_spec.default(
 )
 }
 \arguments{
-\item{choices}{(\code{character}) or (\code{delayed_data}) object.
-Named character vector to define the choices
-of a shiny \code{\link[shiny]{selectInput}}. These have to be columns in the
-dataset defined in the \code{\link{data_extract_spec}} where this is called.
-\code{delayed_data} objects can be created via \code{\link{variable_choices}} or \code{\link{value_choices}}.}
+\item{choices}{(\code{character} or \code{delayed_data}) object.
+Named character vector to define the choices of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
+These have to be columns in the dataset defined in the \code{\link[=data_extract_spec]{data_extract_spec()}}
+where this is called.
+\code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{optional (\code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data} object).
-Named character vector to define the selected values of a shiny \code{\link[shiny]{selectInput}}.
+\item{selected}{(optional \code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data}).
+Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 Passing an \code{all_choices()} object indicates selecting all possible choices.
 Defaults to the first value of \code{choices} or \code{NULL} for delayed data loading.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
-shiny \code{\link[shiny]{selectInput}}.}
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
-\item{fixed}{optional (\code{logical}). \code{\link{data_extract_spec}} specific feature to
+\item{fixed}{(optional \code{logical}). \code{\link[=data_extract_spec]{data_extract_spec()}} specific feature to
 hide the choices selected in case they are not needed. Setting fixed to \code{TRUE}
 will not allow the user to select columns. It will then lead to a selection of
 columns in the dataset that is defined by the developer of the app.}
@@ -61,17 +61,19 @@ always be selected}
 
 \item{ordered}{(\code{logical(1)}) Flags whether selection order should be tracked.}
 
-\item{label}{optional (\code{character}). Define a label on top of this specific
-shiny \code{\link[shiny]{selectInput}}. The default value is \code{"Select"}.}
+\item{label}{(optional \code{character}). Define a label on top of this specific
+shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Select"}.}
 }
 \value{
 A \code{select_spec}-S3 class object or \code{delayed_select_spec}-S3-class object.
 It contains all input values.
+
 If \code{select_spec}, then the function double checks the \code{choices} and \code{selected} inputs.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-\code{select_spec} is used inside teal to create a \code{\link[shiny]{selectInput}}
+
+\code{select_spec} is used inside \code{teal} to create a \code{\link[shiny:selectInput]{shiny::selectInput()}}
 that will select columns from a dataset.
 }
 \examples{

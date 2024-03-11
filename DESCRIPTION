@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.4.0.9015
-Date: 2024-01-24
+Version: 0.5.0.9001
+Date: 2024-03-07
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -19,7 +19,6 @@ URL: https://insightsengineering.github.io/teal.transform/,
     https://github.com/insightsengineering/teal.transform/
 BugReports: https://github.com/insightsengineering/teal.transform/issues
 Depends:
-    magrittr (>= 1.5),
     R (>= 3.6)
 Imports:
     checkmate (>= 2.1.0),
@@ -32,30 +31,29 @@ Imports:
     shinyjs,
     shinyvalidate,
     stats,
-    teal.data (>= 0.3.0.9031),
-    teal.logger (>= 0.1.3.9010),
+    teal.data (>= 0.5.0),
+    teal.logger (>= 0.1.3.9011),
     teal.widgets (>= 0.4.0),
     tidyr (>= 0.8.3),
     tidyselect
 Suggests:
     knitr (>= 1.42),
     rmarkdown (>= 2.19),
-    teal.code (>= 0.4.1.9009),
+    teal.code (>= 0.5.0),
     testthat (>= 3.1.5)
 VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
-Config/Needs/verdepcheck: tidyverse/magrittr, mllg/checkmate,
-    tidyverse/dplyr, r-lib/lifecycle, daroczig/logger, r-lib/rlang,
-    rstudio/rmarkdown, rstudio/shiny, daattali/shinyjs,
-    rstudio/shinyvalidate, insightsengineering/teal.data,
-    insightsengineering/teal.logger, insightsengineering/teal.widgets,
-    tidyverse/tidyr, r-lib/tidyselect, yihui/knitr,
-    insightsengineering/teal.code, r-lib/testthat
+Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
+    r-lib/lifecycle, daroczig/logger, r-lib/rlang, rstudio/rmarkdown,
+    rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
+    insightsengineering/teal.data, insightsengineering/teal.logger,
+    insightsengineering/teal.widgets, tidyverse/tidyr, r-lib/tidyselect,
+    yihui/knitr, insightsengineering/teal.code, r-lib/testthat
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1

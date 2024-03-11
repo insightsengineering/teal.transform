@@ -3,7 +3,7 @@
 \name{choices_selected}
 \alias{choices_selected}
 \alias{is.choices_selected}
-\title{Choices Selected}
+\title{Choices selected}
 \usage{
 choices_selected(
   choices,
@@ -15,53 +15,63 @@ choices_selected(
 is.choices_selected(x)
 }
 \arguments{
-\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object\cr
+\item{choices}{(\code{character}) vector of possible choices or \code{delayed_data} object.
+
 See \code{\link[=variable_choices]{variable_choices()}} and \code{\link[=value_choices]{value_choices()}}.}
 
 \item{selected}{(\code{character}) vector of preselected options, (\code{all_choices}) object
-or (\code{delayed_data}) object. If \code{delayed_data} object then \code{choices} must also be
-a \code{delayed_data} object. If not supplied it will default to the first element of
-\code{choices} if \code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}
+or (\code{delayed_data}) object.
 
-\item{keep_order}{(\code{logical})\cr
-In case of \code{FALSE} the selected variables will be on top of the drop-down field.}
+If \code{delayed_data} object then \code{choices} must also be \code{delayed_data} object.
+If not supplied it will default to the first element of \code{choices} if
+\code{choices} is a vector, or \code{NULL} if \code{choices} is a \code{delayed_data} object.}
 
-\item{fixed}{optional, (\code{logical})\cr
-Whether to block user to select choices}
+\item{keep_order}{(\code{logical}) In case of \code{FALSE} the selected variables will
+be on top of the drop-down field.}
 
-\item{x}{object to check}
+\item{fixed}{(optional \code{logical}) Whether to block user to select choices.}
+
+\item{x}{(\code{choices_selected}) object to check.}
 }
 \value{
-Object of class \code{choices_selected} and of type list which contains the specified
+\code{choices_selected} returns list of \code{choices_selected}, encapsulating the specified
 \code{choices}, \code{selected}, \code{keep_order} and \code{fixed}.
+
+\code{is.choices_selected} returns \code{TRUE} if \code{x} inherits from a \code{choices_selected} object, \code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Construct a single list containing available choices, the default selected value, and
 additional settings such as to order the choices with the selected elements appearing first
-or whether to block the user from making selections. Can be used in \code{ui} input elements
-such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}
+or whether to block the user from making selections.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Can be used in UI input elements such as \code{\link[teal.widgets:optionalSelectInput]{teal.widgets::optionalSelectInput()}}.
 }
 \details{
 Please note that the order of selected will always follow the order of choices. The \code{keep_order}
 argument is set to false which will run the following code inside:
 
-\code{choices <- c(selected, setdiff(choices, selected))}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{choices <- c(selected, setdiff(choices, selected))
+}\if{html}{\out{</div>}}
 
-in case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
+In case you want to keep your specific order of choices, set \code{keep_order} to \code{TRUE}.
 }
-\examples{
+\section{Functions}{
+\itemize{
+\item \code{is.choices_selected()}: Check if an object is a choices_selected class
 
+}}
+\examples{
 library(shiny)
+library(teal.widgets)
 
 # all_choices example - semantically the same objects
 choices_selected(choices = letters, selected = all_choices())
 choices_selected(choices = letters, selected = letters)
 
 choices_selected(
-  choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+  choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
   selected = "C"
 )
 
@@ -119,7 +129,7 @@ choices_selected(
 # with delayed data loading
 choices_selected(variable_choices("ADSL", subset = function(data) {
   idx <- vapply(data, is.factor, logical(1))
-  return(names(data)[idx])
+  names(data)[idx]
 }))
 
 cs <- choices_selected(
@@ -128,13 +138,15 @@ cs <- choices_selected(
 )
 
 ui <- fluidPage(
-  teal.widgets::optionalSelectInput(
+  optionalSelectInput(
     inputId = "id",
     choices = cs$choices,
     selected = cs$selected
   )
 )
-\dontrun{
-shinyApp(ui, server = function(input, output, session) {})
+
+server <- function(input, output, session) {}
+if (interactive()) {
+  shinyApp(ui, server)
 }
 }

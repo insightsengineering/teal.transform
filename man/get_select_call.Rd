@@ -7,15 +7,12 @@
 get_select_call(select)
 }
 \arguments{
-\item{select}{(\code{character}) vector of selected column names}
+\item{select}{(\code{character}) vector of selected column names.}
 }
 \value{
-(\code{call}) \code{dplyr} select call
+\code{dplyr} select \code{call}.
 }
 \description{
 Parse \code{dplyr} select call
-}
-\examples{
-teal.transform:::get_select_call(letters)
 }
 \keyword{internal}

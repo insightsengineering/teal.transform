@@ -3,76 +3,85 @@
 \name{choices_labeled}
 \alias{choices_labeled}
 \alias{print.choices_labeled}
-\title{Set "\verb{<choice>:<label>}" type of Names}
+\title{Set "\verb{<choice>:<label>}" type of names}
 \usage{
 choices_labeled(choices, labels, subset = NULL, types = NULL)
 
 \method{print}{choices_labeled}(x, ...)
 }
 \arguments{
-\item{choices}{A character / factor / numeric / logical vector.}
+\item{choices}{(\code{character} or \code{factor} or \code{numeric} or \code{logical}) vector.}
 
-\item{labels}{character vector containing labels to be applied to \code{choices}. If \code{NA} then
-"Label Missing" will be used.}
+\item{labels}{(\code{character}) vector containing labels to be applied to \code{choices}.
+If \code{NA} then "Label Missing" will be used.}
 
-\item{subset}{a vector that is a subset of \code{choices}. This is useful if
-only a few variables need to be named. If this argument is used, the returned vector will
-match its order.}
+\item{subset}{(\code{character} or \code{factor} or \code{numeric} or \code{logical}) vector that
+is a subset of \code{choices}.
+This is useful if only a few variables need to be named.
+If this argument is used, the returned vector will match its order.}
 
-\item{types}{Character vector containing the types of the columns to be used for applying the appropriate
-icons to the \link{choices_selected} drop down box. (e.g. "numeric")}
+\item{types}{(\code{character}) vector containing the types of the columns to be used for applying the appropriate
+icons to the \link{choices_selected} drop down box (e.g. "numeric").}
 
 \item{x}{an object used to select a method.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-a named character vector
+Named \code{character} vector.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-This is often useful for \link{choices_selected} as it marks up the drop-down boxes
-for \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+This is often useful for \code{\link[=choices_selected]{choices_selected()}} as it marks up the drop-down boxes
+for \code{\link[shiny:selectInput]{shiny::selectInput()}}.
 }
 \details{
 If either \code{choices} or \code{labels} are factors, they are coerced to character.
 Duplicated elements from \code{choices} get removed.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(choices_labeled)}: Print choices_labeled object
+
+}}
 \examples{
 library(shiny)
+library(teal.data)
 
 ADSL <- teal.transform::rADSL
 ADTTE <- teal.transform::rADTTE
-choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
+
+choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
+
 # if only a subset of variables are needed, use subset argument
 choices3 <- choices_labeled(
   names(ADSL),
-  teal.data::col_labels(ADSL, fill = FALSE),
+  col_labels(ADSL, fill = FALSE),
   subset = c("ARMCD", "ARM")
 )
-\dontrun{
-shinyApp(
-  ui = fluidPage(
-    selectInput("c1",
-      label = "Choices from ADSL",
-      choices = choices1,
-      selected = choices1[1]
-    ),
-    selectInput("c2",
-      label = "Choices from ADTTE",
-      choices = choices2,
-      selected = choices2[1]
-    ),
-    selectInput("c3",
-      label = "Arm choices from ADSL",
-      choices = choices3,
-      selected = choices3[1]
-    )
+
+ui <- fluidPage(
+  selectInput("c1",
+    label = "Choices from ADSL",
+    choices = choices1,
+    selected = choices1[1]
   ),
-  server = function(input, output) {}
+  selectInput("c2",
+    label = "Choices from ADTTE",
+    choices = choices2,
+    selected = choices2[1]
+  ),
+  selectInput("c3",
+    label = "Arm choices from ADSL",
+    choices = choices3,
+    selected = choices3[1]
+  )
 )
+server <- function(input, output) {}
+
+if (interactive()) {
+  shinyApp(ui, server)
 }
 }

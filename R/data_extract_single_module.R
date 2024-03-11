@@ -1,16 +1,17 @@
 #' Returns a `shiny.tag` with the UI elements for a `data_extract_spec`
 #'
-#' @details Creates a `shiny.tag` element defining the UI elements corresponding
-#' a single `data_extract_spec` object.
+#' @details
+#' Creates a `shiny.tag` element defining the UI elements corresponding to a
+#' single `data_extract_spec` object.
 #'
-#' @param id (`character(1)`) the id of the module
-#' @param single_data_extract_spec (`data_extract_spec`) the [data_extract_spec()] object to handle.
+#' @param id (`character(1)`) the id of the module.
+#' @param single_data_extract_spec (`data_extract_spec`) the
+#' [data_extract_spec()] object to handle.
 #'
-#' @return `shiny.tag` the HTML element defining the UI
+#' @return `shiny.tag` the HTML element defining the UI.
+#'
 #' @keywords internal
 #'
-#' @examples
-#' teal.transform:::data_extract_single_ui(id = "test", data_extract_spec("extract"))
 data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   stopifnot(inherits(single_data_extract_spec, "data_extract_spec"))
   ns <- NS(id)
@@ -18,7 +19,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   ## filter input
   extract_spec_filter <- single_data_extract_spec$filter
   filter_display <- do.call(
-    div,
+    tags$div,
     lapply(
       seq_along(extract_spec_filter),
       function(idx) {
@@ -56,19 +57,21 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   if (!extract_spec_reshape) reshape_display <- shinyjs::hidden(reshape_display)
 
   ## all combined
-  div(filter_display, select_display, reshape_display)
+  tags$div(filter_display, select_display, reshape_display)
 }
 
 #' The server function for a single `data_extract_spec` object
 #'
-#' @details The Shiny server function for handling a single
-#' [data_extract_spec] object.
+#' @details
+#' The Shiny server function for handling a single [data_extract_spec] object.
 #'
 #' @inheritParams data_extract_filter_srv
 #' @inheritParams data_extract_single_ui
 #'
-#' @return `NULL`
+#' @return `NULL`.
+#'
 #' @keywords internal
+#'
 data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
   moduleServer(
     id,

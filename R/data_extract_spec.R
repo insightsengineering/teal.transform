@@ -1,34 +1,38 @@
-#' Data Extract input for teal modules
+#' Data extract input for `teal` modules
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
-#' The Data Extract input can be used to filter and select columns from a data
-#' set. This function enables such an input in teal.
+#' The Data extract input can be used to filter and select columns from a data set.
+#' This function enables such an input in `teal`.
 #' Please use the constructor function [data_extract_spec] to set it up.
 #'
-#' Note that no checks based on columns can be done because the data is only referred to by name.
+#' @note No checks based on columns can be done because the data is only referred to by name.
 #'
-#' @export
 #' @rdname data_extract_spec
 #'
 #' @section Module Development:
-#' \describe{
 #' `teal.transform` uses this object to construct a UI element in a module.
-#' }
 #'
-#' @param dataname (`character`)\cr
-#'  The name of the dataset to be extracted.
-#' @param select (`NULL`, `select_spec`-S3 class or `delayed_select_spec`)\cr
-#'  Columns to be selected from the input dataset
-#'  mentioned in `dataname`. The setup can be created using [select_spec] function.
-#' @param filter (`NULL` or `filter_spec` or its respective delayed version)\cr
-#'  Setup of the filtering of key columns inside the dataset.
-#'  This setup can be created using the [filter_spec] function.
-#'  Please note that if both select and filter are set to NULL, then the result will be a filter spec UI with all
-#'  variables as possible choices and a select spec with multiple set to `TRUE`.
-#' @param reshape (`logical`)\cr
-#'  whether reshape long to wide. Note that it will be used only in case of long dataset with multiple
-#'  keys selected in filter part.
+#' @param dataname (`character`)
+#' The name of the dataset to be extracted.
+#' @param select (`NULL` or `select_spec`-S3 class or `delayed_select_spec`)
+#' Columns to be selected from the input dataset mentioned in `dataname`.
+#' The setup can be created using [select_spec] function.
+#' @param filter (`NULL` or `filter_spec` or its respective delayed version)
+#' Setup of the filtering of key columns inside the dataset.
+#' This setup can be created using the [filter_spec] function.
+#' Please note that if both select and filter are set to `NULL`, then the result
+#' will be a filter spec UI with all variables as possible choices and a select
+#' spec with multiple set to `TRUE`.
+#' @param reshape (`logical`)
+#' whether reshape long to wide.
+#' Note that it will be used only in case of long dataset with multiple
+#' keys selected in filter part.
+#'
+#' @return `data_extract_spec` object.
+#'
+#' @references [select_spec] [filter_spec]
 #'
 #' @examples
 #' adtte_filters <- filter_spec(
@@ -78,7 +82,8 @@
 #'   filter = dynamic_filter
 #' )
 #'
-#' @references [select_spec] [filter_spec]
+#' @export
+#'
 data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
   checkmate::assert_string(dataname)
   stopifnot(

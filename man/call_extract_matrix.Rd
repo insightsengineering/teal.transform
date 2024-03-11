@@ -7,31 +7,18 @@
 call_extract_matrix(dataname = ".", row = NULL, column = NULL)
 }
 \arguments{
-\item{dataname}{(\code{character(1)} or \code{name})\cr}
+\item{dataname}{(\code{character(1)} or \code{name}).}
 
-\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
-optional, name of the \code{row} or condition}
+\item{row}{(optional \code{name} or \code{call} or \code{logical} or \code{integer} or \code{character})
+name of the \code{row} or condition.}
 
-\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer}, \code{character})\cr
-optional, name of the \code{column} or condition}
+\item{column}{(optional \code{name} or \code{call} or \code{logical} or \code{integer} or \code{character})
+name of the \code{column} or condition.}
 }
 \value{
-\code{[} call with all conditions included
-
-specific \code{\link[base]{Extract}} \code{call} for matrix
+\code{\link[=Extract]{Extract()}} \code{call} for matrix in \code{x[i, j]} notation.
 }
 \description{
 Get call to subset and select matrix
-}
-\examples{
-teal.transform:::call_extract_matrix(
-  dataname = "my_array",
-  row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
-  column = call("c", "SEX", "AGE")
-)
-teal.transform:::call_extract_matrix(
-  "mae_object",
-  column = teal.transform:::call_condition_choice("SEX", "M")
-)
 }
 \keyword{internal}

@@ -1,59 +1,68 @@
-#' Set "`<choice>:<label>`" type of Names
+#' Set "`<choice>:<label>`" type of names
 #'
-#' @description `r lifecycle::badge("stable")`
-#' This is often useful for [choices_selected] as it marks up the drop-down boxes
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' This is often useful for [choices_selected()] as it marks up the drop-down boxes
 #' for [shiny::selectInput()].
 #'
-#' @param choices A character / factor / numeric / logical vector.
-#' @param labels character vector containing labels to be applied to `choices`. If `NA` then
-#' "Label Missing" will be used.
-#' @param subset a vector that is a subset of `choices`. This is useful if
-#'   only a few variables need to be named. If this argument is used, the returned vector will
-#'   match its order.
-#' @param types Character vector containing the types of the columns to be used for applying the appropriate
-#'   icons to the [choices_selected] drop down box. (e.g. "numeric")
-#' @details If either `choices` or `labels` are factors, they are coerced to character.
+#' @details
+#' If either `choices` or `labels` are factors, they are coerced to character.
 #' Duplicated elements from `choices` get removed.
 #'
-#' @return a named character vector
+#' @param choices (`character` or `factor` or `numeric` or `logical`) vector.
+#' @param labels (`character`) vector containing labels to be applied to `choices`.
+#' If `NA` then "Label Missing" will be used.
+#' @param subset (`character` or `factor` or `numeric` or `logical`) vector that
+#' is a subset of `choices`.
+#' This is useful if only a few variables need to be named.
+#' If this argument is used, the returned vector will match its order.
+#' @param types (`character`) vector containing the types of the columns to be used for applying the appropriate
+#' icons to the [choices_selected] drop down box (e.g. "numeric").
 #'
-#' @export
+#' @return Named `character` vector.
 #'
 #' @examples
 #' library(shiny)
+#' library(teal.data)
 #'
 #' ADSL <- teal.transform::rADSL
 #' ADTTE <- teal.transform::rADTTE
-#' choices1 <- choices_labeled(names(ADSL), teal.data::col_labels(ADSL, fill = FALSE))
+#'
+#' choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
+#'
 #' # if only a subset of variables are needed, use subset argument
 #' choices3 <- choices_labeled(
 #'   names(ADSL),
-#'   teal.data::col_labels(ADSL, fill = FALSE),
+#'   col_labels(ADSL, fill = FALSE),
 #'   subset = c("ARMCD", "ARM")
 #' )
-#' \dontrun{
-#' shinyApp(
-#'   ui = fluidPage(
-#'     selectInput("c1",
-#'       label = "Choices from ADSL",
-#'       choices = choices1,
-#'       selected = choices1[1]
-#'     ),
-#'     selectInput("c2",
-#'       label = "Choices from ADTTE",
-#'       choices = choices2,
-#'       selected = choices2[1]
-#'     ),
-#'     selectInput("c3",
-#'       label = "Arm choices from ADSL",
-#'       choices = choices3,
-#'       selected = choices3[1]
-#'     )
+#'
+#' ui <- fluidPage(
+#'   selectInput("c1",
+#'     label = "Choices from ADSL",
+#'     choices = choices1,
+#'     selected = choices1[1]
 #'   ),
-#'   server = function(input, output) {}
+#'   selectInput("c2",
+#'     label = "Choices from ADTTE",
+#'     choices = choices2,
+#'     selected = choices2[1]
+#'   ),
+#'   selectInput("c3",
+#'     label = "Arm choices from ADSL",
+#'     choices = choices3,
+#'     selected = choices3[1]
+#'   )
 #' )
+#' server <- function(input, output) {}
+#'
+#' if (interactive()) {
+#'   shinyApp(ui, server)
 #' }
+#' @export
+#'
 choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
   if (is.factor(choices)) {
     choices <- as.character(choices)
@@ -100,7 +109,8 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     combined_labels <- combined_labels[ord]
     types <- types[ord]
   }
-  choices <- structure(
+
+  structure(
     choices,
     names = combined_labels,
     raw_labels = raw_labels,
@@ -108,37 +118,40 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
     class = c("choices_labeled", "character"),
     types = types
   )
-
-  return(choices)
 }
 
-
-#' Wrapper on [choices_labeled] to label variables basing on existing labels in data
+#' Variable label extraction and custom selection from data
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
 #'
-#' @param data (`data.frame`, `character`)
-#' If `data.frame`, then data to extract labels from
-#' If `character`, then name of the dataset to extract data from once available
+#' Wrapper on [choices_labeled] to label variables basing on existing labels in data.
+#'
+#' @rdname variable_choices
+#'
+#' @param data (`data.frame` or `character`)
+#' If `data.frame`, then data to extract labels from.
+#' If `character`, then name of the dataset to extract data from once available.
 #' @param subset (`character` or `function`)
 #' If `character`, then a vector of column names.
 #' If `function`, then this function is used to determine the possible columns (e.g. all factor columns).
 #' In this case, the function must take only single argument "data" and return a character vector.
+#'
 #' See examples for more details.
 #' @param key (`character`) vector with names of the variables, which are part of the primary key
-#' of the `data` argument. This is an optional argument, which allows to identify variables
-#' associated with the primary key and display the appropriate icon for them in the
+#' of the `data` argument.
+#'
+#' This is an optional argument, which allows to identify variables associated
+#' with the primary key and display the appropriate icon for them in the
 #' [teal.widgets::optionalSelectInput()] widget.
-#' @param fill (`logical(1)`) if `TRUE`, the function will return variable names for columns with non-existent labels;
-#'   otherwise will return `NA` for them
+#' @param fill (`logical(1)`) if `TRUE`, the function will return variable names
+#' for columns with non-existent labels; otherwise will return `NA` for them.
 #'
-#' @return named character vector with additional attributes or `delayed_data` object
-#'
-#' @rdname variable_choices
-#'
-#' @export
+#' @return Named `character` vector with additional attributes or `delayed_data` object.
 #'
 #' @examples
+#' library(teal.data)
+#'
 #' ADRS <- teal.transform::rADRS
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
@@ -146,7 +159,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' variable_choices(
 #'   ADRS,
 #'   subset = c("", "PARAM", "PARAMCD"),
-#'   key = teal.data::default_cdisc_join_keys["ADRS", "ADRS"]
+#'   key = default_cdisc_join_keys["ADRS", "ADRS"]
 #' )
 #'
 #' # delayed version
@@ -155,8 +168,10 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' # functional subset (with delayed data) - return only factor variables
 #' variable_choices("ADRS", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
-#'   return(names(data)[idx])
+#'   names(data)[idx]
 #' })
+#' @export
+#'
 variable_choices <- function(data, subset = NULL, fill = FALSE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE, any.missing = FALSE),
@@ -178,8 +193,7 @@ variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = 
 
 #' @rdname variable_choices
 #' @export
-variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) { # nolint
-
+variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE),
     checkmate::check_function(subset, null.ok = TRUE)
@@ -211,7 +225,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
     subset <- unique(subset)
   }
 
-  res <- if ("" %in% subset) {
+  if ("" %in% subset) {
     choices_labeled(
       choices = c("", names(data)),
       labels = c("", unname(teal.data::col_labels(data, fill = fill))),
@@ -226,31 +240,31 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
       types = var_types
     )
   }
-
-  return(res)
 }
 
-#' Wrapper on [choices_labeled] to label variable values basing on other variable values
+#' Value labeling and filtering based on variable relationship
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' Wrapper on [choices_labeled] to label variable values basing on other variable values.
+#'
+#' @rdname value_choices
 #'
 #' @param data (`data.frame`, `character`)
 #' If `data.frame`, then data to extract labels from.
 #' If `character`, then name of the dataset to extract data from once available.
-#' @param var_choices (`character` or `NULL`) vector with choices column names
-#' @param var_label (`character`) vector with labels column names
+#' @param var_choices (`character` or `NULL`) vector with choices column names.
+#' @param var_label (`character`) vector with labels column names.
 #' @param subset (`character` or `function`)
 #' If `character`, vector with values to subset.
 #' If `function`, then this function is used to determine the possible columns (e.g. all factor columns).
 #' In this case, the function must take only single argument "data" and return a character vector.
+#'
 #' See examples for more details.
-#' @param sep (`character`) separator used in case of multiple column names
+#' @param sep (`character`) separator used in case of multiple column names.
 #'
-#' @return named character vector or `delayed_data` object
-#'
-#' @rdname value_choices
-#'
-#' @export
+#' @return named character vector or `delayed_data` object.
 #'
 #' @examples
 #' ADRS <- teal.transform::rADRS
@@ -266,8 +280,10 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #'
 #' # functional subset
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = function(data) {
-#'   return(levels(data$PARAMCD)[1:2])
+#'   levels(data$PARAMCD)[1:2]
 #' })
+#' @export
+#'
 value_choices <- function(data,
                           var_choices,
                           var_label = NULL,
@@ -290,7 +306,7 @@ value_choices.character <- function(data,
                                     var_label = NULL,
                                     subset = NULL,
                                     sep = " - ") {
-  out <- structure(
+  structure(
     list(
       data = data,
       var_choices = var_choices,
@@ -300,12 +316,11 @@ value_choices.character <- function(data,
     ),
     class = c("delayed_value_choices", "delayed_data", "choices_labeled")
   )
-  return(out)
 }
 
 #' @rdname value_choices
 #' @export
-value_choices.data.frame <- function(data, # nolint
+value_choices.data.frame <- function(data,
                                      var_choices,
                                      var_label = NULL,
                                      subset = NULL,
@@ -361,15 +376,16 @@ value_choices.data.frame <- function(data, # nolint
   attr(res, "sep") <- sep
   attr(res, "var_choices") <- var_choices
   attr(res, "var_label") <- var_label
-  return(res)
+  res
 }
 
-#' Print choices_labeled object
-#' @description `r lifecycle::badge("stable")`
-#' @rdname choices_labeled
+#' @describeIn choices_labeled Print choices_labeled object
+#'
 #' @param x an object used to select a method.
 #' @param ... further arguments passed to or from other methods.
+#'
 #' @export
+#'
 print.choices_labeled <- function(x, ...) {
   cat(
     sprintf("number of choices: %s \n", length(x)),
@@ -378,5 +394,5 @@ print.choices_labeled <- function(x, ...) {
     sep = "\n"
   )
 
-  return(invisible(x))
+  invisible(x)
 }

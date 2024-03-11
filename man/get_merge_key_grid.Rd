@@ -2,22 +2,24 @@
 % Please edit documentation in R/get_merge_call.R
 \name{get_merge_key_grid}
 \alias{get_merge_key_grid}
-\title{Gets keys list from keys list}
+\title{Gets merge key pair list from keys list}
 \usage{
 get_merge_key_grid(selector_list, join_keys = teal.data::join_keys())
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining.}
 }
 \value{
-list of key pairs between all datasets
+List of merge key pairs between all datasets.
 }
 \description{
-Gets keys list from keys list
+Gets merge key pair list from keys list
 }
 \keyword{internal}

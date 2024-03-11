@@ -1,7 +1,14 @@
-# teal.transform 0.4.0.9015
+# teal.transform 0.5.0.9001
+
+# teal.transform 0.5.0
+
+### Breaking changes
+
+* Namespace from `magrittr` package is no longer available when loading `teal.transform`. Only re-exports pipe `%>%` operator from `dplyr` package.
 
 ### Miscellaneous
 
+* Removed `magrittr` from package dependencies.
 * Specified minimal version of package dependencies.
 
 # teal.transform 0.4.0

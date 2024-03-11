@@ -7,29 +7,14 @@
 calls_combine_by(operator, calls)
 }
 \arguments{
-\item{operator}{(\code{character(1)} or \code{name})\cr
-name/symbol of the operator.}
+\item{operator}{(\code{character(1)} or \code{name}) name / symbol of the operator.}
 
-\item{calls}{(\code{list} of calls)\cr
-list containing calls to be combined by \code{operator}}
+\item{calls}{(\code{list} of calls) list containing calls to be combined by \code{operator}.}
 }
 \value{
-call
-
-a combined \code{call}
+A combined \code{call}.
 }
 \description{
-Combine list of calls by specific operator
-}
-\examples{
-teal.transform:::calls_combine_by(
-  "&",
-  calls = list(
-    teal.transform:::call_condition_choice("SEX", "F"),
-    teal.transform:::call_condition_range("AGE", c(20, 50)),
-    teal.transform:::call_condition_choice("ARM", "ARM: A"),
-    TRUE
-  )
-)
+Combine list of calls by specific operator.
 }
 \keyword{internal}

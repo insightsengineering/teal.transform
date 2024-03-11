@@ -2,17 +2,20 @@
 % Please edit documentation in R/data_extract_datanames.R
 \name{is_single_dataset}
 \alias{is_single_dataset}
-\title{Checks if the input \code{data_extract_spec} objects all come from the same dataset}
+\title{Verify uniform dataset source across data extract specification}
 \usage{
 is_single_dataset(...)
 }
 \arguments{
-\item{...}{either \code{data_extract_spec} objects or lists of \code{data_extract_spec} objects that do not contain
-NULL}
+\item{...}{either \code{data_extract_spec} objects or lists of \code{data_extract_spec}
+objects that do not contain \code{NULL}}
 }
 \value{
-logical
+\code{TRUE} if all \code{data_extract_spec} objects come from the same dataset,
+\code{FALSE} otherwise.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Checks if the input \code{data_extract_spec} objects all come from the same dataset.
 }

@@ -7,22 +7,16 @@
 call_condition_logical(varname, choice)
 }
 \arguments{
-\item{varname}{(\code{name} or \code{character(1)})\cr
+\item{varname}{(\code{name} or \code{character(1)})
 name of the variable}
 
-\item{choice}{(\code{logical(1)})\cr
+\item{choice}{(\code{logical(1)})
 chosen value}
 }
 \value{
-call
-
-a \code{call}
+\code{call}.
 }
 \description{
-Compose \code{logical} variable condition call from inputs
-}
-\examples{
-teal.transform:::call_condition_logical("event", choice = TRUE)
-teal.transform:::call_condition_logical("event", choice = FALSE)
+Compose \code{logical} variable condition call from inputs.
 }
 \keyword{internal}

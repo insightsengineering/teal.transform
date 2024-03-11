@@ -12,46 +12,24 @@ get_reshape_call(
 )
 }
 \arguments{
-\item{selector_list}{(\code{reactive})\cr
-output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
-When using a reactive named list, the names must be identical to the shiny ids of the respective
+\item{selector_list}{(\code{reactive})
+output from \code{\link[=data_extract_multiple_srv]{data_extract_multiple_srv()}} or a reactive named list of
+outputs from \code{\link[=data_extract_srv]{data_extract_srv()}}.
+When using a reactive named list, the names must be identical to the shiny
+ids of the respective
 \code{\link[=data_extract_ui]{data_extract_ui()}}.}
 
-\item{idx}{optional (\code{integer}) current selector index in all selectors list}
+\item{idx}{optional (\code{integer}) current selector index in all selectors list.}
 
-\item{join_keys}{(\code{join_keys}) nested list of keys used for joining}
+\item{join_keys}{(\code{join_keys}) nested list of keys used for joining.}
 
 \item{dplyr_call_data}{(\code{list}) simplified selectors with aggregated set of filters,
-selections, reshapes etc. All necessary data for merging}
+selections, reshapes etc. All necessary data for merging.}
 }
 \value{
-(\code{list}) list of multiple \code{dplyr} calls that reshape data
+List of multiple \code{dplyr} calls that reshape data.
 }
 \description{
 Returns \code{dplyr} reshape call
-}
-\examples{
-filters <- list(
-  columns = c("PARAMCD", "AVISIT"),
-  selected = list(c("ALT", "SCREENING"), c("ALT", "BASELINE"))
-)
-select <- "AVAL"
-internal_id <- "ADLB"
-
-x <- list(
-  list(
-    dataname = "ADLB",
-    filters = list(list(
-      columns = c("PARAMCD", "AVISIT"),
-      selected = list(c("ALBCV", "SCREENING"), c("ALBCV", "BASELINE")),
-      multiple = FALSE
-    )),
-    select = "AVAL",
-    keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"),
-    reshape = TRUE,
-    internal_id = "test"
-  )
-)
-teal.transform:::get_reshape_call(x, 1L)
 }
 \keyword{internal}

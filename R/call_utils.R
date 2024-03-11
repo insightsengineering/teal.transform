@@ -1,9 +1,14 @@
 #' Checks `varname` argument and convert to call
 #'
-#' Checks `varname` type and parse if it's a `character`
-#' @param varname (`name`, `call` or `character(1)`)\cr
-#'   name of the variable
+#' Checks `varname` type and parse if it's a `character`.
+#'
+#' @param varname (`name` or `call` or `character(1)`)
+#' name of the variable
+#'
+#' @returns the parsed `varname`.
+#'
 #' @keywords internal
+#'
 call_check_parse_varname <- function(varname) {
   checkmate::assert(
     checkmate::check_string(varname),
@@ -30,33 +35,29 @@ call_check_parse_varname <- function(varname) {
 #'
 #' Compose choices condition call from inputs.
 #'
-#' @param varname (`name`, `call` or `character(1)`)\cr
-#'   name of the variable
+#' @details
+#' `choices` can be vector of any type but for some output might be converted:
+#' * `factor` call is composed on choices converted to `character`;
+#' * `Date` call is composed on choices converted to `character` using
+#' `format(choices)`;
+#' * `POSIXct`, `POSIXlt` call is composed on choices converted to `character` using
+#' `format(choices)`.
 #'
-#' @param choices (`vector`)\cr
-#'   `varname` values to match using the `==` (single value) or
-#'   `%in%` (vector) condition. `choices` can be vector of any type
-#'   but for some output might be converted:
-#'   \itemize{
-#'     \item{`factor`}{ call is composed on choices converted to `character`}
-#'     \item{`Date`}{ call is composed on choices converted to `character` using `format(choices)`}
-#'     \item{`POSIXct`, `POSIXlt`}{ Call is composed on choices converted to `character` using
-#'       `format(choices)`. One has to be careful here as formatted date-time variable might loose
-#'       some precision (see `format` argument in \code{\link{format.POSIXlt}}) and output call
-#'       could be insufficient for exact comparison. In this case one should specify
-#'       `varname = trunc(<varname>)` and possibly convert `choices` to `character`)
-#'     }
-#'   }
+#' One has to be careful here as formatted date-time variable might loose
+#' some precision (see `format` argument in [format.POSIXlt()] and output call
+#' could be insufficient for exact comparison. In this case one should specify
+#' `varname = trunc(<varname>)` and possibly convert `choices` to `character`).
 #'
-#' @examples
-#' teal.transform:::call_condition_choice("SEX", choices = c(1, 2))
-#' teal.transform:::call_condition_choice(as.name("SEX"), choices = "F")
-#' teal.transform:::call_condition_choice("SEX", choices = c("F", "M"))
-#' teal.transform:::call_condition_choice("SEX", choices = factor(c("F", "M")))
-#' teal.transform:::call_condition_choice("x$SEX", choices = Sys.Date())
-#' teal.transform:::call_condition_choice("trunc(x$SEX)", choices = Sys.time())
-#' @return a `call`
+#' @param varname (`name` or `call` or `character(1)`)
+#' name of the variable.
+#' @param choices (`vector`)
+#' `varname` values to match using the `==` (single value) or `%in%` (vector)
+#' condition.
+#'
+#' @return `call`.
+#'
 #' @keywords internal
+#'
 call_condition_choice <- function(varname, choices) {
   varname <- call_check_parse_varname(varname)
 
@@ -85,24 +86,18 @@ call_condition_choice <- function(varname, choices) {
 
 #' `numeric` range condition call
 #'
-#' Compose `numeric` range condition call from inputs
+#' Compose `numeric` range condition call from inputs.
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
+#' name of the variable.
 #'
-#' @param range (`numeric(2)`)\cr
-#'   range of the variable
+#' @param range (`numeric(2)`)
+#' range of the variable.
 #'
-#' @return call
-#' @examples
-#' teal.transform:::call_condition_range("AGE", range = c(1, 2))
-#' teal.transform:::call_condition_range(as.name("AGE"), range = c(-1.2, 2.1))
-#' teal.transform:::call_condition_range(
-#'   teal.transform:::call_extract_list("ADSL", "AGE"),
-#'   range = c(-1.2, 2.1)
-#' )
-#' @return a `call`
+#' @return `call`.
+#'
 #' @keywords internal
+#'
 call_condition_range <- function(varname, range) {
   checkmate::assert_numeric(range, len = 2, sorted = TRUE)
 
@@ -116,20 +111,18 @@ call_condition_range <- function(varname, range) {
 
 #' `logical` variable condition call
 #'
-#' Compose `logical` variable condition call from inputs
+#' Compose `logical` variable condition call from inputs.
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`)
+#' name of the variable
 #'
-#' @param choice (`logical(1)`)\cr
-#'   chosen value
+#' @param choice (`logical(1)`)
+#' chosen value
 #'
-#' @return call
-#' @examples
-#' teal.transform:::call_condition_logical("event", choice = TRUE)
-#' teal.transform:::call_condition_logical("event", choice = FALSE)
-#' @return a `call`
+#' @return `call`.
+#'
 #' @keywords internal
+#'
 call_condition_logical <- function(varname, choice) {
   checkmate::assert_flag(choice)
   varname <- call_check_parse_varname(varname)
@@ -146,31 +139,21 @@ call_condition_logical <- function(varname, choice) {
   }
 }
 
-
 #' `POSIXct` range condition call
 #'
 #' Compose `POSIXct` range condition call from inputs.
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`) name of the variable.
+#' @param range (`POSIXct`) range of the variable.
+#' Be aware that output uses truncated range format `"%Y-%m-%d %H:%M:%S"`,
+#' which means that some precision might be lost.
+#' @param timezone (`character(1)`) specifies the time zone to be used for the conversion.
+#' By default `Sys.timezone()` is used.
 #'
-#' @param range (`POSIXct`)\cr
-#'   range of the variable. Be aware that output
-#'   uses truncated range format `"%Y-%m-%d %H:%M:%S"`, which means that
-#'   some precision might be lost.
+#' @return `call`.
 #'
-#' @param timezone (`character(1)`)\cr
-#'   specifies the time zone to be used for the conversion.
-#'   By default `Sys.timezone()` is used.
-#'
-#' @examples
-#' teal.transform:::call_condition_range_posixct(
-#'   varname = as.name("datetime"),
-#'   range = c(Sys.time(), Sys.time() + 1),
-#'   timezone = "UTC"
-#' )
-#' @return a `call`
 #' @keywords internal
+#'
 call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone()) {
   checkmate::assert_posixct(range, len = 2, sorted = TRUE)
   checkmate::assert_string(timezone)
@@ -194,21 +177,15 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
 
 #' `Date` range condition call
 #'
-#' Compose `Date` range condition call from inputs
+#' Compose `Date` range condition call from inputs.
 #'
-#' @param varname (`name` or `character(1)`)\cr
-#'   name of the variable
+#' @param varname (`name` or `character(1)`) name of the variable.
+#' @param range (`Date`) range of the variable.
 #'
-#' @param range (`Date`)\cr
-#'   range of the variable
+#' @return `call`.
 #'
-#' @examples
-#' teal.transform:::call_condition_range_date(
-#'   as.name("date"),
-#'   range = c(Sys.Date(), Sys.Date() + 1)
-#' )
-#' @return a `call`
 #' @keywords internal
+#'
 call_condition_range_date <- function(varname, range) {
   checkmate::assert_date(range, len = 2)
   checkmate::assert_true(range[2] >= range[1])
@@ -223,28 +200,18 @@ call_condition_range_date <- function(varname, range) {
 
 #' Get call to subset and select array
 #'
-#' Get call to subset and select array
-#' @param dataname (`character(1)` or `name`)\cr
-#' @param row (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @param column (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `column` or condition
-#' @param aisle (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @return `[` call with all conditions included
-#' @examples
-#' teal.transform:::call_extract_array(
-#'   dataname = "my_array",
-#'   row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
-#'   column = call("c", "SEX", "AGE"),
-#'   aisle = "RNAseq_rnaaccess"
-#' )
-#' teal.transform:::call_extract_array(
-#'   "mae_object",
-#'   column = teal.transform:::call_condition_choice("SEX", "M")
-#' )
-#' @return specific \code{\link[base]{Extract}} `call` for 3-dimensional array
+#' @param dataname (`character(1)` or `name`).
+#' @param row (optional `name` or `call` or `logical` or `integer` or `character`)
+#' name of the `row` or condition.
+#' @param column (optional `name` or `call` or `logical`, `integer` or `character`)
+#' name of the `column` or condition.
+#' @param aisle (optional `name` or `call` or `logical` or `integer` or `character`)
+#' name of the `row` or condition.
+#'
+#' @return [Extract()] `call` for 3-dimensional array in `x[i, j, k]` notation.
+#'
 #' @keywords internal
+#'
 call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle = NULL) {
   checkmate::assert(
     checkmate::check_string(dataname),
@@ -283,25 +250,16 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 
 #' Get call to subset and select matrix
 #'
-#' Get call to subset and select matrix
-#' @param dataname (`character(1)` or `name`)\cr
-#' @param row (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `row` or condition
-#' @param column (`name`, `call`, `logical`, `integer`, `character`)\cr
-#'   optional, name of the `column` or condition
-#' @return `[` call with all conditions included
-#' @examples
-#' teal.transform:::call_extract_matrix(
-#'   dataname = "my_array",
-#'   row = teal.transform:::call_condition_choice("my_array$SEX", "M"),
-#'   column = call("c", "SEX", "AGE")
-#' )
-#' teal.transform:::call_extract_matrix(
-#'   "mae_object",
-#'   column = teal.transform:::call_condition_choice("SEX", "M")
-#' )
-#' @return specific \code{\link[base]{Extract}} `call` for matrix
+#' @param dataname (`character(1)` or `name`).
+#' @param row (optional `name` or `call` or `logical` or `integer` or `character`)
+#' name of the `row` or condition.
+#' @param column (optional `name` or `call` or `logical` or `integer` or `character`)
+#' name of the `column` or condition.
+#'
+#' @return [Extract()] `call` for matrix in `x[i, j]` notation.
+#'
 #' @keywords internal
+#'
 call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
   checkmate::assert(
     checkmate::check_string(dataname),
@@ -335,25 +293,14 @@ call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
 
 #' Compose extract call with `$` operator
 #'
-#' Compose extract call with `$` operator
+#' @param dataname (`character(1)` or `name`) name of the object.
+#' @param varname (`character(1)` or `name`) name of the slot in data.
+#' @param dollar (`logical(1)`) whether returned call should use `$` or `[[` operator.
 #'
-#' @param dataname (`character(1)` or `name`)\cr
-#'   name of the object
+#' @return [Extract()] `call` in `$` or `[[` notation (depending on parameters).
 #'
-#' @param varname (`character(1)` or `name`)\cr
-#'   name of the slot in data
-#'
-#' @param dollar (`logical(1)`)\cr
-#'   whether returned call should use `$` or `[[` operator
-#'
-#' @return `$` or `[[` call
-#' @examples
-#' teal.transform:::call_extract_list("ADSL", "SEX")
-#' teal.transform:::call_extract_list("ADSL", "named element")
-#' teal.transform:::call_extract_list(as.name("ADSL"), as.name("AGE"))
-#' teal.transform:::call_extract_list(as.name("weird name"), as.name("AGE"))
-#' teal.transform:::call_extract_list(as.name("ADSL"), "AGE", dollar = FALSE)
 #' @keywords internal
+#'
 call_extract_list <- function(dataname, varname, dollar = TRUE) {
   checkmate::assert_flag(dollar)
   checkmate::assert(
@@ -377,51 +324,18 @@ call_extract_list <- function(dataname, varname, dollar = TRUE) {
 
 #' Create a call using a function in a given namespace
 #'
-#' The arguments in ... need to be quoted because they will be evaluated otherwise
+#' The dot arguments in `...` need to be quoted because they will be evaluated otherwise.
 #'
-#' @md
 #' @param name `character` function name, possibly using namespace colon `::`, also
-#'   works with `:::` (sometimes needed, but strongly discouraged)
-#' @param ... arguments to pass to function with name `name`
+#' works with `:::` (sometimes needed, but strongly discouraged).
+#' @param ... arguments to pass to function with name `name`.
 #' @param unlist_args `list` extra arguments passed in a single list,
-#'   avoids the use of `do.call` with this function
-#' @examples
+#' avoids the use of `do.call` with this function.
 #'
-#' print_call_and_eval <- function(x) {
-#'   eval(print(x))
-#' }
+#' @return `call`.
 #'
-#' print_call_and_eval(
-#'   teal.transform:::call_with_colon("glue::glue", "x = {x}", x = 10)
-#' )
-#' \dontrun{
-#' # mtcars$cyl evaluated
-#' print_call_and_eval(
-#'   teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), mtcars$cyl == 6)
-#' )
-#'
-#' # mtcars$cyl argument not evaluated immediately (in call expression)
-#' print_call_and_eval(
-#'   teal.transform:::call_with_colon("dplyr::filter", as.name("mtcars"), quote(cyl == 6))
-#' )
-#'
-#' # does not work because argument is evaluated and the
-#' # non-dplyr filter does not look inside mtcars
-#' # cannot eval because it does not pass checks because of non-standard evaluation
-#' call("filter", as.name("mtcars"), quote(cyl == 6))
-#' # works, but non-dplyr filter is taken
-#' call("filter", as.name("mtcars"), mtcars$cyl == 6)
-#'
-#' nb_args <- function(...) nargs()
-#' print_call_and_eval(
-#'   teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args3 = 3))
-#' )
-#' # duplicate arguments
-#' print_call_and_eval(
-#'   teal.transform:::call_with_colon("nb_args", arg1 = 1, unlist_args = list(arg2 = 2, args2 = 2))
-#' )
-#' }
 #' @keywords internal
+#'
 call_with_colon <- function(name, ..., unlist_args = list()) {
   checkmate::assert_string(name)
   checkmate::assert_list(unlist_args)
@@ -434,27 +348,15 @@ call_with_colon <- function(name, ..., unlist_args = list()) {
 
 #' Combine calls by operator
 #'
-#' Combine list of calls by specific operator
+#' Combine list of calls by specific operator.
 #'
-#' @param operator (`character(1)` or `name`)\cr
-#'   name/symbol of the operator.
+#' @param operator (`character(1)` or `name`) name / symbol of the operator.
+#' @param calls (`list` of calls) list containing calls to be combined by `operator`.
 #'
-#' @param calls (`list` of calls)\cr
-#'   list containing calls to be combined by `operator`
+#' @return A combined `call`.
 #'
-#' @return call
-#' @examples
-#' teal.transform:::calls_combine_by(
-#'   "&",
-#'   calls = list(
-#'     teal.transform:::call_condition_choice("SEX", "F"),
-#'     teal.transform:::call_condition_range("AGE", c(20, 50)),
-#'     teal.transform:::call_condition_choice("ARM", "ARM: A"),
-#'     TRUE
-#'   )
-#' )
-#' @return a combined `call`
 #' @keywords internal
+#'
 calls_combine_by <- function(operator, calls) {
   checkmate::assert_string(operator)
   stopifnot(

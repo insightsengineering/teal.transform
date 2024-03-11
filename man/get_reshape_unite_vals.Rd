@@ -9,6 +9,9 @@ get_reshape_unite_vals(selector)
 \arguments{
 \item{selector}{one element of selector_list obtained by \code{get_dplyr_call_data}.}
 }
+\value{
+A \code{character} vector of keys of the unite columns.
+}
 \description{
 Get key values (levels) of the unite columns.
 }

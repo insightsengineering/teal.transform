@@ -2,14 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{split_by_sep}
 \alias{split_by_sep}
-\title{Split by separator}
+\title{Split by separator (matched exactly)}
 \usage{
 split_by_sep(x, sep)
 }
 \arguments{
-\item{x}{(\code{character}) Character (single)}
+\item{x}{(\code{character}) Character vector, each element of which is to be split.
+Other inputs, including a factor return themselves.}
 
-\item{sep}{(\code{character}) Separator}
+\item{sep}{(\code{character}) separator to use for splitting.}
+}
+\value{
+List of character vectors split by \code{sep}. Self if \code{x} is not a \code{character}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

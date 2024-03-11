@@ -1,3 +1,32 @@
+ADSL <- teal.transform::rADSL
+ADTTE <- teal.transform::rADTTE
+data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
+key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+
+vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
+vc_hard_exp <- structure(
+  list(data = "ADSL", subset = c("STUDYID", "USUBJID"), key = NULL),
+  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
+)
+
+vc_hard_short <- variable_choices("ADSL", subset = "STUDYID")
+vc_hard_short_exp <- structure(
+  list(data = "ADSL", subset = "STUDYID", key = NULL),
+  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
+)
+
+vc_fun <- variable_choices("ADSL", subset = function(data) colnames(data)[1:2])
+vc_fun_exp <- structure(
+  list(data = "ADSL", subset = function(data) colnames(data)[1:2], key = NULL),
+  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
+)
+
+vc_fun_short <- variable_choices("ADSL", subset = function(data) colnames(data)[1])
+vc_fun_short_exp <- structure(
+  list(data = "ADSL", subset = function(data) colnames(data)[1], key = NULL),
+  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
+)
+
 testthat::test_that("data_extract_spec throws when select is not select_spec or NULL", {
   testthat::expect_error(data_extract_spec("toyDataset", select = c("A", "B")))
 })
@@ -100,14 +129,14 @@ testthat::test_that("data_extract_spec works with valid input", {
 
 testthat::test_that("delayed data_extract_spec works", {
   set.seed(1)
-  ADSL <- data.frame( # nolint
+  ADSL <- data.frame(
     USUBJID = letters[1:10],
     SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
     BMRKR1 = rnorm(10),
     BMRKR2 = sample(c("L", "M", "H"), 10, replace = TRUE),
     stringsAsFactors = FALSE
   )
-  attr(ADSL, "keys") <- c("STUDYID", "USUBJID") # nolint
+  attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 
   filter_normal <- filter_spec(
     vars = variable_choices(ADSL, "SEX"),
@@ -198,35 +227,6 @@ testthat::test_that("delayed data_extract_spec works", {
   expected_spec$filter <- NULL
   testthat::expect_identical(expected_spec, mix3_res)
 })
-
-ADSL <- teal.transform::rADSL # nolint
-ADTTE <- teal.transform::rADTTE # nolint
-data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
-key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
-
-vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
-vc_hard_exp <- structure(
-  list(data = "ADSL", subset = c("STUDYID", "USUBJID"), key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-vc_hard_short <- variable_choices("ADSL", subset = "STUDYID")
-vc_hard_short_exp <- structure(
-  list(data = "ADSL", subset = "STUDYID", key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-vc_fun <- variable_choices("ADSL", subset = function(data) colnames(data)[1:2])
-vc_fun_exp <- structure(
-  list(data = "ADSL", subset = function(data) colnames(data)[1:2], key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-vc_fun_short <- variable_choices("ADSL", subset = function(data) colnames(data)[1])
-vc_fun_short_exp <- structure(
-  list(data = "ADSL", subset = function(data) colnames(data)[1], key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
 
 testthat::test_that("delayed version of data_extract_spec", {
   # hard-coded subset
@@ -328,14 +328,14 @@ testthat::test_that("data_extract_spec returns select_spec with multiple set to 
 # with resolve_delayed
 testthat::test_that("delayed data_extract_spec works - resolve_delayed", {
   set.seed(1)
-  ADSL <- data.frame( # nolint
+  ADSL <- data.frame(
     USUBJID = letters[1:10],
     SEX = sample(c("F", "M", "U"), 10, replace = TRUE),
     BMRKR1 = rnorm(10),
     BMRKR2 = sample(c("L", "M", "H"), 10, replace = TRUE),
     stringsAsFactors = FALSE
   )
-  attr(ADSL, "keys") <- c("STUDYID", "USUBJID") # nolint
+  attr(ADSL, "keys") <- c("STUDYID", "USUBJID")
 
   filter_normal <- filter_spec(
     vars = variable_choices(ADSL, "SEX"),
@@ -426,7 +426,6 @@ testthat::test_that("delayed data_extract_spec works - resolve_delayed", {
   expected_spec$filter <- NULL
   testthat::expect_identical(expected_spec, mix3_res)
 })
-
 
 testthat::test_that("delayed version of data_extract_spec - resolve_delayed", {
   data_list <- list(ADSL = reactive(ADSL))
