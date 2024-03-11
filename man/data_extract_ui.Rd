@@ -74,7 +74,7 @@ response_spec <- data_extract_spec(
 # Call to use inside your teal module UI function
 standard_layout(
   output = tableOutput("table"),
-  encoding = div(
+  encoding = tags$div(
     data_extract_ui(
       id = "regressor",
       label = "Regressor Variable",

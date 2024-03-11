@@ -34,7 +34,7 @@ data_extract_filter_ui <- function(filter, id = "filter") {
     fixed = filter$fixed
   )
 
-  div(
+  tags$div(
     class = "filter_spec",
     if (filter$vars_fixed) shinyjs::hidden(html_col) else html_col,
     html_vals
