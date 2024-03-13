@@ -66,6 +66,8 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       force(filter)
       logger::log_trace("data_extract_filter_srv initialized with: { filter$dataname } dataset.")
 
+      ns <- session$ns
+
       isolate({
         # when the filter is initialized with a delayed spec, the choices and selected are NULL
         # here delayed are resolved and the values are set up
@@ -73,13 +75,13 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           session = session,
           inputId = "col",
           choices = filter$vars_choices,
-          selected = filter$vars_selected
+          selected = shiny::restoreInput(ns("col"), filter$vars_selected)
         )
         teal.widgets::updateOptionalSelectInput(
           session = session,
           inputId = "vals",
           choices = filter$choices,
-          selected = filter$selected
+          selected = shiny::restoreInput(ns("vals"), filter$selected)
         )
       })
 
@@ -115,14 +117,17 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             session = session,
             inputId = "vals",
             choices = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous"),
-            selected = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous")
+            selected = shiny::restoreInput(
+              ns("vals"),
+              paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous")
+            )
           )
 
           teal.widgets::updateOptionalSelectInput(
             session = session,
             inputId = "vals",
             choices = choices,
-            selected = selected
+            selected = shiny::restoreInput(ns("vals"), selected)
           )
         }
       )

@@ -78,6 +78,8 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
     function(input, output, session) {
       logger::log_trace("data_extract_single_srv initialized with dataset: { single_data_extract_spec$dataname }.")
 
+      ns <- session$ns
+
       # ui could be initialized with a delayed select spec so the choices and selected are NULL
       # here delayed are resolved
       isolate({
@@ -86,7 +88,7 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
           session = session,
           inputId = "select",
           choices = resolved$select$choices,
-          selected = resolved$select$selected
+          selected = shiny::restoreInput(ns("select"), resolved$select$selected)
         )
       })
 
