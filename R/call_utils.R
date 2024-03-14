@@ -201,11 +201,11 @@ call_condition_range_date <- function(varname, range) {
 #' Get call to subset and select array
 #'
 #' @param dataname (`character(1)` or `name`).
-#' @param row (`name`, `call`, `logical`, `integer` or `character`) optional
+#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional
 #' name of the `row` or condition.
-#' @param column (`name`, `call`, `logical`, `integer` or `character`) optional
+#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional
 #' name of the `column` or condition.
-#' @param aisle (`name` or `call` or `logical` or `integer` or `character`) optional,
+#' @param aisle (`name` or `call` or `logical` or `integer` or `character`) optional
 #' name of the `row` or condition.
 #'
 #' @return [Extract()] `call` for 3-dimensional array in `x[i, j, k]` notation.
@@ -251,9 +251,9 @@ call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle 
 #' Get call to subset and select matrix
 #'
 #' @param dataname (`character(1)` or `name`).
-#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional,
+#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional
 #' name of the `row` or condition.
-#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional,
+#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional
 #' name of the `column` or condition.
 #'
 #' @return [Extract()] `call` for matrix in `x[i, j]` notation.

@@ -46,7 +46,7 @@ The \code{all_choices} object indicates selecting all possible choices.}
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
 
-\item{label}{(\code{character}) optional, define a label on top of this specific
+\item{label}{(\code{character}) optional, defines a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
 \item{sep}{(\code{character}) A separator string to split the \code{choices} or

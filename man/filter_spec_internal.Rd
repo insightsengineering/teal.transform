@@ -96,7 +96,7 @@ Named character vector to define the selected values of a shiny \code{\link[shin
 This value will be displayed inside the shiny app upon start.
 The \code{all_choices} object indicates selecting all possible choices.}
 
-\item{label}{(\code{character}) optional, define a label on top of this specific
+\item{label}{(\code{character}) optional, defines a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Filter by"}.}
 
 \item{fixed}{(\code{logical})
