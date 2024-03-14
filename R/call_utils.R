@@ -203,7 +203,7 @@ call_condition_range_date <- function(varname, range) {
 #' @param dataname (`character(1)` or `name`).
 #' @param row (`name`, `call`, `logical`, `integer` or `character`) optional
 #' name of the `row` or condition.
-#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional,
+#' @param column (`name`, `call`, `logical`, `integer` or `character`) optional
 #' name of the `column` or condition.
 #' @param aisle (`name` or `call` or `logical` or `integer` or `character`) optional,
 #' name of the `row` or condition.
