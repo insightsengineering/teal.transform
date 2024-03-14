@@ -14,7 +14,7 @@ that will select columns from a dataset."><!-- mathjax --><script src="https://c
     
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9001</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,19 +39,6 @@ that will select columns from a dataset."><!-- mathjax --><script src="https://c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.5.0-rc1">v0.5.0-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.5.0">v0.5.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.4.0">v0.4.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.3.0">v0.3.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/teal.transform/v0.2.0">v0.2.0</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -130,8 +117,8 @@ where this is called.
 
 
 <dt>selected</dt>
-<dd><p>(optional <code>character</code> or <code>NULL</code> or <code>all_choices</code> or <code>delayed_data</code>).
-Named character vector to define the selected values of a shiny <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput()</a></code>.
+<dd><p>(<code>character</code> or <code>NULL</code> or <code>all_choices</code> or <code>delayed_data</code>) optional
+named character vector to define the selected values of a shiny <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput()</a></code>.
 Passing an <code><a href="all_choices.html">all_choices()</a></code> object indicates selecting all possible choices.
 Defaults to the first value of <code>choices</code> or <code>NULL</code> for delayed data loading.</p></dd>
 
@@ -142,7 +129,7 @@ shiny <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="exte
 
 
 <dt>fixed</dt>
-<dd><p>(optional <code>logical</code>). <code><a href="data_extract_spec.html">data_extract_spec()</a></code> specific feature to
+<dd><p>(<code>logical</code>) optional <code><a href="data_extract_spec.html">data_extract_spec()</a></code> specific feature to
 hide the choices selected in case they are not needed. Setting fixed to <code>TRUE</code>
 will not allow the user to select columns. It will then lead to a selection of
 columns in the dataset that is defined by the developer of the app.</p></dd>
@@ -158,7 +145,7 @@ always be selected</p></dd>
 
 
 <dt>label</dt>
-<dd><p>(optional <code>character</code>). Define a label on top of this specific
+<dd><p>(<code>character</code>) optional, defines a label on top of this specific
 shiny <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">shiny::selectInput()</a></code>. The default value is <code>"Select"</code>.</p></dd>
 
 </dl></div>
