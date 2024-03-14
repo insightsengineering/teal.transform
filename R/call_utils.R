@@ -201,7 +201,7 @@ call_condition_range_date <- function(varname, range) {
 #' Get call to subset and select array
 #'
 #' @param dataname (`character(1)` or `name`).
-#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional,
+#' @param row (`name`, `call`, `logical`, `integer` or `character`) optional
 #' name of the `row` or condition.
 #' @param column (`name` or `call` or `logical` or `integer` or `character`) optional,
 #' name of the `column` or condition.
