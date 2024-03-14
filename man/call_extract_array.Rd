@@ -9,10 +9,10 @@ call_extract_array(dataname = ".", row = NULL, column = NULL, aisle = NULL)
 \arguments{
 \item{dataname}{(\code{character(1)} or \code{name}).}
 
-\item{row}{(\code{name} or \code{call} or \code{logical} or \code{integer} or \code{character}) optional,
+\item{row}{(\code{name}, \code{call}, \code{logical}, \code{integer} or \code{character}) optional
 name of the \code{row} or condition.}
 
-\item{column}{(\code{name} or \code{call} or \code{logical} or \code{integer} or \code{character}) optional,
+\item{column}{(\code{name}, \code{call}, \code{logical}, \code{integer} or \code{character}) optional
 name of the \code{column} or condition.}
 
 \item{aisle}{(\code{name} or \code{call} or \code{logical} or \code{integer} or \code{character}) optional,

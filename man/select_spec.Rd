@@ -61,7 +61,7 @@ always be selected}
 
 \item{ordered}{(\code{logical(1)}) Flags whether selection order should be tracked.}
 
-\item{label}{(\code{character}) optional, define a label on top of this specific
+\item{label}{(\code{character}) optional, defines a label on top of this specific
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}. The default value is \code{"Select"}.}
 }
 \value{
