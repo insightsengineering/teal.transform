@@ -26,7 +26,7 @@
 #' @param always_selected (`character`) Additional column names from the data set that should
 #' always be selected
 #' @param ordered (`logical(1)`) Flags whether selection order should be tracked.
-#' @param label (`character`) optional, define a label on top of this specific
+#' @param label (`character`) optional, defines a label on top of this specific
 #' shiny [shiny::selectInput()]. The default value is `"Select"`.
 #'
 #' @return A `select_spec`-S3 class object or `delayed_select_spec`-S3-class object.
