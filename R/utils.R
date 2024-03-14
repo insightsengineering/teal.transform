@@ -22,7 +22,7 @@ split_by_sep <- function(x, sep) {
 #' Extract labels from choices basing on attributes and names
 #'
 #' @param choices (`list` or `vector`) select choices.
-#' @param values (optional `list` or `vector`) with subset of `choices` for which
+#' @param values (`list` or `vector`) optional, with subset of `choices` for which
 #' labels should be extracted, `NULL` for all choices.
 #'
 #' @return `character` vector with labels.

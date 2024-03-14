@@ -13,20 +13,20 @@
 #' These have to be columns in the dataset defined in the [data_extract_spec()]
 #' where this is called.
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
-#' @param selected (optional `character` or `NULL` or `all_choices` or `delayed_data`).
-#' Named character vector to define the selected values of a shiny [shiny::selectInput()].
+#' @param selected (`character` or `NULL` or `all_choices` or `delayed_data`) optional
+#' named character vector to define the selected values of a shiny [shiny::selectInput()].
 #' Passing an `all_choices()` object indicates selecting all possible choices.
 #' Defaults to the first value of `choices` or `NULL` for delayed data loading.
 #' @param multiple (`logical`) Whether multiple values shall be allowed in the
 #' shiny [shiny::selectInput()].
-#' @param fixed (optional `logical`). [data_extract_spec()] specific feature to
+#' @param fixed (`logical`) optional [data_extract_spec()] specific feature to
 #' hide the choices selected in case they are not needed. Setting fixed to `TRUE`
 #' will not allow the user to select columns. It will then lead to a selection of
 #' columns in the dataset that is defined by the developer of the app.
 #' @param always_selected (`character`) Additional column names from the data set that should
 #' always be selected
 #' @param ordered (`logical(1)`) Flags whether selection order should be tracked.
-#' @param label (optional `character`). Define a label on top of this specific
+#' @param label (`character`) optional, defines a label on top of this specific
 #' shiny [shiny::selectInput()]. The default value is `"Select"`.
 #'
 #' @return A `select_spec`-S3 class object or `delayed_select_spec`-S3-class object.
