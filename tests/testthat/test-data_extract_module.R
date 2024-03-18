@@ -1,5 +1,5 @@
-ADLB <- teal.transform::rADLB
-ADTTE <- teal.transform::rADTTE
+ADLB <- rADLB
+ADTTE <- rADTTE
 
 testthat::test_that("Single filter", {
   data_extract <- data_extract_spec(

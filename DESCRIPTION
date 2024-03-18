@@ -40,17 +40,18 @@ Suggests:
     knitr (>= 1.42),
     rmarkdown (>= 2.19),
     teal.code (>= 0.5.0),
-    testthat (>= 3.1.5)
+    testthat (>= 3.1.5),
+    withr (>= 2.0.0)
 VignetteBuilder:
     knitr
 RdMacros:
     lifecycle
 Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
-    r-lib/lifecycle, daroczig/logger, r-lib/rlang, rstudio/rmarkdown,
+    r-lib/lifecycle, daroczig/logger, r-lib/rlang,
     rstudio/shiny, daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
     insightsengineering/teal.widgets, tidyverse/tidyr, r-lib/tidyselect,
-    yihui/knitr, insightsengineering/teal.code, r-lib/testthat
+    yihui/knitr, rstudio/rmarkdown, insightsengineering/teal.code, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US

@@ -39,7 +39,7 @@ named character vector or \code{delayed_data} object.
 Wrapper on \link{choices_labeled} to label variable values basing on other variable values.
 }
 \examples{
-ADRS <- teal.transform::rADRS
+ADRS <- rADRS
 value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),

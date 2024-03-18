@@ -1,6 +1,6 @@
-ADSL <- teal.transform::rADSL
-ADLB <- teal.transform::rADLB
-ADTTE <- teal.transform::rADTTE
+ADSL <- rADSL
+ADLB <- rADLB
+ADTTE <- rADTTE
 
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
@@ -493,7 +493,7 @@ testthat::test_that("select validation accepts function as validator", {
       datasets = data_list,
       data_extract_spec = adsl_extract,
       join_keys = join_keys,
-      select_validation_rule = ~ if (nchar(.) == 0) "error"
+      select_validation_rule = function(x) if (nchar(x) == 0) "error"
     )
 
     iv_r <- reactive({
@@ -547,11 +547,6 @@ testthat::test_that("data_extract_multiple_srv input validation", {
   data_list <- list(iris = reactive(iris))
 
   server <- function(input, output, session) {
-    exactly_2_validation <- function(msg) {
-      ~ if (length(.) != 2) msg
-    }
-
-
     selector_list <- data_extract_multiple_srv(
       list(x_var = iris_select, species_var = iris_filter),
       datasets = data_list,
@@ -561,7 +556,7 @@ testthat::test_that("data_extract_multiple_srv input validation", {
       filter_validation_rule = list(
         species_var = shinyvalidate::compose_rules(
           shinyvalidate::sv_required("Exactly 2 Species must be chosen"),
-          exactly_2_validation("Exactly 2 Species must be chosen")
+          function(x) if (length(x) != 2) "Exactly 2 Species must be chosen"
         )
       )
     )
