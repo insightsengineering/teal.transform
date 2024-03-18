@@ -3361,7 +3361,7 @@ testthat::test_that("Universal example", {
   merged_datasets <- isolate(
     merge_datasets(
       selector_list = selector_list,
-      dataset = data_list,
+      datasets = data_list,
       join_keys = join_keys,
       merge_function = "dplyr::left_join",
       anl_name = "ANL"

@@ -50,7 +50,7 @@ no_select_keyword <- "-- no selection --"
 #'   selected = "C"
 #' )
 #'
-#' ADSL <- teal.transform::rADSL
+#' ADSL <- rADSL
 #' choices_selected(variable_choices(ADSL), "SEX")
 #'
 #' # How to select nothing
