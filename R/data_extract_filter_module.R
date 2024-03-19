@@ -72,10 +72,11 @@ data_extract_filter_srv <- function(id, datasets, filter) {
         selected <- if (!is.null(filter$selected)) {
           filter$selected
         } else if (filter$multiple) {
-          restoreInput(ns("vals"), choices)
+          choices
         } else {
-          restoreInput(ns("vals"), choices[1L])
+          choices[1L]
         }
+        selected <- restoreInput(ns("vals"), selected)
         list(choices = choices, selected = selected)
       })
 
