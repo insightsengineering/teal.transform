@@ -16,28 +16,10 @@ data_extract_filter_ui <- function(filter, id = "filter") {
 
   ns <- NS(id)
 
-  html_col <- teal.widgets::optionalSelectInput(
-    inputId = ns("col"),
-    label = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_label),
-    choices = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_choices),
-    selected = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$vars_selected),
-    multiple = filter$vars_multiple,
-    fixed = filter$vars_fixed
-  )
-
-  html_vals <- teal.widgets::optionalSelectInput(
-    inputId = ns("vals"),
-    label = filter$label,
-    choices = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$choices),
-    selected = `if`(inherits(filter, "delayed_filter_spec"), NULL, filter$selected),
-    multiple = filter$multiple,
-    fixed = filter$fixed
-  )
-
   tags$div(
     class = "filter_spec",
-    if (filter$vars_fixed) shinyjs::hidden(html_col) else html_col,
-    html_vals
+    uiOutput(ns("html_col_container")),
+    uiOutput(ns("html_vals_container"))
   )
 }
 
@@ -68,71 +50,45 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 
       ns <- session$ns
 
-      isolate({
-        # when the filter is initialized with a delayed spec, the choices and selected are NULL
-        # here delayed are resolved and the values are set up
-        teal.widgets::updateOptionalSelectInput(
-          session = session,
-          inputId = "col",
+      output$html_col_container <- renderUI({
+        teal.widgets::optionalSelectInput(
+          inputId = ns("col"),
+          label = filter$vars_label,
           choices = filter$vars_choices,
-          selected = shiny::restoreInput(ns("col"), filter$vars_selected)
-        )
-        teal.widgets::updateOptionalSelectInput(
-          session = session,
-          inputId = "vals",
-          choices = filter$choices,
-          selected = shiny::restoreInput(ns("vals"), filter$selected)
+          selected = filter$vars_selected,
+          multiple = filter$vars_multiple,
+          fixed = filter$vars_fixed
         )
       })
 
-      observeEvent(
-        input$col,
-        ignoreInit = TRUE, # When observeEvent is initialized input$col is still NULL as it is set few lines above
-        ignoreNULL = FALSE, # columns could be NULL, then vals should be set to NULL also
-        handlerExpr = {
-          if (!rlang::is_empty(input$col)) {
-            choices <- value_choices(
-              datasets[[filter$dataname]](),
-              input$col,
-              `if`(isTRUE(input$col == attr(filter$choices, "var_choices")), attr(filter$choices, "var_label"), NULL)
-            )
+      output$html_vals_container <- renderUI({
+        req(input$col)
 
-            selected <- if (!is.null(filter$selected)) {
-              filter$selected
-            } else if (filter$multiple) {
-              choices
-            } else {
-              choices[1]
-            }
-          } else {
-            choices <- character(0)
-            selected <- character(0)
-          }
-          dn <- filter$dataname
-          fc <- paste(input$col, collapse = ", ")
-          logger::log_trace("data_extract_filter_srv@1 filter dataset: { dn }; filter var: { fc }.")
-          # In order to force reactivity we run two updates: (i) set up dummy values (ii) set up appropriate values
-          # It's due to a missing reactivity triggers if new selected value is identical with previously selected one.
-          teal.widgets::updateOptionalSelectInput(
-            session = session,
-            inputId = "vals",
-            choices = paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous"),
-            selected = shiny::restoreInput(
-              ns("vals"),
-              paste0(input$val, "$_<-_random_text_to_ensure_val_will_be_different_from_previous")
-            )
-          )
+        choices <- value_choices(
+          data = datasets[[filter$dataname]](),
+          var_choices = input$col,
+          var_label = `if`(isTRUE(input$col == attr(filter$choices, "var_choices")), attr(filter$choices, "var_label"), NULL)
+        )
 
-          teal.widgets::updateOptionalSelectInput(
-            session = session,
-            inputId = "vals",
-            choices = choices,
-            selected = shiny::restoreInput(ns("vals"), selected)
-          )
+        selected <- if (!is.null(filter$selected)) {
+          filter$selected
+        } else if (filter$multiple) {
+          choices
+        } else {
+          choices[1L]
         }
-      )
-    }
-  )
+
+        teal.widgets::optionalSelectInput(
+          inputId = ns("vals"),
+          label = filter$label,
+          choices = choices,
+          selected = selected,
+          multiple = filter$multiple,
+          fixed = filter$fixed
+        )
+      })
+
+    })
 }
 
 #' Returns the initial values for the `vals` widget of a `filter_spec` object
