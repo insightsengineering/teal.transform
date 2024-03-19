@@ -18,8 +18,8 @@ data_extract_filter_ui <- function(filter, id = "filter") {
 
   tags$div(
     class = "filter_spec",
-    uiOutput(ns("html_col_container")),
-    uiOutput(ns("html_vals_container"))
+    uiOutput(ns("col_container")),
+    uiOutput(ns("vals_container"))
   )
 }
 
@@ -50,7 +50,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
 
       ns <- session$ns
 
-      output$html_col_container <- renderUI({
+      output$col_container <- renderUI({
         teal.widgets::optionalSelectInput(
           inputId = ns("col"),
           label = filter$vars_label,
@@ -80,7 +80,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
         list(choices = choices, selected = selected)
       })
 
-      output$html_vals_container <- renderUI({
+      output$vals_container <- renderUI({
         teal.widgets::optionalSelectInput(
           inputId = ns("vals"),
           label = filter$label,
