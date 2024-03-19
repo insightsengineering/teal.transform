@@ -61,9 +61,8 @@ data_extract_filter_srv <- function(id, datasets, filter) {
         )
       })
 
-      output$html_vals_container <- renderUI({
+      vals_options <- reactive({
         req(input$col)
-
         choices <- value_choices(
           data = datasets[[filter$dataname]](),
           var_choices = input$col,
@@ -77,14 +76,36 @@ data_extract_filter_srv <- function(id, datasets, filter) {
         } else {
           choices[1L]
         }
+        selected <- restoreInput(ns("vals"), selected)
+        list(choices = choices, selected = selected)
+      })
 
+      output$html_vals_container <- renderUI({
         teal.widgets::optionalSelectInput(
           inputId = ns("vals"),
           label = filter$label,
-          choices = choices,
-          selected = selected,
+          choices = vals_options()$choices,
+          selected = vals_options()$selected,
           multiple = filter$multiple,
           fixed = filter$fixed
+        )
+      })
+
+      # Since we want the input$vals to depend on input$col for downstream calculations,
+      # we trigger reactivity by reassigning them. Otherwise, when input$col is changed without
+      # a change in input$val, the downstream computations will not be triggered.
+      observeEvent(input$col, {
+        teal.widgets::updateOptionalSelectInput(
+          session = session,
+          inputId = "vals",
+          choices = "",
+          selected = ""
+        )
+        teal.widgets::updateOptionalSelectInput(
+          session = session,
+          inputId = "vals",
+          choices = vals_options()$choices,
+          selected = vals_options()$selected
         )
       })
     }
