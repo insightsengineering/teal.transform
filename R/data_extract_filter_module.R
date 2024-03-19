@@ -87,8 +87,8 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           fixed = filter$fixed
         )
       })
-
-    })
+    }
+  )
 }
 
 #' Returns the initial values for the `vals` widget of a `filter_spec` object
