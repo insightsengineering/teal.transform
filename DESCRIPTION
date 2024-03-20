@@ -32,7 +32,7 @@ Imports:
     shinyvalidate,
     stats,
     teal.data (>= 0.5.0),
-    teal.logger (>= 0.1.1),
+    teal.logger (>= 0.1.3.9013),
     teal.widgets (>= 0.4.0),
     tidyr (>= 0.8.3),
     tidyselect
