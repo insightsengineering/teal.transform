@@ -1,5 +1,5 @@
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
+ADSL <- rADSL
+ADTTE <- rADTTE
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 primary_keys_list <- lapply(join_keys, function(x) x[[1]])
@@ -218,7 +218,7 @@ testthat::test_that("filter_spec_internal", {
 })
 
 testthat::test_that("filter_spec_internal contains dataname", {
-  ADSL <- teal.transform::rADSL
+  ADSL <- rADSL
 
   x_filter <- filter_spec_internal(
     vars_choices = variable_choices(ADSL)
@@ -354,7 +354,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, key = primary_keys_list))
+  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
   exp_obj <- filter_spec(
     vars = variable_choices(ADSL, subset = "ARMCD"),
     choices = value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B")),
@@ -426,7 +426,7 @@ testthat::test_that("delayed version of filter_spec", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, key = primary_keys_list))
+  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
 
   # comparison not implemented, must be done individually
   testthat::expect_equal(res_obj$choices, exp_obj$choices)

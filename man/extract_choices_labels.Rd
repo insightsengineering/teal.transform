@@ -9,7 +9,7 @@ extract_choices_labels(choices, values = NULL)
 \arguments{
 \item{choices}{(\code{list} or \code{vector}) select choices.}
 
-\item{values}{(optional \code{list} or \code{vector}) with subset of \code{choices} for which
+\item{values}{(\code{list} or \code{vector}) optional, with subset of \code{choices} for which
 labels should be extracted, \code{NULL} for all choices.}
 }
 \value{

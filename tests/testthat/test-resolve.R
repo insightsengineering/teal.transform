@@ -1,5 +1,5 @@
-ADSL <- teal.transform::rADSL
-ADTTE <- teal.transform::rADTTE
+ADSL <- rADSL
+ADTTE <- rADTTE
 
 arm_ref_comp <- list(
   ARMCD = list(

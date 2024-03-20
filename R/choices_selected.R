@@ -32,7 +32,7 @@ no_select_keyword <- "-- no selection --"
 #' `choices` is a vector, or `NULL` if `choices` is a `delayed_data` object.
 #' @param keep_order (`logical`) In case of `FALSE` the selected variables will
 #' be on top of the drop-down field.
-#' @param fixed (optional `logical`) Whether to block user to select choices.
+#' @param fixed (`logical`) optional, whether to block user to select choices.
 #'
 #' @return `choices_selected` returns list of `choices_selected`, encapsulating the specified
 #' `choices`, `selected`, `keep_order` and `fixed`.
@@ -50,7 +50,7 @@ no_select_keyword <- "-- no selection --"
 #'   selected = "C"
 #' )
 #'
-#' ADSL <- teal.transform::rADSL
+#' ADSL <- rADSL
 #' choices_selected(variable_choices(ADSL), "SEX")
 #'
 #' # How to select nothing

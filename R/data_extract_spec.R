@@ -81,7 +81,6 @@
 #'   dataname = "ADSL",
 #'   filter = dynamic_filter
 #' )
-#'
 #' @export
 #'
 data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
