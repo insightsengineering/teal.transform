@@ -18,8 +18,8 @@ data_extract_select_ui <- function(select, id = "select") {
     teal.widgets::optionalSelectInput(
       inputId = id,
       label = select$label,
-      choices = `if`(inherits(select, "delayed_select_spec"), NULL, select$choices),
-      selected = `if`(inherits(select, "delayed_select_spec"), NULL, select$selected),
+      choices = select$choices,
+      selected = select$selected,
       multiple = select$multiple,
       fixed = select$fixed
     )
