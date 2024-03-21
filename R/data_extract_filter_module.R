@@ -85,7 +85,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           inputId = ns("vals"),
           label = filter$label,
           choices = vals_options()$choices,
-          selected = vals_options()$selected,
+          selected = isolate(vals_options()$selected),
           multiple = filter$multiple,
           fixed = filter$fixed
         )
