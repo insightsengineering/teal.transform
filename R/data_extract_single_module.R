@@ -88,7 +88,7 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
           session = session,
           inputId = "select",
           choices = resolved$select$choices,
-          selected = shiny::restoreInput(ns("select"), resolved$select$selected)
+          selected = restoreInput(ns("select"), resolved$select$selected)
         )
       })
 
