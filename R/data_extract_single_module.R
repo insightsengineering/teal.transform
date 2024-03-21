@@ -34,16 +34,7 @@ data_extract_single_ui <- function(id = NULL, single_data_extract_spec) {
   )
 
   ## select input
-  extract_spec_select <- single_data_extract_spec$select
-  if (!is.null(extract_spec_select$fixed)) {
-    attr(extract_spec_select$fixed, which = "dataname") <- single_data_extract_spec$dataname
-  }
-
-  select_display <- if (is.null(extract_spec_select)) {
-    NULL
-  } else {
-    data_extract_select_ui(extract_spec_select, id = ns("select"))
-  }
+  select_display <- uiOutput(ns("select_container"))
 
   ## reshape input
   extract_spec_reshape <- single_data_extract_spec$reshape
@@ -82,14 +73,21 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
 
       # ui could be initialized with a delayed select spec so the choices and selected are NULL
       # here delayed are resolved
-      isolate({
-        resolved <- resolve_delayed(single_data_extract_spec, datasets)
-        teal.widgets::updateOptionalSelectInput(
-          session = session,
-          inputId = "select",
-          choices = resolved$select$choices,
-          selected = restoreInput(ns("select"), resolved$select$selected)
-        )
+      resolved <- isolate({
+        resolve_delayed(single_data_extract_spec, datasets)
+      })
+
+      output$select_container <- renderUI({
+        extract_spec_select <- resolved$select
+        if (!is.null(extract_spec_select$fixed)) {
+          attr(extract_spec_select$fixed, which = "dataname") <- resolved$dataname
+        }
+
+        select_display <- if (is.null(extract_spec_select)) {
+          NULL
+        } else {
+          data_extract_select_ui(extract_spec_select, id = ns("select"))
+        }
       })
 
       for (idx in seq_along(resolved$filter)) {
