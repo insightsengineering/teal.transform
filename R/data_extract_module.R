@@ -210,7 +210,7 @@ data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FA
 #'
 check_data_extract_spec_react <- function(datasets, data_extract) {
   if (!all(unlist(lapply(data_extract, `[[`, "dataname")) %in% datasets$datanames())) {
-    shiny::validate(
+    validate(
       "Error in data_extract_spec setup:\
         Data extract spec contains datasets that were not handed over to the teal app."
     )
@@ -254,7 +254,7 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
     }
   ))
 
-  if (!is.null(column_return)) shiny::validate(unlist(column_return))
+  if (!is.null(column_return)) validate(unlist(column_return))
   NULL
 }
 

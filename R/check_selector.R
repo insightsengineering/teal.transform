@@ -111,7 +111,7 @@ check_selector <- function(selector) {
       check_selector_reshape(selector$reshape)
       check_selector_internal_id(selector$internal_id)
     },
-    error = function(e) shiny::validate(e$message)
+    error = function(e) validate(e$message)
   )
   invisible(selector)
 }
