@@ -51,6 +51,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       ns <- session$ns
 
       output$col_container <- renderUI({
+        logger::log_trace("data_extract_filter_srv@1 setting up filter col input")
         teal.widgets::optionalSelectInput(
           inputId = ns("col"),
           label = filter$vars_label,
@@ -61,6 +62,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
         )
       })
 
+      is_init <- reactiveVal(TRUE)
       vals_options <- reactive({
         req(input$col)
         choices <- value_choices(
@@ -68,24 +70,24 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           var_choices = input$col,
           var_label = if (isTRUE(input$col == attr(filter$choices, "var_choices"))) attr(filter$choices, "var_label")
         )
-
-        selected <- if (!is.null(filter$selected)) {
-          filter$selected
+        selected <- if (shiny::isolate(is_init())) {
+          shiny::isolate(is_init(FALSE))
+          restoreInput(ns("vals"), filter$selected)
         } else if (filter$multiple) {
           choices
         } else {
           choices[1L]
         }
-        selected <- restoreInput(ns("vals"), selected)
         list(choices = choices, selected = selected)
       })
 
       output$vals_container <- renderUI({
+        logger::log_trace("data_extract_filter_srv@2 updating filter vals")
         teal.widgets::optionalSelectInput(
           inputId = ns("vals"),
           label = filter$label,
           choices = vals_options()$choices,
-          selected = isolate(vals_options()$selected),
+          selected = vals_options()$selected,
           multiple = filter$multiple,
           fixed = filter$fixed
         )
