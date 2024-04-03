@@ -91,7 +91,6 @@ data_extract_spec(
   dataname = "ADSL",
   filter = dynamic_filter
 )
-
 }
 \references{
 \link{select_spec} \link{filter_spec}

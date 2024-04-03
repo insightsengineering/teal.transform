@@ -123,7 +123,7 @@ get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys(
 #'
 #' @inheritParams get_dplyr_call_data
 #'
-#' @param idx optional (`integer`) current selector index in all selectors list.
+#' @param idx (`integer`) optional, current selector index in all selectors list.
 #' @param dplyr_call_data (`list`) simplified selectors with aggregated set of filters,
 #' selections, reshapes etc. All necessary data for merging.
 #' @param data (`NULL` or named `list`) of datasets.

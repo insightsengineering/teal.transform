@@ -70,10 +70,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  exactly_2_validation <- function() {
-    ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
-  }
-
   selector_list <- data_extract_multiple_srv(
     list(x_var = iris_extract, y_var = iris_extract, col_var = iris_extract),
     datasets = data_list,
@@ -81,7 +77,7 @@ server <- function(input, output, session) {
       x_var = sv_required("Please select an X column"),
       y_var = compose_rules(
         sv_required("Exactly 2 'Y' column variables must be chosen"),
-        exactly_2_validation()
+        function(x) if (length(x) != 2) "Exactly 2 'Y' column variables must be chosen"
       )
     )
   )
@@ -110,5 +106,4 @@ server <- function(input, output, session) {
 if (interactive()) {
   shinyApp(ui, server)
 }
-
 }

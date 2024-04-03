@@ -29,7 +29,7 @@ If not supplied it will default to the first element of \code{choices} if
 \item{keep_order}{(\code{logical}) In case of \code{FALSE} the selected variables will
 be on top of the drop-down field.}
 
-\item{fixed}{(optional \code{logical}) Whether to block user to select choices.}
+\item{fixed}{(\code{logical}) optional, whether to block user to select choices.}
 
 \item{x}{(\code{choices_selected}) object to check.}
 }
@@ -75,7 +75,7 @@ choices_selected(
   selected = "C"
 )
 
-ADSL <- teal.transform::rADSL
+ADSL <- rADSL
 choices_selected(variable_choices(ADSL), "SEX")
 
 # How to select nothing

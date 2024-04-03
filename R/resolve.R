@@ -60,7 +60,7 @@ resolve.delayed_choices_selected <- function(x, datasets, keys) {
   x$choices <- resolve(x$choices, datasets = datasets, keys)
 
   if (!all(x$selected %in% x$choices)) {
-    logger::log_warn(paste(
+    warning(paste(
       "Removing",
       paste(x$selected[which(!x$selected %in% x$choices)]),
       "from 'selected' as not in 'choices' when resolving delayed choices_selected"

@@ -20,7 +20,7 @@ testthat::test_that("get_filter_call throws error if dataset is not a named list
   testthat::expect_error(
     get_filter_call(filter = list(
       list(columns = "SEX", selected = list(NA))
-    ), dataname = "ADAMSET", data = list(ADAMSET = data_small)),
+    ), dataname = "ADAMSET", datasets = list(ADAMSET = data_small)),
     "May only contain the following types: {reactive}, but element 1 has type 'data.frame'.",
     fixed = TRUE
   )
@@ -30,7 +30,7 @@ testthat::test_that("get_filter_call - data - NAs and one column - one selection
   testthat::expect_equal(
     isolate(get_filter_call(filter = list(
       list(columns = "SEX", selected = list(NA))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(is.na(SEX))
     )
@@ -41,7 +41,7 @@ testthat::test_that("get_filter_call - data - NAs and one column - two selection
   testthat::expect_equal(
     isolate(get_filter_call(filter = list(
       list(columns = "SEX", selected = list(NA, "F"))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(SEX %in% c(NA_character_, "F"))
     )
@@ -52,7 +52,7 @@ testthat::test_that("get_filter_call - data - NAs and two columns", {
   testthat::expect_equal(
     isolate(get_filter_call(filter = list(
       list(columns = c("SEX", "AGE"), selected = list(c("F", "44"), c(NA, "33")))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter((SEX == "F" & AGE == "44") | (is.na(SEX) & AGE == "33"))
     )
@@ -64,7 +64,7 @@ testthat::test_that("get_filter_call - data - some of factor levels and integer"
     isolate(get_filter_call(filter = list(
       list(columns = "SEX", selected = list("F")),
       list(columns = "AGE", selected = list("42", "35"))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(SEX == "F" & AGE %in% c("42", "35"))
     )
@@ -75,7 +75,7 @@ testthat::test_that("get_filter_call - data - trunc POSIX and single column", {
   testthat::expect_equal(
     isolate(get_filter_call(filter = list(
       list(columns = "TRTSDTM", selected = list("2020-03-08 06:28:11"))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(trunc(TRTSDTM) == "2020-03-08 06:28:11")
     )
@@ -89,7 +89,7 @@ testthat::test_that("get_filter_call - data - trunc POSIX and two columns", {
         c("2020-03-08 06:28:11", "33"),
         c("2020-03-09 06:28:11", NA)
       ))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(
         (trunc(TRTSDTM) == "2020-03-08 06:28:11" & AGE == "33") |
@@ -106,7 +106,7 @@ testthat::test_that("get_filter_call - data - SEX and two columns, SEX variable 
         c("F", "33"),
         c("M", NA)
       ))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter((SEX == "F" & AGE == "33") | (SEX == "M" & is.na(AGE)))
     )
@@ -120,7 +120,7 @@ testthat::test_that("get_filter_call - data - three columns", {
         c("F", "33", NA),
         c("M", NA, NA)
       ))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter((SEX == "F" & AGE == "33" & is.na(DCSREAS)) | (SEX == "M" & is.na(AGE) & is.na(DCSREAS)))
     )
@@ -134,7 +134,7 @@ testthat::test_that("get_filter_call - data - non empty filter as NA is not sele
         "ADVERSE EVENT",
         "DEATH"
       ))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(dplyr::filter(DCSREAS %in% c("ADVERSE EVENT", "DEATH")))
   )
 })
@@ -146,7 +146,7 @@ testthat::test_that("get_filter_call - FALSE if empty selection for single", {
         list(columns = "DCSREAS", selected = c())
       ),
       dataname = "ADAMSET",
-      data = data_list
+      datasets = data_list
     )),
     quote(dplyr::filter(FALSE))
   )
@@ -157,7 +157,7 @@ testthat::test_that("get_filter_call - data - all factor levels and integer", {
     isolate(get_filter_call(filter = list(
       list(columns = "SEX", selected = list("F", "M")),
       list(columns = "AGE", selected = list("42", "35"))
-    ), dataname = "ADAMSET", data = data_list)),
+    ), dataname = "ADAMSET", datasets = data_list)),
     quote(
       dplyr::filter(AGE %in% c("42", "35"))
     )
@@ -168,14 +168,14 @@ testthat::test_that("get_filter_call - data - empty filter as all levels and NA 
   testthat::expect_null(
     isolate(get_filter_call(filter = list(
       list(columns = "DCSREAS", selected = c("ADVERSE EVENT", "DEATH", NA))
-    ), dataname = "ADAMSET", data = data_list))
+    ), dataname = "ADAMSET", datasets = data_list))
   )
 })
 testthat::test_that("get_filter_call - data - empty as all levels for SEX are selected - no missings", {
   testthat::expect_null(
     isolate(get_filter_call(filter = list(
       list(columns = "SEX", selected = list("F", "M"))
-    ), dataname = "ADAMSET", data = data_list))
+    ), dataname = "ADAMSET", datasets = data_list))
   )
 })
 
@@ -189,7 +189,7 @@ testthat::test_that("get_filter_call - skip if all selected for single variable"
         )
       ),
       dataname = "ADAMSET",
-      data = data_list
+      datasets = data_list
     ))
   )
 })
@@ -204,7 +204,7 @@ testthat::test_that("get_filter_call - skip if all selected for multiple variabl
         )
       ),
       dataname = "ADAMSET",
-      data = data_list
+      datasets = data_list
     ))
   )
 })
@@ -219,7 +219,7 @@ testthat::test_that("get_filter_call - skip if all selected for multiple variabl
         )
       ),
       dataname = "ADAMSET",
-      data = data_list
+      datasets = data_list
     ))
   )
 })

@@ -22,7 +22,7 @@ split_by_sep <- function(x, sep) {
 #' Extract labels from choices basing on attributes and names
 #'
 #' @param choices (`list` or `vector`) select choices.
-#' @param values (optional `list` or `vector`) with subset of `choices` for which
+#' @param values (`list` or `vector`) optional, with subset of `choices` for which
 #' labels should be extracted, `NULL` for all choices.
 #'
 #' @return `character` vector with labels.
@@ -107,10 +107,6 @@ extract_choices_labels <- function(choices, values = NULL) {
 #' )
 #'
 #' server <- function(input, output, session) {
-#'   exactly_2_validation <- function() {
-#'     ~ if (length(.) != 2) "Exactly 2 'Y' column variables must be chosen"
-#'   }
-#'
 #'   selector_list <- data_extract_multiple_srv(
 #'     list(x_var = iris_extract, y_var = iris_extract, col_var = iris_extract),
 #'     datasets = data_list,
@@ -118,7 +114,7 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'       x_var = sv_required("Please select an X column"),
 #'       y_var = compose_rules(
 #'         sv_required("Exactly 2 'Y' column variables must be chosen"),
-#'         exactly_2_validation()
+#'         function(x) if (length(x) != 2) "Exactly 2 'Y' column variables must be chosen"
 #'       )
 #'     )
 #'   )
@@ -147,7 +143,6 @@ extract_choices_labels <- function(choices, values = NULL) {
 #' if (interactive()) {
 #'   shinyApp(ui, server)
 #' }
-#'
 #' @export
 #'
 compose_and_enable_validators <- function(iv, selector_list, validator_names = NULL) {

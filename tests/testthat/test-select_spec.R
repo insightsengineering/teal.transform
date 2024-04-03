@@ -1,5 +1,5 @@
-adsl <- teal.transform::rADSL
-adtte <- teal.transform::rADTTE
+adsl <- rADSL
+adtte <- rADTTE
 data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
 primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
