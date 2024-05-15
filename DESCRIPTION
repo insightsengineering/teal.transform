@@ -38,7 +38,7 @@ Imports:
     tidyselect
 Suggests:
     knitr (>= 1.42),
-    rmarkdown (>= 2.19),
+    rmarkdown (>= 2.23),
     teal.code (>= 0.5.0),
     testthat (>= 3.1.5),
     withr (>= 2.0.0)
