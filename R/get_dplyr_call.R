@@ -11,7 +11,7 @@
 #' @keywords internal
 #'
 get_dplyr_call_data <- function(selector_list, join_keys = teal.data::join_keys()) {
-  logger::log_trace("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
+  logger::log_debug("get_dplyr_call_data called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_class(join_keys, "join_keys")
   lapply(selector_list, check_selector)
 
@@ -137,7 +137,7 @@ get_dplyr_call <- function(selector_list,
                            join_keys = teal.data::join_keys(),
                            dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys),
                            datasets = NULL) {
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_dplyr_call called with:",
       "{ paste(names(datasets), collapse = ', ') } datasets;",
@@ -183,7 +183,7 @@ get_dplyr_call <- function(selector_list,
 #' @keywords internal
 #'
 get_select_call <- function(select) {
-  logger::log_trace("get_select_call called with: { paste(select, collapse = ', ') } columns.")
+  logger::log_debug("get_select_call called with: { paste(select, collapse = ', ') } columns.")
   if (is.null(select) || length(select) == 0) {
     return(NULL)
   }
@@ -204,7 +204,7 @@ get_select_call <- function(select) {
 #' @keywords internal
 #'
 get_filter_call <- function(filter, dataname = NULL, datasets = NULL) {
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_filter_call called with:",
       "{ dataname } dataset;",
@@ -343,7 +343,7 @@ get_rename_call <- function(selector_list = list(),
                             dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
   stopifnot(length(dplyr_call_data) >= idx)
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_rename_call called with:",
       "{ dplyr_call_data[[idx]]$internal_id } selector;",
@@ -379,7 +379,7 @@ get_reshape_call <- function(selector_list = list(),
                              dplyr_call_data = get_dplyr_call_data(selector_list, join_keys = join_keys)) {
   checkmate::assert_integer(idx, len = 1, any.missing = FALSE)
   stopifnot(length(dplyr_call_data) >= idx)
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_reshape_call called with:",
       "{ dplyr_call_data[[idx]]$internal_id } selector;",
@@ -431,7 +431,7 @@ get_reshape_call <- function(selector_list = list(),
 #' @keywords internal
 #'
 get_pivot_longer_col <- function(selector) {
-  logger::log_trace("get_reshape_unite_col called with: { selector$internal_id } selector.")
+  logger::log_debug("get_reshape_unite_col called with: { selector$internal_id } selector.")
   setdiff(selector$select, selector$keys)
 }
 
@@ -447,7 +447,7 @@ get_pivot_longer_col <- function(selector) {
 #' @keywords internal
 #'
 get_reshape_unite_col <- function(selector) {
-  logger::log_trace("get_reshape_unite_col called with: { selector$internal_id } selector.")
+  logger::log_debug("get_reshape_unite_col called with: { selector$internal_id } selector.")
   intersect(
     selector$keys,
     unlist(lapply(selector$filters, `[[`, "columns"))
@@ -465,7 +465,7 @@ get_reshape_unite_col <- function(selector) {
 #' @keywords internal
 #'
 get_reshape_unite_vals <- function(selector) {
-  logger::log_trace("get_reshape_unite_vals called with: { selector$internal_id } selector.")
+  logger::log_debug("get_reshape_unite_vals called with: { selector$internal_id } selector.")
   unite_cols <- get_reshape_unite_col(selector)
   filters <- selector$filters
   filters_columns <- lapply(filters, `[[`, "columns")

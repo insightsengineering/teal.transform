@@ -85,7 +85,7 @@
 #' @export
 #'
 merge_datasets <- function(selector_list, datasets, join_keys, merge_function = "dplyr::full_join", anl_name = "ANL") {
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "merge_datasets called with:",
       "{ paste(names(datasets), collapse = ', ') } datasets;",
@@ -167,7 +167,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
     keys = keys,
     filter_info = filter_info
   )
-  logger::log_trace("merge_datasets merge code executed resulting in { anl_name } dataset.")
+  logger::log_debug("merge_datasets merge code executed resulting in { anl_name } dataset.")
   res
 }
 
@@ -181,7 +181,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
 #' @keywords internal
 #'
 merge_selectors <- function(selector_list) {
-  logger::log_trace("merge_selectors called with: { paste(names(selector_list), collapse = ', ') } selectors.")
+  logger::log_debug("merge_selectors called with: { paste(names(selector_list), collapse = ', ') } selectors.")
   checkmate::assert_list(selector_list, min.len = 1)
   lapply(selector_list, check_selector)
 

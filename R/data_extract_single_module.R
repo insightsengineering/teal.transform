@@ -76,7 +76,7 @@ data_extract_single_srv <- function(id, datasets, single_data_extract_spec) {
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace("data_extract_single_srv initialized with dataset: { single_data_extract_spec$dataname }.")
+      logger::log_debug("data_extract_single_srv initialized with dataset: { single_data_extract_spec$dataname }.")
 
       # ui could be initialized with a delayed select spec so the choices and selected are NULL
       # here delayed are resolved

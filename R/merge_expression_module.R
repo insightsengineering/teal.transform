@@ -175,7 +175,7 @@ merge_expression_module.list <- function(datasets,
                                          merge_function = "dplyr::full_join",
                                          anl_name = "ANL",
                                          id = "merge_id") {
-  logger::log_trace("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
+  logger::log_debug("merge_expression_module called with: { paste(names(datasets), collapse = ', ') } datasets.")
   checkmate::assert_list(datasets, names = "named")
   checkmate::assert_list(data_extract, names = "named", types = c("list", "data_extract_spec", "NULL"))
   checkmate::assert_class(join_keys, "join_keys")
@@ -384,7 +384,7 @@ merge_expression_srv.list <- function(id = "merge_id",
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace(
+      logger::log_debug(
         "merge_expression_srv initialized with: { paste(names(datasets), collapse = ', ') } datasets."
       )
 

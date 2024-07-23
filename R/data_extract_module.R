@@ -409,7 +409,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace(
+      logger::log_debug(
         "data_extract_srv.FilteredData initialized with datasets: { paste(datasets$datanames(), collapse = ', ') }."
       )
 
@@ -472,7 +472,7 @@ data_extract_srv.list <- function(id,
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace(
+      logger::log_debug(
         "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
       )
 
@@ -696,7 +696,7 @@ data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
 #'
 data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) {
   checkmate::assert_class(datasets, classes = "FilteredData")
-  logger::log_trace(
+  logger::log_debug(
     "data_extract_multiple_srv.filteredData initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
   )
 
@@ -759,7 +759,7 @@ data_extract_multiple_srv.list <- function(data_extract,
     checkmate::check_list(dataset_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
 
-  logger::log_trace(
+  logger::log_debug(
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
   )
 
