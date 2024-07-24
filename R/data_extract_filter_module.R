@@ -64,7 +64,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       # We force the evaluation of filter, otherwise the observers are set up with the last element
       # of the list in data_extract_single_srv and not all of them (due to R lazy evaluation)
       force(filter)
-      logger::log_trace("data_extract_filter_srv initialized with: { filter$dataname } dataset.")
+      logger::log_debug("data_extract_filter_srv initialized with: { filter$dataname } dataset.")
 
       isolate({
         # when the filter is initialized with a delayed spec, the choices and selected are NULL
@@ -108,7 +108,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
           }
           dn <- filter$dataname
           fc <- paste(input$col, collapse = ", ")
-          logger::log_trace("data_extract_filter_srv@1 filter dataset: { dn }; filter var: { fc }.")
+          logger::log_debug("data_extract_filter_srv@1 filter dataset: { dn }; filter var: { fc }.")
           # In order to force reactivity we run two updates: (i) set up dummy values (ii) set up appropriate values
           # It's due to a missing reactivity triggers if new selected value is identical with previously selected one.
           teal.widgets::updateOptionalSelectInput(

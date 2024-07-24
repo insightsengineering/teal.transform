@@ -22,14 +22,14 @@ get_merge_call <- function(selector_list,
   if (!missing(selector_list)) {
     checkmate::assert_list(selector_list, min.len = 1)
     lapply(selector_list, check_selector)
-    logger::log_trace(
+    logger::log_debug(
       paste(
         "get_merge_call called with: { paste(names(selector_list), collapse = ', ') } selectors;",
         "{ merge_function } merge function."
       )
     )
   } else {
-    logger::log_trace(
+    logger::log_debug(
       paste(
         "get_merge_call called with:",
         "{ paste(sapply(dplyr_call_data, `[[`, 'internal_id'), collapse = ', ') } selectors;",
@@ -125,7 +125,7 @@ get_merge_call <- function(selector_list,
 #' @keywords internal
 #'
 get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()) {
-  logger::log_trace(
+  logger::log_debug(
     "get_merge_key_grid called with: { paste(names(selector_list), collapse = ', ') } selectors."
   )
 
@@ -168,7 +168,7 @@ get_merge_key_grid <- function(selector_list, join_keys = teal.data::join_keys()
 #' @keywords internal
 #'
 get_merge_key_pair <- function(selector_from, selector_to, key_from) {
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_merge_key_pair called with:",
       "{ paste(selector_from$internal_id, selector_to$internal_id, sep = ', ') } selectors;",
@@ -195,7 +195,7 @@ get_merge_key_pair <- function(selector_from, selector_to, key_from) {
   } else {
     key_from
   }
-  logger::log_trace("get_merge_key_pair returns { paste(res, collapse = ', ') } merge keys.")
+  logger::log_debug("get_merge_key_pair returns { paste(res, collapse = ', ') } merge keys.")
   res
 }
 
@@ -215,7 +215,7 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
     checkmate::assert_list(selector_list, min.len = 1)
     lapply(selector_list, check_selector)
 
-    logger::log_trace(
+    logger::log_debug(
       paste(
         "get_merge_key_i called with:",
         "{ paste(names(selector_list), collapse = ', ') } selectors;",
@@ -223,7 +223,7 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
       )
     )
   } else {
-    logger::log_trace(
+    logger::log_debug(
       paste(
         "get_merge_key_i called with",
         "{ paste(sapply(dplyr_call_data, `[[`, 'internal_id'), collapse = ', ') } selectors;",
@@ -286,7 +286,7 @@ get_merge_key_i <- function(selector_list, idx, dplyr_call_data = get_dplyr_call
   }
 
   keys_map <- unique(keys_map)
-  logger::log_trace("get_merge_key_i returns { paste(keys_map, collapse = ' ') } unique keys.")
+  logger::log_debug("get_merge_key_i returns { paste(keys_map, collapse = ' ') } unique keys.")
   keys_map
 }
 
@@ -304,7 +304,7 @@ parse_merge_key_i <- function(selector_list,
                               idx,
                               dplyr_call_data = get_dplyr_call_data(selector_list),
                               merge_key = get_merge_key_i(selector_list, idx, dplyr_call_data)) {
-  logger::log_trace("parse_merge_key_i called with { paste(merge_key, collapse = ' ') } keys.")
+  logger::log_debug("parse_merge_key_i called with { paste(merge_key, collapse = ' ') } keys.")
   as.call(
     append(
       quote(c),
@@ -332,7 +332,7 @@ parse_merge_key_i <- function(selector_list,
 #' @keywords internal
 #'
 get_dropped_filters <- function(selector) {
-  logger::log_trace("get_dropped_filters called with { selector$internal_id } selector.")
+  logger::log_debug("get_dropped_filters called with { selector$internal_id } selector.")
   unlist(
     lapply(selector$filters, function(x) {
       if (isFALSE(x$drop_keys)) {
@@ -362,7 +362,7 @@ get_dropped_filters <- function(selector) {
 #'
 #' @export
 get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
-  logger::log_trace(
+  logger::log_debug(
     paste(
       "get_anl_relabel_call called with:",
       "{ paste(names(columns_source), collapse = ', ') } columns_source;",
@@ -448,7 +448,7 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
 #' )
 #' @export
 get_relabel_call <- function(labels) {
-  logger::log_trace("get_relabel_call called with: { paste(labels, collapse = ' ' ) } labels.")
+  logger::log_debug("get_relabel_call called with: { paste(labels, collapse = ' ' ) } labels.")
   if (length(stats::na.omit(labels)) == 0 || is.null(names(labels))) {
     return(NULL)
   }
@@ -475,7 +475,7 @@ get_relabel_call <- function(labels) {
 #' @keywords internal
 #'
 get_relabel_cols <- function(columns_source, dplyr_call_data) {
-  logger::log_trace(
+  logger::log_debug(
     "get_relabel_cols called with: { paste(names(columns_source), collapse = ', ') } columns_source."
   )
   pivot_longer_cols <- unlist(unname(lapply(dplyr_call_data, function(x) x[["pivot_longer_cols_renamed"]])))

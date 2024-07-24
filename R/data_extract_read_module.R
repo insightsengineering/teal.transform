@@ -21,7 +21,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_trace(
+      logger::log_debug(
         "data_extract_read_srv initialized with: { single_data_extract_spec$dataname } dataset."
       )
       filter_idx <- seq_along(single_data_extract_spec$filter)
@@ -49,7 +49,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
         dn <- single_data_extract_spec$dataname
         cols <- `if`(length(input_col) > 0, paste(input_col, collapse = ", "), "NULL")
         sel <- `if`(length(selected) > 0, paste(selected, collapse = ", "), "NULL")
-        logger::log_trace("data_extract_read_srv@1 dataname: { dn }; filter vars: { cols }; filter values: { sel }")
+        logger::log_debug("data_extract_read_srv@1 dataname: { dn }; filter vars: { cols }; filter values: { sel }")
 
         list(
           columns = input_col,
@@ -142,7 +142,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
 
           dn <- single_data_extract_spec$dataname
           sel <- `if`(length(res) > 0, paste(res, collapse = ", "), "NULL")
-          logger::log_trace("data_extract_read_srv@2 dataname: { dn }; select: { sel }.")
+          logger::log_debug("data_extract_read_srv@2 dataname: { dn }; select: { sel }.")
 
           res
         }
@@ -157,7 +157,7 @@ data_extract_read_srv <- function(id, datasets, single_data_extract_spec, iv, se
 
         dn <- single_data_extract_spec$dataname
         resh <- paste(res, collapse = ", ")
-        logger::log_trace("data_extract_read_srv@3 dataname: { dn }; reshape: { resh }.")
+        logger::log_debug("data_extract_read_srv@3 dataname: { dn }; reshape: { resh }.")
 
         res
       })
