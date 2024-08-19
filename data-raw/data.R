@@ -1,19 +1,19 @@
 ## code to prepare `data` for testing examples
-library(scda)
-rADAE <- synthetic_cdisc_data("latest")$adae
-usethis::use_data(rADAE)
 
-rADLB <- synthetic_cdisc_data("latest")$adlb
-usethis::use_data(rADLB)
+rADAE <- random.cdisc.data::cadae
+usethis::use_data(rADAE, overwrite = TRUE)
 
-rADRS <- synthetic_cdisc_data("latest")$adrs
-usethis::use_data(rADRS)
+rADLB <- random.cdisc.data::cadlb
+usethis::use_data(rADLB, overwrite = TRUE)
 
-rADSL <- synthetic_cdisc_data("latest")$adsl
-usethis::use_data(rADSL)
+rADRS <- random.cdisc.data::cadrs
+usethis::use_data(rADRS, overwrite = TRUE)
 
-rADTTE <- synthetic_cdisc_data("latest")$adtte
-usethis::use_data(rADTTE)
+rADSL <- random.cdisc.data::cadsl
+usethis::use_data(rADSL, overwrite = TRUE)
+
+rADTTE <- random.cdisc.data::cadtte
+usethis::use_data(rADTTE, overwrite = TRUE)
 
 # Use <pkg>:: prefix in examples/tests/vignettes when accessing rAD## data
 # objects in case similar dataset is also exported exist in other packages.
