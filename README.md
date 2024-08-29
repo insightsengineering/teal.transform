@@ -29,19 +29,12 @@ This package contains functions and shiny modules for extracting and merging dat
 ## Installation
 
 ```r
-# stable versions
 install.packages('teal.transform')
-
-# install.packages("pak")
-pak::pak("insightsengineering/teal.transform@*release")
 ```
 
-Alternatively, you might want to use the development version available on [r-universe](https://r-universe.dev/).
+Alternatively, you might want to use the development version.
 
 ```r
-# beta versions
-install.packages('teal.transform', repos = c('https://pharmaverse.r-universe.dev', getOption('repos')))
-
 # install.packages("pak")
 pak::pak("insightsengineering/teal.transform")
 ```
