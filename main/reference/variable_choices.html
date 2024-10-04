@@ -9,7 +9,7 @@ Wrapper on choices_labeled to label variables basing on existing labels in data.
 
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9014</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -210,47 +210,22 @@ with the primary key and display the appropriate icon for them in the
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># functional subset (with delayed data) - return only factor variables</span></span></span>
-<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="va">ADRS</span>, subset <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">variable_choices</span><span class="op">(</span><span class="st">"ADRS"</span>, subset <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">is.factor</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> number of choices: 34 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGEU: Age Units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX: Sex</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RACE: Race</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ETHNIC: Ethnicity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> COUNTRY: Country</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHFL: Subject Death Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARM: Description of Planned Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ARMCD: Planned Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARM: Description of Actual Arm</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ACTARMCD: Actual Arm Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01P: Planned Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT01A: Actual Treatment for Period 01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02P: Planned Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRT02A: Actual Treatment for Period 02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> REGION1: Geographic Region 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA1: Stratification Factor 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> STRATA2: Stratification Factor 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMRKR2: Categorical Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ITTFL: Intent-To-Treat Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAFFL: Safety Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BMEASIFL: Response Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> BEP01FL: Biomarker Evaluable Population Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AEWITHFL: AE Leading to Drug Withdrawal Flag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOSSTT: End of Study Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EOTSTT: End of Treatment Status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DCSREAS: Reason for Discontinuation from Study</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAUS: Cause of Death</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DTHCAT: Cause of Death Category</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> LDDTHGR1: Last Dose to Death - Days Elapsed Grp 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ADTHAUT: Autopsy Performed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PARAM: Parameter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PARAMCD: Parameter Code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVALC: Analysis Value (C)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AVISIT: Analysis Visit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> variable_choices with delayed data: ADRS</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ADRS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ subset</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (data) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     idx &lt;- vapply(data, is.factor, logical(1))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     names(data)[idx]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55bf08799060&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
