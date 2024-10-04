@@ -166,7 +166,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
 #'
 #' # functional subset (with delayed data) - return only factor variables
-#' variable_choices(ADRS, subset = function(data) {
+#' variable_choices("ADRS", subset = function(data) {
 #'   idx <- vapply(data, is.factor, logical(1))
 #'   names(data)[idx]
 #' })
