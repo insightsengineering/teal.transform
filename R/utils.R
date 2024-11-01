@@ -177,7 +177,7 @@ convert_teal_data <- function(datasets) {
     })
   } else if (is.reactive(datasets) && inherits(isolate(datasets()), "teal_data")) {
     sapply(
-      isolate(teal.data::datanames(datasets())),
+      isolate(ls(datasets())),
       function(dataname) {
         reactive(datasets()[[dataname]])
       },
