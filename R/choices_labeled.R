@@ -24,10 +24,9 @@
 #'
 #' @examples
 #' library(shiny)
-#' library(teal.data)
 #'
-#' ADSL <- rADSL
-#' ADTTE <- rADTTE
+#' ADSL <- teal.data::rADSL
+#' ADTTE <- teal.data::rADTTE
 #'
 #' choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 #' choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
@@ -150,9 +149,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' @return Named `character` vector with additional attributes or `delayed_data` object.
 #'
 #' @examples
-#' library(teal.data)
-#'
-#' ADRS <- rADRS
+#' ADRS <- teal.data::rADRS
 #' variable_choices(ADRS)
 #' variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 #' variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))
@@ -267,7 +264,7 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #' @return named character vector or `delayed_data` object.
 #'
 #' @examples
-#' ADRS <- rADRS
+#' ADRS <- teal.data::rADRS
 #' value_choices(ADRS, "PARAMCD", "PARAM", subset = c("BESRSPI", "INVET"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"))
 #' value_choices(ADRS, c("PARAMCD", "ARMCD"), c("PARAM", "ARM"),

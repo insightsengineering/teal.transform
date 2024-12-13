@@ -47,10 +47,9 @@ Duplicated elements from \code{choices} get removed.
 }}
 \examples{
 library(shiny)
-library(teal.data)
 
-ADSL <- rADSL
-ADTTE <- rADTTE
+ADSL <- teal.data::rADSL
+ADTTE <- teal.data::rADTTE
 
 choices1 <- choices_labeled(names(ADSL), col_labels(ADSL, fill = FALSE))
 choices2 <- choices_labeled(ADTTE$PARAMCD, ADTTE$PARAM)
