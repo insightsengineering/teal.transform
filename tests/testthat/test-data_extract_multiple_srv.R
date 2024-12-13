@@ -1,6 +1,6 @@
-ADSL <- rADSL
-ADLB <- rADLB
-ADTTE <- rADTTE
+ADSL <- teal.data::rADSL
+ADLB <- teal.data::rADLB
+ADTTE <- teal.data::rADTTE
 
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]

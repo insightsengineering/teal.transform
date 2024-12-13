@@ -1,5 +1,5 @@
-ADSL <- rADSL
-ADTTE <- rADTTE
+ADSL <- teal.data::rADSL
+ADTTE <- teal.data::rADTTE
 data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 

@@ -43,7 +43,8 @@ Named \code{character} vector with additional attributes or \code{delayed_data} 
 Wrapper on \link{choices_labeled} to label variables basing on existing labels in data.
 }
 \examples{
-ADRS <- teal.data::rADRS
+library(teal.data)
+ADRS <- rADRS
 variable_choices(ADRS)
 variable_choices(ADRS, subset = c("PARAM", "PARAMCD"))
 variable_choices(ADRS, subset = c("", "PARAM", "PARAMCD"))

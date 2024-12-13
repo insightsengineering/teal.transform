@@ -40,8 +40,8 @@ library(teal.data)
 library(shiny)
 
 # Define data.frame objects
-ADSL <- rADSL
-ADTTE <- rADTTE
+ADSL <- teal.data::rADSL
+ADTTE <- teal.data::rADTTE
 
 # create a list of reactive data.frame objects
 datasets <- list(
