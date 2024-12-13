@@ -40,7 +40,7 @@ Resolved object.
 \examples{
 library(shiny)
 
-ADSL <- rADSL
+ADSL <- teal.data::rADSL
 isolate({
   data_list <- list(ADSL = reactive(ADSL))
 

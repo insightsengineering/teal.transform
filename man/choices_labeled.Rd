@@ -46,8 +46,8 @@ Duplicated elements from \code{choices} get removed.
 
 }}
 \examples{
-library(shiny)
 library(teal.data)
+library(shiny)
 
 ADSL <- rADSL
 ADTTE <- rADTTE

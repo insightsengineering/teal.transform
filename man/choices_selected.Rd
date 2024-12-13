@@ -75,7 +75,7 @@ choices_selected(
   selected = "C"
 )
 
-ADSL <- rADSL
+ADSL <- teal.data::rADSL
 choices_selected(variable_choices(ADSL), "SEX")
 
 # How to select nothing
