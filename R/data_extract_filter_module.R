@@ -69,6 +69,10 @@ data_extract_filter_srv <- function(id, datasets, filter) {
       isolate({
         # when the filter is initialized with a delayed spec, the choices and selected are NULL
         # here delayed are resolved and the values are set up
+        # Begin by resolving delayed choices.
+        if (inherits(filter$selected, "delayed_choices"))  {
+          filter$selected <- filter$selected(filter$choices)
+        }
         teal.widgets::updateOptionalSelectInput(
           session = session,
           inputId = "col",
@@ -102,6 +106,7 @@ data_extract_filter_srv <- function(id, datasets, filter) {
             } else {
               choices[1]
             }
+
           } else {
             choices <- character(0)
             selected <- character(0)
@@ -148,8 +153,8 @@ get_initial_filter_values <- function(filter, datasets) {
       datasets[[filter$dataname]](),
       as.character(filter$vars_selected)
     )
-    initial_values$selected <- if (inherits(filter$selected, "all_choices")) {
-      initial_values$choices
+    initial_values$selected <- if (inherits(filter$selected, "delayed_choices")) {
+      filter$selected(initial_values$choices)
     } else {
       filter$selected
     }

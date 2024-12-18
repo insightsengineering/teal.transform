@@ -13,9 +13,9 @@
 #' These have to be columns in the dataset defined in the [data_extract_spec()]
 #' where this is called.
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
-#' @param selected (`character` or `NULL` or `all_choices` or `delayed_data`) optional
+#' @param selected (`character` or `NULL` or `delayed_choices` or `delayed_data`) optional
 #' named character vector to define the selected values of a shiny [shiny::selectInput()].
-#' Passing an `all_choices()` object indicates selecting all possible choices.
+#' Passing a `delayed_choices()` object defers selection until data is availale.
 #' Defaults to the first value of `choices` or `NULL` for delayed data loading.
 #' @param multiple (`logical`) Whether multiple values shall be allowed in the
 #' shiny [shiny::selectInput()].
@@ -71,16 +71,16 @@
 #'   fixed = FALSE
 #' )
 #'
-#' # all_choices passed to selected
+#' # delayed_choices passed to selected
 #' select_spec(
 #'   label = "Select variable:",
 #'   choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-#'   selected = all_choices()
+#'   selected = delayed_choices()
 #' )
 #'
 #' # Both below objects are semantically the same
 #' select_spec(choices = variable_choices("ADSL"), selected = variable_choices("ADSL"))
-#' select_spec(choices = variable_choices("ADSL"), selected = all_choices())
+#' select_spec(choices = variable_choices("ADSL"), selected = delayed_choices())
 #' @export
 #'
 select_spec <- function(choices,
@@ -98,7 +98,7 @@ select_spec <- function(choices,
   stopifnot(multiple || !inherits(selected, "all_choices"))
   if (fixed) stopifnot(is.null(always_selected))
 
-  if (inherits(selected, "all_choices")) selected <- choices
+  if (inherits(selected, "delayed_choices")) selected <- selected(choices)
   if (inherits(choices, "delayed_data") || inherits(selected, "delayed_data")) {
     select_spec.delayed_data(choices, selected, multiple, fixed, always_selected, ordered, label)
   } else {
