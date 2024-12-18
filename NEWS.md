@@ -1,5 +1,9 @@
 # teal.transform 0.5.0.9018
 
+### Enhancements
+
+* The utility function `all_choices` has been replaced by the more robust `delayed_choices`.
+
 # teal.transform 0.5.0
 
 ### Breaking changes
