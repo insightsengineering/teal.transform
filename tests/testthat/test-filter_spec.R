@@ -437,13 +437,24 @@ testthat::test_that("delayed version of filter_spec", {
   )
 })
 
-testthat::test_that("all_choices passed to selected identical to all choices", {
+testthat::test_that("delayed_choices passed to selected selects desired choices", {
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = c(1, 2), selected = c(1, 2)),
-    filter_spec(vars = "test", choices = c(1, 2), selected = all_choices())
+    filter_spec(vars = "test", choices = 1:3, selected = 1:3),
+    filter_spec(vars = "test", choices = 1:3, selected = delayed_choices())
+  )
+  testthat::expect_equal(
+    filter_spec(vars = "test", choices = 1:3, selected = 1:3),
+    filter_spec(vars = "test", choices = 1:3, selected = delayed_choices("all"))
+  )
+  testthat::expect_equal(
+    filter_spec(vars = "test", choices = 1:3, selected = 1L),
+    filter_spec(vars = "test", choices = 1:3, selected = delayed_choices("first"))
+  )
+  testthat::expect_equal(
+    filter_spec(vars = "test", choices = 1:3, selected = 3L),
+    filter_spec(vars = "test", choices = 1:3, selected = delayed_choices("last"))
   )
 })
-
 
 # With resolve_delayed
 testthat::test_that("delayed filter_spec - resolve_delayed", {
