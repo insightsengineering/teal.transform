@@ -24,7 +24,7 @@ no_select_keyword <- "-- no selection --"
 #' @param choices (`character`) vector of possible choices or `delayed_data` object.
 #'
 #' See [variable_choices()] and [value_choices()].
-#' @param selected (`character`) vector of preselected options, (`all_choices`) object
+#' @param selected (`character`) vector of preselected options, (`delayed_choices`) object
 #' or (`delayed_data`) object.
 #'
 #' If `delayed_data` object then `choices` must also be `delayed_data` object.
@@ -41,8 +41,8 @@ no_select_keyword <- "-- no selection --"
 #' library(shiny)
 #' library(teal.widgets)
 #'
-#' # all_choices example - semantically the same objects
-#' choices_selected(choices = letters, selected = all_choices())
+#' # delayed_choices example - semantically the same objects
+#' choices_selected(choices = letters, selected = delayed_choices())
 #' choices_selected(choices = letters, selected = letters)
 #'
 #' choices_selected(
@@ -136,12 +136,12 @@ choices_selected <- function(choices,
   )
   checkmate::assert(
     checkmate::check_atomic(selected),
-    checkmate::check_multi_class(selected, c("delayed_data", "all_choices"))
+    checkmate::check_multi_class(selected, c("delayed_data", "delayed_choices"))
   )
   checkmate::assert_flag(keep_order)
   checkmate::assert_flag(fixed)
 
-  if (inherits(selected, "all_choices")) selected <- choices
+  if (inherits(selected, "delayed_choices")) selected <- selected(choices)
 
   if (inherits(selected, "delayed_data") && !inherits(choices, "delayed_data")) {
     stop("If 'selected' is of class 'delayed_data', so must be 'choices'.")

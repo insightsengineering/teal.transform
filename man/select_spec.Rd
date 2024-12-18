@@ -43,9 +43,9 @@ These have to be columns in the dataset defined in the \code{\link[=data_extract
 where this is called.
 \code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(\code{character} or \code{NULL} or \code{all_choices} or \code{delayed_data}) optional
+\item{selected}{(\code{character} or \code{NULL} or \code{delayed_choices} or \code{delayed_data}) optional
 named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
-Passing an \code{all_choices()} object indicates selecting all possible choices.
+Passing a \code{delayed_choices()} object defers selection until data is availale.
 Defaults to the first value of \code{choices} or \code{NULL} for delayed data loading.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
@@ -113,14 +113,14 @@ select_spec(
   fixed = FALSE
 )
 
-# all_choices passed to selected
+# delayed_choices passed to selected
 select_spec(
   label = "Select variable:",
   choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-  selected = all_choices()
+  selected = delayed_choices()
 )
 
 # Both below objects are semantically the same
 select_spec(choices = variable_choices("ADSL"), selected = variable_choices("ADSL"))
-select_spec(choices = variable_choices("ADSL"), selected = all_choices())
+select_spec(choices = variable_choices("ADSL"), selected = delayed_choices())
 }
