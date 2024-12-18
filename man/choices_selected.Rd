@@ -19,7 +19,7 @@ is.choices_selected(x)
 
 See \code{\link[=variable_choices]{variable_choices()}} and \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(\code{character}) vector of preselected options, (\code{all_choices}) object
+\item{selected}{(\code{character}) vector of preselected options, (\code{delayed_choices}) object
 or (\code{delayed_data}) object.
 
 If \code{delayed_data} object then \code{choices} must also be \code{delayed_data} object.
@@ -66,8 +66,8 @@ In case you want to keep your specific order of choices, set \code{keep_order} t
 library(shiny)
 library(teal.widgets)
 
-# all_choices example - semantically the same objects
-choices_selected(choices = letters, selected = all_choices())
+# delayed_choices example - semantically the same objects
+choices_selected(choices = letters, selected = delayed_choices())
 choices_selected(choices = letters, selected = letters)
 
 choices_selected(
