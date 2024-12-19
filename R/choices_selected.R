@@ -97,7 +97,7 @@ no_select_keyword <- "-- no selection --"
 #'
 #' choices_selected(
 #'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-#'   selected = "C"
+#'   selected = "E"
 #' )
 #' choices_selected(
 #'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
