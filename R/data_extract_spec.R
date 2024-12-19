@@ -103,7 +103,7 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
     )
     filter <- filter_spec(
       vars = choices_selected(variable_choices(dataname)),
-      selected = all_choices()
+      selected = delayed_choices()
     )
   }
 

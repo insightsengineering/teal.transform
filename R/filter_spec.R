@@ -36,11 +36,11 @@
 #' The `sep` input has to be `" - "` in this case.
 #'
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
-#' @param selected (`character` or `numeric` or `logical` or (`delayed_data` or `all_choices`) object.
+#' @param selected (`character` or `numeric` or `logical` or (`delayed_data` or `delayed_choices`) object.
 #' Named character vector to define the selected values of a shiny [shiny::selectInput()]
 #' (default values).
 #' This value will be displayed inside the shiny app upon start.
-#' The `all_choices` object indicates selecting all possible choices.
+#' `delayed_choices` objects resolve selection when choices become available.
 #' @param drop_keys (`logical`) optional, whether to drop filter column from the
 #' dataset keys, `TRUE` on default.
 #' @param label (`character`) optional, defines a label on top of this specific
@@ -103,7 +103,7 @@
 #' adsl_filter <- filter_spec(
 #'   vars = choices_selected(variable_choices("ADSL"), "SEX", fixed = FALSE),
 #'   choices = value_choices("ADSL", "SEX"),
-#'   selected = all_choices()
+#'   selected = delayed_choices()
 #' )
 #' @export
 #'
@@ -133,7 +133,7 @@ filter_spec <- function(vars,
     checkmate::check_numeric(selected, min.len = 1, any.missing = FALSE),
     checkmate::check_logical(selected, min.len = 1, any.missing = FALSE),
     checkmate::check_class(selected, "delayed_data"),
-    checkmate::check_class(selected, "all_choices")
+    checkmate::check_class(selected, "delayed_choices")
   )
 
   checkmate::assert_flag(multiple)
@@ -142,7 +142,7 @@ filter_spec <- function(vars,
   checkmate::assert_flag(drop_keys)
   stopifnot(multiple || !inherits(selected, "all_choices"))
 
-  if (inherits(selected, "all_choices") && !is.null(choices)) selected <- choices
+  if (inherits(selected, "delayed_choices") && !is.null(choices)) selected <- selected(choices)
 
   if (inherits(vars, "choices_selected")) {
     filter_spec_internal(
@@ -307,7 +307,7 @@ filter_spec_internal.delayed_data <- function(vars_choices,
     checkmate::check_numeric(selected, min.len = 1, any.missing = FALSE),
     checkmate::check_logical(selected, min.len = 1, any.missing = FALSE),
     checkmate::check_class(selected, "delayed_data"),
-    checkmate::check_class(selected, "all_choices")
+    checkmate::check_class(selected, "delayed_choices")
   )
 
   structure(
@@ -376,7 +376,7 @@ filter_spec_internal.default <- function(vars_choices,
     stopifnot(all(vapply(split_choices, length, integer(1)) == length(vars_selected)))
   }
 
-  if (!is.null(selected) && !inherits(selected, "all_choices")) {
+  if (!is.null(selected) && !inherits(selected, "delayed_choices")) {
     stopifnot(multiple || length(selected) == 1)
     checkmate::assert(
       checkmate::check_character(selected, min.len = 1, any.missing = FALSE),
