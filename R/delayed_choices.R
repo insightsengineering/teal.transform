@@ -76,7 +76,7 @@ last_choice <- function() {
         return(x[length(x)])
       }
       x$subset <- function(data) {
-        modifier <- function(x) rev(x)[1L]
+        modifier <- function(x) x[length(x)]
         Reduce(function(f, ...) f(...), c(x$subset, modifier), init = data, right = TRUE)
       }
       x
