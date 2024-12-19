@@ -2,7 +2,7 @@
 
 ### Enhancements
 
-* The utility function `all_choices` has been replaced by the more robust `delayed_choices`.
+* Added utility functions `first_choice` and `last_choice` to increase the repertoir of specifying choices in delayed data, previously only served by `all_choices`.
 
 # teal.transform 0.5.0
 
