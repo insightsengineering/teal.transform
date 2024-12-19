@@ -2,37 +2,45 @@
 % Please edit documentation in R/delayed_choices.R
 \name{delayed_choices}
 \alias{delayed_choices}
+\alias{all_choices}
+\alias{first_choice}
+\alias{last_choice}
 \title{Bare constructor for \code{delayed_choices} object}
 \usage{
-delayed_choices(which = c("all", "first", "last"))
-}
-\arguments{
-\item{which}{\code{character(1)} string speficying which choices to select}
+all_choices()
+
+first_choice()
+
+last_choice()
 }
 \value{
-Object of class \code{delayed_choices}, which is a function that returns the appropriate subset of its argument.
-\code{delayed_choices} also have additional classes, which depend on \code{which}, for internal use.
+Object of class \code{delayed_choices}, which is a function that returns
+the appropriate subset of its argument. The \code{all_choices} structure
+also has an additional class for internal use.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-An S3 structure that delays selection of possible choices in a
+Special S3 structures that delay selection of possible choices in a
 \code{filter_spec}, \code{select_spec} or \code{choices_selected} object.
 }
 \examples{
-# Both structures are semantically identical
-filter_spec(
-  vars = c("selected_variable"),
-  choices = c("value1", "value2"),
-  selected = c("value1", "value2")
-)
-
-filter_spec(
-  vars = c("selected_variable"),
-  choices = c("value1", "value2"),
-  selected = delayed_choices()
-)
-
+# These pairs of structures represent semantically identical specifications:
 choices_selected(choices = letters, selected = letters)
-choices_selected(choices = letters, selected = delayed_choices())
+choices_selected(choices = letters, selected = all_choices())
+
+choices_selected(choices = letters, selected = letters[1])
+choices_selected(choices = letters, selected = first_choice())
+
+filter_spec(
+  vars = c("selected_variable"),
+  choices = c("value1", "value2", "value3"),
+  selected = "value3"
+)
+filter_spec(
+  vars = c("selected_variable"),
+  choices = c("value1", "value2", "value3"),
+  selected = last_choice()
+)
+
 }

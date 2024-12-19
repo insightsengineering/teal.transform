@@ -126,6 +126,6 @@ filter_spec(
 adsl_filter <- filter_spec(
   vars = choices_selected(variable_choices("ADSL"), "SEX", fixed = FALSE),
   choices = value_choices("ADSL", "SEX"),
-  selected = delayed_choices()
+  selected = all_choices()
 )
 }

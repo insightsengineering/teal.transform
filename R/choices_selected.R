@@ -41,15 +41,6 @@ no_select_keyword <- "-- no selection --"
 #' library(shiny)
 #' library(teal.widgets)
 #'
-#' # delayed_choices example - semantically the same objects
-#' choices_selected(choices = letters, selected = delayed_choices())
-#' choices_selected(choices = letters, selected = letters)
-#'
-#' choices_selected(
-#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-#'   selected = "C"
-#' )
-#'
 #' ADSL <- teal.data::rADSL
 #' choices_selected(variable_choices(ADSL), "SEX")
 #'
@@ -98,6 +89,19 @@ no_select_keyword <- "-- no selection --"
 #' choices_selected(
 #'   choices = variable_choices("ADSL"),
 #'   selected = variable_choices("ADSL", subset = c("STUDYID"))
+#' )
+#'
+#' # Passing `delayed_choices` object - semantically identical objects:
+#' choices_selected(choices = letters, selected = letters)
+#' choices_selected(choices = letters, selected = all_choices())
+#'
+#' choices_selected(
+#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+#'   selected = "C"
+#' )
+#' choices_selected(
+#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+#'   selected = last_choice()
 #' )
 #'
 #' # functional form (subsetting for factor variables only) of choices_selected

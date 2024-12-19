@@ -15,7 +15,7 @@
 #' `delayed_data` objects can be created via [variable_choices()] or [value_choices()].
 #' @param selected (`character` or `NULL` or `delayed_choices` or `delayed_data`) optional
 #' named character vector to define the selected values of a shiny [shiny::selectInput()].
-#' Passing a `delayed_choices()` object defers selection until data is availale.
+#' Passing a `delayed_choices` object defers selection until data is availale.
 #' Defaults to the first value of `choices` or `NULL` for delayed data loading.
 #' @param multiple (`logical`) Whether multiple values shall be allowed in the
 #' shiny [shiny::selectInput()].
@@ -75,12 +75,12 @@
 #' select_spec(
 #'   label = "Select variable:",
 #'   choices = variable_choices("ADSL", c("BMRKR1", "BMRKR2")),
-#'   selected = delayed_choices()
+#'   selected = all_choices()
 #' )
 #'
 #' # Both below objects are semantically the same
 #' select_spec(choices = variable_choices("ADSL"), selected = variable_choices("ADSL"))
-#' select_spec(choices = variable_choices("ADSL"), selected = delayed_choices())
+#' select_spec(choices = variable_choices("ADSL"), selected = all_choices())
 #' @export
 #'
 select_spec <- function(choices,
