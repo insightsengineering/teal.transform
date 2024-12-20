@@ -28,9 +28,7 @@ reference:
       Functions used to create transform instructions for `teal` applications.
     contents:
       - add_no_selected_choices
-      - all_choices
-      - first_choice
-      - last_choice
+      - delayed_choices
       - check_no_multiple_selection
       - choices_labeled
       - choices_selected
