@@ -6,7 +6,7 @@
 #' An S3 structure that delays selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
-#' @param which `character(1)` string speficying which choices to select
+#' @param which `character(1)` string specifying which choices to select
 #' @return
 #' Object of class `delayed_choices`, which is a function that returns the appropriate subset of its argument.
 #' `delayed_choices` also have additional classes, which depend on `which`, for internal use.

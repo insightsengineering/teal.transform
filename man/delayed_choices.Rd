@@ -7,7 +7,7 @@
 delayed_choices(which = c("all", "first", "last"))
 }
 \arguments{
-\item{which}{\code{character(1)} string speficying which choices to select}
+\item{which}{\code{character(1)} string specifying which choices to select}
 }
 \value{
 Object of class \code{delayed_choices}, which is a function that returns the appropriate subset of its argument.
