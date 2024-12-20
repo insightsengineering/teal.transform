@@ -24,7 +24,7 @@ no_select_keyword <- "-- no selection --"
 #' @param choices (`character`) vector of possible choices or `delayed_data` object.
 #'
 #' See [variable_choices()] and [value_choices()].
-#' @param selected (`character`) vector of preselected options, (`all_choices`) object
+#' @param selected (`character`) vector of preselected options, (`delayed_choices`) object
 #' or (`delayed_data`) object.
 #'
 #' If `delayed_data` object then `choices` must also be `delayed_data` object.
@@ -40,15 +40,6 @@ no_select_keyword <- "-- no selection --"
 #' @examples
 #' library(shiny)
 #' library(teal.widgets)
-#'
-#' # all_choices example - semantically the same objects
-#' choices_selected(choices = letters, selected = all_choices())
-#' choices_selected(choices = letters, selected = letters)
-#'
-#' choices_selected(
-#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
-#'   selected = "C"
-#' )
 #'
 #' ADSL <- teal.data::rADSL
 #' choices_selected(variable_choices(ADSL), "SEX")
@@ -100,6 +91,19 @@ no_select_keyword <- "-- no selection --"
 #'   selected = variable_choices("ADSL", subset = c("STUDYID"))
 #' )
 #'
+#' # Passing `delayed_choices` object - semantically identical objects:
+#' choices_selected(choices = letters, selected = letters)
+#' choices_selected(choices = letters, selected = all_choices())
+#'
+#' choices_selected(
+#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+#'   selected = "E"
+#' )
+#' choices_selected(
+#'   choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+#'   selected = last_choice()
+#' )
+#'
 #' # functional form (subsetting for factor variables only) of choices_selected
 #' # with delayed data loading
 #' choices_selected(variable_choices("ADSL", subset = function(data) {
@@ -136,12 +140,12 @@ choices_selected <- function(choices,
   )
   checkmate::assert(
     checkmate::check_atomic(selected),
-    checkmate::check_multi_class(selected, c("delayed_data", "all_choices"))
+    checkmate::check_multi_class(selected, c("delayed_data", "delayed_choices"))
   )
   checkmate::assert_flag(keep_order)
   checkmate::assert_flag(fixed)
 
-  if (inherits(selected, "all_choices")) selected <- choices
+  if (inherits(selected, "delayed_choices")) selected <- selected(choices)
 
   if (inherits(selected, "delayed_data") && !inherits(choices, "delayed_data")) {
     stop("If 'selected' is of class 'delayed_data', so must be 'choices'.")
