@@ -45,7 +45,7 @@ where this is called.
 
 \item{selected}{(\code{character} or \code{NULL} or \code{delayed_choices} or \code{delayed_data}) optional
 named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.
-Passing a \code{delayed_choices} object defers selection until data is availale.
+Passing a \code{delayed_choices} object defers selection until data is available.
 Defaults to the first value of \code{choices} or \code{NULL} for delayed data loading.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
