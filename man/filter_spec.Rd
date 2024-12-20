@@ -37,11 +37,11 @@ The \code{sep} input has to be \code{" - "} in this case.
 
 \code{delayed_data} objects can be created via \code{\link[=variable_choices]{variable_choices()}} or \code{\link[=value_choices]{value_choices()}}.}
 
-\item{selected}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data} or \code{all_choices}) object.
+\item{selected}{(\code{character} or \code{numeric} or \code{logical} or (\code{delayed_data} or \code{delayed_choices}) object.
 Named character vector to define the selected values of a shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}
 (default values).
 This value will be displayed inside the shiny app upon start.
-The \code{all_choices} object indicates selecting all possible choices.}
+\code{delayed_choices} objects resolve selection when choices become available.}
 
 \item{multiple}{(\code{logical}) Whether multiple values shall be allowed in the
 shiny \code{\link[shiny:selectInput]{shiny::selectInput()}}.}
@@ -126,6 +126,6 @@ filter_spec(
 adsl_filter <- filter_spec(
   vars = choices_selected(variable_choices("ADSL"), "SEX", fixed = FALSE),
   choices = value_choices("ADSL", "SEX"),
-  selected = all_choices()
+  selected = delayed_choices()
 )
 }
