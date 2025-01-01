@@ -327,6 +327,7 @@ value_choices.data.frame <- function(data,
   checkmate::assert_subset(var_choices, names(data))
   checkmate::assert_subset(var_label, names(data), empty.ok = TRUE)
 
+  var_choices <- as.vector(var_choices)
   df_choices <- data[var_choices]
   df_label <- data[var_label]
 
