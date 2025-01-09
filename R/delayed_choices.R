@@ -7,9 +7,9 @@
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
 #' @return
-#' Object of class `delayed_choices`, which is a function that returns
-#' the appropriate subset of its argument. The `all_choices` structure
-#' also has an additional class for internal use.
+#' Object of class `delayed_data, delayed_choices`, which is a function
+#' that returns the appropriate subset of its argument. The `all_choices`
+#' structure also has an additional class for internal use.
 #'
 #' @examples
 #' # These pairs of structures represent semantically identical specifications:
@@ -39,7 +39,7 @@ all_choices <- function() {
     function(x) {
       x
     },
-    class = c("all_choices", "delayed_choices")
+    class = c("all_choices", "delayed_choices", "delayed_data")
   )
 }
 
@@ -61,7 +61,7 @@ first_choice <- function() {
         x
       }
     },
-    class = c("delayed_choices")
+    class = c("delayed_choices", "delayed_data")
   )
 }
 
@@ -83,6 +83,6 @@ last_choice <- function() {
         x
       }
     },
-    class = c("delayed_choices")
+    class = c("delayed_choices", "delayed_data")
   )
 }
