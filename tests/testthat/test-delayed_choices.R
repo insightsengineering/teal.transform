@@ -4,7 +4,7 @@ testthat::test_that("delayed_choices constructors run without error", {
   testthat::expect_no_error(last_choice())
 })
 
-testthat::test_that("delayed_choices constructors return funcitons", {
+testthat::test_that("delayed_choices constructors return functions", {
   testthat::expect(is.function(all_choices()), "expecting function")
   testthat::expect(is.function(first_choice()), "expecting function")
   testthat::expect(is.function(last_choice()), "expecting function")
