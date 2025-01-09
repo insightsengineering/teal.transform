@@ -72,10 +72,18 @@ testthat::test_that("choices_selected throws error when selected is not found in
   )
 })
 
-testthat::test_that("all_choices is the same as selecting all choices", {
+testthat::test_that("delayed_choices select the desired choices", {
   testthat::expect_equal(
     choices_selected(choices = letters, selected = letters),
     choices_selected(choices = letters, selected = all_choices())
+  )
+  testthat::expect_equal(
+    choices_selected(choices = letters, selected = letters[1]),
+    choices_selected(choices = letters, selected = first_choice())
+  )
+  testthat::expect_equal(
+    choices_selected(choices = letters, selected = letters[length(letters)]),
+    choices_selected(choices = letters, selected = last_choice())
   )
 })
 

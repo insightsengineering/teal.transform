@@ -1,5 +1,9 @@
 # teal.transform 0.5.0.9018
 
+### Enhancements
+
+* Added utility functions `first_choice` and `last_choice` to increase the repertoire of specifying choices in delayed data, previously only served by `all_choices`.
+
 # teal.transform 0.5.0
 
 ### Breaking changes
