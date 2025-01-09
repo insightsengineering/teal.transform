@@ -49,16 +49,16 @@ first_choice <- function() {
   structure(
     function(x) {
       if (length(x) == 0L) {
-        return(x)
+        x
+      } else if (is.atomic(x)) {
+        x[1L]
+      } else if (inherits(x, "delayed_data")) {
+        x$subset <- function(data) {
+          modifier <- function(x) x[1L]
+          Reduce(function(f, ...) f(...), c(x$subset, modifier), init = data, right = TRUE)
+          x
+        }
       }
-      if (is.atomic(x)) {
-        return(x[1L])
-      }
-      x$subset <- function(data) {
-        modifier <- function(x) x[1L]
-        Reduce(function(f, ...) f(...), c(x$subset, modifier), init = data, right = TRUE)
-      }
-      x
     },
     class = c("delayed_choices")
   )
@@ -70,16 +70,16 @@ last_choice <- function() {
   structure(
     function(x) {
       if (length(x) == 0L) {
-        return(x)
+        x
+      } else if (is.atomic(x)) {
+        x[length(x)]
+      } else if (inherits(x, "delayed_data")) {
+        x$subset <- function(data) {
+          modifier <- function(x) x[length(x)]
+          Reduce(function(f, ...) f(...), c(x$subset, modifier), init = data, right = TRUE)
+          x
+        }
       }
-      if (is.atomic(x)) {
-        return(x[length(x)])
-      }
-      x$subset <- function(data) {
-        modifier <- function(x) x[length(x)]
-        Reduce(function(f, ...) f(...), c(x$subset, modifier), init = data, right = TRUE)
-      }
-      x
     },
     class = c("delayed_choices")
   )
