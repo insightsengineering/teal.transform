@@ -44,6 +44,9 @@ resolve.delayed_variable_choices <- function(x, datasets, keys) {
 #' @export
 resolve.delayed_value_choices <- function(x, datasets, keys) {
   x$data <- datasets[[x$data]]()
+  if (inherits(x$var_choices, "delayed_variable_choices")) {
+    x$var_choices <- resolve(x$var_choices, datasets, keys)
+  }
   if (is.function(x$subset)) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = TRUE)
   }
