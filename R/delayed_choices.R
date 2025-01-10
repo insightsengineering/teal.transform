@@ -56,9 +56,9 @@ first_choice <- function() {
         original_fun <- x$subset
         added_fun <- function(x) x[1L]
         x$subset <- function(data) {
-          added_fun(original_fun(x))
-          x
+          added_fun(original_fun(data))
         }
+        x
       }
     },
     class = c("delayed_choices")
@@ -78,10 +78,9 @@ last_choice <- function() {
         original_fun <- x$subset
         added_fun <- function(x) x[length(x)]
         x$subset <- function(data) {
-          added_fun(original_fun(x))
-          x
+          added_fun(original_fun(data))
         }
-
+        x
       }
     },
     class = c("delayed_choices")
