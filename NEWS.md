@@ -3,6 +3,8 @@
 ### Enhancements
 
 * Added utility functions `first_choice` and `last_choice` to increase the repertoire of specifying choices in delayed data, previously only served by `all_choices`.
+* Allowed `value_choices` to use `delayed_variable_choices` objects for `var_choices`.
+It is now possible to define a `data_extract_spec` without naming any variables.
 
 # teal.transform 0.5.0
 
