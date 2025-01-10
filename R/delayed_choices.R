@@ -48,11 +48,14 @@ all_choices <- function() {
 first_choice <- function() {
   structure(
     function(x) {
-      if (length(x) == 0L) {
+      if (inherits(x, "delayed_choices")) {
+        x
+      } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
         x[1L]
       } else if (inherits(x, "delayed_data")) {
+        if (is.null(x$subset)) return(x)
         original_fun <- x$subset
         added_fun <- function(x) x[1L]
         x$subset <- function(data) {
@@ -70,11 +73,14 @@ first_choice <- function() {
 last_choice <- function() {
   structure(
     function(x) {
-      if (length(x) == 0L) {
+      if (inherits(x, "delayed_choices")) {
+        x
+      } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
         x[length(x)]
       } else if (inherits(x, "delayed_data")) {
+        if (is.null(x$subset)) return(x)
         original_fun <- x$subset
         added_fun <- function(x) x[length(x)]
         x$subset <- function(data) {
