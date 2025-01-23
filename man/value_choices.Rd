@@ -17,7 +17,7 @@ value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
 If \code{data.frame}, then data to extract labels from.
 If \code{character}, then name of the dataset to extract data from once available.}
 
-\item{var_choices}{(\code{character} or \code{NULL}) vector with choices column names.}
+\item{var_choices}{(\code{character}, \code{delayed_variable_choices}) Choice of column names.}
 
 \item{var_label}{(\code{character}) vector with labels column names.}
 
