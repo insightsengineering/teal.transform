@@ -47,8 +47,6 @@ VignetteBuilder:
     rmarkdown
 RdMacros:
     lifecycle
-Remotes:
-    insightsengineering/teal.data
 Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
     r-lib/lifecycle, daroczig/logger, r-lib/rlang, rstudio/shiny,
     daattali/shinyjs, rstudio/shinyvalidate,
