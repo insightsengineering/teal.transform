@@ -58,7 +58,6 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/revdepcheck.yaml@main
     with:
       lookup-refs: |
-        insightsengineering/teal.code
         insightsengineering/teal.data
         insightsengineering/teal.logger
         insightsengineering/teal.widgets
@@ -77,6 +76,5 @@ jobs:
         insightsengineering/teal.data
         insightsengineering/teal.logger
         insightsengineering/teal.widgets
-        insightsengineering/teal.code
         insightsengineering/formatters
         insightsengineering/rtables
