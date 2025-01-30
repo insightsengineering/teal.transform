@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
-Version: 0.5.0.9025
-Date: 2025-01-29
+Version: 0.5.0.9026
+Date: 2025-01-30
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -39,7 +39,6 @@ Imports:
 Suggests:
     knitr (>= 1.42),
     rmarkdown (>= 2.23),
-    teal.code (>= 0.5.0),
     testthat (>= 3.1.5),
     withr (>= 2.0.0)
 VignetteBuilder:
@@ -52,8 +51,7 @@ Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
     daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
     insightsengineering/teal.widgets, tidyverse/tidyr, r-lib/tidyselect,
-    yihui/knitr, rstudio/rmarkdown, insightsengineering/teal.code,
-    r-lib/testthat, r-lib/withr
+    yihui/knitr, rstudio/rmarkdown, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Encoding: UTF-8
 Language: en-US
