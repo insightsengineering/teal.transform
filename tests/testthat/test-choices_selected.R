@@ -85,6 +85,14 @@ testthat::test_that("delayed_choices select the desired choices", {
     choices_selected(choices = letters, selected = letters[length(letters)]),
     choices_selected(choices = letters, selected = last_choice())
   )
+  testthat::expect_equal(
+    choices_selected(choices = letters, selected = head(letters, 4)),
+    choices_selected(choices = letters, selected = first_choices(4))
+  )
+  testthat::expect_equal(
+    choices_selected(choices = letters, selected = tail(letters, 4)),
+    choices_selected(choices = letters, selected = last_choices(4))
+  )
 })
 
 testthat::test_that("choices_selected throws when selected is delayed and choices are not", {
