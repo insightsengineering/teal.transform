@@ -6,6 +6,9 @@
 #' Special S3 structures that delay selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
+#' @param n (`integer`-like`) number of first/last items to subset to;
+#'          must be greater than 1
+#'
 #' @return
 #' Object of class `delayed_data, delayed_choices`, which is a function
 #' that returns the appropriate subset of its argument. The `all_choices`
@@ -18,6 +21,15 @@
 #'
 #' choices_selected(choices = letters, selected = letters[1])
 #' choices_selected(choices = letters, selected = first_choice())
+#'
+#' choices_selected(choices = letters, selected = letters[length(letters)])
+#' choices_selected(choices = letters, selected = last_choice())
+#'
+#' choices_selected(choices = letters, selected = head(letters, 4))
+#' choices_selected(choices = letters, selected = first_choices(4))
+#'
+#' choices_selected(choices = letters, selected = tail(letters, 4))
+#' choices_selected(choices = letters, selected = last_choices(4))
 #'
 #' filter_spec(
 #'   vars = c("selected_variable"),
@@ -83,6 +95,60 @@ last_choice <- function() {
         if (is.null(x$subset)) return(x)
         original_fun <- x$subset
         added_fun <- function(x) x[length(x)]
+        x$subset <- function(data) {
+          added_fun(original_fun(data))
+        }
+        x
+      }
+    },
+    class = c("delayed_choices", "delayed_data")
+  )
+}
+
+#' @export
+#' @rdname delayed_choices
+first_choices <- function(n) {
+  checkmate::assert_count(n, positive = TRUE)
+  checkmate::assert_true(n > 1, .var.name = "n > 1")
+  structure(
+    function(x) {
+      if (inherits(x, "delayed_choices")) {
+        x
+      } else if (length(x) == 0L) {
+        x
+      } else if (is.atomic(x)) {
+        x[1:min(n, length(x))]
+      } else if (inherits(x, "delayed_data")) {
+        if (is.null(x$subset)) return(x)
+        original_fun <- x$subset
+        added_fun <- function(x) x[1:min(n, length(x))]
+        x$subset <- function(data) {
+          added_fun(original_fun(data))
+        }
+        x
+      }
+    },
+    class = c("delayed_choices", "delayed_data")
+  )
+}
+
+#' @export
+#' @rdname delayed_choices
+last_choices <- function(n) {
+  checkmate::assert_count(n, positive = TRUE)
+  checkmate::assert_true(n > 1, .var.name = "n > 1")
+  structure(
+    function(x) {
+      if (inherits(x, "delayed_choices")) {
+        x
+      } else if (length(x) == 0L) {
+        x
+      } else if (is.atomic(x)) {
+        x[max(1, (length(x) - (n - 1))):length(x)]
+      } else if (inherits(x, "delayed_data")) {
+        if (is.null(x$subset)) return(x)
+        original_fun <- x$subset
+        added_fun <- function(x) x[max(1, (length(x) - (n - 1))):length(x)]
         x$subset <- function(data) {
           added_fun(original_fun(data))
         }

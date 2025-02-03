@@ -5,6 +5,8 @@
 \alias{all_choices}
 \alias{first_choice}
 \alias{last_choice}
+\alias{first_choices}
+\alias{last_choices}
 \title{Bare constructor for \code{delayed_choices} object}
 \usage{
 all_choices()
@@ -12,6 +14,14 @@ all_choices()
 first_choice()
 
 last_choice()
+
+first_choices(n)
+
+last_choices(n)
+}
+\arguments{
+\item{n}{(\code{integer}-like`) number of first/last items to subset to;
+must be greater than 1}
 }
 \value{
 Object of class \verb{delayed_data, delayed_choices}, which is a function
@@ -31,6 +41,15 @@ choices_selected(choices = letters, selected = all_choices())
 
 choices_selected(choices = letters, selected = letters[1])
 choices_selected(choices = letters, selected = first_choice())
+
+choices_selected(choices = letters, selected = letters[length(letters)])
+choices_selected(choices = letters, selected = last_choice())
+
+choices_selected(choices = letters, selected = head(letters, 4))
+choices_selected(choices = letters, selected = first_choices(4))
+
+choices_selected(choices = letters, selected = tail(letters, 4))
+choices_selected(choices = letters, selected = last_choices(4))
 
 filter_spec(
   vars = c("selected_variable"),
