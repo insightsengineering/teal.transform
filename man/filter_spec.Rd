@@ -8,7 +8,7 @@ filter_spec(
   vars,
   choices = NULL,
   selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
-  multiple = length(selected) > 1 || inherits(selected, "all_choices"),
+  multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
   label = "Filter by",
   sep = attr(choices, "sep"),
   drop_keys = FALSE

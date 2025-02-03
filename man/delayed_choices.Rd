@@ -25,8 +25,9 @@ must be greater than 1}
 }
 \value{
 Object of class \verb{delayed_data, delayed_choices}, which is a function
-that returns the appropriate subset of its argument. The \code{all_choices}
-structure also has an additional class for internal use.
+that returns the appropriate subset of its argument.
+\code{all_choices}, \code{first_choices}, and \code{last_choices} structures
+also has an additional class for internal use.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

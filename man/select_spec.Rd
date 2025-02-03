@@ -9,7 +9,7 @@
 select_spec(
   choices,
   selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
-  multiple = length(selected) > 1 || inherits(selected, "all_choices"),
+  multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
   fixed = FALSE,
   always_selected = NULL,
   ordered = FALSE,
