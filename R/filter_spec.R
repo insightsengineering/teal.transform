@@ -110,7 +110,7 @@
 filter_spec <- function(vars,
                         choices = NULL,
                         selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
-                        multiple = length(selected) > 1 || inherits(selected, "all_choices"),
+                        multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
                         label = "Filter by",
                         sep = attr(choices, "sep"),
                         drop_keys = FALSE) {
@@ -140,7 +140,7 @@ filter_spec <- function(vars,
   checkmate::assert_string(label, null.ok = TRUE)
   checkmate::assert_string(sep)
   checkmate::assert_flag(drop_keys)
-  stopifnot(multiple || !inherits(selected, "all_choices"))
+  stopifnot(multiple || !inherits(selected, "multiple_choices"))
 
   if (inherits(selected, "delayed_choices") && !is.null(choices)) selected <- selected(choices)
 

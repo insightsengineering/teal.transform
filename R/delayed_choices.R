@@ -11,8 +11,9 @@
 #'
 #' @return
 #' Object of class `delayed_data, delayed_choices`, which is a function
-#' that returns the appropriate subset of its argument. The `all_choices`
-#' structure also has an additional class for internal use.
+#' that returns the appropriate subset of its argument.
+#' `all_choices`, `first_choices`, and `last_choices` structures
+#' also has an additional class for internal use.
 #'
 #' @examples
 #' # These pairs of structures represent semantically identical specifications:
@@ -51,7 +52,7 @@ all_choices <- function() {
     function(x) {
       x
     },
-    class = c("all_choices", "delayed_choices", "delayed_data")
+    class = c("multiple_choices", "delayed_choices", "delayed_data")
   )
 }
 
@@ -128,7 +129,7 @@ first_choices <- function(n) {
         x
       }
     },
-    class = c("delayed_choices", "delayed_data")
+    class = c("multiple_choices", "delayed_choices", "delayed_data")
   )
 }
 
@@ -155,6 +156,6 @@ last_choices <- function(n) {
         x
       }
     },
-    class = c("delayed_choices", "delayed_data")
+    class = c("multiple_choices", "delayed_choices", "delayed_data")
   )
 }
