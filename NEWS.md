@@ -1,4 +1,4 @@
-# teal.transform 0.5.0.9027
+# teal.transform 0.6.0
 
 ### Enhancements
 
