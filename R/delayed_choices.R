@@ -6,13 +6,13 @@
 #' Special S3 structures that delay selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
-#' @param n (`integer`-like) number of first/last items to subset to
+#' @param n positive (`integer`-like) number of first/last items to subset to
 #'
 #' @return
 #' Object of class `delayed_data, delayed_choices`, which is a function
 #' that returns the appropriate subset of its argument.
 #' `all_choices`, `first_choices`, and `last_choices` structures
-#' also has an additional class for internal use.
+#' also have an additional class for internal use.
 #'
 #' @examples
 #' # These pairs of structures represent semantically identical specifications:
