@@ -439,16 +439,24 @@ testthat::test_that("delayed version of filter_spec", {
 
 testthat::test_that("delayed_choices passed to selected select desired choices", {
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = 1:3, selected = 1:3),
-    filter_spec(vars = "test", choices = 1:3, selected = all_choices())
+    filter_spec(vars = "test", choices = letters, selected = letters),
+    filter_spec(vars = "test", choices = letters, selected = all_choices())
   )
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = 1:3, selected = 1L),
-    filter_spec(vars = "test", choices = 1:3, selected = first_choice())
+    filter_spec(vars = "test", choices = letters, selected = letters[1L]),
+    filter_spec(vars = "test", choices = letters, selected = first_choice())
   )
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = 1:3, selected = 3L),
-    filter_spec(vars = "test", choices = 1:3, selected = last_choice())
+    filter_spec(vars = "test", choices = letters, selected = letters[length(letters)]),
+    filter_spec(vars = "test", choices = letters, selected = last_choice())
+  )
+  testthat::expect_equal(
+    filter_spec(vars = "test", choices = letters, selected = utils::head(letters, 4)),
+    filter_spec(vars = "test", choices = letters, selected = first_choices(4))
+  )
+  testthat::expect_equal(
+    filter_spec(vars = "test", choices = letters, selected = utils::tail(letters, 4)),
+    filter_spec(vars = "test", choices = letters, selected = last_choices(4))
   )
 })
 
