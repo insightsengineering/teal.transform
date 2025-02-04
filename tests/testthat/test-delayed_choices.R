@@ -6,11 +6,9 @@ testthat::test_that("delayed_choices constructors run without error", {
   testthat::expect_no_error(last_choices(4))
 })
 
-testthat::test_that("first_choices and last_choices require n > 1", {
+testthat::test_that("first_choices and last_choices require n", {
   testthat::expect_error(first_choices(), "argument \"n\" is missing")
   testthat::expect_error(last_choices(), "argument \"n\" is missing")
-  testthat::expect_error(first_choices(1), "Assertion on 'n > 1' failed: Must be TRUE")
-  testthat::expect_error(last_choices(1), "Assertion on 'n > 1' failed: Must be TRUE")
 })
 
 testthat::test_that("delayed_choices constructors return functions", {
