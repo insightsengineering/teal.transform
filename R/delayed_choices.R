@@ -58,51 +58,17 @@ all_choices <- function() {
 #' @export
 #' @rdname delayed_choices
 first_choice <- function() {
-  structure(
-    function(x) {
-      if (inherits(x, "delayed_choices")) {
-        x
-      } else if (length(x) == 0L) {
-        x
-      } else if (is.atomic(x)) {
-        x[1L]
-      } else if (inherits(x, "delayed_data")) {
-        if (is.null(x$subset)) return(x)
-        original_fun <- x$subset
-        added_fun <- function(x) x[1L]
-        x$subset <- function(data) {
-          added_fun(original_fun(data))
-        }
-        x
-      }
-    },
-    class = c("delayed_choices", "delayed_data")
-  )
+  ans <- first_choices(1)
+  class(ans) <- c("delayed_choices", "delayed_data")
+  ans
 }
 
 #' @export
 #' @rdname delayed_choices
 last_choice <- function() {
-  structure(
-    function(x) {
-      if (inherits(x, "delayed_choices")) {
-        x
-      } else if (length(x) == 0L) {
-        x
-      } else if (is.atomic(x)) {
-        x[length(x)]
-      } else if (inherits(x, "delayed_data")) {
-        if (is.null(x$subset)) return(x)
-        original_fun <- x$subset
-        added_fun <- function(x) x[length(x)]
-        x$subset <- function(data) {
-          added_fun(original_fun(data))
-        }
-        x
-      }
-    },
-    class = c("delayed_choices", "delayed_data")
-  )
+  ans <- last_choices(1)
+  class(ans) <- c("delayed_choices", "delayed_data")
+  ans
 }
 
 #' @export
