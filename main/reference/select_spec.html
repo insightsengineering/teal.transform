@@ -11,7 +11,7 @@ that will select columns from a dataset."><link rel="stylesheet" href="../consen
 
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9025</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9027</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@ that will select columns from a dataset.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">select_spec</span><span class="op">(</span></span>
 <span>  <span class="va">choices</span>,</span>
 <span>  selected <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">choices</span>, <span class="st">"delayed_data"</span><span class="op">)</span><span class="op">)</span> <span class="cn">NULL</span> <span class="kw">else</span> <span class="va">choices</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  multiple <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">selected</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">selected</span>, <span class="st">"all_choices"</span><span class="op">)</span>,</span>
+<span>  multiple <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">selected</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">selected</span>, <span class="st">"multiple_choices"</span><span class="op">)</span>,</span>
 <span>  fixed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  always_selected <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ordered <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -295,7 +295,10 @@ It contains all input values.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "ADSL"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ subset</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "BMRKR1" "BMRKR2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   function(data) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           fun(original_fun(data))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5589904f6a20&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   $ key</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ multiple</span>
