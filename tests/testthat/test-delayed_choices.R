@@ -23,8 +23,8 @@ testthat::test_that("delayed_choices functions return appropriate subsets of ato
   testthat::expect_identical(all_choices()(letters), letters)
   testthat::expect_identical(first_choice()(letters), letters[1L])
   testthat::expect_identical(last_choice()(letters), letters[length(letters)])
-  testthat::expect_identical(first_choices(4)(letters), head(letters, 4))
-  testthat::expect_identical(last_choices(4)(letters), tail(letters, 4))
+  testthat::expect_identical(first_choices(4)(letters), utils::head(letters, 4))
+  testthat::expect_identical(last_choices(4)(letters), utils::tail(letters, 4))
 })
 
 testthat::test_that("delayed_choices functions return passed NULL", {

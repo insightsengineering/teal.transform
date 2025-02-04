@@ -197,11 +197,11 @@ testthat::test_that("delayed_choices passed to selected selects desired choices"
     select_spec(choices = letters, selected = last_choice())
   )
   testthat::expect_equal(
-    select_spec(choices = letters, selected = head(letters, 4)),
+    select_spec(choices = letters, selected = utils::head(letters, 4)),
     select_spec(choices = letters, selected = first_choices(4))
   )
   testthat::expect_equal(
-    select_spec(choices = letters, selected = tail(letters, 4)),
+    select_spec(choices = letters, selected = utils::tail(letters, 4)),
     select_spec(choices = letters, selected = last_choices(4))
   )
 })

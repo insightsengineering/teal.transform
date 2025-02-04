@@ -451,11 +451,11 @@ testthat::test_that("delayed_choices passed to selected select desired choices",
     filter_spec(vars = "test", choices = letters, selected = last_choice())
   )
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = letters, selected = head(letters, 4)),
+    filter_spec(vars = "test", choices = letters, selected = utils::head(letters, 4)),
     filter_spec(vars = "test", choices = letters, selected = first_choices(4))
   )
   testthat::expect_equal(
-    filter_spec(vars = "test", choices = letters, selected = tail(letters, 4)),
+    filter_spec(vars = "test", choices = letters, selected = utils::tail(letters, 4)),
     filter_spec(vars = "test", choices = letters, selected = last_choices(4))
   )
 })
