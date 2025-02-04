@@ -110,7 +110,6 @@ last_choice <- function() {
 #' @rdname delayed_choices
 first_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
-  checkmate::assert_true(n > 1, .var.name = "n > 1")
   structure(
     function(x) {
       if (inherits(x, "delayed_choices")) {
@@ -137,7 +136,6 @@ first_choices <- function(n) {
 #' @rdname delayed_choices
 last_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
-  checkmate::assert_true(n > 1, .var.name = "n > 1")
   structure(
     function(x) {
       if (inherits(x, "delayed_choices")) {
