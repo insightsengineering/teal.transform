@@ -118,11 +118,11 @@ first_choices <- function(n) {
       } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
-        x[1:min(n, length(x))]
+        utils::head(x, n = n)
       } else if (inherits(x, "delayed_data")) {
         if (is.null(x$subset)) return(x)
         original_fun <- x$subset
-        added_fun <- function(x) x[1:min(n, length(x))]
+        added_fun <- function(x) utils::head(x, n = n)
         x$subset <- function(data) {
           added_fun(original_fun(data))
         }
@@ -145,11 +145,11 @@ last_choices <- function(n) {
       } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
-        x[max(1, (length(x) - (n - 1))):length(x)]
+        utils::tail(x, n = n)
       } else if (inherits(x, "delayed_data")) {
         if (is.null(x$subset)) return(x)
         original_fun <- x$subset
-        added_fun <- function(x) x[max(1, (length(x) - (n - 1))):length(x)]
+        added_fun <- function(x) utils::tail(x, n = n)
         x$subset <- function(data) {
           added_fun(original_fun(data))
         }
