@@ -47,60 +47,40 @@
 #' @export
 #' @rdname delayed_choices
 all_choices <- function() {
-  structure(
-    function(x) {
-      x
-    },
-    class = c("multiple_choices", "delayed_choices", "delayed_data")
-  )
+  ans <- .delayed_choices(identity)
+  class(ans) <- c("multiple_choices", class(ans))
+  ans
 }
-
 #' @export
 #' @rdname delayed_choices
 first_choice <- function() {
-  ans <- first_choices(1)
-  class(ans) <- c("delayed_choices", "delayed_data")
-  ans
+  .delayed_choices(function(x) utils::head(x, 1L))
 }
-
 #' @export
 #' @rdname delayed_choices
 last_choice <- function() {
-  ans <- last_choices(1)
-  class(ans) <- c("delayed_choices", "delayed_data")
-  ans
+  .delayed_choices(function(x) utils::tail(x, 1L))
 }
-
 #' @export
 #' @rdname delayed_choices
 first_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
-  structure(
-    function(x) {
-      if (inherits(x, "delayed_choices")) {
-        x
-      } else if (length(x) == 0L) {
-        x
-      } else if (is.atomic(x)) {
-        utils::head(x, n = n)
-      } else if (inherits(x, "delayed_data")) {
-        if (is.null(x$subset)) return(x)
-        original_fun <- x$subset
-        added_fun <- function(x) utils::head(x, n = n)
-        x$subset <- function(data) {
-          added_fun(original_fun(data))
-        }
-        x
-      }
-    },
-    class = c("multiple_choices", "delayed_choices", "delayed_data")
-  )
+  ans <- .delayed_choices(function(x) utils::head(x, n))
+  class(ans) <- c("multiple_choices", class(ans))
+  ans
 }
-
 #' @export
 #' @rdname delayed_choices
 last_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
+  ans <- .delayed_choices(function(x) utils::tail(x, n))
+  class(ans) <- c("multiple_choices", class(ans))
+  ans
+}
+
+#' @keywords internal
+#' @noRd
+.delayed_choices <- function(fun) {
   structure(
     function(x) {
       if (inherits(x, "delayed_choices")) {
@@ -108,17 +88,18 @@ last_choices <- function(n) {
       } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
-        utils::tail(x, n = n)
+        fun(x)
       } else if (inherits(x, "delayed_data")) {
-        if (is.null(x$subset)) return(x)
+        if (is.null(x$subset)) {
+          return(x)
+        }
         original_fun <- x$subset
-        added_fun <- function(x) utils::tail(x, n = n)
         x$subset <- function(data) {
-          added_fun(original_fun(data))
+          fun(original_fun(data))
         }
         x
       }
     },
-    class = c("multiple_choices", "delayed_choices", "delayed_data")
+    class = c("delayed_choices", "delayed_data")
   )
 }
