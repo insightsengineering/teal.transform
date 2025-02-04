@@ -6,7 +6,7 @@
 #' Special S3 structures that delay selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
-#' @param n (`integer`-like`) number of first/last items to subset to;
+#' @param n (`integer`-like) number of first/last items to subset to;
 #'          must be greater than 1
 #'
 #' @return

@@ -20,7 +20,7 @@ first_choices(n)
 last_choices(n)
 }
 \arguments{
-\item{n}{(\code{integer}-like`) number of first/last items to subset to;
+\item{n}{(\code{integer}-like) number of first/last items to subset to;
 must be greater than 1}
 }
 \value{
