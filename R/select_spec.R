@@ -85,7 +85,7 @@
 #'
 select_spec <- function(choices,
                         selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
-                        multiple = length(selected) > 1 || inherits(selected, "all_choices"),
+                        multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
                         fixed = FALSE,
                         always_selected = NULL,
                         ordered = FALSE,
@@ -95,7 +95,7 @@ select_spec <- function(choices,
   checkmate::assert_character(always_selected, min.len = 1, null.ok = TRUE, any.missing = FALSE)
   checkmate::assert_flag(ordered)
   checkmate::assert_string(label, null.ok = TRUE)
-  stopifnot(multiple || !inherits(selected, "all_choices"))
+  stopifnot(multiple || !inherits(selected, "multiple_choices"))
   if (fixed) stopifnot(is.null(always_selected))
 
   if (inherits(selected, "delayed_choices")) selected <- selected(choices)
