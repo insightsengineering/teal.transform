@@ -20,8 +20,7 @@ first_choices(n)
 last_choices(n)
 }
 \arguments{
-\item{n}{(\code{integer}-like) number of first/last items to subset to;
-must be greater than 1}
+\item{n}{(\code{integer}-like) number of first/last items to subset to}
 }
 \value{
 Object of class \verb{delayed_data, delayed_choices}, which is a function
