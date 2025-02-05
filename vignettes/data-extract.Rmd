@@ -31,7 +31,7 @@ Let's delve into how it fulfills both of these responsibilities.
 
 #### Step 1/4 - Preparing the Data
 
-```{r}
+```{r library}
 library(teal.transform)
 library(teal.data)
 library(shiny)
@@ -59,7 +59,7 @@ Consider the following example, where we create two UI elements, one to filter o
 and a second one to select a variable from `c("BMRKR1", "AGE")`.
 `data_extract_spec` object is handed over to the `shiny` app and gives instructions to generate UI components.
 
-```{r}
+```{r data_extract_spec}
 simple_des <- data_extract_spec(
   dataname = "ADSL",
   filter = filter_spec(vars = "SEX", choices = c("F", "M")),
@@ -74,7 +74,7 @@ utilizes `data_extract_ui` and `data_extract_srv` to handle `data_extract_spec` 
 This module creates a UI component for a single `data_extract_spec` and prints a list of values returned from the `data_extract_srv` module.
 For more information about `data_extract_ui` and `data_extract_srv`, please refer to the package documentation.
 
-```{r}
+```{r extract_ui_srv}
 extract_ui <- function(id, data_extract) {
   ns <- NS(id)
   sidebarLayout(
@@ -106,7 +106,7 @@ extract_srv <- function(id, datasets, data_extract, join_keys) {
 
 Finally, we include `extract_ui` in the UI of the `shinyApp`, and utilize `extract_srv` in the server function of the `shinyApp`:
 
-```{r eval=FALSE}
+```{r shinyapp, eval=FALSE}
 shinyApp(
   ui = fluidPage(extract_ui("data_extract", simple_des)),
   server = function(input, output, session) {
@@ -115,4 +115,20 @@ shinyApp(
 )
 ```
 
-<img src="images/app-data-extract.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
+## Try it out in Shinylive
+
+```{r shinylive_url, echo = FALSE, results = 'asis', eval = requireNamespace("roxy.shinylive", quietly = TRUE)}
+code <- paste0(c(
+  knitr::knit_code$get("library"),
+  knitr::knit_code$get("data_extract_spec"),
+  knitr::knit_code$get("extract_ui_srv"),
+  knitr::knit_code$get("shinyapp")
+), collapse = "\n")
+
+url <- roxy.shinylive::create_shinylive_url(code)
+cat(sprintf("[Open in Shinylive](%s)\n\n", url))
+```
+
+```{r shinylive_iframe, echo = FALSE, out.width = '150%', out.extra = 'style = "position: relative; z-index:1"', eval = requireNamespace("roxy.shinylive", quietly = TRUE) && knitr::is_html_output() && identical(Sys.getenv("IN_PKGDOWN"), "true")}
+knitr::include_url(url, height = "800px")
+```

@@ -34,7 +34,7 @@ Let's see how to achieve this dynamic `select`, `filter`, and `merge` operations
 
 #### Step 1/5 - Preparing the Data
 
-```{r}
+```{r library}
 library(teal.transform)
 library(teal.data)
 library(shiny)
@@ -68,7 +68,7 @@ It is created by the `data_extract_spec()` function which takes in four argument
 3. `filter` helps specify the values of a variable we wish to filter during extraction. It can be generated using the function `filter_spec()`. In the case of `ADTTE`, we filter the variable `PARAMCD` by allowing users to choose from `CRSD`, `EFS`, `OS`, and `PFS`, with `OS` being the default filter.
 4. `reshape` is a boolean which helps to specify if the data needs to be reshaped from long to wide format. By default it is set to `FALSE`.
 
-```{r}
+```{r data_extract_spec}
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -104,7 +104,7 @@ Here, we define the `merge_ui` function, which will be used to create the UI com
 
 Note that we take in the list of `data_extract` objects as input, and make use of the `data_extract_ui` function to create our UI.
 
-```{r}
+```{r merge_ui}
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
   sidebarLayout(
@@ -140,7 +140,7 @@ This function takes as arguments the datasets (as a list of reactive `data.frame
 We make use of the `merge_expression_srv` function to get a reactive list containing merge expression and information needed to perform the transformation - see more in `merge_expression_srv` documentation.
 We print this expression in the UI  and also evaluate it to get the final `ANL` dataset which is also displayed as a table in the UI.
 
-```{r}
+```{r merge_srv}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
@@ -166,7 +166,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 Finally, we include `merge_ui` and `merge_srv` in the UI and server components of the `shinyApp`, respectively,
 using the `data_extract`s defined in the first code block and the `datasets` object:
 
-```{r eval=FALSE}
+```{r shinyapp, eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -175,4 +175,21 @@ shinyApp(
 )
 ```
 
-<img src="images/app-data-extract-merge.png" alt="Shiny app output for Data Extract and Merge" style="width: 100%;" />
+## Try it out in Shinylive
+
+```{r shinylive_url, echo = FALSE, results = 'asis', eval = requireNamespace("roxy.shinylive", quietly = TRUE)}
+code <- paste0(c(
+  knitr::knit_code$get("library"),
+  knitr::knit_code$get("data_extract_spec"),
+  knitr::knit_code$get("merge_ui"),
+  knitr::knit_code$get("merge_srv"),
+  knitr::knit_code$get("shinyapp")
+), collapse = "\n")
+
+url <- roxy.shinylive::create_shinylive_url(code)
+cat(sprintf("[Open in Shinylive](%s)\n\n", url))
+```
+
+```{r shinylive_iframe, echo = FALSE, out.width = '150%', out.extra = 'style = "position: relative; z-index:1"', eval = requireNamespace("roxy.shinylive", quietly = TRUE) && knitr::is_html_output() && identical(Sys.getenv("IN_PKGDOWN"), "true")}
+knitr::include_url(url, height = "800px")
+```
