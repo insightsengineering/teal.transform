@@ -764,6 +764,7 @@ data_extract_multiple_srv.list <- function(data_extract,
   )
 
   data_extract <- Filter(Negate(is.null), data_extract)
+  data_extract <- resolve_delayed_datasets(data_extract, names(datasets))
 
   if (is.function(select_validation_rule)) {
     select_validation_rule <- sapply(
