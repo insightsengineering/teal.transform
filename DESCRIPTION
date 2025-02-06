@@ -1,7 +1,7 @@
 Package: teal.transform
 Title: Functions for Extracting and Merging Data in the 'teal' Framework
 Version: 0.6.0
-Date: 2025-02-04
+Date: 2025-02-06
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = c("aut", "cre")),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
@@ -40,6 +40,7 @@ Imports:
 Suggests:
     knitr (>= 1.42),
     rmarkdown (>= 2.23),
+    roxy.shinylive (>= 1.0.0),
     testthat (>= 3.1.5),
     withr (>= 2.0.0)
 VignetteBuilder:

@@ -35,7 +35,7 @@ a list of reactive or non-reactive `data.frame` objects, and a list of join keys
 
 #### Step 1/5 - Preparing the Data
 
-```{r}
+```{r library}
 library(teal.transform)
 library(teal.data)
 library(shiny)
@@ -61,7 +61,7 @@ join_keys <- join_keys(
 
 #### Step 2/5 - Creating the Data Extracts
 
-```{r}
+```{r data_extract_spec}
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -88,7 +88,7 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 
 #### Step 3/5 - Creating the UI
 
-```{r}
+```{r merge_ui}
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
   sidebarLayout(
@@ -118,7 +118,7 @@ merge_ui <- function(id, data_extracts) {
 
 #### Step 4/5 - Creating the Server Logic
 
-```{r}
+```{r merge_srv}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     merged_data <- merge_expression_module(
@@ -140,7 +140,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 
 #### Step 5/5 - Creating the `shiny` App
 
-```{r eval=FALSE}
+```{r shinyapp, eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -149,8 +149,22 @@ shinyApp(
 )
 ```
 
-<img src="images/app-data-merge-1.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
+```{r shinylive_url, echo = FALSE, results = 'asis', eval = requireNamespace("roxy.shinylive", quietly = TRUE)}
+code <- paste0(c(
+  knitr::knit_code$get("library"),
+  knitr::knit_code$get("data_extract_spec"),
+  knitr::knit_code$get("merge_ui"),
+  knitr::knit_code$get("merge_srv"),
+  knitr::knit_code$get("shinyapp")
+), collapse = "\n")
 
+url <- roxy.shinylive::create_shinylive_url(code)
+cat(sprintf("[Open in Shinylive](%s)\n\n", url))
+```
+
+```{r shinylive_iframe, echo = FALSE, out.width = '150%', out.extra = 'style = "position: relative; z-index:1"', eval = requireNamespace("roxy.shinylive", quietly = TRUE) && knitr::is_html_output() && identical(Sys.getenv("IN_PKGDOWN"), "true")}
+knitr::include_url(url, height = "800px")
+```
 
 <hr>
 
@@ -163,7 +177,7 @@ The `reactive_selector_list` is then passed to `merge_expression_srv`:
 
 #### Modifying the Server Logic
 
-```{r}
+```{r merge_srv2}
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
@@ -194,7 +208,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 
 #### Updating the `shiny` app
 
-```{r eval=FALSE}
+```{r shinyapp2, eval=FALSE}
 shinyApp(
   ui = fluidPage(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -203,7 +217,22 @@ shinyApp(
 )
 ```
 
-<img src="images/app-data-merge-2.png" alt="Shiny app output for Data Extract" style="width: 100%;" />
+```{r shinylive_url2, echo = FALSE, results = 'asis', eval = requireNamespace("roxy.shinylive", quietly = TRUE)}
+code <- paste0(c(
+  knitr::knit_code$get("library"),
+  knitr::knit_code$get("data_extract_spec"),
+  knitr::knit_code$get("merge_ui"),
+  knitr::knit_code$get("merge_srv2"),
+  knitr::knit_code$get("shinyapp2")
+), collapse = "\n")
+
+url <- roxy.shinylive::create_shinylive_url(code)
+cat(sprintf("[Open in Shinylive](%s)\n\n", url))
+```
+
+```{r shinylive_iframe2, echo = FALSE, out.width = '150%', out.extra = 'style = "position: relative; z-index:1"', eval = requireNamespace("roxy.shinylive", quietly = TRUE) && knitr::is_html_output() && identical(Sys.getenv("IN_PKGDOWN"), "true")}
+knitr::include_url(url, height = "800px")
+```
 
 `merge_expression_module` is replaced here with three parts:
 
