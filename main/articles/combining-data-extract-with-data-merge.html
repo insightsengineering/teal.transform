@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9027</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9028</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data-extract-merge.html">Combining Data Extract with Data Merge</a></li>
+<li><a class="dropdown-item" href="../articles/combining-data-extract-with-data-merge.html">Combining Data Extract with Data Merge</a></li>
     <li><a class="dropdown-item" href="../articles/data-extract.html">Data Extract</a></li>
     <li><a class="dropdown-item" href="../articles/data-merge.html">Data Merge</a></li>
   </ul>
@@ -74,8 +74,8 @@
 CoreDev</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/teal.transform/blob/main/vignettes/data-extract-merge.Rmd" class="external-link"><code>vignettes/data-extract-merge.Rmd</code></a></small>
-      <div class="d-none name"><code>data-extract-merge.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/teal.transform/blob/main/vignettes/combining-data-extract-with-data-merge.Rmd" class="external-link"><code>vignettes/combining-data-extract-with-data-merge.Rmd</code></a></small>
+      <div class="d-none name"><code>combining-data-extract-with-data-merge.Rmd</code></div>
     </div>
 
     
@@ -271,7 +271,14 @@ code block and the <code>datasets</code> object:</p>
 <span>    <span class="fu">merge_srv</span><span class="op">(</span><span class="st">"data_merge"</span>, <span class="va">datasets</span>, <span class="va">data_extracts</span>, <span class="va">join_keys</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="images%2Fapp-data-extract-merge.png" alt="Shiny app output for Data Extract and Merge" style="width: 100%;"></p>
+</div>
+<div class="section level2">
+<h2 id="try-it-out-in-shinylive">Try it out in Shinylive<a class="anchor" aria-label="anchor" href="#try-it-out-in-shinylive"></a>
+</h2>
+<p><a href="https://shinylive.io/r/app/#code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKcqajU5iAM4AzIoxgBKADoQ6TFhy48AJlFJQpMhszbsBAC1oRWG6QGIABABE4Qw3HMq1GIc3jmi9AFZwCpAdIBBSwBlABlzAB4AWnNFDEcoRERGILDAywAVDIBRSJi4hKSUzJzpM3MCRjhVeyhzOgFSdyFzKqhfWgA3ewTnV3sPb19-CASBOD88+tpG9mlzc1TwgF5W6o7u9iXxXHnFktzVto24LYONEwgLSuryc08iQwB9AGs4VhGH57ePqa+IV7vARzCALf6AjiSMBLKG4cxQmF4CpzMDBDIAVUsAE0AJKWWHwsDo4LogBCACk8VDxDs9uCfijEXCEQcCQQUWjMbj8UiocSyZSeTTdqD7o8AQyWVlsgSpaUkeyoZzsVTeUSSRTVcywAAFAJYAIAWQAwkKLtIoEoBNQnnAAB58dpNaIOVRQW0O5i+J4CVA+EELBLQNyrFlpPB7cbUHxNVZRmM+v2K0ULahQehwajmUOozMx8ydFi0dPRxCwvYLAh6R4EOACbPIhEAcRlauC2QAGrKwKTDVgANJYACM1JFCwW8d8cCUDebrbH45gAFdqKRaKhow2Mlh0dkFwtbHbpw2AGIBULtvbmiAWpSkcgex2+KYJR9e0iJ-17IOwew5oLSuWoqTrG5ggZ+ybjhU1a0LW9arIq0IAGrnt2AQoaExpoe2ACKo4VmBeZTjO-4YUBUHLqu66bqs267vu5iHseqxnheMqirSoq2KucCMA23HkIwEEBuOhaMPBhJ6gaJo8gxVY1nWDaIcaWDBLJhLZCewTdgA8tpao6lp+EpoR0bEbOYB6VCV7SJcr72k+kwug0pDsJa1pvk6DbuTaDnvnClr3nAnnPqsgUPn5ToaPAjAAObBUutBTEIS4QB0JDsLQShwvZnpOgI4jmCAeyCFMABywSZUoGgTllcD0CwoRQKwRBLq5BECHVDWMDqUAQJmIlQXoADMKLZGlRBKIYsXGVBCxqLFAgACRTZ0g1zbljlPIl61zeYggoj5IWkKO5gWMujQVKIVS+iQM4AO60KQeiumox31i5+2-iMe1QWmGZZv+IThJFvjkb9gZuu9wDAEOAC6cMEVBnEQ5t77bbQu1zQdULhcFoMnWAOxneYF1NMQjA3agd3mI9z2ve6BMfTMTTBnWSNzf9mYWQBOTmAT4Oo1DTMwwATAjHMLDVc3S1LDEwFAhi9f11BYyNKI6W1qBtbNc3dIwDVrjAGQOZrpDa65ONgPaqCMNSKMbW6GQlnAZsW+wVsJPbBHSxoAC+0gxfFPqMJ0yWpelEBVTlbrjH4MdvUzcL0kChXFaKMCTSucDBLx+vR4xEdrhlhgW3CrXm21cLjAInUkGnHVEaQohPJ9Lpo06TyUWuG7BQIofsB3wwJ1AccCMn4oQgVBFB9OTwJFMs8erbdZ1wC-drRzIEt59cZNzvLMMZDahjw2YwTOPHMp78qzX5fJkLEvKVpcXoI5koG6sIwSTRkIH7-NZEystFhlXCC6Y4a5Njpz2q+NuMQ0zoGoBwc+8dC4v1oBlK0hUrTsBpBzOAhZVYUE6LQPiqwXKi2IYPKGLliY2zIeYUeGB6GrwwVHWeSh55ulwUteheCTJ+0uFBCuFteF2ltlMKooxeImwdOwVAo9yDsA4VwtQPD6FwmINQBB4wLKSDKETYBIi2orTdJIigSheKWCdi7LYoDcHS0EdIAOggDBGACOgESiV+LUESkoXq8VlG8WDjtKEr5Z4EiHn4YUkY868X4kXNhmUIBl3cFrKuhFa5sIbiZJeG8UThOCXASJscL4j3ehPb4qc9guPEGAP2cMgA" class="external-link">Open
+in Shinylive</a></p>
+<iframe src="https://shinylive.io/r/app/#code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKcqajU5iAM4AzIoxgBKADoQ6TFhy48AJlFJQpMhszbsBAC1oRWG6QGIABABE4Qw3HMq1GIc3jmi9AFZwCpAdIBBSwBlABlzAB4AWnNFDEcoRERGILDAywAVDIBRSJi4hKSUzJzpM3MCRjhVeyhzOgFSdyFzKqhfWgA3ewTnV3sPb19-CASBOD88+tpG9mlzc1TwgF5W6o7u9iXxXHnFktzVto24LYONEwgLSuryc08iQwB9AGs4VhGH57ePqa+IV7vARzCALf6AjiSMBLKG4cxQmF4CpzMDBDIAVUsAE0AJKWWHwsDo4LogBCACk8VDxDs9uCfijEXCEQcCQQUWjMbj8UiocSyZSeTTdqD7o8AQyWVlsgSpaUkeyoZzsVTeUSSRTVcywAAFAJYAIAWQAwkKLtIoEoBNQnnAAB58dpNaIOVRQW0O5i+J4CVA+EELBLQNyrFlpPB7cbUHxNVZRmM+v2K0ULahQehwajmUOozMx8ydFi0dPRxCwvYLAh6R4EOACbPIhEAcRlauC2QAGrKwKTDVgANJYACM1JFCwW8d8cCUDebrbH45gAFdqKRaKhow2Mlh0dkFwtbHbpw2AGIBULtvbmiAWpSkcgex2+KYJR9e0iJ-17IOwew5oLSuWoqTrG5ggZ+ybjhU1a0LW9arIq0IAGrnt2AQoaExpoe2ACKo4VmBeZTjO-4YUBUHLqu66bqs267vu5iHseqxnheMqirSoq2KucCMA23HkIwEEBuOhaMPBhJ6gaJo8gxVY1nWDaIcaWDBLJhLZCewTdgA8tpao6lp+EpoR0bEbOYB6VCV7SJcr72k+kwug0pDsJa1pvk6DbuTaDnvnClr3nAnnPqsgUPn5ToaPAjAAObBUutBTEIS4QB0JDsLQShwvZnpOgI4jmCAeyCFMABywSZUoGgTllcD0CwoRQKwRBLq5BECHVDWMDqUAQJmIlQXoADMKLZGlRBKIYsXGVBCxqLFAgACRTZ0g1zbljlPIl61zeYggoj5IWkKO5gWMujQVKIVS+iQM4AO60KQeiumox31i5+2-iMe1QWmGZZv+IThJFvjkb9gZuu9wDAEOAC6cMEVBnEQ5t77bbQu1zQdULhcFoMnWAOxneYF1NMQjA3agd3mI9z2ve6BMfTMTTBnWSNzf9mYWQBOTmAT4Oo1DTMwwATAjHMLDVc3S1LDEwFAhi9f11BYyNKI6W1qBtbNc3dIwDVrjAGQOZrpDa65ONgPaqCMNSKMbW6GQlnAZsW+wVsJPbBHSxoAC+0gxfFPqMJ0yWpelEBVTlbrjH4MdvUzcL0kChXFaKMCTSucDBLx+vR4xEdrhlhgW3CrXm21cLjAInUkGnHVEaQohPJ9Lpo06TyUWuG7BQIofsB3wwJ1AccCMn4oQgVBFB9OTwJFMs8erbdZ1wC-drRzIEt59cZNzvLMMZDahjw2YwTOPHMp78qzX5fJkLEvKVpcXoI5koG6sIwSTRkIH7-NZEystFhlXCC6Y4a5Njpz2q+NuMQ0zoGoBwc+8dC4v1oBlK0hUrTsBpBzOAhZVYUE6LQPiqwXKi2IYPKGLliY2zIeYUeGB6GrwwVHWeSh55ulwUteheCTJ+0uFBCuFteF2ltlMKooxeImwdOwVAo9yDsA4VwtQPD6FwmINQBB4wLKSDKETYBIi2orTdJIigSheKWCdi7LYoDcHS0EdIAOggDBGACOgESiV+LUESkoXq8VlG8WDjtKEr5Z4EiHn4YUkY868X4kXNhmUIBl3cFrKuhFa5sIbiZJeG8UThOCXASJscL4j3ehPb4qc9guPEGAP2cMgA" width="150%" height="800px" data-external="1" style="position: relative; z-index:1">
+</iframe>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

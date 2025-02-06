@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9027</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9028</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/data-extract-merge.html">Combining Data Extract with Data Merge</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/combining-data-extract-with-data-merge.html">Combining Data Extract with Data Merge</a></li>
     <li><a class="dropdown-item" href="../articles/data-extract.html">Data Extract</a></li>
     <li><a class="dropdown-item" href="../articles/data-merge.html">Data Merge</a></li>
   </ul></li>
@@ -46,11 +46,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0.9027" id="tealtransform-0509027">teal.transform 0.5.0.9027<a class="anchor" aria-label="anchor" href="#tealtransform-0509027"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.5.0.9028" id="tealtransform-0509028">teal.transform 0.5.0.9028<a class="anchor" aria-label="anchor" href="#tealtransform-0509028"></a></h2>
 <div class="section level4">
-<h4 id="enhancements-0-5-0-9027">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-5-0-9027"></a></h4>
+<h4 id="enhancements-0-5-0-9028">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-5-0-9028"></a></h4>
 <ul><li>Added utility functions <code>first_choice</code>, <code>last_choice</code>, <code>first_choices</code>, and <code>last_choices</code> to increase the repertoire of specifying choices in delayed data, previously only served by <code>all_choices</code>.</li>
 <li>Allowed <code>value_choices</code> to use <code>delayed_variable_choices</code> objects for <code>var_choices</code>. It is now possible to define a <code>data_extract_spec</code> without naming any variables.</li>
+<li>Replace the example data generated using <code>scda</code> with <code>random.cdisc.data</code>.</li>
+<li>Change log level from trace to debug for several functions.</li>
 </ul></div>
 </div>
     <div class="section level2">
