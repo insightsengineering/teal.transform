@@ -61,7 +61,20 @@ get_extract_datanames <- function(data_extracts) {
     }
   })
 
-  unique(unlist(datanames))
+  .extract_delayed_datasets <- function(x) {
+    if (inherits(x, "delayed_datasets")) {
+      attr(x, "datasets", exact = TRUE)
+    } else {
+      x
+    }
+  }
+  datanames <- rapply(datanames, .extract_delayed_datasets)
+
+  if (any(datanames == "all")) {
+    "all"
+  } else {
+    unique(datanames)
+  }
 }
 
 #' Verify uniform dataset source across data extract specification
@@ -82,5 +95,5 @@ get_extract_datanames <- function(data_extracts) {
 is_single_dataset <- function(...) {
   data_extract_spec <- list(...)
   dataset_names <- get_extract_datanames(data_extract_spec)
-  length(dataset_names) == 1
+  length(dataset_names) == 1L && dataset_names != "all"
 }
