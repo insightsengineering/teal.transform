@@ -5,6 +5,8 @@
 * Added utility functions `first_choice`, `last_choice`, `first_choices`, and `last_choices` to increase the repertoire of specifying choices in delayed data, previously only served by `all_choices`.
 * Allowed `value_choices` to use `delayed_variable_choices` objects for `var_choices`.
 It is now possible to define a `data_extract_spec` without naming any variables.
+* Replace the example data generated using `scda` with `random.cdisc.data`.
+* Change log level from trace to debug for several functions.
 
 # teal.transform 0.5.0
 
