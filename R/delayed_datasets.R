@@ -37,7 +37,16 @@ delayed_datasets <- function(x = "all") {
 #' @rdname delayed_datasets
 #' @export
 resolve_delayed_datasets <- function(des, datasets) {
-  .resolve_delayed_datasets(.update_delayed_datasets(des, datasets))
+  .integrate <- function(x) {
+    if (inherits(x, "delayed_data_extract_spec")) return(x)
+    if (checkmate::test_list(x, "list", len = 1L) &&
+          checkmate::test_list(x[[1L]], "delayed_data_extract_spec")) {
+      return(x[[1L]])
+    }
+    lapply(x, .integrate)
+  }
+
+  .resolve_delayed_datasets(.update_delayed_datasets(des, datasets)) |> .integrate()
 }
 
 #' @keywords internal
