@@ -70,6 +70,12 @@ testthat::test_that("choices_selected throws error when selected is not found in
     choices_selected(choices = c("a"), selected = c("c", "b")),
     "Must be a subset of \\{'a'\\}"
   )
+  testthat::expect_error(
+    choices_selected(
+      value_choices("ADTTE", "PARAMCD", "PARAM"),
+      "OS"
+    )
+  )
 })
 
 testthat::test_that("delayed_choices select the desired choices", {
