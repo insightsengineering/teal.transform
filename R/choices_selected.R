@@ -152,6 +152,10 @@ choices_selected <- function(choices,
   }
 
   if (inherits(choices, "delayed_data")) {
+
+    if (is.character(selected) && (!all(selected %in% choices$var_choices) || !all(selected %in% choices$var_label))) {
+      stop("Selected, '", selected, "' is not in the available choices.")
+    }
     return(
       structure(
         list(choices = choices, selected = selected, keep_order = keep_order, fixed = fixed),
