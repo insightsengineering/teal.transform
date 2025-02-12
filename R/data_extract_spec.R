@@ -84,7 +84,10 @@
 #' @export
 #'
 data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
-  checkmate::assert_string(dataname)
+  checkmate::assert(
+    checkmate::check_string(dataname),
+    checkmate::check_class(dataname, "delayed_datasets")
+  )
   stopifnot(
     is.null(select) ||
       (inherits(select, "select_spec") && length(select) >= 1)
