@@ -87,8 +87,8 @@ assert_delayed_datesets <- function(x) {
     error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets must not be mixed with specific datanames")
     .extract <- function(x) {
       if (is.null(x) || is.logical(x) || is.function(x) || is.character(x)) return(NULL)
-      # Partial matching extracts both "data" and "dataname"
-      if (is.list(x) && is.character(x$data) && !inherits(x$data, "delayed_datasets")) return(x$data)
+      if (is.list(x) && is.character(x[["data"]]) && !inherits(x[["data"]], "delayed_datasets")) return(x[["data"]])
+      if (is.list(x) && is.character(x[["dataname"]]) && !inherits(x[["dataname"]], "delayed_datasets")) return(x[["dataname"]]) # nolint: line_length.
       lapply(x, .extract)
     }
     datanames <- unlist(.extract(x))
