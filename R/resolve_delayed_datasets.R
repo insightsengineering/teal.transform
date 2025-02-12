@@ -100,7 +100,8 @@ assert_delayed_datesets <- function(x) {
     if (inherits(master, "delayed_datasets")) {
       error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets used must be identical")
       slaves <- rapply(x, function(xx) xx, "delayed_datasets", how = "unlist")
-      slaves_datasets <- rapply(x, function(xx) attr(xx, "datasets"), "delayed_datasets", how = "unlist")
+      .extract_datasets <- function(xx) paste(sort(attr(xx, "datasets")), collapse = "--")
+      slaves_datasets <- rapply(x, .extract_datasets, "delayed_datasets", how = "unlist")
       Reduce(
         function(x1, x2) {
           if (identical(x1, x2)) x2 else stop(error_msg, call. = FALSE)
@@ -113,7 +114,7 @@ assert_delayed_datesets <- function(x) {
           if (identical(x1, x2)) x2 else stop(error_msg, call. = FALSE)
         },
         slaves_datasets,
-        init = attr(master, "datasets")
+        init = .extract_datasets(master)
       )
     } else {
       error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets must not be mixed with specific datanames")
