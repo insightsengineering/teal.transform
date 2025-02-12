@@ -124,74 +124,14 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FALSE) {
   ns <- NS(id)
 
-  if (inherits(data_extract_spec, "data_extract_spec")) {
-    data_extract_spec <- list(data_extract_spec)
-  }
-  check_data_extract_spec(data_extract_spec)
-
-  if (is.null(data_extract_spec)) {
-    return(helpText(sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", label)))
-  }
-  stopifnot(
-    `more than one dataset in data_extract_spec but is_single_dataset parameter is set to TRUE` =
-      !is_single_dataset || length(data_extract_spec) == 1
-  )
-
-  dataset_names <- vapply(
-    data_extract_spec,
-    function(x) x$dataname,
-    character(1),
-    USE.NAMES = FALSE
-  )
-
-  stopifnot(`list contains data_extract_spec objects with the same dataset` = all(!duplicated(dataset_names)))
-
-  dataset_input <- if (is_single_dataset) {
-    NULL
-  } else {
-    if (length(dataset_names) == 1) {
-      if ((is.null(data_extract_spec[[1]]$filter)) &&
-        (
-          !is.null(data_extract_spec[[1]]$select$fixed) &&
-            data_extract_spec[[1]]$select$fixed == TRUE
-        )) {
-        NULL
-      } else {
-        helpText("Dataset:", tags$code(dataset_names))
-      }
-    } else {
-      teal.widgets::optionalSelectInput(
-        inputId = ns("dataset"),
-        label = "Dataset",
-        choices = dataset_names,
-        selected = dataset_names[1],
-        multiple = FALSE
-      )
-    }
-  }
   tagList(
-    include_css_files(pattern = "data_extract"),
-    tags$div(
-      class = "data-extract",
-      tags$label(label),
-      dataset_input,
-      if (length(dataset_names) == 1) {
-        data_extract_single_ui(
-          id = ns(id_for_dataset(dataset_names)),
-          single_data_extract_spec = data_extract_spec[[1]]
-        )
-      } else {
-        do.call(
-          div,
-          unname(lapply(
-            data_extract_spec,
-            function(x) {
-              cond_data_extract_single_ui(ns, x)
-            }
-          ))
-        )
-      }
-    )
+    # Pass arguments to server function.
+    div(
+      checkboxInput(ns("is_single_dataset"), label = NULL, value = is_single_dataset),
+      textInput(ns("data_extract_label"), label = NULL, value = label),
+      style = "display: none;"
+    ),
+    uiOutput(ns("data_extract_ui_container"))
   )
 }
 
@@ -561,6 +501,89 @@ data_extract_srv.list <- function(id,
             )
           )
         }
+      })
+
+
+      output$data_extract_ui_container <- renderUI({
+        ns <- session$ns
+
+        logger::log_debug(
+          "initializing data_extract_ui with datasets: { paste(names(datasets), collapse = ', ') }."
+        )
+
+        if (inherits(data_extract_spec, "data_extract_spec")) {
+          data_extract_spec <- list(data_extract_spec)
+        }
+        check_data_extract_spec(data_extract_spec)
+
+        if (is.null(data_extract_spec)) {
+          return(helpText(sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", label)))
+        }
+        stopifnot(
+          `more than one dataset in data_extract_spec but is_single_dataset parameter is set to TRUE` =
+            isFALSE(input$is_single_dataset) || length(data_extract_spec) == 1
+        )
+
+        dataset_names <- vapply(
+          data_extract_spec,
+          function(x) x$dataname,
+          character(1),
+          USE.NAMES = FALSE
+        )
+
+        if (anyDuplicated(dataset_names) != 0L) {
+          stop("list contains data_extract_spec objects with the same dataset")
+        }
+
+        dataset_input <-
+          if (isTRUE(input$is_single_dataset)) {
+          # if (FALSE) {
+            NULL
+          } else {
+            if (length(dataset_names) == 1) {
+              if ((is.null(data_extract_spec[[1]]$filter)) &&
+                (
+                  !is.null(data_extract_spec[[1]]$select$fixed) &&
+                    data_extract_spec[[1]]$select$fixed == TRUE
+                )) {
+                NULL
+              } else {
+                helpText("Dataset:", tags$code(dataset_names))
+              }
+            } else {
+              teal.widgets::optionalSelectInput(
+                inputId = ns("dataset"),
+                label = "Dataset",
+                choices = dataset_names,
+                selected = dataset_names[1],
+                multiple = FALSE
+              )
+            }
+          }
+        tagList(
+          include_css_files(pattern = "data_extract"),
+          tags$div(
+            class = "data-extract",
+            tags$label(input$data_extract_label),
+            dataset_input,
+            if (length(dataset_names) == 1) {
+              data_extract_single_ui(
+                id = ns(id_for_dataset(dataset_names)),
+                single_data_extract_spec = data_extract_spec[[1]]
+              )
+            } else {
+              do.call(
+                div,
+                unname(lapply(
+                  data_extract_spec,
+                  function(x) {
+                    cond_data_extract_single_ui(ns, x)
+                  }
+                ))
+              )
+            }
+          )
+        )
       })
       filter_and_select_reactive
     }
