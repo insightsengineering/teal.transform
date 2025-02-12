@@ -537,7 +537,6 @@ data_extract_srv.list <- function(id,
 
         dataset_input <-
           if (isTRUE(input$is_single_dataset)) {
-          # if (FALSE) {
             NULL
           } else {
             if (length(dataset_names) == 1) {
