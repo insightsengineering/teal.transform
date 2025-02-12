@@ -13,7 +13,7 @@
 #' as well as to mix `delayed_datasets` with specific dataset specification within one `delayed_data_extract_spec`.
 #' This is enforced when creating `data_extract_spec`s.
 #'
-#' @inheritSection resolve_delayed_datasets
+#' @inheritSection resolve_delayed_datasets Resolution
 #'
 #' @param x (`character`) set of dataset names for wchich `delayed_data_extract_spec`s will be created;
 #'                        set to `"all"` to use all available datasets
