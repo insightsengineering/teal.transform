@@ -1,3 +1,55 @@
+testthat::test_that("delayed_data_extract_spec can be constructed with delayed_datasets", {
+  testthat::expect_no_error(
+    data_extract_spec(
+      dataname = delayed_datasets()
+    )
+  )
+  testthat::expect_no_error(
+    data_extract_spec(
+      dataname = delayed_datasets(),
+      select = select_spec(
+        choices = variable_choices(
+          data = delayed_datasets(),
+          subset = function(data) names(Filter(is.numeric, data))
+        ),
+        selected = first_choice()
+      )
+    )
+  )
+})
+
+testthat::test_that("delayed_data_extract_spec cannot be constructed with mixed delayed_datasets", {
+  testthat::expect_error(
+    data_extract_spec(
+      dataname = delayed_datasets("ADSL"),
+      select = select_spec(
+        choices = variable_choices(
+          data = delayed_datasets("ADAE"),
+          subset = function(data) names(Filter(is.numeric, data))
+        ),
+        selected = first_choice()
+      )
+    ),
+    "delayed_datasets used must be identical"
+  )
+})
+
+testthat::test_that("delayed_data_extract_spec cannot be constructed with delayed_datasets mixed with specific datasets", { # nolint: line_length.
+  testthat::expect_error(
+    data_extract_spec(
+      dataname = "ADSL",
+      select = select_spec(
+        choices = variable_choices(
+          data = delayed_datasets("ADSL"),
+          subset = function(data) names(Filter(is.numeric, data))
+        ),
+        selected = first_choice()
+      )
+    ),
+    "delayed_datasets must not be mixed with specific datanames"
+  )
+})
+
 data <- teal.data::cdisc_data(
   ADSL = teal.data::rADSL,
   ADAE = teal.data::rADAE
