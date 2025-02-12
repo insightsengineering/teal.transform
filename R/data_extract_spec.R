@@ -111,7 +111,7 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
 
   for (idx in seq_along(filter)) filter[[idx]]$dataname <- dataname
 
-  if (
+  ans <- if (
     inherits(select, "delayed_select_spec") ||
       any(vapply(filter, inherits, logical(1), "delayed_filter_spec"))
   ) {
@@ -125,4 +125,6 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
       class = "data_extract_spec"
     )
   }
+  assert_delayed_datesets(ans)
+  ans
 }
