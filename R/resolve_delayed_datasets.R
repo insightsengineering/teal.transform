@@ -24,11 +24,11 @@ resolve_delayed_datasets <- function(des, datasets) {
   # .unfold_delayed_datasets creates a list(list(ddes, ddes)) structure
   # where list(ddes, ddes) is expected. One list level has to be collapsed.
   .integrate <- function(x) {
-    if (inherits(x, "delayed_data_extract_spec")) {
+    if (inherits(x, "data_extract_spec")) {
       return(x)
     }
     if (checkmate::test_list(x, "list", len = 1L) &&
-          checkmate::test_list(x[[1L]], "delayed_data_extract_spec")) {
+          checkmate::test_list(x[[1L]], "data_extract_spec")) {
       return(x[[1L]])
     }
     lapply(x, .integrate)
@@ -69,7 +69,7 @@ resolve_delayed_datasets <- function(des, datasets) {
     })
   }
 
-  if (inherits(des, "delayed_data_extract_spec")) {
+  if (inherits(des, "data_extract_spec")) {
     return(.horse(des))
   }
   lapply(des, .resolve_delayed_datasets)
