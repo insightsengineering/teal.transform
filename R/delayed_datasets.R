@@ -37,6 +37,9 @@ delayed_datasets <- function(x = "all") {
 #' @rdname delayed_datasets
 #' @export
 resolve_delayed_datasets <- function(des, datasets) {
+  # When used on a ddes with delayed_dataset that is in a list
+  # .unfold_delayed_datasets creates a list(list(ddes, ddes)) structure
+  # where list(ddes, ddes) is expected. One list level has to be collapsed.
   .integrate <- function(x) {
     if (inherits(x, "delayed_data_extract_spec")) return(x)
     if (checkmate::test_list(x, "list", len = 1L) &&
@@ -46,12 +49,14 @@ resolve_delayed_datasets <- function(des, datasets) {
     lapply(x, .integrate)
   }
 
-  .resolve_delayed_datasets(.update_delayed_datasets(des, datasets)) |> .integrate()
+  .unfold_delayed_datasets(des, datasets) |>
+    .resolve_delayed_datasets() |>
+    .integrate()
 }
 
 #' @keywords internal
 #' @noRd
-.update_delayed_datasets <- function(des, datasets) {
+.unfold_delayed_datasets <- function(des, datasets) {
   .horse <- function(des, datasets) {
     delayed <- attr(des, "datasets", exact = TRUE)
     delayed <-
