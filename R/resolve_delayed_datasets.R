@@ -25,13 +25,12 @@ resolve_delayed_datasets <- function(des, datasets) {
   # where list(ddes, ddes) is expected. One list level has to be collapsed.
   .integrate <- function(x) {
     if (inherits(x, "data_extract_spec")) {
-      return(x)
+      x
+    } else if (checkmate::test_list(x, "list", len = 1L) && checkmate::test_list(x[[1L]], "data_extract_spec")) {
+      x[[1L]]
+    } else {
+      lapply(x, .integrate)
     }
-    if (checkmate::test_list(x, "list", len = 1L) &&
-          checkmate::test_list(x[[1L]], "data_extract_spec")) {
-      return(x[[1L]])
-    }
-    lapply(x, .integrate)
   }
 
   .unfold_delayed_datasets(des, datasets) |>
@@ -62,17 +61,19 @@ resolve_delayed_datasets <- function(des, datasets) {
 .resolve_delayed_datasets <- function(des) {
   .horse <- function(des) {
     if (!inherits(des$dataname, "delayed_datasets")) {
-      return(des)
+      des
+    } else {
+      lapply(attr(des$dataname, "datasets", exact = TRUE), function(dataset) {
+        rapply(des, f = function(...) dataset, "delayed_datasets", how = "replace")
+      })
     }
-    lapply(attr(des$dataname, "datasets", exact = TRUE), function(dataset) {
-      rapply(des, f = function(...) dataset, "delayed_datasets", how = "replace")
-    })
   }
 
   if (inherits(des, "data_extract_spec")) {
-    return(.horse(des))
+    .horse(des)
+  } else {
+    lapply(des, .resolve_delayed_datasets)
   }
-  lapply(des, .resolve_delayed_datasets)
 }
 
 #' Assert delayed_datasets are used properly:
@@ -86,10 +87,15 @@ assert_delayed_datesets <- function(x) {
     # STEP 1: check that all places that could be delayed_datasets are actually datasets
     error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets must not be mixed with specific datanames")
     .extract <- function(x) {
-      if (is.null(x) || is.logical(x) || is.function(x) || is.character(x)) return(NULL)
-      if (is.list(x) && is.character(x[["data"]]) && !inherits(x[["data"]], "delayed_datasets")) return(x[["data"]])
-      if (is.list(x) && is.character(x[["dataname"]]) && !inherits(x[["dataname"]], "delayed_datasets")) return(x[["dataname"]]) # nolint: line_length.
-      lapply(x, .extract)
+      if (is.null(x) || is.logical(x) || is.function(x) || is.character(x)) {
+        NULL
+      } else if (is.list(x) && is.character(x[["data"]]) && !inherits(x[["data"]], "delayed_datasets")) {
+        x[["data"]]
+      } else if (is.list(x) && is.character(x[["dataname"]]) && !inherits(x[["dataname"]], "delayed_datasets")) {
+        x[["dataname"]]
+      } else {
+        lapply(x, .extract)
+      }
     }
     datanames <- unlist(.extract(x))
     delayed <- vapply(datanames, inherits, logical(1L), what = "delayed_datasets")
