@@ -785,8 +785,10 @@ data_extract_multiple_srv.list <- function(data_extract,
     "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
   )
 
+# browser()
   data_extract <- Filter(Negate(is.null), data_extract)
   data_extract <- resolve_delayed_datanames(data_extract, names(datasets))
+  data_extract <- resolve_delayed(data_extract, datasets, join_keys)
 
   if (is.function(select_validation_rule)) {
     select_validation_rule <- sapply(
