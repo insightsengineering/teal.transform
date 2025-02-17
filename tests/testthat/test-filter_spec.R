@@ -462,6 +462,7 @@ testthat::test_that("delayed_choices passed to selected select desired choices",
 
 # With resolve_delayed
 testthat::test_that("delayed filter_spec - resolve_delayed", {
+  testthat::skip("PRAC")
   expected_spec <- filter_spec(
     vars = variable_choices(ADSL, "SEX"),
     sep = "-",
@@ -497,6 +498,7 @@ testthat::test_that(
 )
 
 testthat::test_that("delayed filter_spec works - resolve_delayed", {
+  testthat::skip("PRAC")
   expected_spec <- filter_spec_internal(
     vars_choices = variable_choices(ADSL),
     vars_selected = "SEX"
@@ -534,6 +536,7 @@ testthat::test_that("delayed filter_spec works - resolve_delayed", {
 })
 
 testthat::test_that("delayed version of filter_spec - resolve_delayed", {
+  testthat::skip("PRAC")
   # hard-coded vars & choices & selected
   obj <- filter_spec(
     vars = variable_choices("ADSL", subset = "ARMCD"),

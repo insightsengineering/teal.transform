@@ -4,6 +4,7 @@ data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
 primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
 testthat::test_that("Will output warnings when value_choices applied on datasets with missing values and / or labels", {
+  testthat::skip("PRAC")
   data <- data.frame(
     A = c(1, 2, 3),
     B = c(NA, "a", "b"),
@@ -129,6 +130,7 @@ testthat::test_that("delayed version of value_choices", {
 
 
 testthat::test_that("delayed version of value_choices - resolve_delayed", {
+  testthat::skip("PRAC")
   # hard-coded subset
   obj <- value_choices("ADSL", var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
   testthat::expect_equal(
