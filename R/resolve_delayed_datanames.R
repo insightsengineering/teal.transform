@@ -1,6 +1,6 @@
-#' Resolve `delayed_datasets`
+#' Resolve `delayed_datanames`
 #'
-#' Convert `delayed_data_extract_spec`s containing `delayed_datasets` into normal ones.
+#' Convert `delayed_data_extract_spec`s containing `delayed_datanames` into normal ones.
 #'
 #' This function is used internally.
 #'
@@ -11,7 +11,7 @@
 #' `delayed_data_extract_specs` are resolved as follows:
 #' - `data_extract_specs` are returned as is
 #' - `delayed_data_extract_specs` where `dataname` is `character` are returned as is
-#' - `delayed_data_extract_specs` where `dataname` is `delayed_datasets` is first confronted
+#' - `delayed_data_extract_specs` where `dataname` is `delayed_datanames` is first confronted
 #'   with names of datasets in the app and has its `datasets` attribute updated,
 #'   and then is converted to a list of `delayed_data_extract_spec`s of the same length as
 #'   the updated `datasets` attribute.
@@ -19,9 +19,9 @@
 #' @return List of `delayed_data_extract_spec`s.
 #'
 #' @keywords internal
-resolve_delayed_datasets <- function(des, datasets) {
+resolve_delayed_datanames <- function(des, datasets) {
   # When used on a ddes with delayed_dataset that is in a list
-  # .unfold_delayed_datasets creates a list(list(ddes, ddes)) structure
+  # .unfold_delayed_datanames creates a list(list(ddes, ddes)) structure
   # where list(ddes, ddes) is expected. One list level has to be collapsed.
   .integrate <- function(x) {
     if (inherits(x, "data_extract_spec")) {
@@ -33,14 +33,14 @@ resolve_delayed_datasets <- function(des, datasets) {
     }
   }
 
-  .unfold_delayed_datasets(des, datasets) |>
-    .resolve_delayed_datasets() |>
+  .unfold_delayed_datanames(des, datasets) |>
+    .resolve_delayed_datanames() |>
     .integrate()
 }
 
 #' @keywords internal
 #' @noRd
-.unfold_delayed_datasets <- function(des, datasets) {
+.unfold_delayed_datanames <- function(des, datasets) {
   .horse <- function(des, datasets) {
     delayed <- attr(des, "datasets", exact = TRUE)
     delayed <-
@@ -53,18 +53,18 @@ resolve_delayed_datasets <- function(des, datasets) {
     des
   }
 
-  rapply(des, .horse, "delayed_datasets", how = "replace", datasets = datasets)
+  rapply(des, .horse, "delayed_datanames", how = "replace", datasets = datasets)
 }
 
 #' @keywords internal
 #' @noRd
-.resolve_delayed_datasets <- function(des) {
+.resolve_delayed_datanames <- function(des) {
   .horse <- function(des) {
-    if (!inherits(des$dataname, "delayed_datasets")) {
+    if (!inherits(des$dataname, "delayed_datanames")) {
       des
     } else {
       lapply(attr(des$dataname, "datasets", exact = TRUE), function(dataset) {
-        rapply(des, f = function(...) dataset, "delayed_datasets", how = "replace")
+        rapply(des, f = function(...) dataset, "delayed_datanames", how = "replace")
       })
     }
   }
@@ -72,42 +72,42 @@ resolve_delayed_datasets <- function(des, datasets) {
   if (inherits(des, "data_extract_spec")) {
     .horse(des)
   } else {
-    lapply(des, .resolve_delayed_datasets)
+    lapply(des, .resolve_delayed_datanames)
   }
 }
 
-#' Assert delayed_datasets are used properly:
+#' Assert delayed_datanames are used properly:
 #' - no mixing with specific dataset specification
-#' - no mixing different delayed_datasets
+#' - no mixing different delayed_datanames
 #' @keywords internal
 #' @noRd
 assert_delayed_datesets <- function(x) {
   checkmate::assert_class(x, "data_extract_spec")
   if (inherits(x, "delayed_data_extract_spec")) {
-    # STEP 1: check that all places that could be delayed_datasets are actually datasets
-    error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets must not be mixed with specific datanames")
+    # STEP 1: check that all places that could be delayed_datanames are actually datasets
+    error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datanames must not be mixed with specific datanames")
     .extract <- function(x) {
       if (is.null(x) || is.logical(x) || is.function(x) || is.character(x)) {
         NULL
-      } else if (is.list(x) && is.character(x[["data"]]) && !inherits(x[["data"]], "delayed_datasets")) {
+      } else if (is.list(x) && is.character(x[["data"]]) && !inherits(x[["data"]], "delayed_datanames")) {
         x[["data"]]
-      } else if (is.list(x) && is.character(x[["dataname"]]) && !inherits(x[["dataname"]], "delayed_datasets")) {
+      } else if (is.list(x) && is.character(x[["dataname"]]) && !inherits(x[["dataname"]], "delayed_datanames")) {
         x[["dataname"]]
       } else {
         lapply(x, .extract)
       }
     }
     datanames <- unlist(.extract(x))
-    delayed <- vapply(datanames, inherits, logical(1L), what = "delayed_datasets")
+    delayed <- vapply(datanames, inherits, logical(1L), what = "delayed_datanames")
     if (!(all(delayed) || all(!delayed))) stop(error_msg, call. = FALSE)
 
-    # STEP 2: check that all delayed_datasets in this ddes are the same
+    # STEP 2: check that all delayed_datanames in this ddes are the same
     master <- x$dataname
-    if (inherits(master, "delayed_datasets")) {
-      error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets used must be identical")
-      slaves <- rapply(x, function(xx) xx, "delayed_datasets", how = "unlist")
+    if (inherits(master, "delayed_datanames")) {
+      error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datanames used must be identical")
+      slaves <- rapply(x, function(xx) xx, "delayed_datanames", how = "unlist")
       .extract_datasets <- function(xx) paste(sort(attr(xx, "datasets")), collapse = "--")
-      slaves_datasets <- rapply(x, .extract_datasets, "delayed_datasets", how = "unlist")
+      slaves_datasets <- rapply(x, .extract_datasets, "delayed_datanames", how = "unlist")
       Reduce(
         function(x1, x2) {
           if (identical(x1, x2)) x2 else stop(error_msg, call. = FALSE)
@@ -123,8 +123,8 @@ assert_delayed_datesets <- function(x) {
         init = .extract_datasets(master)
       )
     } else {
-      error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datasets must not be mixed with specific datanames")
-      rapply(x, function(...) stop(error_msg, call. = FALSE), "delayed_datasets")
+      error_msg <- paste0(deparse1(sys.call(-1)), ": delayed_datanames must not be mixed with specific datanames")
+      rapply(x, function(...) stop(error_msg, call. = FALSE), "delayed_datanames")
     }
   }
   x

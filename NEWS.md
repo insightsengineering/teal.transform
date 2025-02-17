@@ -2,7 +2,7 @@
 
 ### Enhancements
 
-* Added utility function `delayed_datasets` that facilitates creating multiple `delayed_data_extract_spec`s without knowlege of the available datasets. It is now possible to create `delayed_data_extract_spec` for all available datasets with one call, rather than with one call per dataset.
+* Added utility function `delayed_datanames` that facilitates creating multiple `delayed_data_extract_spec`s without knowlege of the available datasets. It is now possible to create `delayed_data_extract_spec` for all available datasets with one call, rather than with one call per dataset.
 
 # teal.transform 0.6.0
 

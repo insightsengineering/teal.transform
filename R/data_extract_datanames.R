@@ -61,14 +61,14 @@ get_extract_datanames <- function(data_extracts) {
     }
   })
 
-  .extract_delayed_datasets <- function(x) {
-    if (inherits(x, "delayed_datasets")) {
+  .extract_delayed_datanames <- function(x) {
+    if (inherits(x, "delayed_datanames")) {
       attr(x, "datasets", exact = TRUE)
     } else {
       x
     }
   }
-  datanames <- rapply(datanames, .extract_delayed_datasets)
+  datanames <- rapply(datanames, .extract_delayed_datanames)
 
   if (any(datanames == "all")) {
     "all"
