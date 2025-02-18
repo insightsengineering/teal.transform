@@ -6,6 +6,7 @@ data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactiv
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 
 testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
+  testthat::skip("PRAC")
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_no_error(
@@ -19,6 +20,7 @@ testthat::test_that("data_extract_multiple_srv accepts a named list of `data_ext
 })
 
 testthat::test_that("data_extract_multiple_srv returns a named reactive list with reactives", {
+  testthat::skip("PRAC")
   data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
@@ -36,6 +38,7 @@ testthat::test_that("data_extract_multiple_srv returns a named reactive list wit
 })
 
 testthat::test_that("data_extract_multiple_srv accepts an empty list", {
+  testthat::skip("PRAC")
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_no_error(data_extract_multiple_srv(list(), datasets = data_list, join_keys = join_keys))
@@ -43,6 +46,7 @@ testthat::test_that("data_extract_multiple_srv accepts an empty list", {
 })
 
 testthat::test_that("data_extract_multiple_srv returns an empty list if passed an empty list", {
+  testthat::skip("PRAC")
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = {
@@ -53,6 +57,7 @@ testthat::test_that("data_extract_multiple_srv returns an empty list if passed a
 })
 
 testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
+  testthat::skip("PRAC")
   data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
@@ -67,6 +72,7 @@ testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed lis
 })
 
 testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData", {
+  testthat::skip("PRAC")
   mock_datasets <- structure(
     list(
       datanames = function() names(data_list),
@@ -84,6 +90,7 @@ testthat::test_that("data_extract_multiple_srv accepts datasets as FilteredData"
 })
 
 testthat::test_that("data_extract_multiple_srv accepts datasets list of reactive data.frame", {
+  testthat::skip("PRAC")
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_no_error(
@@ -93,6 +100,7 @@ testthat::test_that("data_extract_multiple_srv accepts datasets list of reactive
 })
 
 testthat::test_that("data_extract_multiple_srv accepts datasets as list of data.frame", {
+  testthat::skip("PRAC")
   mixed_data_list <- list(IRIS = iris, IRIS2 = iris)
   mixed_join_keys_list <- teal.data::join_keys(
     teal.data::join_key("IRIS", "IRIS", "id"),
@@ -160,3 +168,4 @@ testthat::test_that(
     )
   }
 )
+

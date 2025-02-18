@@ -84,7 +84,10 @@
 #' @export
 #'
 data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
-  checkmate::assert_string(dataname)
+  checkmate::assert(
+    checkmate::check_string(dataname),
+    checkmate::check_class(dataname, "delayed_datanames")
+  )
   stopifnot(
     is.null(select) ||
       (inherits(select, "select_spec") && length(select) >= 1)
@@ -111,7 +114,7 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
 
   for (idx in seq_along(filter)) filter[[idx]]$dataname <- dataname
 
-  if (
+  ans <- if (
     inherits(select, "delayed_select_spec") ||
       any(vapply(filter, inherits, logical(1), "delayed_filter_spec"))
   ) {
@@ -125,4 +128,6 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
       class = "data_extract_spec"
     )
   }
+  assert_delayed_datesets(ans)
+  ans
 }

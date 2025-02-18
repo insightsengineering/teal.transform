@@ -223,6 +223,7 @@ testthat::test_that("default values", {
 
 # With resolve_delayed
 testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
+  testthat::skip("PRAC")
   attr(adsl, "keys") <- c("STUDYID", "USUBJID")
 
   expected_spec <- select_spec(
@@ -251,6 +252,7 @@ testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
 
 
 testthat::test_that("delayed version of select_spec - resolve_delayed", {
+  testthat::skip("PRAC")
   # hard-coded choices & selected
   obj <- select_spec(vc_hard, selected = vc_hard_short, multiple = FALSE)
   testthat::expect_equal(

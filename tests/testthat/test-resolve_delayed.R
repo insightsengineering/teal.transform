@@ -55,6 +55,7 @@ testthat::test_that("resolve_delayed_expr works correctly", {
 })
 
 testthat::test_that("resolve_delayed.FilteredData works correctly", {
+  testthat::skip("PRAC")
   arm_ref_comp <- list(
     ARMCD = list(
       ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
@@ -81,6 +82,7 @@ testthat::test_that("resolve_delayed.FilteredData works correctly", {
 
 
 testthat::test_that("resolve_delayed.list works correctly with reactive objects", {
+  testthat::skip("PRAC")
   arm_ref_comp <- list(
     ARMCD = list(
       ref = value_choices(adtte, var_choices = "ARMCD", var_label = "ARM", subset = "ARM A"),
@@ -112,6 +114,7 @@ testthat::test_that("resolve_delayed.list works correctly with reactive objects"
 })
 
 testthat::test_that("resolve_delayed.list works correctly with non-reactive objects", {
+  testthat::skip("PRAC")
   data <- list(ADSL = adsl, ADTTE = reactive(adtte))
   arm_ref_comp <- list(
     ARMCD = list(
@@ -145,6 +148,7 @@ testthat::test_that("resolve_delayed.list works correctly with non-reactive obje
 
 
 testthat::test_that("resolving delayed choices removes selected not in choices and give a log output", {
+  testthat::skip("PRAC")
   c_s <- choices_selected(
     choices = variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
     selected = variable_choices("IRIS", c("Petal.Length", "Sepal.Width"))

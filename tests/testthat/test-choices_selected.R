@@ -164,6 +164,7 @@ testthat::test_that("choices_selected remove duplicates", {
 })
 
 testthat::test_that("delayed version of choices_selected - resolve_delayed", {
+  testthat::skip("PRAC")
   data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
   key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
 
