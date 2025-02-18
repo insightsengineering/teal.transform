@@ -33,14 +33,14 @@ resolve_delayed_datanames <- function(des, datasets) {
     }
   }
 
-  .unfold_delayed_datanames(des, datasets) |>
-    .resolve_delayed_datanames() |>
+  .update_delayed_datanames(des, datasets) |>
+    .unfold_delayed_datanames() |>
     .integrate()
 }
 
 #' @keywords internal
 #' @noRd
-.unfold_delayed_datanames <- function(des, datasets) {
+.update_delayed_datanames <- function(des, datasets) {
   .horse <- function(des, datasets) {
     delayed <- attr(des, "datasets", exact = TRUE)
     delayed <-
@@ -58,7 +58,7 @@ resolve_delayed_datanames <- function(des, datasets) {
 
 #' @keywords internal
 #' @noRd
-.resolve_delayed_datanames <- function(des) {
+.unfold_delayed_datanames <- function(des) {
   .horse <- function(des) {
     if (!inherits(des$dataname, "delayed_datanames")) {
       des
@@ -72,7 +72,7 @@ resolve_delayed_datanames <- function(des, datasets) {
   if (inherits(des, "data_extract_spec")) {
     .horse(des)
   } else {
-    lapply(des, .resolve_delayed_datanames)
+    lapply(des, .unfold_delayed_datanames)
   }
 }
 
