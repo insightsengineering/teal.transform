@@ -4,7 +4,12 @@
 \alias{data_extract_spec}
 \title{Data extract input for \code{teal} modules}
 \usage{
-data_extract_spec(dataname, select = NULL, filter = NULL, reshape = FALSE)
+data_extract_spec(
+  dataname = NULL,
+  select = select_spec(),
+  filter = NULL,
+  reshape = FALSE
+)
 }
 \arguments{
 \item{dataname}{(\code{character})

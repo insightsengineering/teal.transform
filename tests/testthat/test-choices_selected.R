@@ -1,74 +1,44 @@
-adsl <- as.data.frame(as.list(setNames(nm = c("STUDYID", "USUBJID"))))
-adtte <- as.data.frame(as.list(setNames(nm = c("STUDYID", "USUBJID", "PARAMCD"))))
+testthat::test_that("choices_selected requires choices to be specified", {
+  testthat::expect_error(choices_selected(), "\"choices\" is missing")
+})
 
-vc_hard <- variable_choices("ADSL", subset = c("STUDYID", "USUBJID"))
-vc_hard_exp <- structure(
-  list(data = "ADSL", subset = c("STUDYID", "USUBJID"), key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
+testthat::test_that("choices_selected accepts choices as atomics", {
+  testthat::expect_no_error(choices_selected(choices = c("a", "b")))
+  testthat::expect_no_error(choices_selected(choices = c(1, 2)))
+  testthat::expect_no_error(choices_selected(choices = NULL))
+  testthat::expect_error(choices_selected(choices = list(1, 2)))
+})
 
-vc_hard_short <- variable_choices("ADSL", subset = "STUDYID")
-vc_hard_short_exp <- structure(
-  list(data = "ADSL", subset = "STUDYID", key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-vc_fun <- variable_choices("ADSL", subset = function(data) colnames(data)[1:2])
-vc_fun_exp <- structure(
-  list(data = "ADSL", subset = function(data) colnames(data)[1:2], key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-vc_fun_short <- variable_choices("ADSL", subset = function(data) colnames(data)[1])
-vc_fun_short_exp <- structure(
-  list(data = "ADSL", subset = function(data) colnames(data)[1], key = NULL),
-  class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
-)
-
-testthat::test_that("delayed version of choices_selected", {
-  # hard-coded choices and selected
-  obj <- choices_selected(vc_hard, selected = vc_hard_short)
-  testthat::expect_equal(
-    obj,
-    structure(
-      list(choices = vc_hard_exp, selected = vc_hard_short_exp, keep_order = FALSE, fixed = FALSE),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
-    )
+testthat::test_that("choices_selected returns list of class choices_selected", {
+  testthat::expect_identical(
+    choices_selected(choices = c("a", "b")),
+    structure(list(choices = c("a", "b"), selected = "a", fixed = FALSE), class = "choices_selected")
   )
+})
 
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
-  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
+testthat::test_that("choices_selected accepts choices as delayed_data", {
+  testthat::expect_no_error(choices_selected(choices = variable_choices(data = "iris")))
+  testthat::expect_no_error(choices_selected(choices = value_choices(data = "iris", var_choices = "Species")))
+})
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
-  exp_obj <- choices_selected(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
-    selected = variable_choices(adsl, subset = c("STUDYID"), key = c("STUDYID", "USUBJID"))
+testthat::test_that("choices_selected returns delayed_choices_selected when choices are delayed_data", {
+  testthat::expect_s3_class(
+    choices_selected(choices = variable_choices(data = "iris")),
+    c("delayed_choices_selected", "delayed_data")
   )
-  testthat::expect_equal(res_obj, exp_obj, check.attributes = TRUE)
+})
 
-  # functional choices and selected
-  obj <- choices_selected(vc_fun, selected = vc_fun_short)
-  testthat::expect_equal(
-    obj,
-    structure(
-      list(choices = vc_fun_exp, selected = vc_fun_short_exp, keep_order = FALSE, fixed = FALSE),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
-    )
+testthat::test_that("choices_selected by default sets selected as first choice", {
+  testthat::expect_identical(
+    choices_selected(choices = c(1, 2)),
+    choices_selected(choices = c(1, 2), selected = 1)
   )
-
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = key_list))
-  testthat::expect_equal(res_obj, exp_obj)
 })
 
 testthat::test_that("choices_selected throws error when selected is not found in choices", {
-  testthat::expect_error(choices_selected(choices = c("a"), selected = "b"), "Must be a subset of \\{'a'\\}")
   testthat::expect_error(
-    choices_selected(choices = c("a"), selected = c("a", "b")),
-    "Must be a subset of \\{'a'\\}"
-  )
-  testthat::expect_error(
-    choices_selected(choices = c("a"), selected = c("c", "b")),
-    "Must be a subset of \\{'a'\\}"
+    choices_selected(choices = c("a", "b"), selected = c("c", "d")),
+    "Must be a subset of \\{'a','b'\\}"
   )
 })
 
@@ -161,40 +131,4 @@ testthat::test_that("choices_selected remove duplicates", {
       fixed = FALSE
     ), class = "choices_selected")
   )
-})
-
-testthat::test_that("delayed version of choices_selected - resolve_delayed", {
-  testthat::skip("PRAC")
-  data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
-  key_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
-
-  # hard-coded choices and selected
-  obj <- choices_selected(vc_hard, selected = vc_hard_short)
-  testthat::expect_equal(
-    obj,
-    structure(
-      list(choices = vc_hard_exp, selected = vc_hard_short_exp, keep_order = FALSE, fixed = FALSE),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
-    )
-  )
-
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
-  exp_obj <- choices_selected(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
-    selected = variable_choices(adsl, subset = c("STUDYID"), key = c("STUDYID", "USUBJID"))
-  )
-  testthat::expect_equal(res_obj, exp_obj, check.attributes = TRUE)
-
-  # functional choices and selected
-  obj <- choices_selected(vc_fun, selected = vc_fun_short)
-  testthat::expect_equal(
-    obj,
-    structure(
-      list(choices = vc_fun_exp, selected = vc_fun_short_exp, keep_order = FALSE, fixed = FALSE),
-      class = c("delayed_choices_selected", "delayed_data", "choices_selected")
-    )
-  )
-
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
-  testthat::expect_equal(res_obj, exp_obj)
 })

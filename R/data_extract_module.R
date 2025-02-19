@@ -350,7 +350,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
     id,
     function(input, output, session) {
       logger::log_debug(
-        "data_extract_srv.FilteredData initialized with datasets: { paste(datasets$datanames(), collapse = ', ') }."
+        "data_extract_srv.FilteredData initialized with datasets: { toString(datasets$datanames()) }."
       )
 
       data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
@@ -415,13 +415,6 @@ data_extract_srv.list <- function(id,
       logger::log_debug(
         "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
       )
-
-      # get keys out of join_keys
-      if (length(join_keys)) {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[x, x])
-      } else {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
-      }
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -500,7 +493,7 @@ data_extract_srv.list <- function(id,
             list(
               dataname = dataname(),
               internal_id = gsub("^.*-(.+)$", "\\1", session$ns(NULL)), # parent module id
-              keys = keys[[dataname()]]
+              keys = as.character(join_keys[dataname(), dataname()]) # to convert NULL to character(0)
             )
           )
         }
@@ -705,14 +698,14 @@ data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
 data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) {
   checkmate::assert_class(datasets, classes = "FilteredData")
   logger::log_debug(
-    "data_extract_multiple_srv.filteredData initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
+    "data_extract_multiple_srv.FilteredData initialized w/ datasets: { toString(datasets$datanames()) }."
   )
 
   data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
-
   join_keys <- datasets$get_join_keys()
+
   data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, join_keys = join_keys)
 }
 
@@ -740,7 +733,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #'
 data_extract_multiple_srv.list <- function(data_extract,
                                            datasets,
-                                           join_keys = NULL,
+                                           join_keys = teal.data::join_keys(),
                                            select_validation_rule = NULL,
                                            filter_validation_rule = NULL,
                                            dataset_validation_rule = if (
@@ -766,39 +759,35 @@ data_extract_multiple_srv.list <- function(data_extract,
     checkmate::check_multi_class(dataset_validation_rule, classes = c("function", "formula"), null.ok = TRUE),
     checkmate::check_list(dataset_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
-
-  logger::log_debug(
-    "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
-  )
-
-  data_extract <- Filter(Negate(is.null), data_extract)
-  data_extract <- resolve_delayed(data_extract, datasets, join_keys)
-
-  if (is.function(select_validation_rule)) {
-    select_validation_rule <- sapply(
-      names(data_extract),
-      simplify = FALSE,
-      USE.NAMES = TRUE,
-      function(x) select_validation_rule
-    )
-  }
-
-  if (is.function(dataset_validation_rule)) {
-    dataset_validation_rule <- sapply(
-      names(data_extract),
-      simplify = FALSE,
-      USE.NAMES = TRUE,
-      function(x) dataset_validation_rule
-    )
-  }
+  logger::log_debug("data_extract_multiple_srv.list initialized with dataset: { toString(names(datasets)) }.")
 
   reactive({
+    data_extract <- Filter(Negate(is.null), data_extract)
+    data_extract <- resolve_delayed(x = data_extract, datasets = datasets, join_keys = join_keys)
+
+    if (is.function(select_validation_rule)) {
+      select_validation_rule <- sapply(
+        names(data_extract),
+        simplify = FALSE,
+        USE.NAMES = TRUE,
+        function(x) select_validation_rule
+      )
+    }
+
+    if (is.function(dataset_validation_rule)) {
+      dataset_validation_rule <- sapply(
+        names(data_extract),
+        simplify = FALSE,
+        USE.NAMES = TRUE,
+        function(x) dataset_validation_rule
+      )
+    }
     sapply(
       X = names(data_extract),
       simplify = FALSE,
       USE.NAMES = TRUE,
       function(x) {
-        data_extract_srv(
+        data_extract_srv( # todo: Come on! Module shouldn't be called in a reactive.
           id = x,
           data_extract_spec = data_extract[[x]],
           datasets = datasets,

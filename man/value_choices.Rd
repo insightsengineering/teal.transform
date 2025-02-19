@@ -2,15 +2,15 @@
 % Please edit documentation in R/choices_labeled.R
 \name{value_choices}
 \alias{value_choices}
-\alias{value_choices.character}
-\alias{value_choices.data.frame}
 \title{Value labeling and filtering based on variable relationship}
 \usage{
-value_choices(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{character}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
-
-\method{value_choices}{data.frame}(data, var_choices, var_label = NULL, subset = NULL, sep = " - ")
+value_choices(
+  data = NULL,
+  var_choices,
+  var_label = NULL,
+  subset = NULL,
+  sep = " - "
+)
 }
 \arguments{
 \item{data}{(\code{data.frame}, \code{character})

@@ -54,18 +54,18 @@ all_choices <- function() {
 #' @export
 #' @rdname delayed_choices
 first_choice <- function() {
-  .delayed_choices(function(x) utils::head(x, 1L))
+  .delayed_choices(selected_fun = function(x) utils::head(x, 1L))
 }
 #' @export
 #' @rdname delayed_choices
 last_choice <- function() {
-  .delayed_choices(function(x) utils::tail(x, 1L))
+  .delayed_choices(selected_fun = function(x) utils::tail(x, 1L))
 }
 #' @export
 #' @rdname delayed_choices
 first_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
-  ans <- .delayed_choices(function(x) utils::head(x, n))
+  ans <- .delayed_choices(selected_fun = function(x) utils::head(x, n))
   class(ans) <- c("multiple_choices", class(ans))
   ans
 }
@@ -73,14 +73,14 @@ first_choices <- function(n) {
 #' @rdname delayed_choices
 last_choices <- function(n) {
   checkmate::assert_count(n, positive = TRUE)
-  ans <- .delayed_choices(function(x) utils::tail(x, n))
+  ans <- .delayed_choices(selected_fun = function(x) utils::tail(x, n))
   class(ans) <- c("multiple_choices", class(ans))
   ans
 }
 
 #' @keywords internal
 #' @noRd
-.delayed_choices <- function(fun) {
+.delayed_choices <- function(selected_fun) {
   structure(
     function(x) {
       if (inherits(x, "delayed_choices")) {
@@ -88,14 +88,14 @@ last_choices <- function(n) {
       } else if (length(x) == 0L) {
         x
       } else if (is.atomic(x)) {
-        fun(x)
+        selected_fun(x)
       } else if (inherits(x, "delayed_data")) {
         if (is.null(x$subset)) {
           return(x)
         }
-        original_fun <- x$subset
+        choices_fun <- x$subset
         x$subset <- function(data) {
-          fun(original_fun(data))
+          selected_fun(choices_fun(data))
         }
         x
       }

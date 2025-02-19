@@ -83,11 +83,8 @@
 #' )
 #' @export
 #'
-data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = FALSE) {
-  checkmate::assert(
-    checkmate::check_string(dataname),
-    checkmate::check_class(dataname, "delayed_datanames")
-  )
+data_extract_spec <- function(dataname = NULL, select = select_spec(), filter = NULL, reshape = FALSE) {
+  checkmate::assert_string(dataname, null.ok = TRUE)
   stopifnot(
     is.null(select) ||
       (inherits(select, "select_spec") && length(select) >= 1)
@@ -99,9 +96,11 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
   )
   checkmate::assert_flag(reshape)
 
-  if (is.null(select) && is.null(filter)) {
+  # todo: decide the fate of this. If there are defaults this
+  if (missing(select) && missing(filter)) {
     select <- select_spec(
       choices = variable_choices(dataname),
+      selected = all_choices(),
       multiple = TRUE
     )
     filter <- filter_spec(
@@ -112,7 +111,7 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
 
   if (inherits(filter, "filter_spec")) filter <- list(filter)
 
-  for (idx in seq_along(filter)) filter[[idx]]$dataname <- dataname
+  for (idx in seq_along(filter)) filter[[idx]]$dataname <- dataname # todo: find where it is used
 
   ans <- if (
     inherits(select, "delayed_select_spec") ||

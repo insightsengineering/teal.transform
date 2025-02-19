@@ -2,15 +2,14 @@
 % Please edit documentation in R/choices_labeled.R
 \name{variable_choices}
 \alias{variable_choices}
-\alias{variable_choices.character}
-\alias{variable_choices.data.frame}
 \title{Variable label extraction and custom selection from data}
 \usage{
-variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
-
-\method{variable_choices}{character}(data, subset = NULL, fill = FALSE, key = NULL)
-
-\method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
+variable_choices(
+  data = NULL,
+  subset = function(data) names(data),
+  fill = FALSE,
+  key = NULL
+)
 }
 \arguments{
 \item{data}{(\code{data.frame} or \code{character})

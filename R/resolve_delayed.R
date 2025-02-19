@@ -66,35 +66,28 @@
 #' })
 #' @export
 #'
-resolve_delayed <- function(x, datasets, keys) {
+resolve_delayed <- function(x, datasets, join_keys) {
+  checkmate::assert_class(join_keys, "join_keys")
   UseMethod("resolve_delayed", datasets)
 }
 
-#' @describeIn resolve_delayed Default values for `keys` parameters is extracted from `datasets`.
+#' @describeIn resolve_delayed Default values for `join_keys` parameters is extracted from `datasets`.
 #' @export
 resolve_delayed.FilteredData <- function(x,
                                          datasets,
-                                         keys = sapply(datasets$datanames(), datasets$get_keys, simplify = FALSE)) {
+                                         join_keys = datasets$get_join_keys()) {
   datasets_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
-    reactive(datasets$get_data(dataname = x, filtered = TRUE))
+    datasets$get_data(dataname = x, filtered = TRUE)
   })
-  resolve(x, datasets_list, keys)
+  resolve(x, datasets_list, join_keys)
 }
 
 #' @describeIn resolve_delayed Generic method when `datasets` argument is a named list.
 #' @export
-resolve_delayed.list <- function(x, datasets, keys = NULL) {
+resolve_delayed.list <- function(x, datasets, join_keys = teal.data::join_keys()) {
   checkmate::assert_list(datasets, types = c("reactive", "data.frame"), min.len = 1, names = "named")
-  checkmate::assert_list(keys, "character", names = "named", null.ok = TRUE)
-  checkmate::assert(
-    .var.name = "keys",
-    checkmate::check_names(names(keys), subset.of = names(datasets)),
-    checkmate::check_null(keys)
-  )
-
-  # convert to list of reactives
   datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
-    if (is.reactive(x)) x else reactive(x)
+    if (is.reactive(x)) x() else x
   })
-  resolve(x, datasets_list, keys)
+  resolve(x, datasets_list, join_keys)
 }

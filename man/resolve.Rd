@@ -12,23 +12,23 @@
 \alias{resolve.default}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve(x, datasets, keys = NULL)
+resolve(x, datasets, join_keys = NULL)
 
-\method{resolve}{delayed_variable_choices}(x, datasets, keys)
+\method{resolve}{delayed_variable_choices}(x, datasets, join_keys)
 
-\method{resolve}{delayed_value_choices}(x, datasets, keys)
+\method{resolve}{delayed_value_choices}(x, datasets, join_keys)
 
-\method{resolve}{delayed_choices_selected}(x, datasets, keys)
+\method{resolve}{delayed_choices_selected}(x, datasets, join_keys)
 
-\method{resolve}{delayed_select_spec}(x, datasets, keys)
+\method{resolve}{delayed_select_spec}(x, datasets, join_keys)
 
-\method{resolve}{delayed_filter_spec}(x, datasets, keys)
+\method{resolve}{delayed_filter_spec}(x, datasets, join_keys)
 
-\method{resolve}{delayed_data_extract_spec}(x, datasets, keys)
+\method{resolve}{delayed_data_extract_spec}(x, datasets, join_keys)
 
-\method{resolve}{list}(x, datasets, keys)
+\method{resolve}{list}(x, datasets, join_keys)
 
-\method{resolve}{default}(x, datasets, keys)
+\method{resolve}{default}(x, datasets, join_keys)
 }
 \arguments{
 \item{x}{(\code{delayed_data}) object to resolve.}

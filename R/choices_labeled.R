@@ -171,35 +171,47 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' })
 #' @export
 #'
-variable_choices <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
+variable_choices <- function(data = NULL, subset = function(data) names(data), fill = FALSE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE, any.missing = FALSE),
-    checkmate::check_function(subset)
+    checkmate::check_function(subset, args = "data")
   )
   checkmate::assert_flag(fill)
   checkmate::assert_character(key, null.ok = TRUE, any.missing = FALSE)
-
-  UseMethod("variable_choices")
+  if (is.character(data) || is.null(data)) {
+    variable_choices_delayed(data = data, subset = subset, fill = fill, key = key)
+  } else {
+    variable_choices_data_frame(data = data, subset = subset, fill = fill, key = key)
+  }
 }
 
-#' @rdname variable_choices
-#' @export
-variable_choices.character <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
+#' @keywords internal
+variable_choices_delayed <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
+  checkmate::assert_string(data, null.ok = TRUE)
   structure(list(data = data, subset = subset, key = key),
     class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
   )
 }
 
-#' @rdname variable_choices
-#' @export
-variable_choices.data.frame <- function(data, subset = function(data) names(data), fill = TRUE, key = NULL) {
+#' @keywords internal
+variable_choices_data_frame <- function(data, subset = function(data) names(data), fill = TRUE, key = NULL) {
+  checkmate::assert_data_frame(data, min.cols = 1)
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE),
     checkmate::check_function(subset, null.ok = TRUE)
   )
 
   if (is.function(subset)) {
-    subset <- resolve_delayed_expr(subset, ds = data, is_value_choices = FALSE)
+    subset <- subset(data)
+    if (
+      !checkmate::test_character(subset, any.missing = FALSE) ||
+        length(subset) > ncol(data) ||
+        anyDuplicated(subset)) {
+      stop(
+        "variable_choices(subset) function in must return a character vector with unique",
+        "names from the available columns of the dataset"
+      )
+    }
   }
 
   checkmate::assert_subset(subset, c("", names(data)), empty.ok = TRUE)
@@ -283,7 +295,7 @@ variable_choices.data.frame <- function(data, subset = function(data) names(data
 #' })
 #' @export
 #'
-value_choices <- function(data,
+value_choices <- function(data = NULL,
                           var_choices,
                           var_label = NULL,
                           subset = NULL,
@@ -298,16 +310,21 @@ value_choices <- function(data,
     checkmate::check_function(subset)
   )
   checkmate::assert_string(sep)
-  UseMethod("value_choices")
+
+  if (is.character(data) || is.null(data)) {
+    value_choices_delayed(data = data, var_choices = var_choices, var_label = var_label, subset = subset, sep = sep)
+  } else {
+    value_choices_data_frame(data = data, var_choices = var_choices, var_label = var_label, subset = subset, sep = sep)
+  }
 }
 
-#' @rdname value_choices
-#' @export
-value_choices.character <- function(data,
-                                    var_choices,
-                                    var_label = NULL,
-                                    subset = NULL,
-                                    sep = " - ") {
+#' @keywords internal
+value_choices_delayed <- function(data,
+                                  var_choices,
+                                  var_label = NULL,
+                                  subset = NULL,
+                                  sep = " - ") {
+  checkmate::assert_string(data, null.ok = TRUE)
   structure(
     list(
       data = data,
@@ -320,13 +337,13 @@ value_choices.character <- function(data,
   )
 }
 
-#' @rdname value_choices
-#' @export
-value_choices.data.frame <- function(data,
+#' @keywords internal
+value_choices_data_frame <- function(data,
                                      var_choices,
                                      var_label = NULL,
                                      subset = NULL,
                                      sep = " - ") {
+  checkmate::assert_data_frame(data, min.cols = 1)
   checkmate::assert_subset(var_choices, names(data))
   checkmate::assert_subset(var_label, names(data), empty.ok = TRUE)
 
@@ -369,7 +386,13 @@ value_choices.data.frame <- function(data,
   df <- unique(data.frame(choices, labels, stringsAsFactors = FALSE)) # unique combo of choices x labels
 
   if (is.function(subset)) {
-    subset <- resolve_delayed_expr(subset, ds = data, is_value_choices = TRUE)
+    subset <- subset(data)
+    if (!checkmate::test_atomic(x$subset) || anyDuplicated(x$subset)) {
+      stop(
+        "value_choices(subset) function must return a vector with unique values from the ",
+        "respective columns of the dataset."
+      )
+    }
   }
   res <- choices_labeled(
     choices = df$choices,

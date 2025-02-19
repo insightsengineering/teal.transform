@@ -7,8 +7,8 @@
 \title{Column selection input specification}
 \usage{
 select_spec(
-  choices,
-  selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
+  choices = variable_choices(),
+  selected = all_choices(),
   multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
   fixed = FALSE,
   always_selected = NULL,
