@@ -128,6 +128,5 @@ data_extract_spec <- function(dataname, select = NULL, filter = NULL, reshape = 
       class = "data_extract_spec"
     )
   }
-  assert_delayed_datesets(ans)
   ans
 }

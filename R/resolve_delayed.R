@@ -91,7 +91,7 @@ resolve_delayed.list <- function(x, datasets, keys = NULL) {
     checkmate::check_names(names(keys), subset.of = names(datasets)),
     checkmate::check_null(keys)
   )
-  x <- resolve_delayed_datanames(x, names(datasets))
+
   # convert to list of reactives
   datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
     if (is.reactive(x)) x else reactive(x)

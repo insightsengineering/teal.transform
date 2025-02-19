@@ -29,9 +29,13 @@ resolve <- function(x, datasets, keys = NULL) {
 #' @describeIn resolve Call [variable_choices()] on the delayed `variable_choices` object.
 #' @export
 resolve.delayed_variable_choices <- function(x, datasets, keys) {
+  if (inherits(x$data, "delayed_datanames")) {
+    x$data <- names(datasets)[[1]] # in theory length==1 as it is filtered in resolve.data_extract_spec
+  }
   if (is.null(x$key)) {
     x$key <- `if`(is.null(keys), character(), keys[[x$data]])
   }
+  # todo: if x$data differs from names(datasets) then it means that somebody made a mistake in des specification
   x$data <- datasets[[x$data]]()
   if (inherits(x$subset, "function")) {
     x$subset <- resolve_delayed_expr(x$subset, ds = x$data, is_value_choices = FALSE)
@@ -43,6 +47,10 @@ resolve.delayed_variable_choices <- function(x, datasets, keys) {
 #' @describeIn resolve Call [value_choices()] on the delayed `value_choices` object.
 #' @export
 resolve.delayed_value_choices <- function(x, datasets, keys) {
+  if (inherits(x$data, "delayed_datanames")) {
+    x$data <- names(datasets)[[1]] # in theory length==1 as it is filtered in resolve.data_extract_spec
+  }
+  # todo: if x$data differs from names(datasets) then it means that somebody made a mistake in des specification
   x$data <- datasets[[x$data]]()
   if (inherits(x$var_choices, "delayed_variable_choices")) {
     x$var_choices <- resolve(x$var_choices, datasets, keys)
@@ -107,15 +115,16 @@ resolve.delayed_filter_spec <- function(x, datasets, keys) {
 #' @describeIn resolve Call [data_extract_spec()] on the delayed specification.
 #' @export
 resolve.delayed_data_extract_spec <- function(x, datasets, keys) {
+  dataset <- datasets[x$dataname]
   x$select <- `if`(
     inherits(x$select, "delayed_data"),
-    resolve(x$select, datasets = datasets, keys),
+    resolve(x$select, datasets = dataset, keys),
     x$select
   )
 
   if (any(vapply(x$filter, inherits, logical(1L), "delayed_data"))) {
     idx <- vapply(x$filter, inherits, logical(1), "delayed_data")
-    x$filter[idx] <- lapply(x$filter[idx], resolve, datasets = datasets, keys = keys)
+    x$filter[idx] <- lapply(x$filter[idx], resolve, datasets = dataset, keys = keys)
   }
 
   do.call("data_extract_spec", x)
@@ -125,8 +134,17 @@ resolve.delayed_data_extract_spec <- function(x, datasets, keys) {
 #' `resolve`.
 #' @export
 resolve.list <- function(x, datasets, keys) {
+  new_x <- if (checkmate::test_list(x, "data_extract_spec") && inherits(x[[1]]$dataname, "delayed_datanames")) {
+    lapply(seq_along(datasets), function(i) {
+      xx <- x[[1]]
+      xx$dataname <- names(datasets)[i]
+      xx
+    })
+  } else {
+    x
+  }
   # If specified explicitly, return it unchanged. Otherwise if delayed, resolve.
-  lapply(x, resolve, datasets = datasets, keys = keys)
+  lapply(new_x, resolve, datasets = datasets, keys = keys)
 }
 
 #' @describeIn resolve Default method that does nothing and returns `x` itself.

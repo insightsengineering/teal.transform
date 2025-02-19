@@ -171,7 +171,7 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' })
 #' @export
 #'
-variable_choices <- function(data, subset = NULL, fill = FALSE, key = NULL) {
+variable_choices <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE, any.missing = FALSE),
     checkmate::check_function(subset)
@@ -184,7 +184,7 @@ variable_choices <- function(data, subset = NULL, fill = FALSE, key = NULL) {
 
 #' @rdname variable_choices
 #' @export
-variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = NULL) {
+variable_choices.character <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
   structure(list(data = data, subset = subset, key = key),
     class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
   )
@@ -192,7 +192,7 @@ variable_choices.character <- function(data, subset = NULL, fill = FALSE, key = 
 
 #' @rdname variable_choices
 #' @export
-variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = NULL) {
+variable_choices.data.frame <- function(data, subset = function(data) names(data), fill = TRUE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE),
     checkmate::check_function(subset, null.ok = TRUE)

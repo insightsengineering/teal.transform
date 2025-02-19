@@ -442,6 +442,11 @@ data_extract_srv.list <- function(id,
         return(reactive(NULL))
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
+      datanames <- vapply(data_extract_spec, function(x) x$dataname, character(1), USE.NAMES = FALSE)
+      if (anyDuplicated(datanames)) {
+        stop("list contains data_extract_spec objects with the same dataset")
+      }
+      names(data_extract_spec) <- datanames # so the lapply/sapply results are named
 
       # Each dataset needs its own shinyvalidate to make sure only the
       # currently visible d-e-s's validation is used
@@ -452,7 +457,6 @@ data_extract_srv.list <- function(id,
         }
         iv_dataset
       })
-      names(iv) <- lapply(data_extract_spec, `[[`, "dataname")
 
       # also need a final iv for the case where no dataset is selected
       iv[["blank_dataset_case"]] <- shinyvalidate::InputValidator$new()
@@ -476,7 +480,6 @@ data_extract_srv.list <- function(id,
           filter_validation_rule = filter_validation_rule
         )
       })
-      names(filter_and_select) <- sapply(data_extract_spec, function(x) x$dataname)
 
       dataname <- reactive({
         # For fixed data sets, ignore input_value
@@ -507,39 +510,22 @@ data_extract_srv.list <- function(id,
       output$data_extract_ui_container <- renderUI({
         ns <- session$ns
 
-        logger::log_debug(
-          "initializing data_extract_ui with datasets: { paste(names(datasets), collapse = ', ') }."
-        )
-
-        if (inherits(data_extract_spec, "data_extract_spec")) {
-          data_extract_spec <- list(data_extract_spec)
-        }
-        check_data_extract_spec(data_extract_spec)
+        logger::log_debug("initializing data_extract_ui w/ datasets: { toString(names(datasets)) }.")
 
         if (is.null(data_extract_spec)) {
           return(helpText(sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", label)))
         }
+
         stopifnot(
           `more than one dataset in data_extract_spec but is_single_dataset parameter is set to TRUE` =
             isFALSE(input$is_single_dataset) || length(data_extract_spec) == 1
         )
 
-        dataset_names <- vapply(
-          data_extract_spec,
-          function(x) x$dataname,
-          character(1),
-          USE.NAMES = FALSE
-        )
-
-        if (anyDuplicated(dataset_names) != 0L) {
-          stop("list contains data_extract_spec objects with the same dataset")
-        }
-
         dataset_input <-
           if (isTRUE(input$is_single_dataset)) {
             NULL
           } else {
-            if (length(dataset_names) == 1) {
+            if (length(data_extract_spec) == 1) {
               if ((is.null(data_extract_spec[[1]]$filter)) &&
                 (
                   !is.null(data_extract_spec[[1]]$select$fixed) &&
@@ -547,14 +533,14 @@ data_extract_srv.list <- function(id,
                 )) {
                 NULL
               } else {
-                helpText("Dataset:", tags$code(dataset_names))
+                helpText("Dataset:", tags$code(names(data_extract_spec)))
               }
             } else {
               teal.widgets::optionalSelectInput(
                 inputId = ns("dataset"),
                 label = "Dataset",
-                choices = dataset_names,
-                selected = dataset_names[1],
+                choices = names(data_extract_spec),
+                selected = names(data_extract_spec)[1],
                 multiple = FALSE
               )
             }
@@ -565,9 +551,9 @@ data_extract_srv.list <- function(id,
             class = "data-extract",
             tags$label(input$data_extract_label),
             dataset_input,
-            if (length(dataset_names) == 1) {
+            if (length(data_extract_spec) == 1) {
               data_extract_single_ui(
-                id = ns(id_for_dataset(dataset_names)),
+                id = ns(id_for_dataset(names(data_extract_spec))),
                 single_data_extract_spec = data_extract_spec[[1]]
               )
             } else {

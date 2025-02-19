@@ -141,6 +141,7 @@ select_spec.delayed_data <- function(choices, # nolint: object_name_linter.
   )
 }
 
+
 #' @rdname select_spec
 #' @export
 #'
