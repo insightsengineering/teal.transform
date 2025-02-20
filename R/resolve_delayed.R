@@ -4,8 +4,7 @@
 #'
 #' @param x (`delayed_data`, `list`) to resolve.
 #' @param datasets (`FilteredData` or named `list`) to use as a reference to resolve `x`.
-#' @param keys (named `list`) with primary keys for each dataset from `datasets`. `names(keys)`
-#' should match `names(datasets)`.
+#' @param join_keys (`join_keys`) used to resolve `key` in [variable_choices()].
 #'
 #' @return Resolved object.
 #'
@@ -66,7 +65,7 @@
 #' })
 #' @export
 #'
-resolve_delayed <- function(x, datasets, join_keys) {
+resolve_delayed <- function(x, datasets, join_keys = teal.data::join_keys()) {
   checkmate::assert_class(join_keys, "join_keys")
   UseMethod("resolve_delayed", datasets)
 }
@@ -89,5 +88,5 @@ resolve_delayed.list <- function(x, datasets, join_keys = teal.data::join_keys()
   datasets_list <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
     if (is.reactive(x)) x() else x
   })
-  resolve(x, datasets_list, join_keys)
+  resolve(x, datasets = datasets_list, join_keys = join_keys)
 }

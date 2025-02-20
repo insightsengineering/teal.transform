@@ -7,16 +7,15 @@
 #'
 #' @param x (`delayed_data`) object to resolve.
 #' @param datasets (named `list` of `data.frame`) to use in evaluation.
-#' @param keys (named `list` of `character`) to be used as the keys for each dataset.
-#' The names of this list must be exactly the same as for datasets.
+#' @param join_keys (`join_keys`) used to resolve `key` in [variable_choices()].
 #'
 #' @return Resolved object.
 #'
 #' @keywords internal
 #'
-resolve <- function(x, datasets, join_keys = NULL) {
+resolve <- function(x, datasets, join_keys = teal.data::join_keys()) {
   checkmate::assert_list(datasets, min.len = 1, names = "named")
-  checkmate::assert_class(join_keys, "join_keys", null.ok = TRUE)
+  checkmate::assert_class(join_keys, "join_keys")
   UseMethod("resolve")
 }
 
@@ -45,7 +44,7 @@ resolve.delayed_value_choices <- function(x, datasets, join_keys = teal.data::jo
 
 #' @describeIn resolve Call [select_spec()] on the delayed `choices_selected` object.
 #' @export
-resolve.delayed_choices_selected <- function(x, datasets, join_keys = join_keys()) {
+resolve.delayed_choices_selected <- function(x, datasets, join_keys = teal.data::join_keys()) {
   checkmate::assert_list(datasets, len = 1, names = "named")
   if (inherits(x$selected, "delayed_data")) {
     x$selected <- resolve(x$selected, datasets = datasets, join_keys = join_keys)
@@ -117,7 +116,7 @@ resolve.delayed_data_extract_spec <- function(x, datasets, join_keys = teal.data
 #' `resolve`.
 #' @export
 resolve.list <- function(x, datasets, join_keys = teal.data::join_keys()) {
-  new_x <- if (checkmate::test_list(x, "data_extract_spec", min.len = 1) && is.null(x[[1]]$dataname)) {
+  new_x <- if (checkmate::test_list(x, "data_extract_spec", min.len = 1) && identical(x[[1]]$dataname, "all")) {
     lapply(seq_along(datasets), function(i) {
       xx <- x[[1]]
       xx$dataname <- names(datasets)[i]

@@ -386,16 +386,14 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
         column_labels <- labels[intersect(colnames(data_used()), column_names)]
 
         # NULL for no labels at all, character(0) for no labels for a given columns
-        return(
-          if (rlang::is_empty(column_labels)) {
-            column_labels
-          } else {
-            stats::setNames(
-              column_labels,
-              selector[names(column_labels)]
-            )
-          }
-        )
+        if (rlang::is_empty(column_labels)) {
+          column_labels
+        } else {
+          stats::setNames(
+            column_labels,
+            selector[names(column_labels)]
+          )
+        }
       }
     )
   )

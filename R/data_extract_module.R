@@ -391,7 +391,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 data_extract_srv.list <- function(id,
                                   datasets,
                                   data_extract_spec,
-                                  join_keys = NULL,
+                                  join_keys = teal.data::join_keys(),
                                   select_validation_rule = NULL,
                                   filter_validation_rule = NULL,
                                   dataset_validation_rule = if (
@@ -412,8 +412,10 @@ data_extract_srv.list <- function(id,
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_debug(
-        "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
+      logger::log_debug("data_extract_srv.list initialized with datasets: { toString(names(datasets)) }.")
+
+      data_extract_spec <- shiny::isolate(
+        resolve_delayed(x = data_extract_spec, datasets = datasets, join_keys = join_keys)
       )
 
       # convert to list of reactives
@@ -506,7 +508,9 @@ data_extract_srv.list <- function(id,
         logger::log_debug("initializing data_extract_ui w/ datasets: { toString(names(datasets)) }.")
 
         if (is.null(data_extract_spec)) {
-          return(helpText(sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", label)))
+          return(helpText(
+            sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", input$label)
+          ))
         }
 
         stopifnot(

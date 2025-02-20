@@ -14,7 +14,7 @@ data_extract_srv(id, datasets, data_extract_spec, ...)
   id,
   datasets,
   data_extract_spec,
-  join_keys = NULL,
+  join_keys = teal.data::join_keys(),
   select_validation_rule = NULL,
   filter_validation_rule = NULL,
   dataset_validation_rule = if (is.null(select_validation_rule) &&

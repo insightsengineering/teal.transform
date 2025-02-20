@@ -5,15 +5,16 @@
 \title{Data extract input for \code{teal} modules}
 \usage{
 data_extract_spec(
-  dataname = NULL,
-  select = select_spec(),
-  filter = NULL,
+  dataname = "all",
+  select = select_spec(selected = all_choices()),
+  filter = filter_spec(),
   reshape = FALSE
 )
 }
 \arguments{
 \item{dataname}{(\code{character})
-The name of the dataset to be extracted.}
+The name of the dataset to be extracted. Keyword \code{"all"} suggest that this \code{data_extract_spec}
+is universal for all datasets used in \code{teal} application.}
 
 \item{select}{(\code{NULL} or \code{select_spec}-S3 class or \code{delayed_select_spec})
 Columns to be selected from the input dataset mentioned in \code{dataname}.

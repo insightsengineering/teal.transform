@@ -2,10 +2,10 @@ testthat::test_that("variable_choices returns variable_choices", {
   testthat::expect_s3_class(variable_choices(), "choices_labeled")
 })
 
-testthat::test_that("variable_choices accepts data to be NULL, string or data.frame with cols", {
-  testthat::expect_no_error(variable_choices(data = NULL))
-  testthat::expect_no_error(variable_choices(data = "a"))
+testthat::test_that("variable_choices accepts data to be  string or data.frame with cols", {
+  testthat::expect_no_error(variable_choices(data = "all"))
   testthat::expect_no_error(variable_choices(data = mtcars))
+  testthat::expect_error(variable_choices(data = NULL))
   testthat::expect_error(variable_choices(data = data.frame()))
   testthat::expect_error(variable_choices(data = c("a", "b")))
 })
@@ -17,10 +17,10 @@ testthat::test_that("variable_choices accepts subset to be character or a functi
 })
 
 testthat::test_that("variable_choices accepts subset to be character or a function when data is NULL", {
-  testthat::expect_no_error(variable_choices(NULL, c("Species", "Sepal.Length")))
-  testthat::expect_no_error(variable_choices(NULL, subset = function(data) colnames(data)))
-  testthat::expect_no_error(variable_choices(NULL, c("Species", "idontexist")))
-  testthat::expect_no_error(variable_choices(NULL, subset = function(data) c("Species", "idontexist")))
+  testthat::expect_no_error(variable_choices(subset = c("Species", "Sepal.Length")))
+  testthat::expect_no_error(variable_choices(subset = function(data) colnames(data)))
+  testthat::expect_no_error(variable_choices(subset = c("Species", "idontexist")))
+  testthat::expect_no_error(variable_choices(subset = function(data) c("Species", "idontexist")))
 })
 
 testthat::test_that("variable_choices has defaults for all arguments", {
@@ -52,7 +52,7 @@ testthat::test_that("resolving delayed_variable_choices throws the error when su
     "Must be a subset of"
   )
   testthat::expect_error(
-    resolve(variable_choices(data = NULL, subset = "idontexist"), datasets = list(iris = iris)),
+    resolve(variable_choices(subset = "idontexist"), datasets = list(iris = iris)),
     "Must be a subset of"
   )
 })

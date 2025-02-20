@@ -15,7 +15,8 @@
 #' `teal.transform` uses this object to construct a UI element in a module.
 #'
 #' @param dataname (`character`)
-#' The name of the dataset to be extracted.
+#' The name of the dataset to be extracted. Keyword `"all"` suggest that this `data_extract_spec`
+#' is universal for all datasets used in `teal` application.
 #' @param select (`NULL` or `select_spec`-S3 class or `delayed_select_spec`)
 #' Columns to be selected from the input dataset mentioned in `dataname`.
 #' The setup can be created using [select_spec] function.
@@ -83,8 +84,11 @@
 #' )
 #' @export
 #'
-data_extract_spec <- function(dataname = NULL, select = select_spec(), filter = NULL, reshape = FALSE) {
-  checkmate::assert_string(dataname, null.ok = TRUE)
+data_extract_spec <- function(dataname = "all",
+                              select = select_spec(selected = all_choices()), # todo: remove this default
+                              filter = filter_spec(), # todo: default filter should be NULL
+                              reshape = FALSE) {
+  checkmate::assert_string(dataname)
   stopifnot(
     is.null(select) ||
       (inherits(select, "select_spec") && length(select) >= 1)
@@ -95,19 +99,6 @@ data_extract_spec <- function(dataname = NULL, select = select_spec(), filter = 
     checkmate::check_list(filter, "filter_spec")
   )
   checkmate::assert_flag(reshape)
-
-  # todo: decide the fate of this. If there are defaults this
-  if (missing(select) && missing(filter)) {
-    select <- select_spec(
-      choices = variable_choices(dataname),
-      selected = all_choices(),
-      multiple = TRUE
-    )
-    filter <- filter_spec(
-      vars = choices_selected(variable_choices(dataname)),
-      selected = all_choices()
-    )
-  }
 
   if (inherits(filter, "filter_spec")) filter <- list(filter)
 

@@ -6,7 +6,7 @@
 \alias{resolve_delayed.list}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve_delayed(x, datasets, join_keys)
+resolve_delayed(x, datasets, join_keys = teal.data::join_keys())
 
 \method{resolve_delayed}{FilteredData}(x, datasets, join_keys = datasets$get_join_keys())
 
@@ -17,8 +17,7 @@ resolve_delayed(x, datasets, join_keys)
 
 \item{datasets}{(\code{FilteredData} or named \code{list}) to use as a reference to resolve \code{x}.}
 
-\item{keys}{(named \code{list}) with primary keys for each dataset from \code{datasets}. \code{names(keys)}
-should match \code{names(datasets)}.}
+\item{join_keys}{(\code{join_keys}) used to resolve \code{key} in \code{\link[=variable_choices]{variable_choices()}}.}
 }
 \value{
 Resolved object.

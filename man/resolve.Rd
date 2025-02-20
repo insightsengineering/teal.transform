@@ -12,31 +12,30 @@
 \alias{resolve.default}
 \title{Resolve delayed inputs by evaluating the code within the provided datasets}
 \usage{
-resolve(x, datasets, join_keys = NULL)
+resolve(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_variable_choices}(x, datasets, join_keys)
+\method{resolve}{delayed_variable_choices}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_value_choices}(x, datasets, join_keys)
+\method{resolve}{delayed_value_choices}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_choices_selected}(x, datasets, join_keys)
+\method{resolve}{delayed_choices_selected}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_select_spec}(x, datasets, join_keys)
+\method{resolve}{delayed_select_spec}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_filter_spec}(x, datasets, join_keys)
+\method{resolve}{delayed_filter_spec}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{delayed_data_extract_spec}(x, datasets, join_keys)
+\method{resolve}{delayed_data_extract_spec}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{list}(x, datasets, join_keys)
+\method{resolve}{list}(x, datasets, join_keys = teal.data::join_keys())
 
-\method{resolve}{default}(x, datasets, join_keys)
+\method{resolve}{default}(x, datasets, join_keys = teal.data::join_keys())
 }
 \arguments{
 \item{x}{(\code{delayed_data}) object to resolve.}
 
 \item{datasets}{(named \code{list} of \code{data.frame}) to use in evaluation.}
 
-\item{keys}{(named \code{list} of \code{character}) to be used as the keys for each dataset.
-The names of this list must be exactly the same as for datasets.}
+\item{join_keys}{(\code{join_keys}) used to resolve \code{key} in \code{\link[=variable_choices]{variable_choices()}}.}
 }
 \value{
 Resolved object.

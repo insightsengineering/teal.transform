@@ -131,7 +131,8 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #'
 #' @param data (`data.frame` or `character`)
 #' If `data.frame`, then data to extract labels from.
-#' If `character`, then name of the dataset to extract data from once available.
+#' If `character`, then name of the dataset to extract data from once available. Keyword `"all"`
+#' (default) indicates that `data` will be inherited from the `data_extract_spec` `dataname`.
 #' @param subset (`character` or `function`)
 #' If `character`, then a vector of column names.
 #' If `function`, then this function is used to determine the possible columns (e.g. all factor columns).
@@ -161,7 +162,10 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #'   key = default_cdisc_join_keys["ADRS", "ADRS"]
 #' )
 #'
-#' # delayed version
+#' # delayed version with unknown dataset
+#' variable_choices()
+#'
+#' # delayed ADRS
 #' variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
 #'
 #' # functional subset (with delayed data) - return only factor variables
@@ -171,14 +175,14 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' })
 #' @export
 #'
-variable_choices <- function(data = NULL, subset = function(data) names(data), fill = FALSE, key = NULL) {
+variable_choices <- function(data = "all", subset = function(data) names(data), fill = FALSE, key = NULL) {
   checkmate::assert(
     checkmate::check_character(subset, null.ok = TRUE, any.missing = FALSE),
     checkmate::check_function(subset, args = "data")
   )
   checkmate::assert_flag(fill)
   checkmate::assert_character(key, null.ok = TRUE, any.missing = FALSE)
-  if (is.character(data) || is.null(data)) {
+  if (is.character(data)) {
     variable_choices_delayed(data = data, subset = subset, fill = fill, key = key)
   } else {
     variable_choices_data_frame(data = data, subset = subset, fill = fill, key = key)
@@ -187,7 +191,7 @@ variable_choices <- function(data = NULL, subset = function(data) names(data), f
 
 #' @keywords internal
 variable_choices_delayed <- function(data, subset = function(data) names(data), fill = FALSE, key = NULL) {
-  checkmate::assert_string(data, null.ok = TRUE)
+  checkmate::assert_string(data)
   structure(list(data = data, subset = subset, key = key),
     class = c("delayed_variable_choices", "delayed_data", "choices_labeled")
   )
@@ -206,7 +210,8 @@ variable_choices_data_frame <- function(data, subset = function(data) names(data
     if (
       !checkmate::test_character(subset, any.missing = FALSE) ||
         length(subset) > ncol(data) ||
-        anyDuplicated(subset)) {
+        anyDuplicated(subset)
+    ) {
       stop(
         "variable_choices(subset) function in must return a character vector with unique",
         "names from the available columns of the dataset"
@@ -387,7 +392,7 @@ value_choices_data_frame <- function(data,
 
   if (is.function(subset)) {
     subset <- subset(data)
-    if (!checkmate::test_atomic(x$subset) || anyDuplicated(x$subset)) {
+    if (!checkmate::test_atomic(subset) || anyDuplicated(subset)) {
       stop(
         "value_choices(subset) function must return a vector with unique values from the ",
         "respective columns of the dataset."

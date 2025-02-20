@@ -35,7 +35,6 @@ adlb_extract <- data_extract_spec(
 testthat::test_that(
   "merge_expression_module accepts a list of data_extract_spec, a list of reactive data frames and a join keys",
   code = {
-  testthat::skip("PRAC")
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),
       expr = testthat::expect_no_error(
@@ -50,7 +49,6 @@ testthat::test_that(
 )
 
 testthat::test_that("merge_expression_module returns a reactive containing a list", {
-  testthat::skip("PRAC")
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = {
@@ -70,7 +68,6 @@ testthat::test_that("merge_expression_module returns a reactive containing a lis
 })
 
 testthat::test_that("merge_expression_module works if list some elements of the list are  NULL", {
-  testthat::skip("PRAC")
   testthat::expect_silent(
     shiny::withReactiveDomain(
       domain = shiny::MockShinySession$new(),

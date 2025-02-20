@@ -1,8 +1,3 @@
-adsl <- teal.data::rADSL
-adtte <- teal.data::rADTTE
-data_list <- list(ADSL = reactive(adsl), ADTTE = reactive(adtte))
-primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
-
 testthat::test_that("Proper argument types", {
   choices <- c("c1", "c2", "c3")
   selected <- c("c1", "c2")
@@ -34,6 +29,7 @@ testthat::test_that("Single choice", {
   testthat::expect_silent(
     c2 <- select_spec(
       choices = c("AVAL", "BMRKR1", "AGE"),
+      selected = first_choice(),
       fixed = FALSE,
       label = "Column"
     )
@@ -49,7 +45,7 @@ testthat::test_that("Single choice", {
   testthat::expect_false(c2$fixed)
 
   # minimal example
-  testthat::expect_silent(c3 <- select_spec(choices = c("AVAL", "BMRKR1", "AGE")))
+  testthat::expect_silent(c3 <- select_spec(choices = c("AVAL", "BMRKR1", "AGE"), selected = first_choice()))
   testthat::expect_identical(class(c3), "select_spec")
   testthat::expect_identical(c3$choices, setNames(c("AVAL", "BMRKR1", "AGE"), c("AVAL", "BMRKR1", "AGE")))
   testthat::expect_identical(c3$selected, setNames("AVAL", "AVAL"))
@@ -85,10 +81,9 @@ testthat::test_that("Multiple choices", {
 })
 
 testthat::test_that("resolve select_spec works", {
-  attr(adsl, "keys") <- c("STUDYID", "USUBJID")
-
+  adsl_keys <- teal.data::default_cdisc_join_keys["ADSL"]
   expected_spec <- select_spec(
-    choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),
+    choices = variable_choices(teal.data::rADSL, c("BMRKR1", "BMRKR2"), key = c("STUDYID", "USUBJID")),
     selected = "BMRKR1",
     multiple = FALSE,
     fixed = FALSE
@@ -107,7 +102,7 @@ testthat::test_that("resolve select_spec works", {
 
   testthat::expect_identical(
     expected_spec,
-    isolate(resolve(delayed_spec, datasets = data_list, keys = primary_keys_list))
+    resolve(delayed_spec, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   )
 })
 
@@ -136,6 +131,7 @@ vc_fun_short_exp <- structure(
 )
 
 testthat::test_that("delayed version of select_spec", {
+  adsl_keys <- teal.data::default_cdisc_join_keys["ADSL"]
   # hard-coded choices & selected
   obj <- select_spec(vc_hard, selected = vc_hard_short, multiple = FALSE)
   testthat::expect_equal(
@@ -154,10 +150,10 @@ testthat::test_that("delayed version of select_spec", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   exp_obj <- select_spec(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
-    selected = variable_choices(adsl, "STUDYID", key = c("STUDYID", "USUBJID"))
+    variable_choices(teal.data::rADSL, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(teal.data::rADSL, "STUDYID", key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj)
 
@@ -179,7 +175,7 @@ testthat::test_that("delayed version of select_spec", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   testthat::expect_equal(res_obj, exp_obj)
 })
 
@@ -212,7 +208,7 @@ testthat::test_that("multiple is set to TRUE if all_choices() is passed to selec
 })
 
 testthat::test_that("default values", {
-  test <- select_spec("a")
+  test <- select_spec(choices = c("a", "b"))
   testthat::expect_identical(test$selected, c(a = "a"))
   testthat::expect_false(test$multiple)
   testthat::expect_false(test$fixed)
@@ -223,11 +219,9 @@ testthat::test_that("default values", {
 
 # With resolve_delayed
 testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
-  testthat::skip("PRAC")
-  attr(adsl, "keys") <- c("STUDYID", "USUBJID")
-
+  adsl_keys <- teal.data::default_cdisc_join_keys["ADSL"]
   expected_spec <- select_spec(
-    choices = variable_choices(adsl, c("BMRKR1", "BMRKR2")),
+    choices = variable_choices(teal.data::rADSL, c("BMRKR1", "BMRKR2"), key = c("STUDYID", "USUBJID")),
     selected = "BMRKR1",
     multiple = FALSE,
     fixed = FALSE
@@ -246,13 +240,13 @@ testthat::test_that("resolve_delayed select_spec works - resolve_delayed", {
 
   testthat::expect_identical(
     expected_spec,
-    isolate(resolve_delayed(delayed_spec, datasets = data_list, keys = primary_keys_list))
+    resolve_delayed(delayed_spec, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   )
 })
 
 
 testthat::test_that("delayed version of select_spec - resolve_delayed", {
-  testthat::skip("PRAC")
+  adsl_keys <- teal.data::default_cdisc_join_keys["ADSL"]
   # hard-coded choices & selected
   obj <- select_spec(vc_hard, selected = vc_hard_short, multiple = FALSE)
   testthat::expect_equal(
@@ -271,10 +265,10 @@ testthat::test_that("delayed version of select_spec - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve_delayed(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   exp_obj <- select_spec(
-    variable_choices(adsl, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
-    selected = variable_choices(adsl, "STUDYID", key = c("STUDYID", "USUBJID"))
+    variable_choices(teal.data::rADSL, subset = c("STUDYID", "USUBJID"), key = c("STUDYID", "USUBJID")),
+    selected = variable_choices(teal.data::rADSL, "STUDYID", key = c("STUDYID", "USUBJID"))
   )
   testthat::expect_equal(res_obj, exp_obj)
 
@@ -297,6 +291,6 @@ testthat::test_that("delayed version of select_spec - resolve_delayed", {
   )
 
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve_delayed(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = adsl_keys)
   testthat::expect_equal(res_obj, exp_obj)
 })

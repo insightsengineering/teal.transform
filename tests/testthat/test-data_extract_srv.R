@@ -333,7 +333,6 @@ testthat::test_that("data_extract_srv with a list of multiple data_extract_spec"
   )
 })
 
-
 testthat::test_that("select validation", {
   adsl_extract <- data_extract_spec(
     dataname = "ADSL",
@@ -382,22 +381,11 @@ testthat::test_that("select validation", {
 })
 
 testthat::test_that("validation only runs on currently selected dataset's data extract spec", {
-  iris_extract <- data_extract_spec(
-    dataname = "IRIS",
-    select = select_spec(
-      label = "Select variable:",
-      choices = variable_choices(iris, colnames(iris)),
-      selected = "Sepal.Length",
-      multiple = TRUE,
-      fixed = FALSE
-    )
-  )
-
   server <- function(input, output, session) {
     adsl_reactive_input <- data_extract_srv(
       id = "adsl_var",
       datasets = data_list,
-      data_extract_spec = list(iris_extract, iris_extract),
+      data_extract_spec = list(adsl_extract, adlb_extract),
       join_keys = join_keys,
       select_validation_rule = shinyvalidate::sv_required("Please select a variable.")
     )
@@ -421,8 +409,8 @@ testthat::test_that("validation only runs on currently selected dataset's data e
   shiny::testServer(server, {
     session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "")
     testthat::expect_match(output$out1, "Please fix errors in your selection")
-    session$setInputs("adsl_var-dataset" = "IRIS")
-    session$setInputs("adsl_var-dataset_IRIS_singleextract-select" = "Species")
+    session$setInputs("adsl_var-dataset" = "ADSL")
+    session$setInputs("adsl_var-dataset_ADSL_singleextract-select" = "Species")
     testthat::expect_true(iv_r()$is_valid())
   })
 })

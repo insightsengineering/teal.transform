@@ -84,7 +84,7 @@
 #' @export
 #'
 select_spec <- function(choices = variable_choices(),
-                        selected = all_choices(),
+                        selected = first_choice(),
                         multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
                         fixed = FALSE,
                         always_selected = NULL,
