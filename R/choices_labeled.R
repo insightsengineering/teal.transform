@@ -300,8 +300,8 @@ variable_choices_data_frame <- function(data, subset = function(data) names(data
 #' })
 #' @export
 #'
-value_choices <- function(data = NULL,
-                          var_choices,
+value_choices <- function(data = "all",
+                          var_choices = variable_choices(data = data),
                           var_label = NULL,
                           subset = NULL,
                           sep = " - ") {
@@ -316,7 +316,7 @@ value_choices <- function(data = NULL,
   )
   checkmate::assert_string(sep)
 
-  if (is.character(data) || is.null(data)) {
+  if (is.character(data)) {
     value_choices_delayed(data = data, var_choices = var_choices, var_label = var_label, subset = subset, sep = sep)
   } else {
     value_choices_data_frame(data = data, var_choices = var_choices, var_label = var_label, subset = subset, sep = sep)

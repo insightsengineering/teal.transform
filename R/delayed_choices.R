@@ -6,7 +6,7 @@
 #' Special S3 structures that delay selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.
 #'
-#' @param n positive (`integer`-like) number of first/last items to subset to
+#' @param n positive (`integer`-like) number of first/last/nth item(s) to subset to.
 #'
 #' @return
 #' Object of class `delayed_data, delayed_choices`, which is a function
@@ -53,11 +53,11 @@ all_choices <- function() {
 }
 #' @export
 #' @rdname delayed_choices
-nth_choice <- function(i) {
+nth_choice <- function(n) {
   .delayed_choices(selected_fun = function(x) {
-    new_i <- min(length(x), i)
-    if (new_i > 0) {
-      x[new_i]
+    new_n <- min(length(x), n)
+    if (new_n > 0) {
+      x[new_n]
     } else {
       NULL
     }

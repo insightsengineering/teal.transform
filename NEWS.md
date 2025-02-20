@@ -2,7 +2,8 @@
 
 ### Enhancements
 
-* Added utility function `delayed_datanames` that facilitates creating multiple `delayed_data_extract_spec`s without knowlege of the available datasets. It is now possible to create `delayed_data_extract_spec` for all available datasets with one call, rather than with one call per dataset.
+* Introduced defaults to all `data_extract_spec()` components to simplify the user experience. It is now possible to just call `data_extract_spec()` which will provide necessary information for `data_extract_srv()` and `data_extract_multiple_srv()` to initialize inputs for all provided datasets. 
+* Introduced utility function `nth_choice(n)`. 
 
 # teal.transform 0.6.0
 

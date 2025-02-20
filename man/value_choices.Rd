@@ -5,8 +5,8 @@
 \title{Value labeling and filtering based on variable relationship}
 \usage{
 value_choices(
-  data = NULL,
-  var_choices,
+  data = "all",
+  var_choices = variable_choices(data = data),
   var_label = NULL,
   subset = NULL,
   sep = " - "

@@ -3,6 +3,7 @@
 \name{delayed_choices}
 \alias{delayed_choices}
 \alias{all_choices}
+\alias{nth_choice}
 \alias{first_choice}
 \alias{last_choice}
 \alias{first_choices}
@@ -10,6 +11,8 @@
 \title{Bare constructor for \code{delayed_choices} object}
 \usage{
 all_choices()
+
+nth_choice(n)
 
 first_choice()
 
@@ -20,7 +23,7 @@ first_choices(n)
 last_choices(n)
 }
 \arguments{
-\item{n}{positive (\code{integer}-like) number of first/last items to subset to}
+\item{n}{positive (\code{integer}-like) number of first/last/nth item(s) to subset to.}
 }
 \value{
 Object of class \verb{delayed_data, delayed_choices}, which is a function
