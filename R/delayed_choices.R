@@ -53,6 +53,19 @@ all_choices <- function() {
 }
 #' @export
 #' @rdname delayed_choices
+nth_choice <- function(i) {
+  .delayed_choices(selected_fun = function(x) {
+    new_i <- min(length(x), i)
+    if (new_i > 0) {
+      x[new_i]
+    } else {
+      NULL
+    }
+  })
+}
+
+#' @export
+#' @rdname delayed_choices
 first_choice <- function() {
   .delayed_choices(selected_fun = function(x) utils::head(x, 1L))
 }

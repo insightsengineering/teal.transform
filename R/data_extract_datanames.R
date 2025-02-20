@@ -53,22 +53,16 @@ get_extract_datanames <- function(data_extracts) {
       all(vapply(data_extracts, function(x) checkmate::test_list(x, types = "data_extract_spec"), logical(1)))
   )
 
-  datanames <- lapply(data_extracts, function(x) {
-    if (inherits(x, "data_extract_spec")) {
-      x[["dataname"]]
-    } else if (checkmate::test_list(x, types = "data_extract_spec")) {
-      lapply(x, `[[`, "dataname")
-    }
-  })
-
-  .extract_delayed_datanames <- function(x) {
-    if (inherits(x, "delayed_datanames")) {
-      attr(x, "datasets", exact = TRUE)
-    } else {
-      x
-    }
-  }
-  datanames <- rapply(datanames, .extract_delayed_datanames)
+  datanames <- unlist(
+    lapply(data_extracts, function(x) {
+      if (inherits(x, "data_extract_spec")) {
+        x[["dataname"]]
+      } else if (checkmate::test_list(x, types = "data_extract_spec")) {
+        lapply(x, `[[`, "dataname")
+      }
+    }),
+    use.names = FALSE
+  )
 
   if (any(datanames == "all")) {
     "all"
