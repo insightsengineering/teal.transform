@@ -1,6 +1,5 @@
-#' @export
 transform <- function() {
-  o <- list(dataset = NA, variables = NA, values = NA)
+  o <- list(datasets = na_type(), variables = na_type(), values = na_type())
   class(o) <- c("delayed", "transform")
   o
 }
@@ -9,61 +8,128 @@ is.transform <- function(x) {
   inherits(x, "transform")
 }
 
+has_dataset <- function(x) {
+  !anyNA(x[["datasets"]])
+}
+
+has_variable <- function(x) {
+  !anyNA(x[["variables"]])
+}
+
+has_value <- function(x) {
+  !anyNA(x[["values"]])
+}
+
+na_type <- function() {
+  out <- NA
+  class(out) <- "type"
+  out
+}
+
 #' @export
-dataset <- function(x, select = first_choice) {
-  o <- list(names = x, select = select)
-  class(o) <- c("delayed", "dataset")
+datasets <- function(x, select = first_choice) {
+  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
+  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
+
+  type <- list(names = x, select = select)
+  class(type) <- c("delayed", "datasets", "type", "list")
+  o <- list(datasets = type, variables = na_type(), values = na_type())
+  class(o) <- c("delayed", "transform", "list")
   o
 }
 
-is.dataset <- function(x) {
-  inherits(x, "dataset")
-}
 
 #' @export
-print.dataset <- function(x) {
-  if (is.delayed(x)) {
-    cat("Delayed dataset for:", x$names)
-  } else {
-    cat("Dataset for:", x$names)
-  }
-}
+variables <- function(x, select = first_choice) {
+  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
+  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
 
-#' @export
-variable <- function(x, select = first_choice) {
-  o <- list(names = x, select = select)
-  class(o) <- c("delayed", "variable")
+  type <- list(names = x, select = select)
+  class(type) <- c("delayed", "variables", "type")
+  o <- list(datasets = na_type(), variables = type, values = na_type())
+  class(o) <- c("delayed", "transform")
   o
 }
 
-is.variable <- function(x) {
-  inherits(x, "variable")
-}
-
 #' @export
-print.variable <- function(x) {
-  if (is.delayed(x)) {
-    cat("Delayed variable for:", x$names)
-  } else {
-    cat("Variable for:", x$names)
-  }
-}
+values <- function(x, select = first_choice) {
+  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
+  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
 
-value <- function(x, select = first_choice) {
-  o <- list(names = x, select = select)
-  class(o) <- c("delayed", "value")
+  type <- list(names = x, select = select)
+  class(type) <- c("delayed", "values", "type")
+  o <- list(datasets = na_type(), variables = na_type(), values = type)
+  class(o) <- c("delayed", "transform")
   o
 }
 
-is.value <- function(x) {
-  inherits(x, "value")
+#' @export
+c.type <- function(...) {
+  c1 <- class(..1)
+  c2 <- class(..2)
+  classes <- unique(c(c1, c2))
+  other_classes <- setdiff(classes, c("delayed", "type"))
+
+  if ("delayed" %in% classes) {
+    classes <- c("delayed", other_classes, "type")
+  } else {
+    classes <- c(other_classes, "type")
+  }
+
+  out <- NextMethod("c")
+
+  if (all(is.na(out))) {
+    return(na_type())
+  } else if (anyNA(out)) {
+    out <- out[!is.na(out)]
+  }
+  nam <- names(out)
+  names <- nam == "names"
+  selects <- nam == "select"
+
+  out <- list(names = unlist(out[names], FALSE, FALSE),
+              select = unlist(out[selects], FALSE, FALSE))
+
+  l <- lapply(out, unique)
+  class(l) <- classes
+  l
 }
 
 #' @export
-print.value <- function(x) {
-  if (is.delayed(x)) {
-    cat("Delayed value for:", x$names)
-  } else {
-    cat("Value for:", x$names)
+`[.type` <- function(x, i, j, ..., exact = TRUE) {
+  cx <- class(x)
+  out <- NextMethod("[")
+  class(out) <- cx
+  out
+}
+
+#' @export
+`[.type<-` <- function(x, i, j, ..., value) {
+  cx <- class(x)
+  if (!"type" %in% class(value)) {
+    stop("Modifying the specification with invalid objects")
   }
+  out <- NextMethod("[")
+  class(out) <- cx
+  out
+}
+
+#' @export
+`[[.type` <- function(x, i, ..., drop = TRUE) {
+  cx <- class(x)
+  out <- NextMethod("[[")
+  class(out) <- cx
+  out
+}
+
+
+#' @export
+`[[.type<-` <- function(x, i, value) {
+  cx <- class(x)
+  if (!"type" %in% class(value)) {
+    stop("Modifying the specification with invalid objects")
+  }
+  out <- NextMethod("[")
+  class(out) <- cx
+  out
 }

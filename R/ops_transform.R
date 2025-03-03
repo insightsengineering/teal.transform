@@ -1,87 +1,47 @@
 #' @export
 `&.transform` <- function(e1, e2) {
-
-  if (is.transform(e1) && is.dataset(e2)) {
-    o <- e1
-    o$dataset <- unique(c(e1$dataset, e2$dataset))
-  } else if (is.transform(e1) && is.variable(e2)) {
-    o <- e1
-    o$variable <- unique(c(e1$variable, e2$variable))
-  } else if (is.transform(e1) && is.value(e2)) {
-    o <- e1
-    o$value <- unique(c(e1$variable, e2$value))
+  if (!is.transform(e1) || !is.transform(e2)) {
+    stop("Method not available")
   }
+  o <- transform()
+  if (has_dataset(e1) || has_dataset(e2)) {
+    o$datasets <- c(e1$datasets, e2$datasets)
+    o$datasets <- o$datasets[!is.na(o$datasets)]
+  }
+  if (has_variable(e1) || has_variable(e2)) {
+    o$variables <- c(e1$variables, e2$variables)
+    o$variables <- o$variables[!is.na(o$variables)]
+  }
+  if (has_value(e1) || has_value(e2)) {
+    o$values <- c(e1$values, e2$values)
+    o$values <- o$values[!is.na(o$values)]
+  }
+
   class(o) <- c("delayed", "transform")
   o
 }
 
 #' @export
-`&.dataset` <- function(e1, e2) {
-  e1_var <- e1[["names"]]
-  e2_var <- e2[["names"]]
-
-  if (is.character(e1_var) && is.character(e2_var)) {
-    x <- list(dataset = unique(c(e1_var, e2_var)))
-  }
-  class(x) <- c("delayed", "transform")
-  x
-}
-
-
-#' @export
-`&.variable` <- function(e1, e2) {
-  dataset_n_var <- is.dataset(e1) && is.variable(e2)
-  e1_var <- e1[["names"]]
-  e2_var <- e2[["names"]]
-
-  if (dataset_n_var && is.character(e1_var) && is.character(e2_var)) {
-    x <- list(dataset = e1_var, variable = e2_var)
-  }
-  if (is.variable(e1) && is.variable(e2)) {
-    x <- list(dataset = NA, variable = unique(c(e1_var, e2_var)))
-  }
-
-  if (is.variable(e1) && is.dataset(e2)) {
-    x <- list(dataset = e2_var, variable = e1_var)
-  }
-  if (is.variable(e2) && is.dataset(e1)) {
-    x <- list(dataset = e1_var, variable = e2_var)
-  }
-  class(x) <- c("delayed", "transform")
-  x
-}
-
-#' @export
 `|.dataset` <- function(e1, e2) {
-  list()
-
-
+  if (!is.transform(e1) || !is.transform(e2)) {
+    stop("Method not available")
+  }
+  s <- transform()
   class(x) <- c("delayed", "transform")
   x
 }
 
-#' @export
-chooseOpsMethod.transform <- function(x, y, mx, my, cl, reverse) {
-  !is.transform(x)
-}
-
-#' @export
-chooseOpsMethod.dataset <- function(x, y, mx, my, cl, reverse) {
-  # cat("\nx\n")
-  # print(mx)
-  # cat("\ny\n")
-  # print(my)
-  # cat("\ncl\n")
-  # print(cl)
-  # cat("\nreverse\n")
-  # print(reverse)
-  is.transform(x)
-}
-
-#' @export
-chooseOpsMethod.variable <- function(x, y, mx, my, cl, reverse) TRUE
-
-#' @export
-chooseOpsMethod.value <- function(x, y, mx, my, cl, reverse) TRUE
+# #' @export
+# chooseOpsMethod.transform <- function(x, y, mx, my, cl, reverse) {
+#   # cat("\nx\n")
+#   # print(mx)
+#   # cat("\ny\n")
+#   # print(my)
+#   # cat("\ncl\n")
+#   # print(cl)
+#   # cat("\nreverse\n")
+#   # print(reverse)
+#   is.transform(x)
+# }
 
 # ?Ops
