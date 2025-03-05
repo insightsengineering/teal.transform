@@ -49,16 +49,6 @@ resolver <- function(spec, data, ...) {
 }
 
 functions_names <- function(unresolved, reference) {
-
-  if (length(unresolved) == 1 && is.function(unresolved)) {
-    out <- tryCatch(unresolved(reference), error = function(x) unresolved)
-    if (is.logical(out) && length(out) == length(reference)) {
-      return(reference[out])
-    } else {
-      return(NULL)
-    }
-  }
-
   is_fc <- vapply(unresolved, is.function, logical(1L))
   fc_unresolved <- unresolved[is_fc]
   x <- vector("character")
@@ -74,20 +64,26 @@ functions_names <- function(unresolved, reference) {
 }
 
 functions_data <- function(unresolved, data) {
-  if (length(unresolved) == 1 && is.function(unresolved)){
-    out <- tryCatch(vapply(data, unresolved, logical(1L)), error = function(x) unresolved)
-    if (is.logical(out) && length(out) == length(data)) {
-      return(names(data)[out])
-    } else {
-      return(NULL)
-    }
-  }
-
   fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
 
   # This is for variables
   names <- names(data)
-  l <- lapply(fc_unresolved, function(f) {names[which(f(data))]})
+  datasets <- names(data)
+  l <- lapply(fc_unresolved, function(f) {
+    v <- vapply(datasets, function(d) {
+      # Extract the data and apply the user supplied function
+      out <- f(data(data, d))
+      if (!is.logical(out)) {
+        stop("Provided functions should return a logical object.")
+      }
+      if (length(out) > 1L) {
+        # Function resolution is unconventional...
+        return(FALSE)
+      }
+      out
+    }, logical(1L))
+    datasets[v]
+  })
   unique(unlist(l, FALSE, FALSE))
 }
 
@@ -123,13 +119,13 @@ resolver.datasets <- function(spec, data) {
     if (length(sdatasets$names) == 0) {
       stop("No selected datasets matching the conditions requested")
     } else if (length(sdatasets$names) == 1) {
-      svariables$select <- sdatasets$names
-    } else {
-      new_select <- c(functions_names(sdatasets$select, sdatasets$names),
-                      functions_data(sdatasets$select, data[sdatasets$names]))
-
-      sdatasets$select <- unique(new_select[!is.na(new_select)])
+      sdatasets$select <- sdatasets$names
     }
+
+    new_select <- c(functions_names(sdatasets$select, sdatasets$names),
+                    functions_data(sdatasets$select, data[sdatasets$names]))
+
+    sdatasets$select <- unique(new_select[!is.na(new_select)])
   }
 
   spec$datasets <- resolved(sdatasets, "dataset")
@@ -146,8 +142,7 @@ resolver.variables <- function(spec, data) {
   }
   datasets <- spec$datasets$select
   data_selected <- data(data, datasets)
-  dataset <- data_selected[[datasets]]
-  names_data <- names(dataset)
+  names_data <- names(data_selected)
 
   svariables <- spec$variables
 
@@ -162,19 +157,20 @@ resolver.variables <- function(spec, data) {
       svariables$select <- match
     } else {
       new_select <- c(functions_names(svariables$select, svariables$names),
-                      functions_data(svariables$select, dataset))
+                      functions_data(svariables$select, data_selected))
       svariables$select <- unique(new_select[!is.na(new_select)])
     }
   } else if (is.delayed(svariables)) {
     new_names <- c(functions_names(svariables$names, names_data),
-                   functions_data(svariables$names, dataset))
+                   functions_data(svariables$names, data_selected))
     svariables$names <- unique(new_names[!is.na(new_names)])
-    if (length(match) == 1) {
+    # browser()
+    if (length(svariables$names) == 1) {
       svariables$select <- svariables$names
     } else {
-    new_select <- c(functions_names(svariables$select, svariables$names),
-                    functions_data(svariables$select, dataset))
-    svariables$select <- unique(new_select[!is.na(new_select)])
+      new_select <- c(functions_names(svariables$select, svariables$names),
+                      functions_data(svariables$select, data_selected))
+      svariables$select <- unique(new_select[!is.na(new_select)])
     }
   }
   spec$variables <- resolved(svariables, "variables")
@@ -229,7 +225,7 @@ data.data.frame <- function(x, variable) {
 
 #' @export
 data.qenv <- function(x, variable) {
-  x[variable]
+  x[[variable]]
 }
 
 #' @export

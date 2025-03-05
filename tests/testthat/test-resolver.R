@@ -1,14 +1,14 @@
-test_that("resolver datasets works", {
-  f <- function(x){head(x, 1)}
-  first <- function(x){
-    if (length(x) > 0) {
-      false <- rep(FALSE, length.out = length(x))
-      false[1] <- TRUE
-      return(false)
-    }
-    return(FALSE)
+f <- function(x){head(x, 1)}
+first <- function(x){
+  if (length(x) > 0) {
+    false <- rep(FALSE, length.out = length(x))
+    false[1] <- TRUE
+    return(false)
   }
+  return(FALSE)
+}
 
+test_that("resolver datasets works", {
   dataset1 <- datasets("df", f)
   dataset2 <- datasets("df", first)
   dataset3 <- datasets(is.matrix, first)
@@ -20,7 +20,7 @@ test_that("resolver datasets works", {
     m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
   })
   expect_no_error(resolver(dataset1, td))
-  resolver(dataset2, td)
+  expect_no_error(resolver(dataset2, td))
   out <- resolver(dataset3, td)
   expect_length(out$datasets$select, 1L) # Because we use first
   expect_no_error(resolver(dataset4, td))
@@ -28,15 +28,6 @@ test_that("resolver datasets works", {
 })
 
 test_that("resolver variables works", {
-  first <- function(x){
-    if (length(x) > 0) {
-      false <- rep(FALSE, length.out = length(x))
-      false[1] <- TRUE
-      return(false)
-    }
-    return(FALSE)
-  }
-
   dataset1 <- datasets("df", first)
   dataset2 <- datasets(is.matrix, first)
   dataset3 <- datasets(is.data.frame, first)
@@ -50,15 +41,18 @@ test_that("resolver variables works", {
     m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
   })
 
-  resolver(dataset1 & var1, td)
+  expect_no_error(resolver(dataset1 & var1, td))
   resolver(dataset1 & var2, td)
   expect_error(resolver(dataset1 & var3, td))
+  expect_error(resolver(dataset1 & var4, td))
 
-  resolver(dataset2 & var1, td)
-  resolver(dataset2 & var2, td)
-  resolver(dataset2 & var3, td)
+  expect_error(resolver(dataset2 & var1, td))
+  expect_no_error(resolver(dataset2 & var2, td))
+  expect_error(resolver(dataset2 & var3, td))
+  expect_error(resolver(dataset2 & var4, td))
 
-  resolver(dataset3 & var1, td)
-  resolver(dataset3 & var2, td)
-  resolver(dataset3 & var3, td)
+  expect_no_error(resolver(dataset3 & var1, td))
+  expect_no_error(resolver(dataset3 & var2, td))
+  expect_error(resolver(dataset3 & var3, td))
+  expect_error(resolver(dataset3 & var4, td))
 })

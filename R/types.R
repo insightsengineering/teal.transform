@@ -30,7 +30,12 @@ na_type <- function() {
 datasets <- function(x, select = first_choice) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
-
+  if (is.function(x)) {
+    x <- list(x)
+  }
+  if (is.function(select)) {
+    select <- list(select)
+  }
   type <- list(names = x, select = select)
   class(type) <- c("delayed", "datasets", "type", "list")
   o <- list(datasets = type, variables = na_type(), values = na_type())
@@ -43,9 +48,14 @@ datasets <- function(x, select = first_choice) {
 variables <- function(x, select = first_choice) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
-
+  if (is.function(x)) {
+    x <- list(x)
+  }
+  if (is.function(select)) {
+    select <- list(select)
+  }
   type <- list(names = x, select = select)
-  class(type) <- c("delayed", "variables", "type")
+  class(type) <- c("delayed", "variables", "type", "list")
   o <- list(datasets = na_type(), variables = type, values = na_type())
   class(o) <- c("delayed", "transform")
   o
@@ -55,9 +65,14 @@ variables <- function(x, select = first_choice) {
 values <- function(x, select = first_choice) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
-
+  if (is.function(x)) {
+    x <- list(x)
+  }
+  if (is.function(select)) {
+    select <- list(select)
+  }
   type <- list(names = x, select = select)
-  class(type) <- c("delayed", "values", "type")
+  class(type) <- c("delayed", "values", "type", "list")
   o <- list(datasets = na_type(), variables = na_type(), values = type)
   class(o) <- c("delayed", "transform")
   o
@@ -68,12 +83,12 @@ c.type <- function(...) {
   c1 <- class(..1)
   c2 <- class(..2)
   classes <- unique(c(c1, c2))
-  other_classes <- setdiff(classes, c("delayed", "type"))
+  other_classes <- setdiff(classes, c("delayed", "type", "list"))
 
   if ("delayed" %in% classes) {
-    classes <- c("delayed", other_classes, "type")
+    classes <- c("delayed", other_classes, "type", "list")
   } else {
-    classes <- c(other_classes, "type")
+    classes <- c(other_classes, "type", "list")
   }
 
   out <- NextMethod("c")

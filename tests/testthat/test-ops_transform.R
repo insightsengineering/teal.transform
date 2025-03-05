@@ -1,12 +1,15 @@
 basic_ops <- function(fun) {
   FUN <- match.fun(fun)
   type1 <- FUN("ABC")
-  type2 <- FUN("ABC2")
   types <- type1 & type1
   out <- list(names = "ABC", select = list(first_choice))
-  class(out) <- c("delayed", fun, "type")
+  class(out) <- c("delayed", fun, "type", "list")
   expect_equal(types[[fun]], out)
+  type2 <- FUN("ABC2")
   types <- type1 & type2
+  out <- list(names = c("ABC", "ABC2"), select = list(first_choice))
+  class(out) <- c("delayed", fun, "type", "list")
+  expect_equal(types[[fun]], out)
   expect_equal(types[[fun]]$names, c("ABC", "ABC2"))
   types2 <- types & type2
   expect_equal(types[[fun]]$names, c("ABC", "ABC2"))
@@ -20,6 +23,7 @@ basic_ops <- function(fun) {
   expect_length(out[[fun]]$names, 2)
   expect_error(FUN("ABC") & 1)
   out <- type1 & type2b
+  expect_true(is(out[[fun]]$names, "vector"))
 }
 
 test_that("datasets & work", {
@@ -79,32 +83,4 @@ test_that("datasets & variables & values work", {
   expect_equal(vars$variables$names, "ABC2")
   expect_equal(vars$values$names, "abc")
   expect_error(vars & 1)
-})
-
-
-
-test_that("datasets", {
-  first <- function(x){
-    if (length(x) > 0) {
-      false <- rep(FALSE, length.out = length(x))
-      false[1] <- TRUE
-      return(false)
-    }
-    return(FALSE)
-  }
-
-  dataset1 <- datasets("df", first)
-  expect_true(is(dataset1$datasets$names, "vector"))
-  dataset2 <- datasets(is.matrix, first)
-  expect_true(is(dataset2$datasets$names, "vector"))
-  dataset3 <- datasets(is.data.frame, first)
-  mix <- dataset1 & dataset2
-  expect_true(is(mix$datasets$names, "vector"))
-})
-
-test_that("variables", {
-  var1 <- variables("a", first)
-  var2 <- variables(is.factor, first)
-  var3 <- variables(is.factor, function(x){head(x, 1)})
-  var4 <- variables(is.matrix, function(x){head(x, 1)})
 })
