@@ -26,9 +26,9 @@ resolver <- function(spec, data, ...) {
   }
   stopifnot(is.transform(spec), has_dataset(spec))
   specf <- spec
-  if (has_dataset(specf)) {
+  if (has_dataset(specf) && is.delayed(specf$datasets)) {
     specf <- resolver.datasets(specf, data)
-  } else {
+  } else if (!has_dataset(specf)) {
     specf$datasets <- NULL
   }
 
@@ -63,16 +63,21 @@ functions_names <- function(unresolved, reference) {
   unique(unlist(c(unresolved[!is_fc], x), FALSE, FALSE))
 }
 
-functions_data <- function(unresolved, data) {
+functions_data <- function(unresolved, data, names_data) {
   fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
 
   # This is for variables
   names <- names(data)
+  # browser(expr = is.matrix(data))
   datasets <- names(data)
+  # Matrix doesn't have a names method
+  if (is.null(datasets)) {
+    datasets <- colnames(data)
+  }
   l <- lapply(fc_unresolved, function(f) {
     v <- vapply(datasets, function(d) {
       # Extract the data and apply the user supplied function
-      out <- f(data(data, d))
+      out <- tryCatch(f(data(data, d)), error = function(x){FALSE})
       if (!is.logical(out)) {
         stop("Provided functions should return a logical object.")
       }
@@ -91,10 +96,13 @@ resolver.datasets <- function(spec, data) {
   if (!is(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-
+  if (is.null(spec[["datasets"]])) {
+    return(spec)
+  }
   sdatasets <- spec$datasets
   data_names <- names(data)
-
+  orig_names <- sdatasets$names
+  orig_select <- sdatasets$select
   if (is.delayed(sdatasets) && all(is.character(sdatasets$names))) {
     match <- intersect(data_names, sdatasets$names)
     missing <- setdiff(sdatasets$names, data_names)
@@ -112,6 +120,7 @@ resolver.datasets <- function(spec, data) {
       sdatasets$select <- unique(new_select[!is.na(new_select)])
     }
   } else if (is.delayed(sdatasets)) {
+    old_names <- sdatasets$names
     new_names <- c(functions_names(sdatasets$names, data_names),
                    functions_data(sdatasets$names, data))
     sdatasets$names <- unique(new_names[!is.na(new_names)])
@@ -127,7 +136,8 @@ resolver.datasets <- function(spec, data) {
 
     sdatasets$select <- unique(new_select[!is.na(new_select)])
   }
-
+  attr(sdatasets$names, "original") <- attr(orig_names, "original")
+  attr(sdatasets$select, "original") <- attr(orig_select, "original")
   spec$datasets <- resolved(sdatasets, "dataset")
   spec
 }
@@ -140,12 +150,20 @@ resolver.variables <- function(spec, data) {
   if (is.delayed(spec$datasets)) {
     stop("Datasets not resolved yet")
   }
+  if (is.null(spec[["variables"]])) {
+    return(spec)
+  }
   datasets <- spec$datasets$select
   data_selected <- data(data, datasets)
-  names_data <- names(data_selected)
+  if (is.null(names(data_selected))) {
+    names_data <- colnames(data_selected)
+  } else {
+    names_data <- names(data_selected)
+  }
 
   svariables <- spec$variables
-
+  orig_names <- svariables$names
+  orig_select <- svariables$select
   if (is.delayed(svariables) && all(is.character(svariables$names))) {
     match <- intersect(names_data, svariables$names)
     missing <- setdiff(svariables$names, names_data)
@@ -173,8 +191,12 @@ resolver.variables <- function(spec, data) {
       svariables$select <- unique(new_select[!is.na(new_select)])
     }
   }
+
+  attr(svariables$names, "original") <- attr(orig_names, "original")
+  attr(svariables$select, "original") <- attr(orig_select, "original")
   spec$variables <- resolved(svariables, "variables")
   spec
+
 }
 
 resolver.values <- function(spec, data) {
@@ -182,23 +204,42 @@ resolver.values <- function(spec, data) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
-  variables <- spec$variables$names
+  if (is.null(spec[["values"]])) {
+    return(spec)
+  }
+
   svalues <- spec$values
-  spec$variables <- if (is.delayed(svalues) && all(is.character(svalues$names))) {
+  orig_names <- svalues$names
+  orig_select <- svalues$select
+  spec$values <- if (is.delayed(svalues) && all(is.character(svalues$names))) {
     match <- intersect(datasets, svalues$names)
     missing <- setdiff(svalues$names, datasets)
     if (length(missing)) {
       stop("Missing values ", paste(sQuote(missing), collapse = ", "), " were specified.")
     }
     svalues$names <- match
-    svalues$select <- functions_names(svalues$select, match)
-    svalues
+    if (length(match) == 1) {
+      svalues$select <- match
+    } else {
+      new_select <- c(functions_names(svalues$select, svalues$names),
+                      functions_data(svalues$select, data_selected))
+      svalues$select <- unique(new_select[!is.na(new_select)])
+    }
   } else if (is.delayed(svalues)) {
-    svalues$names <- functions_names(svalues$names, datasets)
-    svalues$select <- functions_names(svalues$select, svalues$names)
-    svalues
+    new_names <- c(functions_names(svalues$names, names_data),
+                   functions_data(svalues$names, data_selected))
+    svalues$names <- unique(new_names[!is.na(new_names)])
+    # browser()
+    if (length(svalues$names) == 1) {
+      svalues$select <- svalues$names
+    } else {
+      new_select <- c(functions_names(svalues$select, svalues$names),
+                      functions_data(svalues$select, data_selected))
+      svalues$select <- unique(new_select[!is.na(new_select)])
+    }
   }
-
+  attr(svalues$names, "original") <- attr(orig_names, "original")
+  attr(svalues$select, "original") <- attr(orig_select, "original")
   spec$values <- resolved(svalues, "values")
   spec
 }
@@ -236,4 +277,39 @@ data.default <- function(x, variable) {
 #' @export
 data <- function(x, variable) {
   UseMethod("data")
+}
+
+#' Update a spec
+#'
+#' Once a selection is made update the specification
+#' @param spec A specification
+#' @param type Which type was updated?
+#' @param value What is the new selection?
+#' @return The specification with restored choices and selection if caused by the update.
+#' @export
+update_spec <- function(spec, type, value) {
+  w <- c("datasets", "variables", "values")
+  type <- match.arg(type, w)
+  restart_types <- w[seq_along(w) > which(type == w)]
+  if (value %in% spec[[type]]$names) {
+    original_select <- attr(spec[[type]]$select, "original")
+    spec[[type]][["select"]] <- value
+    attr(spec[[type]][["select"]], "original") <- original_select
+  }
+
+  # Restart to the original specs
+  for (type in restart_types) {
+
+    # If the spec doesn't exist then there is nothing else to update
+    if (is.null(spec[[type]]) || !length(spec[[type]]))  {
+      spec[[type]] <- na_type()
+      return(spec)
+    }
+    fun <- match.fun(type)
+    restored_type <- fun(x = attr(spec[[type]]$names, "original"),
+                         select = attr(spec[[type]]$select, "original"))
+    spec[[type]] <- na_type()
+    spec <- spec & restored_type
+  }
+  spec
 }

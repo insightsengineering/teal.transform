@@ -6,6 +6,7 @@ delay <- function(x) {
 #' @export
 #' @method is.delayed type
 is.delayed.type <- function(x) {
+
   !all(is.character(x$names)) || !all(is.character(x$select))
 }
 

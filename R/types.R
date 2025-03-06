@@ -26,8 +26,17 @@ na_type <- function() {
   out
 }
 
+first <- function(x){
+  if (length(x) > 0) {
+    false <- rep(FALSE, length.out = length(x))
+    false[1] <- TRUE
+    return(false)
+  }
+  return(FALSE)
+}
+
 #' @export
-datasets <- function(x, select = first_choice) {
+datasets <- function(x, select = first) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
   if (is.function(x)) {
@@ -38,6 +47,8 @@ datasets <- function(x, select = first_choice) {
   }
   type <- list(names = x, select = select)
   class(type) <- c("delayed", "datasets", "type", "list")
+  attr(type$names, "original") <- x
+  attr(type$select, "original") <- select
   o <- list(datasets = type, variables = na_type(), values = na_type())
   class(o) <- c("delayed", "transform", "list")
   o
@@ -45,7 +56,7 @@ datasets <- function(x, select = first_choice) {
 
 
 #' @export
-variables <- function(x, select = first_choice) {
+variables <- function(x, select = first) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
   if (is.function(x)) {
@@ -56,13 +67,15 @@ variables <- function(x, select = first_choice) {
   }
   type <- list(names = x, select = select)
   class(type) <- c("delayed", "variables", "type", "list")
+  attr(type$names, "original") <- x
+  attr(type$select, "original") <- select
   o <- list(datasets = na_type(), variables = type, values = na_type())
   class(o) <- c("delayed", "transform")
   o
 }
 
 #' @export
-values <- function(x, select = first_choice) {
+values <- function(x, select = first) {
   stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
   stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
   if (is.function(x)) {
@@ -73,6 +86,8 @@ values <- function(x, select = first_choice) {
   }
   type <- list(names = x, select = select)
   class(type) <- c("delayed", "values", "type", "list")
+  attr(type$names, "original") <- x
+  attr(type$select, "original") <- select
   o <- list(datasets = na_type(), variables = na_type(), values = type)
   class(o) <- c("delayed", "transform")
   o
@@ -82,6 +97,13 @@ values <- function(x, select = first_choice) {
 c.type <- function(...) {
   c1 <- class(..1)
   c2 <- class(..2)
+
+  if (is.null(..1)) {
+    return(..2)
+  } else if (is.null(..2)) {
+    return(..1)
+  }
+
   classes <- unique(c(c1, c2))
   other_classes <- setdiff(classes, c("delayed", "type", "list"))
 
@@ -102,11 +124,14 @@ c.type <- function(...) {
   names <- nam == "names"
   selects <- nam == "select"
 
-  out <- list(names = unlist(out[names], FALSE, FALSE),
+  new_l <- list(names = unlist(out[names], FALSE, FALSE),
               select = unlist(out[selects], FALSE, FALSE))
 
-  l <- lapply(out, unique)
+  l <- lapply(new_l, unique)
   class(l) <- classes
+
+  attr(l$names, "original") <- unique(unlist(lapply(out[names], attr, "original"), TRUE, FALSE))
+  attr(l$select, "original") <- unique(unlist(lapply(out[selects], attr, "original"), TRUE, FALSE))
   l
 }
 
@@ -142,7 +167,7 @@ c.type <- function(...) {
 `[[.type<-` <- function(x, i, value) {
   cx <- class(x)
   if (!"type" %in% class(value)) {
-    stop("Modifying the specification with invalid objects")
+    stop("Modifying the specification with invalid objects.")
   }
   out <- NextMethod("[")
   class(out) <- cx
