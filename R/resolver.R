@@ -68,7 +68,6 @@ functions_data <- function(unresolved, data, names_data) {
 
   # This is for variables
   names <- names(data)
-  # browser(expr = is.matrix(data))
   datasets <- names(data)
   # Matrix doesn't have a names method
   if (is.null(datasets)) {
@@ -117,13 +116,21 @@ resolver.datasets <- function(spec, data) {
     } else {
       new_select <- c(functions_names(sdatasets$select, sdatasets$names),
                       functions_data(sdatasets$select, data[sdatasets$names]))
-      sdatasets$select <- unique(new_select[!is.na(new_select)])
+      new_select <- unique(new_select[!is.na(new_select)])
+      if (!length(new_select)) {
+        stop("No datasets meet the requirements to be selected")
+      }
+      sdatasets$select <- new_select
     }
   } else if (is.delayed(sdatasets)) {
     old_names <- sdatasets$names
     new_names <- c(functions_names(sdatasets$names, data_names),
                    functions_data(sdatasets$names, data))
-    sdatasets$names <- unique(new_names[!is.na(new_names)])
+    new_names <- unique(new_names[!is.na(new_names)])
+    if (!length(new_names)) {
+      stop("No datasets meet the requirements")
+    }
+    sdatasets$names <- new_names
 
     if (length(sdatasets$names) == 0) {
       stop("No selected datasets matching the conditions requested")
@@ -134,7 +141,11 @@ resolver.datasets <- function(spec, data) {
     new_select <- c(functions_names(sdatasets$select, sdatasets$names),
                     functions_data(sdatasets$select, data[sdatasets$names]))
 
-    sdatasets$select <- unique(new_select[!is.na(new_select)])
+    new_select <- unique(new_select[!is.na(new_select)])
+    if (!length(new_select)) {
+      stop("No datasets meet the requirements to be selected")
+    }
+    sdatasets$select <- new_select
   }
   attr(sdatasets$names, "original") <- attr(orig_names, "original")
   attr(sdatasets$select, "original") <- attr(orig_select, "original")
@@ -176,19 +187,30 @@ resolver.variables <- function(spec, data) {
     } else {
       new_select <- c(functions_names(svariables$select, svariables$names),
                       functions_data(svariables$select, data_selected))
-      svariables$select <- unique(new_select[!is.na(new_select)])
+      new_select <- unique(new_select[!is.na(new_select)])
+      if (!length(new_select)) {
+        stop("No variables meet the requirements to be selected")
+      }
+      svariables$select <- new_select
     }
   } else if (is.delayed(svariables)) {
     new_names <- c(functions_names(svariables$names, names_data),
                    functions_data(svariables$names, data_selected))
-    svariables$names <- unique(new_names[!is.na(new_names)])
-    # browser()
+    new_names <- unique(new_names[!is.na(new_names)])
+    if (!length(new_names)) {
+      stop("No variables meet the requirements")
+    }
+    svariables$names <- new_names
     if (length(svariables$names) == 1) {
       svariables$select <- svariables$names
     } else {
       new_select <- c(functions_names(svariables$select, svariables$names),
                       functions_data(svariables$select, data_selected))
-      svariables$select <- unique(new_select[!is.na(new_select)])
+      new_select <- unique(new_select[!is.na(new_select)])
+      if (!length(new_select)) {
+        stop("No variables meet the requirements to be selected")
+      }
+      svariables$select <- new_select
     }
   }
 
@@ -223,19 +245,31 @@ resolver.values <- function(spec, data) {
     } else {
       new_select <- c(functions_names(svalues$select, svalues$names),
                       functions_data(svalues$select, data_selected))
-      svalues$select <- unique(new_select[!is.na(new_select)])
+      new_select <- unique(new_select[!is.na(new_select)])
+      if (!length(new_select)) {
+        stop("No variables meet the requirements to be selected")
+      }
+      svalues$select <- new_select
     }
   } else if (is.delayed(svalues)) {
     new_names <- c(functions_names(svalues$names, names_data),
                    functions_data(svalues$names, data_selected))
-    svalues$names <- unique(new_names[!is.na(new_names)])
-    # browser()
+    new_names <- unique(new_names[!is.na(new_names)])
+    if (!length(new_names)) {
+      stop("No variables meet the requirements")
+    }
+    svalues$names <- new_names
+
     if (length(svalues$names) == 1) {
       svalues$select <- svalues$names
     } else {
       new_select <- c(functions_names(svalues$select, svalues$names),
                       functions_data(svalues$select, data_selected))
-      svalues$select <- unique(new_select[!is.na(new_select)])
+      new_select <- unique(new_select[!is.na(new_select)])
+      if (!length(new_select)) {
+        stop("No variables meet the requirements to be selected")
+      }
+      svalues$select <- new_select
     }
   }
   attr(svalues$names, "original") <- attr(orig_names, "original")

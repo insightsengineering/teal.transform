@@ -2,17 +2,17 @@ basic_ops <- function(fun) {
   FUN <- match.fun(fun)
   type1 <- FUN("ABC")
   types <- type1 & type1
-  out <- list(names = "ABC", select = list(first_choice))
+  out <- list(names = "ABC", select = list(first))
   class(out) <- c("delayed", fun, "type", "list")
-  expect_equal(types[[fun]], out)
+  expect_equal(types[[fun]], out, check.attributes = FALSE)
   type2 <- FUN("ABC2")
   types <- type1 & type2
-  out <- list(names = c("ABC", "ABC2"), select = list(first_choice))
+  out <- list(names = c("ABC", "ABC2"), select = list(first))
   class(out) <- c("delayed", fun, "type", "list")
-  expect_equal(types[[fun]], out)
-  expect_equal(types[[fun]]$names, c("ABC", "ABC2"))
+  expect_equal(types[[fun]], out, check.attributes = FALSE)
+  expect_equal(types[[fun]]$names, c("ABC", "ABC2"), check.attributes = FALSE)
   types2 <- types & type2
-  expect_equal(types[[fun]]$names, c("ABC", "ABC2"))
+  expect_equal(types[[fun]]$names, c("ABC", "ABC2"), check.attributes = FALSE)
   expect_s3_class(types[[fun]], class(out))
   type3 <- FUN("ABC2", select = all_choices)
   types <- type1 & type3
@@ -45,8 +45,8 @@ test_that("datsets & variables work", {
   vars <- dataset1 & var1
   vars2 <- var1 & dataset1
   expect_equal(vars, vars2)
-  expect_equal(vars$datasets$names, "ABC2")
-  expect_equal(vars$variables$names, "abc")
+  expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
+  expect_equal(vars$variables$names, "abc", check.attributes = FALSE)
   expect_error(vars & 1)
 })
 
@@ -56,8 +56,8 @@ test_that("datsets & values work", {
   vars <- dataset1 & val1
   vars2 <- val1 & dataset1
   expect_equal(vars, vars2)
-  expect_equal(vars$datasets$names, "ABC2")
-  expect_equal(vars$values$names, "abc")
+  expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
+  expect_equal(vars$values$names, "abc", check.attributes = FALSE)
   expect_error(vars & 1)
 })
 
@@ -67,8 +67,8 @@ test_that("variables & values work", {
   vars <- var1 & val1
   vars2 <- val1 & var1
   expect_equal(vars, vars2)
-  expect_equal(vars$variables$names, "ABC2")
-  expect_equal(vars$values$names, "abc")
+  expect_equal(vars$variables$names, "ABC2", check.attributes = FALSE)
+  expect_equal(vars$values$names, "abc", check.attributes = FALSE)
   expect_error(vars & 1)
 })
 
@@ -79,8 +79,8 @@ test_that("datasets & variables & values work", {
   vars <- dataset1 & var1 & val1
   vars2 <- val1 & var1 & dataset1
   expect_equal(vars, vars2)
-  expect_equal(vars$datasets$names, "ABC2")
-  expect_equal(vars$variables$names, "ABC2")
-  expect_equal(vars$values$names, "abc")
+  expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
+  expect_equal(vars$variables$names, "ABC2", check.attributes = FALSE)
+  expect_equal(vars$values$names, "abc", check.attributes = FALSE)
   expect_error(vars & 1)
 })
