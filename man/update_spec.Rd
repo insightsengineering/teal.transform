@@ -2,20 +2,32 @@
 % Please edit documentation in R/resolver.R
 \name{update_spec}
 \alias{update_spec}
-\title{Update a spec}
+\title{Update a specification}
 \usage{
 update_spec(spec, type, value)
 }
 \arguments{
-\item{spec}{A specification}
+\item{spec}{A specification such as one created with datasets and variables.}
 
-\item{type}{Which type was updated?}
+\item{type}{Which type was updated? One of datasets, variables, values.}
 
-\item{value}{What is the new selection?}
+\item{value}{What is the new selection? One that is a valid value for the given type and specification.}
 }
 \value{
 The specification with restored choices and selection if caused by the update.
 }
 \description{
-Once a selection is made update the specification
+Once a selection is made update the specification for different valid selection.
+}
+\examples{
+td <- within(teal.data::teal_data(), {
+    df <- data.frame(A = as.factor(letters[1:5]),
+                     Ab = LETTERS[1:5])
+    df_n <- data.frame(C = 1:5,
+                       Ab = as.factor(letters[1:5]))
+})
+data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
+res <- resolver(data_frames_factors, td)
+update_spec(res, "datasets", "df_n")
+# update_spec(res, "datasets", "error")
 }

@@ -21,8 +21,8 @@ has_value <- function(x) {
 }
 
 na_type <- function() {
-  out <- NA
-  class(out) <- "type"
+  out <- NA_character_
+  class(out) <- c("type", class(out))
   out
 }
 

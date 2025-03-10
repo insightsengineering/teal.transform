@@ -313,24 +313,37 @@ data <- function(x, variable) {
   UseMethod("data")
 }
 
-#' Update a spec
+#' Update a specification
 #'
-#' Once a selection is made update the specification
-#' @param spec A specification
-#' @param type Which type was updated?
-#' @param value What is the new selection?
+#' Once a selection is made update the specification for different valid selection.
+#' @param spec A specification such as one created with datasets and variables.
+#' @param type Which type was updated? One of datasets, variables, values.
+#' @param value What is the new selection? One that is a valid value for the given type and specification.
 #' @return The specification with restored choices and selection if caused by the update.
 #' @export
+#' @examples
+#' td <- within(teal.data::teal_data(), {
+#'     df <- data.frame(A = as.factor(letters[1:5]),
+#'                      Ab = LETTERS[1:5])
+#'     df_n <- data.frame(C = 1:5,
+#'                        Ab = as.factor(letters[1:5]))
+#' })
+#' data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
+#' res <- resolver(data_frames_factors, td)
+#' update_spec(res, "datasets", "df_n")
+#' # update_spec(res, "datasets", "error")
 update_spec <- function(spec, type, value) {
   w <- c("datasets", "variables", "values")
   type <- match.arg(type, w)
   restart_types <- w[seq_along(w) > which(type == w)]
-  if (value %in% spec[[type]]$names) {
+
+  if (is.delayed(spec[[type]])) {
+    stop(type, " has not been resolved yet.\n", "Please resolve the specification before trying to apply ")
+  } else if (all(value %in% spec[[type]]$names)) {
     original_select <- attr(spec[[type]]$select, "original")
     spec[[type]][["select"]] <- value
     attr(spec[[type]][["select"]], "original") <- original_select
   }
-
   # Restart to the original specs
   for (type in restart_types) {
 
@@ -340,8 +353,12 @@ update_spec <- function(spec, type, value) {
       return(spec)
     }
     fun <- match.fun(type)
-    restored_type <- fun(x = attr(spec[[type]]$names, "original"),
-                         select = attr(spec[[type]]$select, "original"))
+    if (!length(spec[[type]]) && is.na(spec[[type]])) {
+      restored_type <- fun(x = na_type(), select = na_type())
+    } else {
+      restored_type <- fun(x = attr(spec[[type]]$names, "original"),
+                           select = attr(spec[[type]]$select, "original"))
+    }
     spec[[type]] <- na_type()
     spec <- spec & restored_type
   }
