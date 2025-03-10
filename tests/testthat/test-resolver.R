@@ -105,5 +105,9 @@ test_that("update_spec resolves correctly", {
   expect_false(is.null(attr(res3$variables$select, "original")))
   expect_equal(attr(res3$variables$names, "original"), attr(data_frames_factors$variables$names, "original"))
   expect_equal(attr(res3$variables$select, "original"), attr(data_frames_factors$variables$select, "original"))
+
+  expect_error(update_spec(res, "datasets", "error"))
+  expect_error(update_spec(data_frames_factors, "datasets", "error"))
+  expect_no_error(update_spec(datasets(x = c("df", "df2")), "datasets", "df2"))
 })
 
