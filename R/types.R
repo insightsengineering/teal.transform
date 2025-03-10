@@ -173,3 +173,33 @@ c.type <- function(...) {
   class(out) <- cx
   out
 }
+
+#' @export
+print.type <- function(x, ...) {
+  is_na <- length(x) == 1L && is.na(x)
+  if (is_na) {
+    cat("Nothing possible")
+    return(x)
+  }
+
+  nam_list <- is.list(x$names)
+  nam_functions <- sum(is.function(x$names))
+  nam_values <- length(x$names) - nam_functions
+  if (nam_functions) {
+    cat(nam_functions, "functions to select possible choices.\n")
+  }
+  if (nam_values) {
+    cat(x$names[is.character(x$names)], "as possible choices.\n")
+  }
+
+  sel_list <- is.list(x$select)
+  sel_functions <- sum(is.function(x$select))
+  sel_values <- length(x$select) - sel_functions
+  if (sel_functions) {
+    cat(sel_functions, "functions to select.\n")
+  }
+  if (sel_values) {
+    cat(x$select[is.character(x$select)], "selected.\n")
+  }
+  return(x)
+}

@@ -337,12 +337,12 @@ update_spec <- function(spec, type, value) {
   type <- match.arg(type, w)
   restart_types <- w[seq_along(w) > which(type == w)]
 
-  if (is.delayed(spec[[type]])) {
-    stop(type, " has not been resolved yet.\n", "Please resolve the specification before trying to apply ")
-  } else if (all(value %in% spec[[type]]$names)) {
+  if (all(value %in% spec[[type]]$names)) {
     original_select <- attr(spec[[type]]$select, "original")
     spec[[type]][["select"]] <- value
     attr(spec[[type]][["select"]], "original") <- original_select
+  } else if (is.list(spec[[type]]$names) && !any(vapply(spec[[type]]$names, is.function, logical(1L)))) {
+    stop("value not in possible choices.")
   }
   # Restart to the original specs
   for (type in restart_types) {
