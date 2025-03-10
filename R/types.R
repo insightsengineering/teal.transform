@@ -183,23 +183,33 @@ print.type <- function(x, ...) {
   }
 
   nam_list <- is.list(x$names)
-  nam_functions <- sum(is.function(x$names))
+  if (nam_list) {
+    nam_functions <- vapply(x$names, is.function, logical(1L))
+  } else {
+    nam_functions <- FALSE
+  }
+
   nam_values <- length(x$names) - nam_functions
   if (nam_functions) {
-    cat(nam_functions, "functions to select possible choices.\n")
+    cat(sum(nam_functions), "functions to select possible choices.\n")
   }
   if (nam_values) {
-    cat(x$names[is.character(x$names)], "as possible choices.\n")
+    cat(x$names[!nam_functions], "as possible choices.\n")
   }
 
   sel_list <- is.list(x$select)
-  sel_functions <- sum(is.function(x$select))
+  if (sel_list) {
+    sel_functions <- vapply(x$select, is.function, logical(1L))
+  } else {
+    sel_functions <- FALSE
+  }
+
   sel_values <- length(x$select) - sel_functions
-  if (sel_functions) {
-    cat(sel_functions, "functions to select.\n")
+  if (any(sel_functions)) {
+    cat(sum(sel_functions), "functions to select.\n")
   }
   if (sel_values) {
-    cat(x$select[is.character(x$select)], "selected.\n")
+    cat(x$select[!sel_functions], "selected.\n")
   }
   return(x)
 }
