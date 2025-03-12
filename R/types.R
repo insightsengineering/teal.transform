@@ -1,7 +1,9 @@
 transform <- function() {
-  o <- list(datasets = na_type(), variables = na_type(), values = na_type())
-  class(o) <- c("delayed", "transform")
-  o
+  o <- list(datasets = na_type("datasets"),
+            variables = na_type("variables"),
+            values = na_type("values"))
+  class(o) <- c("transform", "list")
+  delay(o)
 }
 
 is.transform <- function(x) {
@@ -20,9 +22,9 @@ has_value <- function(x) {
   !anyNA(x[["values"]])
 }
 
-na_type <- function() {
+na_type <- function(type) {
   out <- NA_character_
-  class(out) <- c("type", class(out))
+  class(out) <- c(type, "type")
   out
 }
 
@@ -35,62 +37,54 @@ first <- function(x){
   return(FALSE)
 }
 
-#' @export
-datasets <- function(x, select = first) {
-  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
-  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
+check_input <- function(input) {
+  is.character(input) || is.function(input) ||
+    (is.list(input) && all(vapply(input, is.function, logical(1L))))
+}
+
+type_helper <- function(x, select, type) {
+  stopifnot("Invalid options" = check_input(x),
+            "Invalid selection" = check_input(type))
   if (is.function(x)) {
     x <- list(x)
   }
   if (is.function(select)) {
     select <- list(select)
   }
-  type <- list(names = x, select = select)
-  class(type) <- c("delayed", "datasets", "type", "list")
-  attr(type$names, "original") <- x
-  attr(type$select, "original") <- select
-  o <- list(datasets = type, variables = na_type(), values = na_type())
-  class(o) <- c("delayed", "transform", "list")
+  out <- list(names = x, select = select)
+  class(out) <- c(type, "type", "list")
+  attr(out$names, "original") <- x
+  attr(out$select, "original") <- select
+  delay(out)
+}
+
+#' @export
+datasets <- function(x, select = first) {
+  o <- transform()
+  o$datasets <- type_helper(x, select, type = "datasets")
   o
 }
 
 
 #' @export
 variables <- function(x, select = first) {
-  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
-  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
-  if (is.function(x)) {
-    x <- list(x)
-  }
-  if (is.function(select)) {
-    select <- list(select)
-  }
-  type <- list(names = x, select = select)
-  class(type) <- c("delayed", "variables", "type", "list")
-  attr(type$names, "original") <- x
-  attr(type$select, "original") <- select
-  o <- list(datasets = na_type(), variables = type, values = na_type())
-  class(o) <- c("delayed", "transform")
+  o <- transform()
+  o$variables <- type_helper(x, select, type = "variables")
   o
 }
 
 #' @export
 values <- function(x, select = first) {
-  stopifnot(is.character(x) || is.function(x) || (is.list(x) && all(vapply(x, is.function, logical(1L)))))
-  stopifnot(is.character(select) || is.function(select) || (is.list(select) && all(vapply(select, is.function, logical(1L)))))
-  if (is.function(x)) {
-    x <- list(x)
-  }
-  if (is.function(select)) {
-    select <- list(select)
-  }
-  type <- list(names = x, select = select)
-  class(type) <- c("delayed", "values", "type", "list")
-  attr(type$names, "original") <- x
-  attr(type$select, "original") <- select
-  o <- list(datasets = na_type(), variables = na_type(), values = type)
-  class(o) <- c("delayed", "transform")
+  o <- transform()
+  o$values <- type_helper(x, select, type = "values")
   o
+}
+
+#' @export
+c.transform <- function(...) {
+  transf <- mapply(c, ...)
+  class(transf) <- c("transform", "list")
+  delay(transf)
 }
 
 #' @export
@@ -191,7 +185,7 @@ print.type <- function(x, ...) {
 
   nam_values <- length(x$names) - nam_functions
   if (nam_functions) {
-    cat(sum(nam_functions), "functions to select possible choices.\n")
+    cat(sum(nam_functions), "functions for possible choices.\n")
   }
   if (nam_values) {
     cat(x$names[!nam_functions], "as possible choices.\n")
