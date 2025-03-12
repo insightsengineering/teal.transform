@@ -7,7 +7,7 @@
 update_spec(spec, type, value)
 }
 \arguments{
-\item{spec}{A specification such as one created with datasets and variables.}
+\item{spec}{A resolved specification such as one created with datasets and variables.}
 
 \item{type}{Which type was updated? One of datasets, variables, values.}
 

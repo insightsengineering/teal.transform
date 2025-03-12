@@ -4,7 +4,7 @@
 \alias{resolver}
 \title{Resolve the specification}
 \usage{
-resolver(spec, data, ...)
+resolver(spec, data)
 }
 \arguments{
 \item{spec}{A object extraction specification.}
