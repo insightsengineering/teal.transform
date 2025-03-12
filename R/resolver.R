@@ -63,11 +63,10 @@ functions_names <- function(unresolved, reference) {
   unique(unlist(c(unresolved[!is_fc], x), FALSE, FALSE))
 }
 
-functions_data <- function(unresolved, data, names_data) {
+functions_data <- function(unresolved, data) {
   fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
 
   # This is for variables
-  names <- names(data)
   datasets <- names(data)
   # Matrix doesn't have a names method
   if (is.null(datasets)) {
@@ -80,11 +79,12 @@ functions_data <- function(unresolved, data, names_data) {
       if (!is.logical(out)) {
         stop("Provided functions should return a logical object.")
       }
-      if (length(out) > 1L) {
-        # Function resolution is unconventional...
+      if (length(out) != 1L && length(out) != length(data(data, d))) {
+        # Function resolution is unconventional, but this would produce too many warnings...
+        # warning("The output of the function must be of length 1 or the same length as the data.")
         return(FALSE)
       }
-      out
+      all(out)
     }, logical(1L))
     datasets[v]
   })
@@ -338,10 +338,10 @@ update_spec <- function(spec, type, value) {
   restart_types <- w[seq_along(w) > which(type == w)]
 
   if (all(value %in% spec[[type]]$names)) {
-    original_select <- attr(spec[[type]]$select, "original")
+    original_select <- orig(spec[[type]]$select)
     spec[[type]][["select"]] <- value
     attr(spec[[type]][["select"]], "original") <- original_select
-  } else if (is.list(spec[[type]]$names) && !any(vapply(spec[[type]]$names, is.function, logical(1L)))) {
+  } else if (is.list(orig(spec[[type]]$names)) && !any(vapply(spec[[type]]$names, is.function, logical(1L)))) {
     stop("value not in possible choices.")
   }
   # Restart to the original specs
@@ -349,18 +349,23 @@ update_spec <- function(spec, type, value) {
 
     # If the spec doesn't exist then there is nothing else to update
     if (is.null(spec[[type]]) || !length(spec[[type]]))  {
-      spec[[type]] <- na_type()
+      spec[[type]] <- na_type(type)
       return(spec)
     }
+
     fun <- match.fun(type)
-    if (!length(spec[[type]]) && is.na(spec[[type]])) {
-      restored_type <- fun(x = na_type(), select = na_type())
+    if (length(spec[[type]]) == 1L && is.na(spec[[type]])) {
+      restored_type <- na_type(type)
     } else {
-      restored_type <- fun(x = attr(spec[[type]]$names, "original"),
-                           select = attr(spec[[type]]$select, "original"))
+      restored_type <- fun(x = orig(spec[[type]]$names),
+                           select = orig(spec[[type]]$select))
     }
-    spec[[type]] <- na_type()
+    spec[[type]] <- na_type(type)
     spec <- spec & restored_type
   }
   spec
+}
+
+orig <- function(x) {
+  attr(x, "original")
 }
