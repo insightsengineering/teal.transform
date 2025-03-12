@@ -1,5 +1,8 @@
+# Only delay if the type or object really needs it and is not already delayed
 delay <- function(x) {
-  class(x) <- c("delayed", class(x))
+  if (is.delayed(x)) {
+    attr(x, "delayed") <- TRUE
+  }
   x
 }
 
@@ -7,10 +10,14 @@ delay <- function(x) {
 #' @method is.delayed type
 is.delayed.type <- function(x) {
 
-  !all(is.character(x$names)) || !all(is.character(x$select))
+  na <- length(x) == 1L && is.na(x)
+  if (!na) {
+    return(!all(is.character(x$names)) || !all(is.character(x$select)))
+  }
+  FALSE
 }
 
-#' @export is.delayed
+#' @export
 #' @method is.delayed transform
 is.delayed.transform <- function(x) {
   is.delayed(x$datasets) || is.delayed(x$variables) || is.delayed(x$values)
@@ -19,7 +26,7 @@ is.delayed.transform <- function(x) {
 #' @export
 #' @method is.delayed default
 is.delayed.default <- function(x) {
-  inherits(x, "delayed")
+  FALSE
 }
 
 #' @export
@@ -33,13 +40,11 @@ resolved <- function(x, variable){
   if (!s && !all(x$select %in% x$names)) {
       stop("Selected ", variable, " not available")
   }
-
-  cl <- class(x)
-  class(x) <- setdiff(cl, "delayed")
+  attr(x, "delayed") <- NULL
   x
 }
 
-get_datanames <- function(x) {
+get_datasets <- function(x) {
   if (is.transform(x) && !is.delayed(x$datasets)) {
     x$datasets$names
   } else {
