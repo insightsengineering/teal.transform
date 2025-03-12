@@ -3,7 +3,7 @@ basic_ops <- function(fun) {
   type1 <- FUN("ABC")
   types <- type1 & type1
   out <- list(names = "ABC", select = list(first))
-  class(out) <- c("delayed", fun, "type", "list")
+  class(out) <- c(fun, "type", "list")
   expect_equal(types[[fun]], out, check.attributes = FALSE)
   type2 <- FUN("ABC2")
   types <- type1 & type2
@@ -23,7 +23,7 @@ basic_ops <- function(fun) {
   expect_length(out[[fun]]$names, 2)
   expect_error(FUN("ABC") & 1)
   out <- type1 & type2b
-  expect_true(is(out[[fun]]$names, "vector"))
+  expect_true(is.list(out[[fun]]$names))
 }
 
 test_that("datasets & work", {
