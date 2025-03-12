@@ -164,7 +164,7 @@ print.type <- function(x, ...) {
                       collapse = "\n")
   }
   if (sel_values) {
-    msg_sel <- paste0(msg_sel, x$select[!sel_functions], "selected.",
+    msg_sel <- paste0(msg_sel, x$select[!sel_functions], " selected.",
         collapse = "\n")
   }
   cat(msg_values,  msg_sel)

@@ -95,7 +95,7 @@ resolver.datasets <- function(spec, data) {
   if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-  if (is.null(spec[["datasets"]])) {
+  if (is.null(spec[["datasets"]]) || all(is.na(spec[["datasets"]]))) {
     return(spec)
   }
   sdatasets <- spec$datasets
@@ -147,8 +147,8 @@ resolver.datasets <- function(spec, data) {
     }
     sdatasets$select <- new_select
   }
-  attr(sdatasets$names, "original") <- attr(orig_names, "original")
-  attr(sdatasets$select, "original") <- attr(orig_select, "original")
+  attr(sdatasets$names, "original") <- orig(orig_names)
+  attr(sdatasets$select, "original") <- orig(orig_select)
   spec$datasets <- resolved(sdatasets, "dataset")
   spec
 }
@@ -161,7 +161,7 @@ resolver.variables <- function(spec, data) {
   if (is.delayed(spec$datasets)) {
     stop("Datasets not resolved yet")
   }
-  if (is.null(spec[["variables"]])) {
+  if (is.null(spec[["variables"]]) || all(is.na(spec[["variables"]]))) {
     return(spec)
   }
   datasets <- spec$datasets$select
@@ -214,8 +214,8 @@ resolver.variables <- function(spec, data) {
     }
   }
 
-  attr(svariables$names, "original") <- attr(orig_names, "original")
-  attr(svariables$select, "original") <- attr(orig_select, "original")
+  attr(svariables$names, "original") <- orig(orig_names)
+  attr(svariables$select, "original") <- orig(orig_select)
   spec$variables <- resolved(svariables, "variables")
   spec
 
@@ -226,16 +226,17 @@ resolver.values <- function(spec, data) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
-  if (is.null(spec[["values"]])) {
+  if (is.null(spec[["values"]]) || all(is.na(spec[["values"]]))) {
     return(spec)
   }
-
   svalues <- spec$values
+  dataset <- data(data, spec$datasets$select)
+  variable <- data(dataset, spec$variables$select)
   orig_names <- svalues$names
   orig_select <- svalues$select
   spec$values <- if (is.delayed(svalues) && all(is.character(svalues$names))) {
-    match <- intersect(datasets, svalues$names)
-    missing <- setdiff(svalues$names, datasets)
+    match <- intersect(variable, svalues$names)
+    missing <- setdiff(svalues$names, variable)
     if (length(missing)) {
       stop("Missing values ", paste(sQuote(missing), collapse = ", "), " were specified.")
     }
@@ -243,8 +244,9 @@ resolver.values <- function(spec, data) {
     if (length(match) == 1) {
       svalues$select <- match
     } else {
+      match <- intersect(variable, svalues$names)
       new_select <- c(functions_names(svalues$select, svalues$names),
-                      functions_data(svalues$select, data_selected))
+                      functions_data(svalues$select, variable))
       new_select <- unique(new_select[!is.na(new_select)])
       if (!length(new_select)) {
         stop("No variables meet the requirements to be selected")
@@ -252,8 +254,8 @@ resolver.values <- function(spec, data) {
       svalues$select <- new_select
     }
   } else if (is.delayed(svalues)) {
-    new_names <- c(functions_names(svalues$names, names_data),
-                   functions_data(svalues$names, data_selected))
+    new_names <- c(functions_names(svalues$names, variable),
+                   functions_data(svalues$names, variable))
     new_names <- unique(new_names[!is.na(new_names)])
     if (!length(new_names)) {
       stop("No variables meet the requirements")
@@ -263,8 +265,8 @@ resolver.values <- function(spec, data) {
     if (length(svalues$names) == 1) {
       svalues$select <- svalues$names
     } else {
-      new_select <- c(functions_names(svalues$select, svalues$names),
-                      functions_data(svalues$select, data_selected))
+      new_select <- c(functions_names(svalues$select, variable),
+                      functions_data(svalues$select, variable))
       new_select <- unique(new_select[!is.na(new_select)])
       if (!length(new_select)) {
         stop("No variables meet the requirements to be selected")
@@ -272,8 +274,8 @@ resolver.values <- function(spec, data) {
       svalues$select <- new_select
     }
   }
-  attr(svalues$names, "original") <- attr(orig_names, "original")
-  attr(svalues$select, "original") <- attr(orig_select, "original")
+  attr(svalues$names, "original") <- orig(orig_names)
+  attr(svalues$select, "original") <- orig(orig_select)
   spec$values <- resolved(svalues, "values")
   spec
 }

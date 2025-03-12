@@ -50,6 +50,23 @@ test_that("resolver variables works", {
   expect_error(resolver(data_frames & var_matrices_head, td))
 })
 
+test_that("resolver values works", {
+  df <- datasets("df")
+  matrices <- datasets(is.matrix)
+  data_frames <- datasets(is.data.frame)
+  var_a <- variables("a")
+  factors <- variables(is.factor)
+  factors_head <- variables(is.factor, function(x){head(x, 1)})
+  var_matrices_head <- variables(is.matrix, function(x){head(x, 1)})
+  val_A <- values("A")
+  td <- within(teal.data::teal_data(), {
+    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c =  factor(letters[1:5]))
+    m <- cbind(b = 1:5, c = 10:14)
+    m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
+  })
+  expect_no_error(resolver(df & var_a & val_A, td))
+})
+
 test_that("names and variables are reported", {
   td <- within(teal.data::teal_data(), {
     df <- data.frame(A = as.factor(letters[1:5]),
