@@ -20,8 +20,8 @@
 #' resolver(spec, td)
 #' spec <- dataset1 & variables("a", is.factor)
 #' resolver(spec, td)
-resolver <- function(spec, data, ...) {
-  if (!is(data, "qenv")) {
+resolver <- function(spec, data) {
+  if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
   stopifnot(is.transform(spec), has_dataset(spec))
@@ -29,23 +29,23 @@ resolver <- function(spec, data, ...) {
   if (has_dataset(specf) && is.delayed(specf$datasets)) {
     specf <- resolver.datasets(specf, data)
   } else if (!has_dataset(specf)) {
-    specf$datasets <- NULL
+    specf$datasets <- na_type("datasets")
   }
 
   if (has_variable(specf) && !is.delayed(specf$datasets)) {
     specf <- resolver.variables(specf, data)
   } else {
-    specf$variables <- NULL
+    specf$variables <- na_type("variables")
   }
 
   if (has_value(specf) && !is.delayed(specf$datasets) && !is.delayed(specf$variables)) {
     specf <- resolver.values(specf, data)
   } else {
-    specf$values <- NULL
+    specf$values <- na_type("values")
   }
 
-  class(specf) <- setdiff(class(specf), "delayed")
-  specf
+  attr(specf, "delayed") <- NULL
+  delay(specf)
 }
 
 functions_names <- function(unresolved, reference) {
@@ -92,7 +92,7 @@ functions_data <- function(unresolved, data) {
 }
 
 resolver.datasets <- function(spec, data) {
-  if (!is(data, "qenv")) {
+  if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
   if (is.null(spec[["datasets"]])) {
@@ -154,7 +154,7 @@ resolver.datasets <- function(spec, data) {
 }
 
 resolver.variables <- function(spec, data) {
-  if (!is(data, "qenv")) {
+  if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
@@ -222,7 +222,7 @@ resolver.variables <- function(spec, data) {
 }
 
 resolver.values <- function(spec, data) {
-  if (!is(data, "qenv")) {
+  if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
@@ -280,8 +280,10 @@ resolver.values <- function(spec, data) {
 
 #' @export
 data.MultiAssayExperiment <- function(x, variable) {
-  # length(variable) == 1L
-  cd <- colData(x)
+  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+    stop("Required to have MultiAssayExperiment's package.")
+  }
+  cd <- MultiAssayExperiment::colData(x)
   cd[[variable]]
 }
 
@@ -316,7 +318,7 @@ data <- function(x, variable) {
 #' Update a specification
 #'
 #' Once a selection is made update the specification for different valid selection.
-#' @param spec A specification such as one created with datasets and variables.
+#' @param spec A resolved specification such as one created with datasets and variables.
 #' @param type Which type was updated? One of datasets, variables, values.
 #' @param value What is the new selection? One that is a valid value for the given type and specification.
 #' @return The specification with restored choices and selection if caused by the update.
@@ -336,32 +338,41 @@ update_spec <- function(spec, type, value) {
   w <- c("datasets", "variables", "values")
   type <- match.arg(type, w)
   restart_types <- w[seq_along(w) > which(type == w)]
-
-  if (all(value %in% spec[[type]]$names)) {
+  speci <- spec
+  if (!is.character(value)) {
+    stop("The updated value is not a character.",
+         "\nDo you attempt to set a new specification? Please open an issue")
+  }
+  valid_names <- spec[[type]]$names
+  if (is.delayed(spec[[type]])) {
+    stop(type, " should be resolved before updating.")
+  }
+  if (!is.list(valid_names) && all(value %in% valid_names)) {
     original_select <- orig(spec[[type]]$select)
     spec[[type]][["select"]] <- value
     attr(spec[[type]][["select"]], "original") <- original_select
-  } else if (is.list(orig(spec[[type]]$names)) && !any(vapply(spec[[type]]$names, is.function, logical(1L)))) {
-    stop("value not in possible choices.")
+  } else if (!is.list(valid_names) && !all(value %in% valid_names)) {
+    original_select <- orig(spec[[type]]$select)
+    valid_values <- intersect(value, valid_names)
+    if (!length(valid_values)) {
+      stop("No valid value provided.")
+    }
+    spec[[type]][["select"]] <- valid_values
+    attr(spec[[type]][["select"]], "original") <- original_select
+  } else {
+    stop("It seems the specification needs to be resolved first.")
   }
-  # Restart to the original specs
+
+  # Restore to the original specs
   for (type in restart_types) {
 
-    # If the spec doesn't exist then there is nothing else to update
-    if (is.null(spec[[type]]) || !length(spec[[type]]))  {
-      spec[[type]] <- na_type(type)
-      return(spec)
-    }
-
-    fun <- match.fun(type)
     if (length(spec[[type]]) == 1L && is.na(spec[[type]])) {
-      restored_type <- na_type(type)
-    } else {
-      restored_type <- fun(x = orig(spec[[type]]$names),
-                           select = orig(spec[[type]]$select))
+      next
     }
-    spec[[type]] <- na_type(type)
-    spec <- spec & restored_type
+    fun <- match.fun(type)
+    restored_transform <- fun(x = orig(spec[[type]]$names),
+                         select = orig(spec[[type]]$select))
+    spec[[type]] <- restored_transform[[type]]
   }
   spec
 }
