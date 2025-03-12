@@ -20,6 +20,12 @@ test_that("variables", {
   expect_no_error(var4 <- variables(is.matrix, function(x){head(x, 1)}))
 })
 
+test_that("raw combine of types", {
+  out <- c(datasets("df"), variables("df"))
+  expect_length(out, 3)
+  expect_error(c(datasets("df"), variables("df"), values("df")))
+})
+
 test_that("values", {
   expect_no_error(val0 <- values("a", "a"))
   expect_no_error(val1 <- values("a"))
