@@ -55,19 +55,29 @@ test_that("names and variables are reported", {
     df <- data.frame(A = as.factor(letters[1:5]),
                      Ab = LETTERS[1:5],
                      Abc = c(LETTERS[1:4], letters[1]))
+    df2 <- data.frame(A = 1:5,
+                      B = 1:5)
     m <- matrix()
   })
-  df_upper_variables <- datasets("df") & variables(function(x){x==toupper(x)})
+  d_df <- datasets("df")
+  df_upper_variables <- d_df & variables(function(x){x==toupper(x)})
   out <- resolver(df_upper_variables, td)
   # This should select A and Ab:
   #      A because the name is all capital letters and
   #      Ab values is all upper case.
-  # expect_length(out$variables$names, 2)
-  df_all_upper_variables <- datasets("df") & variables(function(x){all(x==toupper(x))})
+  expect_length(out$variables$names, 2)
+  v_all_upper <- variables(function(x){all(x==toupper(x))})
+  df_all_upper_variables <- d_df & v_all_upper
   expect_no_error(out <- resolver(df_all_upper_variables, td))
-  # expect_length(out$variables$names, 2)
-})
+  expect_length(out$variables$names, 1)
+  expect_no_error(out <- resolver(datasets("df2") & v_all_upper, td))
+  expect_length(out$variables$names, 2)
+  expect_no_error(out <- resolver(datasets(function(x){is.data.frame(x) && all(colnames(x) == toupper(colnames(x)))}), td))
+  expect_length(out$datasets$names, 1)
+  expect_no_error(out <- resolver(datasets(is.data.frame) & datasets(function(x){colnames(x) == toupper(colnames(x))}), td))
+  expect_length(out$datasets$names, 2)
 
+})
 
 test_that("update_spec resolves correctly", {
   td <- within(teal.data::teal_data(), {
