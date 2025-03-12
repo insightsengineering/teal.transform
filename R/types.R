@@ -39,7 +39,7 @@ first <- function(x){
 
 check_input <- function(input) {
   is.character(input) || is.function(input) ||
-    (is.list(input) && all(vapply(input, is.function, logical(1L))))
+    (is.list(input) && all(vapply(input, function(x){is.function(x) || is.character(x)}, logical(1L))))
 }
 
 type_helper <- function(x, select, type) {
@@ -82,90 +82,46 @@ values <- function(x, select = first) {
 
 #' @export
 c.transform <- function(...) {
-  transf <- mapply(c, ...)
+  if (...length() > 2) {
+    stop("More than two specifications won't be considered. Use & to combine them", call. = FALSE)
+  }
+  transf <- mapply(c, ..., SIMPLIFY = FALSE)
   class(transf) <- c("transform", "list")
   delay(transf)
 }
 
 #' @export
 c.type <- function(...) {
-  c1 <- class(..1)
-  c2 <- class(..2)
 
-  if (is.null(..1)) {
+  if (length(..1) == 1L && is.na(..1)) {
     return(..2)
-  } else if (is.null(..2)) {
+  } else if (length(..2) == 1L && is.na(..2)) {
     return(..1)
   }
 
-  classes <- unique(c(c1, c2))
-  other_classes <- setdiff(classes, c("delayed", "type", "list"))
-
-  if ("delayed" %in% classes) {
-    classes <- c("delayed", other_classes, "type", "list")
-  } else {
-    classes <- c(other_classes, "type", "list")
+  objects <- list(...)
+  classes <- unlist(lapply(objects, class), FALSE,FALSE)
+  type <- setdiff(classes, c("type", "list"))
+  if (length(type) > 1L) {
+    stop("Combining different types", call. = FALSE)
   }
 
-  out <- NextMethod("c")
-
-  if (all(is.na(out))) {
-    return(na_type())
-  } else if (anyNA(out)) {
-    out <- out[!is.na(out)]
-  }
-  nam <- names(out)
-  names <- nam == "names"
-  selects <- nam == "select"
-
-  new_l <- list(names = unlist(out[names], FALSE, FALSE),
-              select = unlist(out[selects], FALSE, FALSE))
-
-  l <- lapply(new_l, unique)
-  class(l) <- classes
-
-  attr(l$names, "original") <- unique(unlist(lapply(out[names], attr, "original"), TRUE, FALSE))
-  attr(l$select, "original") <- unique(unlist(lapply(out[selects], attr, "original"), TRUE, FALSE))
-  l
+  names <- lapply(objects, "[[", i = "names")
+  select <- lapply(objects, "[[", i = "select")
+  names_orig <- lapply(names, orig)
+  select_orig <- lapply(select, orig)
+  type_f <- match.fun(type)
+  type_out <- type_f(x = simplify_c(names_orig),
+                     select = simplify_c(select_orig))
+  attr(type_out[[type]][["names"]], "original") <- NULL
+  attr(type_out[[type]][["names"]], "original") <- simplify_c(names_orig)
+  attr(type_out[[type]][["select"]], "original") <- NULL
+  attr(type_out[[type]][["select"]], "original") <-  simplify_c(select_orig)
+  delay(type_out[[type]])
 }
 
-#' @export
-`[.type` <- function(x, i, j, ..., exact = TRUE) {
-  cx <- class(x)
-  out <- NextMethod("[")
-  class(out) <- cx
-  out
-}
-
-#' @export
-`[.type<-` <- function(x, i, j, ..., value) {
-  cx <- class(x)
-  if (!"type" %in% class(value)) {
-    stop("Modifying the specification with invalid objects")
-  }
-  out <- NextMethod("[")
-  class(out) <- cx
-  out
-}
-
-#' @export
-`[[.type` <- function(x, i, ..., drop = TRUE) {
-  cx <- class(x)
-  out <- NextMethod("[[")
-  class(out) <- cx
-  out
-}
-
-
-#' @export
-`[[.type<-` <- function(x, i, value) {
-  cx <- class(x)
-  if (!"type" %in% class(value)) {
-    stop("Modifying the specification with invalid objects.")
-  }
-  out <- NextMethod("[")
-  class(out) <- cx
-  out
+simplify_c <- function(x) {
+  unique(unlist(x, FALSE, FALSE))
 }
 
 #' @export
@@ -183,12 +139,15 @@ print.type <- function(x, ...) {
     nam_functions <- FALSE
   }
 
+  msg_values <- character()
   nam_values <- length(x$names) - nam_functions
-  if (nam_functions) {
-    cat(sum(nam_functions), "functions for possible choices.\n")
+  if (any(nam_functions)) {
+    msg_values <- paste0(msg_values, sum(nam_functions), " functions for possible choices.",
+                      collapse = "\n")
   }
   if (nam_values) {
-    cat(x$names[!nam_functions], "as possible choices.\n")
+    msg_values <- paste0(msg_values, x$names[!nam_functions], " as possible choices.",
+                     collapse = "\n")
   }
 
   sel_list <- is.list(x$select)
@@ -198,12 +157,16 @@ print.type <- function(x, ...) {
     sel_functions <- FALSE
   }
 
+  msg_sel <- character()
   sel_values <- length(x$select) - sel_functions
   if (any(sel_functions)) {
-    cat(sum(sel_functions), "functions to select.\n")
+    msg_sel <- paste0(msg_sel, sum(sel_functions), " functions to select.",
+                      collapse = "\n")
   }
   if (sel_values) {
-    cat(x$select[!sel_functions], "selected.\n")
+    msg_sel <- paste0(msg_sel, x$select[!sel_functions], "selected.",
+        collapse = "\n")
   }
+  cat(msg_values,  msg_sel)
   return(x)
 }
