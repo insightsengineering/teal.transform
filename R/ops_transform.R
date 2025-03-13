@@ -8,8 +8,8 @@ Ops.transform <- function(e1, e2) {
   }
   switch(.Generic,
          "!=" = NextMethod(),
-         # "==" = NextMethod(),
-         # "|" = ,
+         "==" = NextMethod(),
+         "|" = combine_transform(e1, e2),
          "&" = c(e1, e2),
          stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
 }
@@ -30,4 +30,10 @@ Ops.type <- function(e1, e2) {
          stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
   class(out) <- class(e1)
   out
+}
+
+combine_transform <- function(e1, e2) {
+  l <- list(e1, e2)
+  class(l) <- c("transform", "list")
+  l
 }

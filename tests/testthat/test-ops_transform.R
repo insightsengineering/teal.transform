@@ -39,48 +39,61 @@ test_that("values & work", {
   basic_ops("values")
 })
 
-test_that("datsets & variables work", {
+test_that("&(datsets, variables) create a single transform", {
   dataset1 <- datasets("ABC2")
   var1 <- variables("abc")
   vars <- dataset1 & var1
   vars2 <- var1 & dataset1
-  expect_equal(vars, vars2)
   expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
   expect_equal(vars$variables$names, "abc", check.attributes = FALSE)
-  expect_error(vars & 1)
+})
+
+test_that("&(datsets, number) errors", {
+  expect_error(datasets("abc") & 1)
 })
 
 test_that("datsets & values work", {
   dataset1 <- datasets("ABC2")
   val1 <- values("abc")
   vars <- dataset1 & val1
-  vars2 <- val1 & dataset1
-  expect_equal(vars, vars2)
   expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
   expect_equal(vars$values$names, "abc", check.attributes = FALSE)
-  expect_error(vars & 1)
+})
+
+test_that("&(datsets, number) errors", {
+  expect_error(variables("abc") & 1)
 })
 
 test_that("variables & values work", {
   var1 <- variables("ABC2")
   val1 <- values("abc")
   vars <- var1 & val1
-  vars2 <- val1 & var1
-  expect_equal(vars, vars2)
   expect_equal(vars$variables$names, "ABC2", check.attributes = FALSE)
   expect_equal(vars$values$names, "abc", check.attributes = FALSE)
-  expect_error(vars & 1)
 })
 
-test_that("datasets & variables & values work", {
+test_that("&(values, number) errors", {
+  expect_error(values("abc") & 1)
+})
+
+test_that("datasets & variables & values create a single specification", {
   dataset1 <- datasets("ABC2")
   var1 <- variables("ABC2")
   val1 <- values("abc")
   vars <- dataset1 & var1 & val1
   vars2 <- val1 & var1 & dataset1
-  expect_equal(vars, vars2)
   expect_equal(vars$datasets$names, "ABC2", check.attributes = FALSE)
   expect_equal(vars$variables$names, "ABC2", check.attributes = FALSE)
   expect_equal(vars$values$names, "abc", check.attributes = FALSE)
-  expect_error(vars & 1)
+})
+
+test_that("&(transform, number) errors", {
+  expect_error(datasets("ABC2") & variables("ABC2") & values("abc") & 1)
+})
+
+
+test_that("| combines two transformers", {
+  spec <- datasets("ABC") | datasets("abc")
+  expect_length(spec, 2)
+  expect_error(spec[[1]]$datasets | spec[[1]]$datasets)
 })
