@@ -43,6 +43,8 @@ Suggests:
     roxy.shinylive (>= 1.0.0),
     testthat (>= 3.1.5),
     withr (>= 2.0.0)
+Remotes:
+    insightsengineering/teal.widgets
 VignetteBuilder:
     knitr,
     rmarkdown
