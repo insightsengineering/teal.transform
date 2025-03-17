@@ -75,11 +75,11 @@ functions_data <- function(unresolved, data) {
   l <- lapply(fc_unresolved, function(f) {
     v <- vapply(datasets, function(d) {
       # Extract the data and apply the user supplied function
-      out <- tryCatch(f(data(data, d)), error = function(x){FALSE})
+      out <- tryCatch(f(extract(data, d)), error = function(x){FALSE})
       if (!is.logical(out)) {
         stop("Provided functions should return a logical object.")
       }
-      if (length(out) != 1L && length(out) != length(data(data, d))) {
+      if (length(out) != 1L && length(out) != length(extract(data, d))) {
         # Function resolution is unconventional, but this would produce too many warnings...
         # warning("The output of the function must be of length 1 or the same length as the data.")
         return(FALSE)
@@ -230,8 +230,8 @@ resolver.values <- function(spec, data) {
     return(spec)
   }
   svalues <- spec$values
-  dataset <- data(data, spec$datasets$select)
-  variable <- data(dataset, spec$variables$select)
+  dataset <- extract(data, spec$datasets$select)
+  variable <- extract(dataset, spec$variables$select)
   orig_names <- svalues$names
   orig_select <- svalues$select
   spec$values <- if (is.delayed(svalues) && all(is.character(svalues$names))) {
@@ -281,7 +281,7 @@ resolver.values <- function(spec, data) {
 }
 
 #' @export
-data.MultiAssayExperiment <- function(x, variable) {
+extract.MultiAssayExperiment <- function(x, variable) {
   if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
     stop("Required to have MultiAssayExperiment's package.")
   }
@@ -290,31 +290,31 @@ data.MultiAssayExperiment <- function(x, variable) {
 }
 
 #' @export
-data.matrix <- function(x, variable) {
+extract.matrix <- function(x, variable) {
   # length(variable) == 1L
   x[, variable, drop = TRUE]
 }
 
 #' @export
-#' @method data data.frame
-data.data.frame <- function(x, variable) {
+#' @method extract data.frame
+extract.data.frame <- function(x, variable) {
   # length(variable) == 1L
   x[, variable, drop = TRUE]
 }
 
 #' @export
-data.qenv <- function(x, variable) {
+extract.qenv <- function(x, variable) {
   x[[variable]]
 }
 
 #' @export
-data.default <- function(x, variable) {
+extract.default <- function(x, variable) {
   x[, variable, drop = TRUE]
 }
 
 #' @export
-data <- function(x, variable) {
-  UseMethod("data")
+extract <- function(x, variable) {
+  UseMethod("extract")
 }
 
 #' Update a specification
