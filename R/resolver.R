@@ -9,13 +9,15 @@
 #' @export
 #'
 #' @examples
-#' dataset1 <- datasets("df", function(x){head(x, 1)})
-#' dataset2 <- datasets(is.matrix, function(x){head(x, 1)})
+#' dataset1 <- datasets(is.data.frame)
+#' dataset2 <- datasets(is.matrix)
 #' spec <- dataset1 & variables("a", "a")
 #' td <- within(teal.data::teal_data(), {
 #'   df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
+#'   df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
 #'   m <- matrix()
 #' })
+#' resolver(spec | dataset2, td)
 #' resolver(dataset2, td)
 #' resolver(spec, td)
 #' spec <- dataset1 & variables("a", is.factor)
@@ -24,7 +26,25 @@ resolver <- function(spec, data) {
   if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-  stopifnot(is.transform(spec), has_dataset(spec))
+  stopifnot(is.transform(spec))
+
+  if (!is.delayed(spec)) {
+    return(spec)
+  }
+
+  if (!is.null(names(spec))) {
+    rt <- resolver_transform(spec, data)
+  } else {
+    rt <- lapply(spec, resolver_transform, data = data)
+    if (length(rt) == 1) {
+      rt <- rt[[1]]
+    }
+    # FIXME: If there are several options invalidate whatever is below, until this is resolved.
+  }
+  rt
+}
+
+resolver_transform <- function(spec, data) {
   specf <- spec
   if (has_dataset(specf) && is.delayed(specf$datasets)) {
     specf <- resolver.datasets(specf, data)
@@ -165,7 +185,7 @@ resolver.variables <- function(spec, data) {
     return(spec)
   }
   datasets <- spec$datasets$select
-  data_selected <- data(data, datasets)
+  data_selected <- extract(data, datasets)
   if (is.null(names(data_selected))) {
     names_data <- colnames(data_selected)
   } else {
@@ -337,18 +357,26 @@ extract <- function(x, variable) {
 #' update_spec(res, "datasets", "df_n")
 #' # update_spec(res, "datasets", "error")
 update_spec <- function(spec, type, value) {
-  w <- c("datasets", "variables", "values")
-  type <- match.arg(type, w)
-  restart_types <- w[seq_along(w) > which(type == w)]
-  speci <- spec
   if (!is.character(value)) {
     stop("The updated value is not a character.",
          "\nDo you attempt to set a new specification? Please open an issue")
   }
-  valid_names <- spec[[type]]$names
-  if (is.delayed(spec[[type]])) {
-    stop(type, " should be resolved before updating.")
+
+  if (!is.null(names(spec))) {
+    updated_spec <- update_s_spec(spec, type, value)
+  } else {
+    update_multiple <- lapply(spec, update_s_spec, type, value)
   }
+  updated_spec
+}
+
+update_s_spec <- function(spec, type, value) {
+  w <- c("datasets", "variables", "values")
+  type <- match.arg(type, w)
+  restart_types <- w[seq_along(w) > which(type == w)]
+
+  valid_names <- spec[[type]]$names
+
   if (!is.list(valid_names) && all(value %in% valid_names)) {
     original_select <- orig(spec[[type]]$select)
     spec[[type]][["select"]] <- value
@@ -368,12 +396,12 @@ update_spec <- function(spec, type, value) {
   # Restore to the original specs
   for (type in restart_types) {
 
-    if (length(spec[[type]]) == 1L && is.na(spec[[type]])) {
+    if (is.na(spec[[type]])) {
       next
     }
     fun <- match.fun(type)
     restored_transform <- fun(x = orig(spec[[type]]$names),
-                         select = orig(spec[[type]]$select))
+                              select = orig(spec[[type]]$select))
     spec[[type]] <- restored_transform[[type]]
   }
   spec
@@ -381,4 +409,9 @@ update_spec <- function(spec, type, value) {
 
 orig <- function(x) {
   attr(x, "original")
+}
+
+unorig <- function(x) {
+  attr(x, "original") <- NULL
+  x
 }
