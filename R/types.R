@@ -28,6 +28,17 @@ na_type <- function(type) {
   out
 }
 
+#' @export
+#' @method is.na type
+is.na.type <- function(x) {
+  anyNA(unclass(x))
+}
+
+#' @export
+anyNA.type <- function(x) {
+  anyNA(unclass(x))
+}
+
 first <- function(x){
   if (length(x) > 0) {
     false <- rep(FALSE, length.out = length(x))
@@ -93,9 +104,9 @@ c.transform <- function(...) {
 #' @export
 c.type <- function(...) {
 
-  if (length(..1) == 1L && is.na(..1)) {
+  if (is.na(..1)) {
     return(..2)
-  } else if (length(..2) == 1L && is.na(..2)) {
+  } else if (is.na(..2)) {
     return(..1)
   }
 
@@ -126,8 +137,7 @@ simplify_c <- function(x) {
 
 #' @export
 print.type <- function(x, ...) {
-  is_na <- length(x) == 1L && is.na(x)
-  if (is_na) {
+  if (is.na(x)) {
     cat("Nothing possible")
     return(x)
   }
@@ -140,14 +150,14 @@ print.type <- function(x, ...) {
   }
 
   msg_values <- character()
-  nam_values <- length(x$names) - nam_functions
+  nam_values <- length(x$names) - sum(nam_functions)
   if (any(nam_functions)) {
     msg_values <- paste0(msg_values, sum(nam_functions), " functions for possible choices.",
                       collapse = "\n")
   }
   if (nam_values) {
-    msg_values <- paste0(msg_values, x$names[!nam_functions], " as possible choices.",
-                     collapse = "\n")
+    msg_values <- paste0(msg_values, paste0(sQuote(x$names[!nam_functions]), collapse = ", "),
+                         " as possible choices.", collapse = "\n")
   }
 
   sel_list <- is.list(x$select)
@@ -158,14 +168,14 @@ print.type <- function(x, ...) {
   }
 
   msg_sel <- character()
-  sel_values <- length(x$select) - sel_functions
+  sel_values <- length(x$select) - sum(sel_functions)
   if (any(sel_functions)) {
     msg_sel <- paste0(msg_sel, sum(sel_functions), " functions to select.",
                       collapse = "\n")
   }
   if (sel_values) {
-    msg_sel <- paste0(msg_sel, x$select[!sel_functions], " selected.",
-        collapse = "\n")
+    msg_sel <- paste0(msg_sel, paste0(sQuote(x$select[!sel_functions]), collapse = ", "),
+                      " selected.", collapse = "\n")
   }
   cat(msg_values,  msg_sel)
   return(x)
