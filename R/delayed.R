@@ -10,8 +10,7 @@ delay <- function(x) {
 #' @method is.delayed type
 is.delayed.type <- function(x) {
 
-  na <- length(x) == 1L && is.na(x)
-  if (!na) {
+  if (!is.na(x)) {
     return(!all(is.character(x$names)) || !all(is.character(x$select)))
   }
   FALSE
