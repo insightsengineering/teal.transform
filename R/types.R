@@ -35,8 +35,8 @@ is.na.type <- function(x) {
 }
 
 #' @export
-anyNA.type <- function(x) {
-  anyNA(unclass(x))
+anyNA.type <- function(x, recursive = FALSE) {
+  anyNA(unclass(x), recursive)
 }
 
 first <- function(x){

@@ -135,7 +135,7 @@ test_that("update_spec resolves correctly", {
 
   expect_error(update_spec(res, "datasets", "error"))
   expect_error(update_spec(data_frames_factors, "datasets", "error"))
-  expect_error(update_spec(datasets(x = c("df", "df2")), "datasets", "df2"))
+  expect_no_error(update_spec(datasets(x = c("df", "df2")), "datasets", "df2"))
   expect_no_error(update_spec(datasets(x = c("df", "df2"), "df"), "datasets", "df2"))
 })
 
