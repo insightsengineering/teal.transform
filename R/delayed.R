@@ -7,19 +7,8 @@ delay <- function(x) {
 }
 
 #' @export
-#' @method is.delayed type
-is.delayed.type <- function(x) {
-
-  if (!is.na(x)) {
-    return(!all(is.character(x$names)) || !all(is.character(x$select)))
-  }
-  FALSE
-}
-
-#' @export
-#' @method is.delayed transform
-is.delayed.transform <- function(x) {
-  is.delayed(x$datasets) || is.delayed(x$variables) || is.delayed(x$values)
+is.delayed <- function(x) {
+  UseMethod("is.delayed")
 }
 
 #' @export
@@ -29,8 +18,24 @@ is.delayed.default <- function(x) {
 }
 
 #' @export
-is.delayed <- function(x) {
-  UseMethod("is.delayed")
+#' @method is.delayed transform
+is.delayed.transform <- function(x) {
+  if (!is.null(names(x))) {
+    any(vapply(x, is.delayed, logical(1L)))
+  } else {
+    delayed <- vapply(x, is.delayed, logical(1L))
+    any(delayed)
+  }
+}
+
+#' @export
+#' @method is.delayed type
+is.delayed.type <- function(x) {
+
+  if (!is.na(x)) {
+    return(!all(is.character(x$names)) || !all(is.character(x$select)))
+  }
+  FALSE
 }
 
 resolved <- function(x, variable){
