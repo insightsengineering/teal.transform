@@ -1,25 +1,5 @@
-transform <- function() {
-  o <- list(datasets = na_type("datasets"),
-            variables = na_type("variables"),
-            values = na_type("values"))
-  class(o) <- c("transform", "list")
-  delay(o)
-}
-
 is.transform <- function(x) {
   inherits(x, "transform")
-}
-
-has_dataset <- function(x) {
-  !anyNA(x[["datasets"]])
-}
-
-has_variable <- function(x) {
-  !anyNA(x[["variables"]])
-}
-
-has_value <- function(x) {
-  !anyNA(x[["values"]])
 }
 
 na_type <- function(type) {
@@ -28,15 +8,19 @@ na_type <- function(type) {
   out
 }
 
+is.type <- function(x) {
+  inherits(x, "type")
+}
+
 #' @export
 #' @method is.na type
 is.na.type <- function(x) {
-  anyNA(unclass(x))
+  anyNA(unclass(x[c("names", "select")]))
 }
 
 #' @export
 anyNA.type <- function(x, recursive = FALSE) {
-  anyNA(unclass(x), recursive)
+  anyNA(unclass(x[c("names", "select")]), recursive)
 }
 
 first <- function(x){
@@ -71,64 +55,119 @@ type_helper <- function(x, select, type) {
 
 #' @export
 datasets <- function(x, select = first) {
-  o <- transform()
-  o$datasets <- type_helper(x, select, type = "datasets")
-  o
+  type_helper(x, select, type = "datasets")
 }
 
 
 #' @export
 variables <- function(x, select = first) {
-  o <- transform()
-  o$variables <- type_helper(x, select, type = "variables")
-  o
+  type_helper(x, select, type = "variables")
 }
 
 #' @export
 values <- function(x, select = first) {
-  o <- transform()
-  o$values <- type_helper(x, select, type = "values")
-  o
+  type_helper(x, select, type = "values")
 }
+
+# #' @export
+# c.type <- function(...) {
+#
+#   if (is.na(..1)) {
+#     return(..2)
+#   } else if (is.na(..2)) {
+#     return(..1)
+#   }
+#
+#   if (...length() > 2L) {
+#     stop("We can't combine this (yet)")
+#   } else if (all(class(..2) != class(..1))) {
+#     type_out <- ..1
+#     type_out$child <- ..2
+#     return(type_out)
+#   }
+#   out <- mapply(c, ..., SIMPLIFY = FALSE)
+#   out <- lapply(out, unique)
+#   class(out) <- c("transform", class(out))
+#   delay(out)
+# }
 
 #' @export
 c.transform <- function(...) {
-  if (...length() > 2) {
-    stop("More than two specifications won't be considered. Use & to combine them", call. = FALSE)
+  l <- list(...)
+  types <- lapply(l, names)
+  utypes <- unique(unlist(types, FALSE, FALSE))
+  vector <- vector("list", length(utypes))
+  names(vector) <- utypes
+  for (t in utypes) {
+    new_type <- vector("list", length = 2)
+    names(new_type) <- c("names", "select")
+    class(new_type) <- c("type", "list")
+    for (i in seq_along(l)) {
+      if (!t %in% names(l[[i]])) {
+        next
+      }
+      # Slower but less code duplication:
+      # new_type <- c(new_type, l[[i]][[t]])
+      # then we need class(new_type) <- c(t, "type", "list") outside the loop
+      old_names <- new_type$names
+      old_select <- new_type$select
+      new_type$names <- c(old_names, l[[i]][[t]][["names"]])
+      attr(new_type$names, "original") <- c(orig(
+        old_names), orig(l[[i]][[t]][["names"]]))
+      new_type$select <- c(old_select, l[[i]][[t]][["select"]])
+      attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][[t]][["select"]]))
+    }
+    orig_names <- unique(orig(new_type$names))
+    new_type$names <- unique(new_type$names)
+    attr(new_type$names, "original") <- orig_names
+
+    orig_select <- unique(orig(new_type$select))
+    new_type$select <- unique(new_type$select)
+    attr(new_type$select, "original") <- orig_select
+    class(new_type) <- c(t, "type", "list")
+    vector[[t]] <- new_type
   }
-  transf <- mapply(c, ..., SIMPLIFY = FALSE)
-  class(transf) <- c("transform", "list")
-  delay(transf)
+  class(vector) <- c("transform", "list")
+  vector
 }
 
 #' @export
 c.type <- function(...) {
+  l <- list(...)
+  types <- lapply(l, is)
+  utypes <- unique(unlist(types, FALSE, FALSE))
+  vector <- vector("list", length(utypes))
+  names(vector) <- utypes
+  for (t in utypes) {
+    new_type <- vector("list", length = 2)
+    names(new_type) <- c("names", "select")
+    for (i in seq_along(l)) {
+      if (!t %in% names(l[[i]])) {
+        next
+      }
+      old_names <- new_type$names
+      old_select <- new_type$select
+      new_type$names <- c(old_names, l[[i]][[t]][["names"]])
+      attr(new_type$names, "original") <- c(orig(
+        old_names), orig(l[[i]][[t]][["names"]]))
+      new_type$select <- c(old_select, l[[i]][[t]][["select"]])
+      attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][[t]][["select"]]))
+    }
+    orig_names <- unique(orig(new_type$names))
+    new_type$names <- unique(new_type$names)
+    attr(new_type$names, "original") <- orig_names
 
-  if (is.na(..1)) {
-    return(..2)
-  } else if (is.na(..2)) {
-    return(..1)
+    orig_select <- unique(orig(new_type$select))
+    new_type$select <- unique(new_type$select)
+    attr(new_type$select, "original") <- orig_select
+    class(new_type) <- c(t, "type", "list")
+    vector[[t]] <- new_type
   }
-
-  objects <- list(...)
-  classes <- unlist(lapply(objects, class), FALSE,FALSE)
-  type <- setdiff(classes, c("type", "list"))
-  if (length(type) > 1L) {
-    stop("Combining different types", call. = FALSE)
+  if (length(vector) == 1) {
+    return(vector[[1]])
   }
-
-  names <- lapply(objects, "[[", i = "names")
-  select <- lapply(objects, "[[", i = "select")
-  names_orig <- lapply(names, orig)
-  select_orig <- lapply(select, orig)
-  type_f <- match.fun(type)
-  type_out <- type_f(x = simplify_c(names_orig),
-                     select = simplify_c(select_orig))
-  attr(type_out[[type]][["names"]], "original") <- NULL
-  attr(type_out[[type]][["names"]], "original") <- simplify_c(names_orig)
-  attr(type_out[[type]][["select"]], "original") <- NULL
-  attr(type_out[[type]][["select"]], "original") <-  simplify_c(select_orig)
-  delay(type_out[[type]])
+  class(vector) <- c("transform", "list")
+  vector
 }
 
 simplify_c <- function(x) {

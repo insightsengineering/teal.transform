@@ -9,8 +9,8 @@ Ops.transform <- function(e1, e2) {
   switch(.Generic,
          "!=" = NextMethod(),
          "==" = NextMethod(),
-         "|" = combine_transform(e1, e2),
-         "&" = c(e1, e2),
+         "|" = or_transform(e1, e2),
+         "&" = nd_transform(e1, e2),
          stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
 }
 
@@ -25,15 +25,93 @@ Ops.type <- function(e1, e2) {
   out <- switch(.Generic,
          "!=" = NextMethod(),
          # "==" = NextMethod(),
-         # "|" = ,
-         "&" = c(e1, e2),
+         "|" = or_type(e1, e2),
+         "&" = nd_type(e1, e2),
          stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
-  class(out) <- class(e1)
   out
 }
 
-combine_transform <- function(e1, e2) {
-  l <- list(e1, e2)
-  class(l) <- c("transform", "list")
-  l
+or_transform <- function(e1, e2) {
+  if (is.transform(e1) && is.type(e2) && !is.transform(e2)) {
+    opt2 <- e1 & e2
+    out <- list(e1, opt2)
+  } else if (!is.transform(e1) && is.type(e1) && is.transform(e2)) {
+    opt2 <- e2 & e1
+    out <- list(e2, opt2)
+  } else {
+    out <- list(e1, e2)
+  }
+  class(out) <- unique(c("transform", "list"))
+  out
 }
+
+nd_transform <- function(e1, e2) {
+  if (is.transform(e1) && is.transform(e2)) {
+    types <- intersect(names(e1), names(e2))
+    for (t in types) {
+      e1[[t]] <- unique(c(e1[[t]], e2[[t]]))
+    }
+    return(e1)
+  }
+
+  if (is.type(e1) && is.transform(e2)) {
+    if (!is(e1) %in% names(e2)) {
+      e2[[is(e1)]] <- e1
+    } else {
+      e2[[is(e1)]] <- c(e2[[is(e1)]], e1)
+    }
+    return(e2)
+  } else if (is.transform(e1) && is.type(e2)) {
+    if (!is(e2) %in% names(e1)) {
+      e1[[is(e2)]] <- e2
+    } else {
+      e1[[is(e2)]] <- c(e1[[is(e2)]], e2)
+    }
+    out <- e1
+  } else if (is.type(e1) && is.transform(e2)) {
+    out <- rev(c(e2, e1)) # To keep order in the list
+  } else {
+    stop("Method not implemented yet!")
+  }
+  out
+}
+
+nd_type <- function(e1, e2) {
+  if (is.transform(e1) && !is.transform(e2)) {
+    out <- c(e1, list(e2))
+    names(out)[length(out)] <- is(e2)
+  } else if (!is.transform(e1) && is.transform(e2)) {
+    out <- c(e2, list(e1))
+    names(out)[length(out)] <- is(e1)
+  } else if (is.transform(e1) && is.transform(e2)){
+    out <- c(e1, e2)
+  } else if (is.type(e1) && is.type(e2)) {
+    out <- list(e1, e2)
+    names(out) <- c(is(e1), is(e2))
+  } else {
+    stop("Maybe we should decide how to apply a type to a list of transformers...")
+  }
+  class(out) <- c("transform", class(out))
+  browser(expr = is(out) == "datasets" && length(table(names(out))) == 1L)
+  out
+}
+
+or_type <- function(e1, e2) {
+  substitute <- is(e2) %in% names(e1)
+  if (substitute) {
+    out <- e1
+    e1[[is(e2)]] <- e2
+    return(add_type(out, e1))
+  }
+  list(e1, e2)
+}
+
+
+# chooseOpsMethod.list <- function(x, y, mx, my, cl, reverse) TRUE
+#' @export
+chooseOpsMethod.transform <- function(x, y, mx, my, cl, reverse) {
+  # Apply one or other method
+  # !is.transform(x)
+  TRUE
+}
+# chooseOpsMethod.type <- function(x, y, mx, my, cl, reverse) TRUE
