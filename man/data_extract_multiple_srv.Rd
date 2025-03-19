@@ -16,7 +16,7 @@ data_extract_multiple_srv(data_extract, datasets, ...)
 \method{data_extract_multiple_srv}{list}(
   data_extract,
   datasets,
-  join_keys = NULL,
+  join_keys = teal.data::join_keys(),
   select_validation_rule = NULL,
   filter_validation_rule = NULL,
   dataset_validation_rule = if (is.null(select_validation_rule) &&

@@ -1,5 +1,10 @@
 # teal.transform 0.6.0.9001
 
+### Enhancements
+
+* Introduced defaults to all `data_extract_spec()` components to simplify the user experience. It is now possible to just call `data_extract_spec()` which will provide necessary information for `data_extract_srv()` and `data_extract_multiple_srv()` to initialize inputs for all provided datasets. 
+* Introduced utility function `nth_choice(n)`. 
+
 # teal.transform 0.6.0
 
 ### Enhancements

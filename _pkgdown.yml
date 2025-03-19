@@ -30,7 +30,10 @@ reference:
       - add_no_selected_choices
       - all_choices
       - first_choice
+      - first_choices
       - last_choice
+      - last_choices
+      - delayed_datanames
       - check_no_multiple_selection
       - choices_labeled
       - choices_selected

@@ -107,9 +107,9 @@
 #' )
 #' @export
 #'
-filter_spec <- function(vars,
+filter_spec <- function(vars = choices_selected(choices = variable_choices()),
                         choices = NULL,
-                        selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
+                        selected = first_choice(),
                         multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
                         label = "Filter by",
                         sep = attr(choices, "sep"),

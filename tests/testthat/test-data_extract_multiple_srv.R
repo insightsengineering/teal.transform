@@ -2,7 +2,7 @@ ADSL <- teal.data::rADSL
 ADLB <- teal.data::rADLB
 ADTTE <- teal.data::rADTTE
 
-data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB))
+data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE), ADLB = reactive(ADLB), iris = reactive(iris))
 join_keys <- teal.data::default_cdisc_join_keys[c("ADSL", "ADTTE", "ADLB")]
 
 testthat::test_that("data_extract_multiple_srv accepts a named list of `data_extract_spec`", {
@@ -10,7 +10,7 @@ testthat::test_that("data_extract_multiple_srv accepts a named list of `data_ext
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_no_error(
       data_extract_multiple_srv(
-        data_extract = list(test = data_extract_spec(dataname = "iris")),
+        data_extract = list(test = data_extract_spec(dataname = "ADSL")),
         datasets = data_list,
         join_keys = teal.data::join_keys()
       )
@@ -53,12 +53,11 @@ testthat::test_that("data_extract_multiple_srv returns an empty list if passed a
 })
 
 testthat::test_that("data_extract_multiple_srv prunes `NULL` from the passed list", {
-  data_list <- list(iris = reactive(iris))
   shiny::withReactiveDomain(
     domain = shiny::MockShinySession$new(),
     expr = testthat::expect_equal(
       length(data_extract_multiple_srv(
-        list(test = data_extract_spec(dataname = "iris"), test2 = NULL),
+        list(test = data_extract_spec(dataname = "ADSL"), test2 = NULL),
         datasets = data_list
       )),
       1

@@ -124,74 +124,14 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FALSE) {
   ns <- NS(id)
 
-  if (inherits(data_extract_spec, "data_extract_spec")) {
-    data_extract_spec <- list(data_extract_spec)
-  }
-  check_data_extract_spec(data_extract_spec)
-
-  if (is.null(data_extract_spec)) {
-    return(helpText(sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", label)))
-  }
-  stopifnot(
-    `more than one dataset in data_extract_spec but is_single_dataset parameter is set to TRUE` =
-      !is_single_dataset || length(data_extract_spec) == 1
-  )
-
-  dataset_names <- vapply(
-    data_extract_spec,
-    function(x) x$dataname,
-    character(1),
-    USE.NAMES = FALSE
-  )
-
-  stopifnot(`list contains data_extract_spec objects with the same dataset` = all(!duplicated(dataset_names)))
-
-  dataset_input <- if (is_single_dataset) {
-    NULL
-  } else {
-    if (length(dataset_names) == 1) {
-      if ((is.null(data_extract_spec[[1]]$filter)) &&
-        (
-          !is.null(data_extract_spec[[1]]$select$fixed) &&
-            data_extract_spec[[1]]$select$fixed == TRUE
-        )) {
-        NULL
-      } else {
-        helpText("Dataset:", tags$code(dataset_names))
-      }
-    } else {
-      teal.widgets::optionalSelectInput(
-        inputId = ns("dataset"),
-        label = "Dataset",
-        choices = dataset_names,
-        selected = dataset_names[1],
-        multiple = FALSE
-      )
-    }
-  }
   tagList(
-    include_css_files(pattern = "data_extract"),
-    tags$div(
-      class = "data-extract",
-      tags$label(label),
-      dataset_input,
-      if (length(dataset_names) == 1) {
-        data_extract_single_ui(
-          id = ns(id_for_dataset(dataset_names)),
-          single_data_extract_spec = data_extract_spec[[1]]
-        )
-      } else {
-        do.call(
-          div,
-          unname(lapply(
-            data_extract_spec,
-            function(x) {
-              cond_data_extract_single_ui(ns, x)
-            }
-          ))
-        )
-      }
-    )
+    # Pass arguments to server function.
+    div(
+      checkboxInput(ns("is_single_dataset"), label = NULL, value = is_single_dataset),
+      textInput(ns("data_extract_label"), label = NULL, value = label),
+      style = "display: none;"
+    ),
+    uiOutput(ns("data_extract_ui_container"))
   )
 }
 
@@ -410,7 +350,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
     id,
     function(input, output, session) {
       logger::log_debug(
-        "data_extract_srv.FilteredData initialized with datasets: { paste(datasets$datanames(), collapse = ', ') }."
+        "data_extract_srv.FilteredData initialized with datasets: { toString(datasets$datanames()) }."
       )
 
       data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
@@ -451,7 +391,7 @@ data_extract_srv.FilteredData <- function(id, datasets, data_extract_spec, ...) 
 data_extract_srv.list <- function(id,
                                   datasets,
                                   data_extract_spec,
-                                  join_keys = NULL,
+                                  join_keys = teal.data::join_keys(),
                                   select_validation_rule = NULL,
                                   filter_validation_rule = NULL,
                                   dataset_validation_rule = if (
@@ -472,16 +412,11 @@ data_extract_srv.list <- function(id,
   moduleServer(
     id,
     function(input, output, session) {
-      logger::log_debug(
-        "data_extract_srv.list initialized with datasets: { paste(names(datasets), collapse = ', ') }."
-      )
+      logger::log_debug("data_extract_srv.list initialized with datasets: { toString(names(datasets)) }.")
 
-      # get keys out of join_keys
-      if (length(join_keys)) {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) join_keys[x, x])
-      } else {
-        keys <- sapply(names(datasets), simplify = FALSE, function(x) character(0))
-      }
+      data_extract_spec <- shiny::isolate(
+        resolve_delayed(x = data_extract_spec, datasets = datasets, join_keys = join_keys)
+      )
 
       # convert to list of reactives
       datasets <- sapply(X = datasets, simplify = FALSE, FUN = function(x) {
@@ -502,6 +437,11 @@ data_extract_srv.list <- function(id,
         return(reactive(NULL))
       }
       check_data_extract_spec(data_extract_spec = data_extract_spec)
+      datanames <- vapply(data_extract_spec, function(x) x$dataname, character(1), USE.NAMES = FALSE)
+      if (anyDuplicated(datanames)) {
+        stop("list contains data_extract_spec objects with the same dataset")
+      }
+      names(data_extract_spec) <- datanames # so the lapply/sapply results are named
 
       # Each dataset needs its own shinyvalidate to make sure only the
       # currently visible d-e-s's validation is used
@@ -512,7 +452,6 @@ data_extract_srv.list <- function(id,
         }
         iv_dataset
       })
-      names(iv) <- lapply(data_extract_spec, `[[`, "dataname")
 
       # also need a final iv for the case where no dataset is selected
       iv[["blank_dataset_case"]] <- shinyvalidate::InputValidator$new()
@@ -536,7 +475,6 @@ data_extract_srv.list <- function(id,
           filter_validation_rule = filter_validation_rule
         )
       })
-      names(filter_and_select) <- sapply(data_extract_spec, function(x) x$dataname)
 
       dataname <- reactive({
         # For fixed data sets, ignore input_value
@@ -557,10 +495,77 @@ data_extract_srv.list <- function(id,
             list(
               dataname = dataname(),
               internal_id = gsub("^.*-(.+)$", "\\1", session$ns(NULL)), # parent module id
-              keys = keys[[dataname()]]
+              keys = as.character(join_keys[dataname(), dataname()]) # to convert NULL to character(0)
             )
           )
         }
+      })
+
+
+      output$data_extract_ui_container <- renderUI({
+        ns <- session$ns
+
+        logger::log_debug("initializing data_extract_ui w/ datasets: { toString(names(datasets)) }.")
+
+        if (is.null(data_extract_spec)) {
+          return(helpText(
+            sprintf("Data extraction with label '%s' is NULL. Please contact the app author.", input$label)
+          ))
+        }
+
+        stopifnot(
+          `more than one dataset in data_extract_spec but is_single_dataset parameter is set to TRUE` =
+            isFALSE(input$is_single_dataset) || length(data_extract_spec) == 1
+        )
+
+        dataset_input <-
+          if (isTRUE(input$is_single_dataset)) {
+            NULL
+          } else {
+            if (length(data_extract_spec) == 1) {
+              if ((is.null(data_extract_spec[[1]]$filter)) &&
+                (
+                  !is.null(data_extract_spec[[1]]$select$fixed) &&
+                    data_extract_spec[[1]]$select$fixed == TRUE
+                )) {
+                NULL
+              } else {
+                helpText("Dataset:", tags$code(names(data_extract_spec)))
+              }
+            } else {
+              teal.widgets::optionalSelectInput(
+                inputId = ns("dataset"),
+                label = "Dataset",
+                choices = names(data_extract_spec),
+                selected = names(data_extract_spec)[1],
+                multiple = FALSE
+              )
+            }
+          }
+        tagList(
+          include_css_files(pattern = "data_extract"),
+          tags$div(
+            class = "data-extract",
+            tags$label(input$data_extract_label),
+            dataset_input,
+            if (length(data_extract_spec) == 1) {
+              data_extract_single_ui(
+                id = ns(id_for_dataset(names(data_extract_spec))),
+                single_data_extract_spec = data_extract_spec[[1]]
+              )
+            } else {
+              do.call(
+                div,
+                unname(lapply(
+                  data_extract_spec,
+                  function(x) {
+                    cond_data_extract_single_ui(ns, x)
+                  }
+                ))
+              )
+            }
+          )
+        )
       })
       filter_and_select_reactive
     }
@@ -697,14 +702,14 @@ data_extract_multiple_srv.reactive <- function(data_extract, datasets, ...) {
 data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) {
   checkmate::assert_class(datasets, classes = "FilteredData")
   logger::log_debug(
-    "data_extract_multiple_srv.filteredData initialized with dataset: { paste(datasets$datanames(), collapse = ', ') }."
+    "data_extract_multiple_srv.FilteredData initialized w/ datasets: { toString(datasets$datanames()) }."
   )
 
   data_list <- sapply(X = datasets$datanames(), simplify = FALSE, FUN = function(x) {
     reactive(datasets$get_data(dataname = x, filtered = TRUE))
   })
-
   join_keys <- datasets$get_join_keys()
+
   data_extract_multiple_srv(data_extract = data_extract, datasets = data_list, join_keys = join_keys)
 }
 
@@ -732,7 +737,7 @@ data_extract_multiple_srv.FilteredData <- function(data_extract, datasets, ...) 
 #'
 data_extract_multiple_srv.list <- function(data_extract,
                                            datasets,
-                                           join_keys = NULL,
+                                           join_keys = teal.data::join_keys(),
                                            select_validation_rule = NULL,
                                            filter_validation_rule = NULL,
                                            dataset_validation_rule = if (
@@ -758,38 +763,35 @@ data_extract_multiple_srv.list <- function(data_extract,
     checkmate::check_multi_class(dataset_validation_rule, classes = c("function", "formula"), null.ok = TRUE),
     checkmate::check_list(dataset_validation_rule, types = c("function", "formula", "NULL"), null.ok = TRUE)
   )
-
-  logger::log_debug(
-    "data_extract_multiple_srv.list initialized with dataset: { paste(names(datasets), collapse = ', ') }."
-  )
-
-  data_extract <- Filter(Negate(is.null), data_extract)
-
-  if (is.function(select_validation_rule)) {
-    select_validation_rule <- sapply(
-      names(data_extract),
-      simplify = FALSE,
-      USE.NAMES = TRUE,
-      function(x) select_validation_rule
-    )
-  }
-
-  if (is.function(dataset_validation_rule)) {
-    dataset_validation_rule <- sapply(
-      names(data_extract),
-      simplify = FALSE,
-      USE.NAMES = TRUE,
-      function(x) dataset_validation_rule
-    )
-  }
+  logger::log_debug("data_extract_multiple_srv.list initialized with dataset: { toString(names(datasets)) }.")
 
   reactive({
+    data_extract <- Filter(Negate(is.null), data_extract)
+    data_extract <- resolve_delayed(x = data_extract, datasets = datasets, join_keys = join_keys)
+
+    if (is.function(select_validation_rule)) {
+      select_validation_rule <- sapply(
+        names(data_extract),
+        simplify = FALSE,
+        USE.NAMES = TRUE,
+        function(x) select_validation_rule
+      )
+    }
+
+    if (is.function(dataset_validation_rule)) {
+      dataset_validation_rule <- sapply(
+        names(data_extract),
+        simplify = FALSE,
+        USE.NAMES = TRUE,
+        function(x) dataset_validation_rule
+      )
+    }
     sapply(
       X = names(data_extract),
       simplify = FALSE,
       USE.NAMES = TRUE,
       function(x) {
-        data_extract_srv(
+        data_extract_srv( # todo: Come on! Module shouldn't be called in a reactive.
           id = x,
           data_extract_spec = data_extract[[x]],
           datasets = datasets,

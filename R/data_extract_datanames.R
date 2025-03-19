@@ -53,15 +53,22 @@ get_extract_datanames <- function(data_extracts) {
       all(vapply(data_extracts, function(x) checkmate::test_list(x, types = "data_extract_spec"), logical(1)))
   )
 
-  datanames <- lapply(data_extracts, function(x) {
-    if (inherits(x, "data_extract_spec")) {
-      x[["dataname"]]
-    } else if (checkmate::test_list(x, types = "data_extract_spec")) {
-      lapply(x, `[[`, "dataname")
-    }
-  })
+  datanames <- unlist(
+    lapply(data_extracts, function(x) {
+      if (inherits(x, "data_extract_spec")) {
+        x[["dataname"]]
+      } else if (checkmate::test_list(x, types = "data_extract_spec")) {
+        lapply(x, `[[`, "dataname")
+      }
+    }),
+    use.names = FALSE
+  )
 
-  unique(unlist(datanames))
+  if (any(datanames == "all")) {
+    "all"
+  } else {
+    unique(datanames)
+  }
 }
 
 #' Verify uniform dataset source across data extract specification
@@ -82,5 +89,5 @@ get_extract_datanames <- function(data_extracts) {
 is_single_dataset <- function(...) {
   data_extract_spec <- list(...)
   dataset_names <- get_extract_datanames(data_extract_spec)
-  length(dataset_names) == 1
+  length(dataset_names) == 1L && dataset_names != "all"
 }

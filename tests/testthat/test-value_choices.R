@@ -1,8 +1,3 @@
-ADSL <- teal.data::rADSL
-ADTTE <- teal.data::rADTTE
-data_list <- list(ADSL = reactive(ADSL), ADTTE = reactive(ADTTE))
-primary_keys_list <- list(ADSL = c("STUDYID", "USUBJID"), ADTTE = c("STUDYID", "USUBJID", "PARAMCD"))
-
 testthat::test_that("Will output warnings when value_choices applied on datasets with missing values and / or labels", {
   data <- data.frame(
     A = c(1, 2, 3),
@@ -43,10 +38,10 @@ testthat::test_that("delayed version of value_choices", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys)
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
+    value_choices(teal.data::rADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
   )
 
   # functional subset
@@ -74,10 +69,10 @@ testthat::test_that("delayed version of value_choices", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys)
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL,
+    value_choices(teal.data::rADSL,
       var_choices = "ARMCD", var_label = "ARM",
       subset = function(data) {
         levels(data$ARMCD)[1:2]
@@ -114,10 +109,10 @@ testthat::test_that("delayed version of value_choices", {
     )
   )
 
-  res_obj <- isolate(resolve(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve(obj, datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys)
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL,
+    value_choices(teal.data::rADSL,
       var_choices = c("ARMCD", "BMRKR2"), var_label = c("ARM", "BMRKR2"),
       subset = combine_armcd_bmrkr2
     )
@@ -145,10 +140,13 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve_delayed(
+    obj,
+    datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys
+  )
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
+    value_choices(teal.data::rADSL, var_choices = "ARMCD", var_label = "ARM", subset = c("ARM A", "ARM B"))
   )
 
 
@@ -177,10 +175,13 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve_delayed(
+    obj,
+    datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys
+  )
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL,
+    value_choices(teal.data::rADSL,
       var_choices = "ARMCD", var_label = "ARM",
       subset = function(data) {
         levels(data$ARMCD)[1:2]
@@ -218,10 +219,13 @@ testthat::test_that("delayed version of value_choices - resolve_delayed", {
     )
   )
 
-  res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = primary_keys_list))
+  res_obj <- resolve_delayed(
+    obj,
+    datasets = list(ADSL = teal.data::rADSL), join_keys = teal.data::default_cdisc_join_keys
+  )
   testthat::expect_equal(
     res_obj,
-    value_choices(ADSL,
+    value_choices(teal.data::rADSL,
       var_choices = c("ARMCD", "BMRKR2"), var_label = c("ARM", "BMRKR2"),
       subset = combine_armcd_bmrkr2
     )

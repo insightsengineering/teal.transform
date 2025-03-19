@@ -2,20 +2,20 @@
 % Please edit documentation in R/choices_labeled.R
 \name{variable_choices}
 \alias{variable_choices}
-\alias{variable_choices.character}
-\alias{variable_choices.data.frame}
 \title{Variable label extraction and custom selection from data}
 \usage{
-variable_choices(data, subset = NULL, fill = FALSE, key = NULL)
-
-\method{variable_choices}{character}(data, subset = NULL, fill = FALSE, key = NULL)
-
-\method{variable_choices}{data.frame}(data, subset = NULL, fill = TRUE, key = NULL)
+variable_choices(
+  data = "all",
+  subset = function(data) names(data),
+  fill = FALSE,
+  key = NULL
+)
 }
 \arguments{
 \item{data}{(\code{data.frame} or \code{character})
 If \code{data.frame}, then data to extract labels from.
-If \code{character}, then name of the dataset to extract data from once available.}
+If \code{character}, then name of the dataset to extract data from once available. Keyword \code{"all"}
+(default) indicates that \code{data} will be inherited from the \code{data_extract_spec} \code{dataname}.}
 
 \item{subset}{(\code{character} or \code{function})
 If \code{character}, then a vector of column names.
@@ -54,7 +54,10 @@ variable_choices(
   key = default_cdisc_join_keys["ADRS", "ADRS"]
 )
 
-# delayed version
+# delayed version with unknown dataset
+variable_choices()
+
+# delayed ADRS
 variable_choices("ADRS", subset = c("USUBJID", "STUDYID"))
 
 # functional subset (with delayed data) - return only factor variables

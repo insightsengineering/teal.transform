@@ -7,7 +7,7 @@
 \usage{
 choices_selected(
   choices,
-  selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
+  selected = first_choice(),
   keep_order = FALSE,
   fixed = FALSE
 )

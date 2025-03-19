@@ -131,7 +131,7 @@ no_select_keyword <- "-- no selection --"
 #' @export
 #'
 choices_selected <- function(choices,
-                             selected = if (inherits(choices, "delayed_data")) NULL else choices[1],
+                             selected = first_choice(),
                              keep_order = FALSE,
                              fixed = FALSE) {
   checkmate::assert(
@@ -141,6 +141,8 @@ choices_selected <- function(choices,
   checkmate::assert(
     checkmate::check_atomic(selected),
     checkmate::check_multi_class(selected, c("delayed_data", "delayed_choices"))
+    # todo: only delayed_choices should be possible for delayed, otherwise it might cause different
+    #       delayed output for choices and selected (for example two independent variable_choices)
   )
   checkmate::assert_flag(keep_order)
   checkmate::assert_flag(fixed)

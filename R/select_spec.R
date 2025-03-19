@@ -83,8 +83,8 @@
 #' select_spec(choices = variable_choices("ADSL"), selected = all_choices())
 #' @export
 #'
-select_spec <- function(choices,
-                        selected = `if`(inherits(choices, "delayed_data"), NULL, choices[1]),
+select_spec <- function(choices = variable_choices(),
+                        selected = first_choice(),
                         multiple = length(selected) > 1 || inherits(selected, "multiple_choices"),
                         fixed = FALSE,
                         always_selected = NULL,
@@ -140,6 +140,7 @@ select_spec.delayed_data <- function(choices, # nolint: object_name_linter.
     class = c("delayed_select_spec", "delayed_data", "select_spec")
   )
 }
+
 
 #' @rdname select_spec
 #' @export
