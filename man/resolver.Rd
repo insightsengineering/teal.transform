@@ -16,6 +16,7 @@ A transform but resolved
 }
 \description{
 Given the specification of some data to extract find if they are available or not.
+The specification for selecting a variable shouldn't depend on the data of said variable.
 }
 \examples{
 dataset1 <- datasets(is.data.frame)

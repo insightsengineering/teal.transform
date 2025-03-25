@@ -139,3 +139,28 @@ test_that("update_spec resolves correctly", {
   expect_no_error(update_spec(datasets(x = c("df", "df2"), "df"), "datasets", "df2"))
 })
 
+
+test_that("OR resolver invalidates subsequent specifications", {
+  td <- within(teal_data(), {
+    df <- data.frame(A = 1:5, B = LETTERS[1:5])
+    m <- cbind(A = 1:5, B = 5:10)
+  })
+  var_a <- variables("A")
+  df_a <- datasets(is.data.frame) & var_a
+  matrix_a <- datasets(is.matrix) & var_a
+  df_or_m_var_a <- df_a | matrix_a
+  out <- resolver(df_or_m_var_a, td)
+})
+
+test_that("OR update_spec filters specifications", {
+  td <- within(teal_data(), {
+    df <- data.frame(A = 1:5, B = LETTERS[1:5])
+    m <- cbind(A = 1:5, B = 5:10)
+  })
+  var_a <- variables("A")
+  df_a <- datasets(is.data.frame) & var_a
+  matrix_a <- datasets(is.matrix) & var_a
+  df_or_m_var_a <- df_a | matrix_a
+  resolved <- resolver(df_or_m_var_a, td)
+  out <- update_spec(resolved, "datasets","df")
+})

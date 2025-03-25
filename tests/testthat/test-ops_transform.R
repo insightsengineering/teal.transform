@@ -89,11 +89,12 @@ test_that("datasets & variables & values create a single specification", {
 
 test_that("&(transform, number) errors", {
   expect_error(datasets("ABC2") & variables("ABC2") & values("abc") & 1)
+  expect_error(datasets("ABC2") & values("abc") & 1)
 })
 
 
 test_that("| combines two transformers", {
   spec <- datasets("ABC") | datasets("abc")
   expect_length(spec, 2)
-  expect_error(spec[[1]]$datasets | spec[[1]]$datasets)
+  expect_true(is.null(names(spec)))
 })
