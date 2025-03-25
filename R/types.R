@@ -95,6 +95,10 @@ values <- function(x, select = first) {
 c.transform <- function(...) {
   l <- list(...)
   types <- lapply(l, names)
+  typesc <- vapply(l, is.transform, logical(1L))
+  if (!all(typesc)) {
+    stop("An object in position ", which(!typesc), " is not a specification.")
+  }
   utypes <- unique(unlist(types, FALSE, FALSE))
   vector <- vector("list", length(utypes))
   names(vector) <- utypes
@@ -135,6 +139,10 @@ c.transform <- function(...) {
 c.type <- function(...) {
   l <- list(...)
   types <- lapply(l, is)
+  typesc <- vapply(l, is.type, logical(1L))
+  if (!all(typesc)) {
+    stop("An object in position ", which(!typesc), " is not a type.")
+  }
   utypes <- unique(unlist(types, FALSE, FALSE))
   vector <- vector("list", length(utypes))
   names(vector) <- utypes
@@ -142,24 +150,27 @@ c.type <- function(...) {
     new_type <- vector("list", length = 2)
     names(new_type) <- c("names", "select")
     for (i in seq_along(l)) {
-      if (!t %in% names(l[[i]])) {
+      names_l <- names(l[[i]])
+      if (!is(l[[i]], t)) {
         next
       }
       old_names <- new_type$names
       old_select <- new_type$select
-      new_type$names <- c(old_names, l[[i]][[t]][["names"]])
+      new_type$names <- c(old_names, l[[i]][["names"]])
       attr(new_type$names, "original") <- c(orig(
-        old_names), orig(l[[i]][[t]][["names"]]))
-      new_type$select <- c(old_select, l[[i]][[t]][["select"]])
-      attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][[t]][["select"]]))
+        old_names), orig(l[[i]][["names"]]))
+      new_type$select <- unique(c(old_select, l[[i]][["select"]]))
+      attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][["select"]]))
     }
     orig_names <- unique(orig(new_type$names))
+    orig_select <- unique(orig(new_type$select))
     new_type$names <- unique(new_type$names)
     attr(new_type$names, "original") <- orig_names
 
-    orig_select <- unique(orig(new_type$select))
-    new_type$select <- unique(new_type$select)
+    # From the possible names apply the original function
+    new_type$select <- functions_names(orig(new_type$select), new_type$names)
     attr(new_type$select, "original") <- orig_select
+
     class(new_type) <- c(t, "type", "list")
     vector[[t]] <- new_type
   }
