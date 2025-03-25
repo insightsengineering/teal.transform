@@ -95,7 +95,10 @@ determine.transform <- function(type, data, ..., spec) {
 }
 
 functions_names <- function(unresolved, reference) {
-  stopifnot(is.character(reference)) # Allows for NA characters
+  stopifnot(is.character(reference) || is.factor(reference) || is.null(reference)) # Allows for NA characters
+  if (is.null(reference)) {
+    return(NULL)
+  }
   is_fc <- vapply(unresolved, is.function, logical(1L))
   fc_unresolved <- unresolved[is_fc]
   x <- vector("character")
