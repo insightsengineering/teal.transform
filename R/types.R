@@ -53,17 +53,56 @@ type_helper <- function(x, select, type) {
   delay(out)
 }
 
+
+#' @rdname types
+#' @name Types
+#' @title Type specification
+#' @description
+#' Define how to select and extract data
+#' @param x Character specifying the names or functions to select them. The functions will be applied on the data or the names.
+#' @param select Character of `x` or functions to select on x (only on names or positional not on the data of the variable).
+#' @returns An object of the same class as the function with two elements: names the content of x, and select.
+#' @examples
+#' datasets("A")
+#' datasets("A") | datasets("B")
+#' datasets(is.data.frame)
+#' datasets("A") & variables(is.numeric)
+NULL
+
+
+
+#' @describeIn types Specify datasets.
 #' @export
 datasets <- function(x, select = first) {
   type_helper(x, select, type = "datasets")
 }
 
 
+#' @describeIn types Specify variables.
 #' @export
 variables <- function(x, select = first) {
   type_helper(x, select, type = "variables")
 }
 
+#' @describeIn types Specify variables of MultiAssayExperiment col Data.
+#' @export
+mae_colData <- function(x, select = first) {
+  type_helper(x, select, type = "mae_colData")
+}
+
+#' @describeIn types Specify variables of MultiAssayExperiment sampleMap.
+#' @export
+mae_sampleMap <- function(x, select = first) {
+  type_helper(x, select, type = "mae_sampleMap")
+}
+
+#' @describeIn types Specify variables of MultiAssayExperiment experiments.
+#' @export
+mae_experiments <- function(x, select = first) {
+  type_helper(x, select, type = "mae_experiments")
+}
+
+#' @describeIn types Specify values.
 #' @export
 values <- function(x, select = first) {
   type_helper(x, select, type = "values")
