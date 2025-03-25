@@ -20,12 +20,7 @@ is.delayed.default <- function(x) {
 #' @export
 #' @method is.delayed transform
 is.delayed.transform <- function(x) {
-  if (!is.null(names(x))) {
-    any(vapply(x, is.delayed, logical(1L)))
-  } else {
-    delayed <- vapply(x, is.delayed, logical(1L))
-    any(delayed)
-  }
+  any(vapply(x, is.delayed, logical(1L)))
 }
 
 #' @export
@@ -38,36 +33,12 @@ is.delayed.type <- function(x) {
   FALSE
 }
 
-resolved <- function(x, variable){
+resolved <- function(x, type = is(x)){
   s <- all(is.character(x$names)) && all(is.character(x$select))
 
   if (!s && !all(x$select %in% x$names)) {
-      stop("Selected ", variable, " not available")
+      stop("Selected ", type, " not resolved.")
   }
   attr(x, "delayed") <- NULL
   x
-}
-
-get_datasets <- function(x) {
-  if (is.transform(x) && !is.delayed(x$datasets)) {
-    x$datasets$names
-  } else {
-    NULL
-  }
-}
-
-get_variables <- function(x) {
-  if (is.transform(x) && !is.delayed(x$datasets) && !is.delayed(x$variables)) {
-    x$variables$names
-  } else {
-    NULL
-  }
-}
-
-get_values <- function(x) {
-  if (is.transform(x) && !is.delayed(x)) {
-    x$values$names
-  } else {
-    NULL
-  }
 }
