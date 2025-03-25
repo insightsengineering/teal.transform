@@ -93,7 +93,7 @@ nd_type <- function(e1, e2) {
   } else {
     stop("Maybe we should decide how to apply a type to a list of transformers...")
   }
-  class(out) <- c("transform", class(out))
+  class(out) <- unique(c("transform", class(out)))
   out
 }
 
