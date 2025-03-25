@@ -207,7 +207,11 @@ c.type <- function(...) {
     attr(new_type$names, "original") <- orig_names
 
     # From the possible names apply the original function
-    new_type$select <- functions_names(orig(new_type$select), new_type$names)
+    if (any(vapply(l, is.delayed, logical(1L)))) {
+      new_type$select <- orig_select
+    } else {
+      new_type$select <- functions_names(orig(new_type$select), new_type$names)
+    }
     attr(new_type$select, "original") <- orig_select
 
     class(new_type) <- c(t, "type", "list")
