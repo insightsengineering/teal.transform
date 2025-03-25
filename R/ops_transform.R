@@ -38,10 +38,13 @@ or_transform <- function(e1, e2) {
   } else if (!is.transform(e1) && is.type(e1) && is.transform(e2)) {
     opt2 <- e2 & e1
     out <- list(e2, opt2)
-  } else {
+  } else if (is.transform(e1) && is.transform(e2)) {
     out <- list(e1, e2)
+  } else {
+    stop("Missing implementation method.")
   }
-  class(out) <- unique(c("transform", "list"))
+  # FIXME: Should we signal it is a transform or just a list of transform is enough?
+  # class(out) <- c("transform", "list")
   out
 }
 
@@ -92,7 +95,6 @@ nd_type <- function(e1, e2) {
     stop("Maybe we should decide how to apply a type to a list of transformers...")
   }
   class(out) <- c("transform", class(out))
-  browser(expr = is(out) == "datasets" && length(table(names(out))) == 1L)
   out
 }
 
