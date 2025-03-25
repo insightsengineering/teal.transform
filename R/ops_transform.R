@@ -89,8 +89,7 @@ nd_type <- function(e1, e2) {
   } else if (is.transform(e1) && is.transform(e2)){
     out <- c(e1, e2)
   } else if (is.type(e1) && is.type(e2)) {
-    out <- list(e1, e2)
-    names(out) <- c(is(e1), is(e2))
+    out <- c(e1, e2)
   } else {
     stop("Maybe we should decide how to apply a type to a list of transformers...")
   }
