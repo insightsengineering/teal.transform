@@ -1,7 +1,7 @@
 #' Resolve the specification
 #'
 #' Given the specification of some data to extract find if they are available or not.
-#'
+#' The specification for selecting a variable shouldn't depend on the data of said variable.
 #' @param spec A object extraction specification.
 #' @param data A `qenv()`, or `teal.data::teal_data()` object.
 #'
@@ -26,52 +26,80 @@ resolver <- function(spec, data) {
   if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-  stopifnot(is.transform(spec))
-
   if (!is.delayed(spec)) {
     return(spec)
   }
+  # Adding some default specifications if they are missing
+  if ("values" %in% names(spec) && !"variables" %in% names(spec)) {
+    spec <- variables(first) & spec
+  }
 
-  if (!is.null(names(spec))) {
-    rt <- resolver_transform(spec, data)
+  if ("variables" %in% names(spec) && !"datasets" %in% names(spec)) {
+    spec <- datasets(first) & spec
+  }
+
+  stopifnot(is.transform(spec))
+  det <- determine(spec, data, spec = spec)
+  det$type
+}
+
+#' A method that should take a type and resolve it.
+#'
+#' Generic that makes the minimal check on spec.
+#' Responsible of subsetting/extract the data received and check that the type matches
+#' @param type The specification to resolve.
+#' @param data The minimal data required.
+#' @return A list with two elements, the type resolved and the data extracted.
+#' @keywords internal
+#' @export
+determine <- function(type, data, ...) {
+  stopifnot(is.type(type) || is.transform(type))
+  if (!is.delayed(type)) {
+    return(list(type = type, data = data))
+  }
+  UseMethod("determine")
+}
+
+#' @export
+determine.default <- function(type, data, ..., spec) {
+  if (!is.null(names(spec)) && is.delayed(spec)) {
+    rt <- determine(spec, data)
   } else {
-    rt <- lapply(spec, resolver_transform, data = data)
+    rt <- lapply(spec, resolver, data = data, spec = spec)
     if (length(rt) == 1) {
-      rt <- rt[[1]]
+      return(rt[[1]])
     }
-    # FIXME: If there are several options invalidate whatever is below, until this is resolved.
   }
   rt
 }
 
-resolver_transform <- function(spec, data) {
-  specf <- spec
-  if (has_dataset(specf) && is.delayed(specf$datasets)) {
-    specf <- resolver.datasets(specf, data)
-  } else if (!has_dataset(specf)) {
-    specf$datasets <- na_type("datasets")
+#' @export
+determine.transform <- function(type, data, ..., spec) {
+  stopifnot(inherits(data, "qenv"))
+  # Recursion for other transforms in a list spec | spec
+  if (is.null(names(spec))) {
+    specs <- lapply(type, data, spec = spec)
+    return(specs)
   }
 
-  if (has_variable(specf) && !is.delayed(specf$datasets)) {
-    specf <- resolver.variables(specf, data)
-  } else {
-    specf$variables <- na_type("variables")
+  for (i in seq_along(type)) {
+    di <- determine(type[[i]], data, spec = spec)
+    # orverwrite so that next type in line receives the corresponding data and specification
+    if (is.null(di$type)) {
+      next
+    }
+    type[[i]] <- di$type
+    data <- di$data
   }
-
-  if (has_value(specf) && !is.delayed(specf$datasets) && !is.delayed(specf$variables)) {
-    specf <- resolver.values(specf, data)
-  } else {
-    specf$values <- na_type("values")
-  }
-
-  attr(specf, "delayed") <- NULL
-  delay(specf)
+  list(type = type, data = data) # It is the transform object resolved.
 }
 
 functions_names <- function(unresolved, reference) {
+  stopifnot(is.character(reference)) # Allows for NA characters
   is_fc <- vapply(unresolved, is.function, logical(1L))
   fc_unresolved <- unresolved[is_fc]
   x <- vector("character")
+
   for (f in fc_unresolved) {
 
     y <- tryCatch(f(reference), error = function(x) f )
@@ -83,328 +111,225 @@ functions_names <- function(unresolved, reference) {
   unique(unlist(c(unresolved[!is_fc], x), FALSE, FALSE))
 }
 
-functions_data <- function(unresolved, data) {
+functions_data <- function(unresolved, data, names) {
+  stopifnot(!is.null(data)) # Must be something but not NULL
   fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
-
-  # This is for variables
-  datasets <- names(data)
-  # Matrix doesn't have a names method
-  if (is.null(datasets)) {
-    datasets <- colnames(data)
-  }
   l <- lapply(fc_unresolved, function(f) {
-    v <- vapply(datasets, function(d) {
-      # Extract the data and apply the user supplied function
-      out <- tryCatch(f(extract(data, d)), error = function(x){FALSE})
-      if (!is.logical(out)) {
-        stop("Provided functions should return a logical object.")
-      }
-      if (length(out) != 1L && length(out) != length(extract(data, d))) {
-        # Function resolution is unconventional, but this would produce too many warnings...
-        # warning("The output of the function must be of length 1 or the same length as the data.")
-        return(FALSE)
-      }
-      all(out)
-    }, logical(1L))
-    datasets[v]
+    all_data <- tryCatch(f(data), error = function(x){FALSE})
+    if (any(all_data)) {
+      return(names[all_data])
+    } else {
+      return(NULL)
+    }
   })
   unique(unlist(l, FALSE, FALSE))
 }
 
-resolver.datasets <- function(spec, data) {
-  if (!inherits(data, "qenv")) {
-    stop("Please use qenv() or teal_data() objects.")
-  }
-  if (is.null(spec[["datasets"]]) || all(is.na(spec[["datasets"]]))) {
-    return(spec)
-  }
-  sdatasets <- spec$datasets
-  data_names <- names(data)
-  orig_names <- sdatasets$names
-  orig_select <- sdatasets$select
-  if (is.delayed(sdatasets) && all(is.character(sdatasets$names))) {
-    match <- intersect(data_names, sdatasets$names)
-    missing <- setdiff(sdatasets$names, data_names)
+# Checks that for the given type and data names and data it can be resolved
+# The workhorse of the resolver
+determine_helper <- function(type, data_names, data) {
+  orig_names <- type$names
+  orig_select <- type$select
+  names_variables_obj <- if (is.null(names(data))) { colnames(data)} else {names(data)}
+  if (is.delayed(type) && all(is.character(type$names))) {
+    match <- intersect(data_names, type$names)
+    missing <- setdiff(type$names, data_names)
     if (length(missing)) {
-      stop("Missing datasets ", paste(sQuote(missing), collapse = ", "), " were specified.")
+      return(NULL)
+      # stop("Missing datasets ", paste(sQuote(missing), collapse = ", "), " were specified.")
     }
-    sdatasets$names <- match
+    type$names <- match
     if (length(match) == 0) {
-      stop("No selected datasets matching the conditions requested")
+      return(NULL)
+      # stop("No selected ", is(type), " matching the conditions requested")
     } else if (length(match) == 1) {
-      sdatasets$select <- match
+      type$select <- match
     } else {
-      new_select <- c(functions_names(sdatasets$select, sdatasets$names),
-                      functions_data(sdatasets$select, data[sdatasets$names]))
+      new_select <- functions_names(type$select, type$names)
       new_select <- unique(new_select[!is.na(new_select)])
       if (!length(new_select)) {
-        stop("No datasets meet the requirements to be selected")
+        return(NULL)
+        # stop("No ", is(type), " meet the requirements to be selected")
       }
-      sdatasets$select <- new_select
+      type$select <- new_select
     }
-  } else if (is.delayed(sdatasets)) {
-    old_names <- sdatasets$names
-    new_names <- c(functions_names(sdatasets$names, data_names),
-                   functions_data(sdatasets$names, data))
+  } else if (is.delayed(type)) {
+    old_names <- type$names
+    new_names <- c(functions_names(type$names, names_variables_obj),
+                   functions_data(type$names, data, data_names))
     new_names <- unique(new_names[!is.na(new_names)])
     if (!length(new_names)) {
-      stop("No datasets meet the requirements")
+      return(NULL)
+      # stop("No ", is(type), " meet the requirements")
     }
-    sdatasets$names <- new_names
+    type$names <- new_names
 
-    if (length(sdatasets$names) == 0) {
-      stop("No selected datasets matching the conditions requested")
-    } else if (length(sdatasets$names) == 1) {
-      sdatasets$select <- sdatasets$names
+    if (length(type$names) == 0) {
+      return(NULL)
+      # stop("No selected ", is(type), " matching the conditions requested")
+    } else if (length(type$names) == 1) {
+      type$select <- type$names
     }
 
-    new_select <- c(functions_names(sdatasets$select, sdatasets$names),
-                    functions_data(sdatasets$select, data[sdatasets$names]))
+    new_select <- functions_names(type$select, type$names)
 
     new_select <- unique(new_select[!is.na(new_select)])
     if (!length(new_select)) {
-      stop("No datasets meet the requirements to be selected")
+      return(NULL)
+      stop("No ", is(type), " meet the requirements to be selected")
     }
-    sdatasets$select <- new_select
+    type$select <- new_select
   }
-  attr(sdatasets$names, "original") <- orig(orig_names)
-  attr(sdatasets$select, "original") <- orig(orig_select)
-  spec$datasets <- resolved(sdatasets, "dataset")
-  spec
-}
-
-resolver.variables <- function(spec, data) {
-  if (!inherits(data, "qenv")) {
-    stop("Please use qenv() or teal_data() objects.")
-  }
-
-  if (is.delayed(spec$datasets)) {
-    stop("Datasets not resolved yet")
-  }
-  if (is.null(spec[["variables"]]) || all(is.na(spec[["variables"]]))) {
-    return(spec)
-  }
-  datasets <- spec$datasets$select
-  data_selected <- extract(data, datasets)
-  if (is.null(names(data_selected))) {
-    names_data <- colnames(data_selected)
-  } else {
-    names_data <- names(data_selected)
-  }
-
-  svariables <- spec$variables
-  orig_names <- svariables$names
-  orig_select <- svariables$select
-  if (is.delayed(svariables) && all(is.character(svariables$names))) {
-    match <- intersect(names_data, svariables$names)
-    missing <- setdiff(svariables$names, names_data)
-    if (length(missing)) {
-      stop("Missing variables ", paste(sQuote(missing), collapse = ", "), " were specified.")
-    }
-    svariables$names <- match
-    if (length(match) == 1) {
-      svariables$select <- match
-    } else {
-      new_select <- c(functions_names(svariables$select, svariables$names),
-                      functions_data(svariables$select, data_selected))
-      new_select <- unique(new_select[!is.na(new_select)])
-      if (!length(new_select)) {
-        stop("No variables meet the requirements to be selected")
-      }
-      svariables$select <- new_select
-    }
-  } else if (is.delayed(svariables)) {
-    new_names <- c(functions_names(svariables$names, names_data),
-                   functions_data(svariables$names, data_selected))
-    new_names <- unique(new_names[!is.na(new_names)])
-    if (!length(new_names)) {
-      stop("No variables meet the requirements")
-    }
-    svariables$names <- new_names
-    if (length(svariables$names) == 1) {
-      svariables$select <- svariables$names
-    } else {
-      new_select <- c(functions_names(svariables$select, svariables$names),
-                      functions_data(svariables$select, data_selected))
-      new_select <- unique(new_select[!is.na(new_select)])
-      if (!length(new_select)) {
-        stop("No variables meet the requirements to be selected")
-      }
-      svariables$select <- new_select
-    }
-  }
-
-  attr(svariables$names, "original") <- orig(orig_names)
-  attr(svariables$select, "original") <- orig(orig_select)
-  spec$variables <- resolved(svariables, "variables")
-  spec
-
-}
-
-resolver.values <- function(spec, data) {
-  if (!inherits(data, "qenv")) {
-    stop("Please use qenv() or teal_data() objects.")
-  }
-
-  if (is.null(spec[["values"]]) || all(is.na(spec[["values"]]))) {
-    return(spec)
-  }
-  svalues <- spec$values
-  dataset <- extract(data, spec$datasets$select)
-  variable <- extract(dataset, spec$variables$select)
-  orig_names <- svalues$names
-  orig_select <- svalues$select
-  spec$values <- if (is.delayed(svalues) && all(is.character(svalues$names))) {
-    match <- intersect(variable, svalues$names)
-    missing <- setdiff(svalues$names, variable)
-    if (length(missing)) {
-      stop("Missing values ", paste(sQuote(missing), collapse = ", "), " were specified.")
-    }
-    svalues$names <- match
-    if (length(match) == 1) {
-      svalues$select <- match
-    } else {
-      match <- intersect(variable, svalues$names)
-      new_select <- c(functions_names(svalues$select, svalues$names),
-                      functions_data(svalues$select, variable))
-      new_select <- unique(new_select[!is.na(new_select)])
-      if (!length(new_select)) {
-        stop("No variables meet the requirements to be selected")
-      }
-      svalues$select <- new_select
-    }
-  } else if (is.delayed(svalues)) {
-    new_names <- c(functions_names(svalues$names, variable),
-                   functions_data(svalues$names, variable))
-    new_names <- unique(new_names[!is.na(new_names)])
-    if (!length(new_names)) {
-      stop("No variables meet the requirements")
-    }
-    svalues$names <- new_names
-
-    if (length(svalues$names) == 1) {
-      svalues$select <- svalues$names
-    } else {
-      new_select <- c(functions_names(svalues$select, variable),
-                      functions_data(svalues$select, variable))
-      new_select <- unique(new_select[!is.na(new_select)])
-      if (!length(new_select)) {
-        stop("No variables meet the requirements to be selected")
-      }
-      svalues$select <- new_select
-    }
-  }
-  attr(svalues$names, "original") <- orig(orig_names)
-  attr(svalues$select, "original") <- orig(orig_select)
-  spec$values <- resolved(svalues, "values")
-  spec
+  attr(type$names, "original") <- orig(orig_names)
+  attr(type$select, "original") <- orig(orig_select)
+  resolved(type)
 }
 
 #' @export
-extract.MultiAssayExperiment <- function(x, variable) {
+determine.datasets <- function(type, data, ...) {
+  if (!inherits(data, "qenv")) {
+    stop("Please use qenv() or teal_data() objects.")
+  }
+
+  l <- vector("list", length(data))
+  for (i in seq_along(data)){
+    data_name_env <- names(data)[i]
+    out <- determine_helper(type, data_name_env, data[[data_name_env]])
+    if (!is.null(out)) {
+      l[[i]] <- out
+    }
+  }
+
+  # Merge together all the types
+  type <- do.call(c, l[lengths(l) > 1])
+  # Not possible to know what is happening
+
+  if (!is.delayed(type) && length(type$select) > 1) {
+    list(type = type, data = data[type$select])
+  } else if (!is.delayed(type) && length(type$select) == 1) {
+    list(type = type, data = data[[type$select]])
+  } else {
+    list(type = type, data = NULL)
+  }
+}
+
+#' @export
+determine.variables <- function(type, data, ...) {
+  if (length(dim(data)) != 2L) {
+    stop("Can't resolve variables from this object of class ", class(data))
+  }
+
+  if (ncol(data) <= 0L) {
+    stop("Can't pull variable: No variable is available.")
+  }
+
+  # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
+  # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
+  l <- vector("list", ncol(data))
+  for (i in seq_len(ncol(data))){
+    out <- determine_helper(type, colnames(data)[i], data[, i])
+    if (!is.null(out)) {
+      l[[i]] <- out
+    }
+  }
+
+  # Merge together all the types
+  type <- do.call(c, l[lengths(l) > 1])
+
+  # Not possible to know what is happening
+  if (is.delayed(type)) {
+    return(list(type = type, data = NULL))
+  }
+  # This works for matrices and data.frames of length 1 or multiple
+  # be aware of drop behavior on tibble vs data.frame
+  list(type = type, data = data[, type$select])
+}
+
+#' @export
+determine.mae_colData <- function(type, data, ...) {
   if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
-    stop("Required to have MultiAssayExperiment's package.")
-  }
-  cd <- MultiAssayExperiment::colData(x)
-  cd[[variable]]
-}
-
-#' @export
-extract.matrix <- function(x, variable) {
-  # length(variable) == 1L
-  x[, variable, drop = TRUE]
-}
-
-#' @export
-#' @method extract data.frame
-extract.data.frame <- function(x, variable) {
-  # length(variable) == 1L
-  x[, variable, drop = TRUE]
-}
-
-#' @export
-extract.qenv <- function(x, variable) {
-  x[[variable]]
-}
-
-#' @export
-extract.default <- function(x, variable) {
-  x[, variable, drop = TRUE]
-}
-
-#' @export
-extract <- function(x, variable) {
-  UseMethod("extract")
-}
-
-#' Update a specification
-#'
-#' Once a selection is made update the specification for different valid selection.
-#' @param spec A resolved specification such as one created with datasets and variables.
-#' @param type Which type was updated? One of datasets, variables, values.
-#' @param value What is the new selection? One that is a valid value for the given type and specification.
-#' @return The specification with restored choices and selection if caused by the update.
-#' @export
-#' @examples
-#' td <- within(teal.data::teal_data(), {
-#'     df <- data.frame(A = as.factor(letters[1:5]),
-#'                      Ab = LETTERS[1:5])
-#'     df_n <- data.frame(C = 1:5,
-#'                        Ab = as.factor(letters[1:5]))
-#' })
-#' data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
-#' res <- resolver(data_frames_factors, td)
-#' update_spec(res, "datasets", "df_n")
-#' # update_spec(res, "datasets", "error")
-update_spec <- function(spec, type, value) {
-  if (!is.character(value)) {
-    stop("The updated value is not a character.",
-         "\nDo you attempt to set a new specification? Please open an issue")
+    stop("Requires 'MultiAssayExperiment' package.")
   }
 
-  if (!is.null(names(spec))) {
-    updated_spec <- update_s_spec(spec, type, value)
+  new_data <- colData(data)
+  for (i in seq_along(new_data)){
+    determine_helper(type, colnames(data)[i], new_data[, i])
+  }
+  if (length(dim(new_data)) != 2L) {
+    stop("Can't resolve variables from this object of class ", class(new_data))
+  }
+  if (ncol(new_data) <= 0L) {
+    stop("Can't pull variable: No variable is available.")
+  }
+  type <- determine_helper(type, colnames(data), data)
+
+  # Not possible to know what is happening
+  if (is.delayed(type)) {
+    return(list(type = type, data = NULL))
+  }
+
+  if (length(type$select) > 1) {
+    list(type = type, data = data[type$select])
+
   } else {
-    update_multiple <- lapply(spec, update_s_spec, type, value)
+    list(type = type, data = data[[type$select]])
   }
-  updated_spec
 }
 
-update_s_spec <- function(spec, type, value) {
-  w <- c("datasets", "variables", "values")
-  type <- match.arg(type, w)
-  restart_types <- w[seq_along(w) > which(type == w)]
+#' @export
+determine.mae_experiments <- function(type, data, ...) {
+  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+    stop("Requires 'MultiAssayExperiment' package.")
+  }
+  new_data <- experiments(data)
+  type <- determine_helper(type, names(new_data), new_data)
 
-  valid_names <- spec[[type]]$names
+  # Not possible to know what is happening
+  if (is.delayed(type)) {
+  }
 
-  if (!is.list(valid_names) && all(value %in% valid_names)) {
-    original_select <- orig(spec[[type]]$select)
-    spec[[type]][["select"]] <- value
-    attr(spec[[type]][["select"]], "original") <- original_select
-  } else if (!is.list(valid_names) && !all(value %in% valid_names)) {
-    original_select <- orig(spec[[type]]$select)
-    valid_values <- intersect(value, valid_names)
-    if (!length(valid_values)) {
-      stop("No valid value provided.")
-    }
-    spec[[type]][["select"]] <- valid_values
-    attr(spec[[type]][["select"]], "original") <- original_select
+  if (!is.delayed(type) && length(type$select) > 1) {
+    list(type = type, data = new_data[type$select])
+
+  } else if (!is.delayed(type) && length(type$select) == 1) {
+    list(type = type, data = new_data[[type$select]])
   } else {
-    stop("It seems the specification needs to be resolved first.")
-  }
-
-  # Restore to the original specs
-  for (type in restart_types) {
-
-    if (is.na(spec[[type]])) {
-      next
+    return(list(type = type, data = NULL))
     }
-    fun <- match.fun(type)
-    restored_transform <- fun(x = orig(spec[[type]]$names),
-                              select = orig(spec[[type]]$select))
-    spec[[type]] <- restored_transform[[type]]
+}
+
+#' @export
+determine.mae_sampleMap <- function(type, data, ...) {
+  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+    stop("Requires 'MultiAssayExperiment' package.")
   }
-  spec
+
+  new_data <- sampleMap(data)
+  type <- determine_helper(type, names(new_data), new_data)
+
+  # Not possible to know what is happening
+  if (is.delayed(type)) {
+    return(list(type = type, data = NULL))
+  }
+
+  if (length(type$select) > 1) {
+    list(type = type, data = data[type$select])
+
+  } else {
+    list(type = type, data = data[[type$select]])
+  }
+}
+
+#' @export
+determine.values <- function(type, data, ...) {
+  type <- determine_helper(type, names(data), data)
+
+  # Not possible to know what is happening
+  if (is.delayed(type)) {
+    return(list(type = type, data = NULL))
+  }
+
+  list(type = type, data = type$select)
 }
 
 orig <- function(x) {
