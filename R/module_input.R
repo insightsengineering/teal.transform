@@ -36,8 +36,8 @@ module_input_server <- function(id, spec, data) {
         spec_v <- spec[[variable]]
         # a <- !is.null(x) && all(x %in% $names)
         # browser(expr = !isFALSE(a) && !isTRUE(a))
-        if  (!is.null(x) && all(x %in% spec_v$names) && !x %in% spec_v$select) {
-          spec |>
+        if  (!is.null(x) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)) {
+          spec <- spec |>
             update_spec(variable, input[[variable]]) |>
             teal.transform::resolver(data())
         }
