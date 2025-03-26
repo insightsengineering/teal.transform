@@ -14,7 +14,15 @@ is.delayed <- function(x) {
 #' @export
 #' @method is.delayed default
 is.delayed.default <- function(x) {
+  # FIXME: A warning?
   FALSE
+}
+
+# Handling a list of transformers e1 | e2
+#' @export
+#' @method is.delayed list
+is.delayed.list <- function(x) {
+  any(vapply(x, is.delayed, logical(1L)))
 }
 
 #' @export
