@@ -1,4 +1,6 @@
-f <- function(x){head(x, 1)}
+f <- function(x) {
+  head(x, 1)
+}
 
 test_that("resolver datasets works", {
   df_head <- datasets("df", f)
@@ -7,7 +9,7 @@ test_that("resolver datasets works", {
   df_mean <- datasets("df", mean)
   median_mean <- datasets(median, mean)
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c =  factor(letters[1:5]))
+    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c = factor(letters[1:5]))
     m <- cbind(b = 1:5, c = 10:14)
     m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
   })
@@ -25,10 +27,14 @@ test_that("resolver variables works", {
   data_frames <- datasets(is.data.frame)
   var_a <- variables("a")
   factors <- variables(is.factor)
-  factors_head <- variables(is.factor, function(x){head(x, 1)})
-  var_matrices_head <- variables(is.matrix, function(x){head(x, 1)})
+  factors_head <- variables(is.factor, function(x) {
+    head(x, 1)
+  })
+  var_matrices_head <- variables(is.matrix, function(x) {
+    head(x, 1)
+  })
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c =  factor(letters[1:5]))
+    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c = factor(letters[1:5]))
     m <- cbind(b = 1:5, c = 10:14)
     m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
   })
@@ -56,11 +62,15 @@ test_that("resolver values works", {
   data_frames <- datasets(is.data.frame)
   var_a <- variables("a")
   factors <- variables(is.factor)
-  factors_head <- variables(is.factor, function(x){head(x, 1)})
-  var_matrices_head <- variables(is.matrix, function(x){head(x, 1)})
+  factors_head <- variables(is.factor, function(x) {
+    head(x, 1)
+  })
+  var_matrices_head <- variables(is.matrix, function(x) {
+    head(x, 1)
+  })
   val_A <- values("A")
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c =  factor(letters[1:5]))
+    df <- data.frame(a = LETTERS[1:5], b = factor(letters[1:5]), c = factor(letters[1:5]))
     m <- cbind(b = 1:5, c = 10:14)
     m2 <- cbind(a = LETTERS[1:2], b = LETTERS[4:5])
   })
@@ -69,39 +79,54 @@ test_that("resolver values works", {
 
 test_that("names and variables are reported", {
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(A = as.factor(letters[1:5]),
-                     Ab = LETTERS[1:5],
-                     Abc = c(LETTERS[1:4], letters[1]))
-    df2 <- data.frame(A = 1:5,
-                      B = 1:5)
+    df <- data.frame(
+      A = as.factor(letters[1:5]),
+      Ab = LETTERS[1:5],
+      Abc = c(LETTERS[1:4], letters[1])
+    )
+    df2 <- data.frame(
+      A = 1:5,
+      B = 1:5
+    )
     m <- matrix()
   })
   d_df <- datasets("df")
-  df_upper_variables <- d_df & variables(function(x){x==toupper(x)})
+  df_upper_variables <- d_df & variables(function(x) {
+    x == toupper(x)
+  })
   out <- resolver(df_upper_variables, td)
   # This should select A and Ab:
   #      A because the name is all capital letters and
   #      Ab values is all upper case.
   expect_length(out$variables$names, 2)
-  v_all_upper <- variables(function(x){all(x==toupper(x))})
+  v_all_upper <- variables(function(x) {
+    all(x == toupper(x))
+  })
   df_all_upper_variables <- d_df & v_all_upper
   expect_no_error(out <- resolver(df_all_upper_variables, td))
   expect_length(out$variables$names, 1)
   expect_no_error(out <- resolver(datasets("df2") & v_all_upper, td))
   expect_length(out$variables$names, 2)
-  expect_no_error(out <- resolver(datasets(function(x){is.data.frame(x) && all(colnames(x) == toupper(colnames(x)))}), td))
+  expect_no_error(out <- resolver(datasets(function(x) {
+    is.data.frame(x) && all(colnames(x) == toupper(colnames(x)))
+  }), td))
   expect_length(out$datasets$names, 1)
-  expect_no_error(out <- resolver(datasets(is.data.frame) & datasets(function(x){colnames(x) == toupper(colnames(x))}), td))
+  expect_no_error(out <- resolver(datasets(is.data.frame) & datasets(function(x) {
+    colnames(x) == toupper(colnames(x))
+  }), td))
   expect_length(out$datasets$names, 2)
-
 })
 
 test_that("update_spec resolves correctly", {
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(A = as.factor(letters[1:5]),
-                     Ab = LETTERS[1:5])
-    df_n <- data.frame(C = 1:5,
-                       Ab = as.factor(letters[1:5]))
+    df <- data.frame(
+      A = as.factor(letters[1:5]),
+      Ab = LETTERS[1:5]
+    )
+    df_n <- data.frame(
+      C = 1:5,
+      Ab = as.factor(letters[1:5])
+    )
   })
   data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
   expect_false(is.null(attr(data_frames_factors$datasets$names, "original")))
@@ -162,5 +187,5 @@ test_that("OR update_spec filters specifications", {
   matrix_a <- datasets(is.matrix) & var_a
   df_or_m_var_a <- df_a | matrix_a
   resolved <- resolver(df_or_m_var_a, td)
-  out <- update_spec(resolved, "datasets","df")
+  out <- update_spec(resolved, "datasets", "df")
 })

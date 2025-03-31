@@ -104,8 +104,7 @@ functions_names <- function(unresolved, reference) {
   x <- vector("character")
 
   for (f in fc_unresolved) {
-
-    y <- tryCatch(f(reference), error = function(x) f )
+    y <- tryCatch(f(reference), error = function(x) f)
     if (!is.logical(y)) {
       stop("Provided functions should return a logical object.")
     }
@@ -118,7 +117,9 @@ functions_data <- function(unresolved, data, names) {
   stopifnot(!is.null(data)) # Must be something but not NULL
   fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
   l <- lapply(fc_unresolved, function(f) {
-    all_data <- tryCatch(f(data), error = function(x){FALSE})
+    all_data <- tryCatch(f(data), error = function(x) {
+      FALSE
+    })
     if (any(all_data)) {
       return(names[all_data])
     } else {
@@ -133,7 +134,11 @@ functions_data <- function(unresolved, data, names) {
 determine_helper <- function(type, data_names, data) {
   orig_names <- type$names
   orig_select <- type$select
-  names_variables_obj <- if (is.null(names(data))) { colnames(data)} else {names(data)}
+  names_variables_obj <- if (is.null(names(data))) {
+    colnames(data)
+  } else {
+    names(data)
+  }
   if (is.delayed(type) && all(is.character(type$names))) {
     match <- intersect(data_names, type$names)
     missing <- setdiff(type$names, data_names)
@@ -158,8 +163,10 @@ determine_helper <- function(type, data_names, data) {
     }
   } else if (is.delayed(type)) {
     old_names <- type$names
-    new_names <- c(functions_names(type$names, names_variables_obj),
-                   functions_data(type$names, data, data_names))
+    new_names <- c(
+      functions_names(type$names, names_variables_obj),
+      functions_data(type$names, data, data_names)
+    )
     new_names <- unique(new_names[!is.na(new_names)])
     if (!length(new_names)) {
       return(NULL)
@@ -195,7 +202,7 @@ determine.datasets <- function(type, data, ...) {
   }
 
   l <- vector("list", length(data))
-  for (i in seq_along(data)){
+  for (i in seq_along(data)) {
     data_name_env <- names(data)[i]
     out <- determine_helper(type, data_name_env, data[[data_name_env]])
     if (!is.null(out)) {
@@ -229,7 +236,7 @@ determine.variables <- function(type, data, ...) {
   # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
   # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
   l <- vector("list", ncol(data))
-  for (i in seq_len(ncol(data))){
+  for (i in seq_len(ncol(data))) {
     out <- determine_helper(type, colnames(data)[i], data[, i])
     if (!is.null(out)) {
       l[[i]] <- out
@@ -255,7 +262,7 @@ determine.mae_colData <- function(type, data, ...) {
   }
 
   new_data <- colData(data)
-  for (i in seq_along(new_data)){
+  for (i in seq_along(new_data)) {
     determine_helper(type, colnames(data)[i], new_data[, i])
   }
   if (length(dim(new_data)) != 2L) {
@@ -273,7 +280,6 @@ determine.mae_colData <- function(type, data, ...) {
 
   if (length(type$select) > 1) {
     list(type = type, data = data[type$select])
-
   } else {
     list(type = type, data = data[[type$select]])
   }
@@ -293,12 +299,11 @@ determine.mae_experiments <- function(type, data, ...) {
 
   if (!is.delayed(type) && length(type$select) > 1) {
     list(type = type, data = new_data[type$select])
-
   } else if (!is.delayed(type) && length(type$select) == 1) {
     list(type = type, data = new_data[[type$select]])
   } else {
     return(list(type = type, data = NULL))
-    }
+  }
 }
 
 #' @export
@@ -317,7 +322,6 @@ determine.mae_sampleMap <- function(type, data, ...) {
 
   if (length(type$select) > 1) {
     list(type = type, data = data[type$select])
-
   } else {
     list(type = type, data = data[[type$select]])
   }

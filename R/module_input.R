@@ -1,4 +1,3 @@
-
 helper_input <- function(id,
                          label,
                          multiple = FALSE) {
@@ -7,7 +6,8 @@ helper_input <- function(id,
     label,
     choices = NULL,
     selected = NULL,
-    multiple = multiple)
+    multiple = multiple
+  )
 }
 
 module_input_ui <- function(id, label, spec) {
@@ -17,15 +17,15 @@ module_input_ui <- function(id, label, spec) {
   )
   l <- lapply(spec, function(x) {
     helper_input(ns(is(x)),
-                 paste("Select", is(x), collapse = " "),
-                 multiple = is(x) != "datasets")
+      paste("Select", is(x), collapse = " "),
+      multiple = is(x) != "datasets"
+    )
   })
   input <- tagList(input, l)
 }
 
 module_input_server <- function(id, spec, data) {
   moduleServer(id, function(input, output, session) {
-
     react_updates <- reactive({
       if (!anyNA(spec) && is.delayed(spec)) {
         spec <- teal.transform::resolver(spec, data())
@@ -34,7 +34,7 @@ module_input_server <- function(id, spec, data) {
         variable <- names(input)[i]
         x <- input[[variable]]
         spec_v <- spec[[variable]]
-        if  (!is.null(x) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)) {
+        if (!is.null(x) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)) {
           spec <- spec |>
             update_spec(variable, input[[variable]]) |>
             teal.transform::resolver(data())
@@ -79,5 +79,3 @@ module_input_server <- function(id, spec, data) {
     })
   })
 }
-
-

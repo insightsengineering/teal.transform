@@ -8,10 +8,14 @@
 #' @export
 #' @examples
 #' td <- within(teal.data::teal_data(), {
-#'     df <- data.frame(A = as.factor(letters[1:5]),
-#'                      Ab = LETTERS[1:5])
-#'     df_n <- data.frame(C = 1:5,
-#'                        Ab = as.factor(letters[1:5]))
+#'   df <- data.frame(
+#'     A = as.factor(letters[1:5]),
+#'     Ab = LETTERS[1:5]
+#'   )
+#'   df_n <- data.frame(
+#'     C = 1:5,
+#'     Ab = as.factor(letters[1:5])
+#'   )
 #' })
 #' data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
 #' res <- resolver(data_frames_factors, td)
@@ -19,8 +23,10 @@
 #' # update_spec(res, "datasets", "error")
 update_spec <- function(spec, type, value) {
   if (!is.character(value)) {
-    stop("The updated value is not a character.",
-         "\nDo you attempt to set a new specification? Please open an issue.")
+    stop(
+      "The updated value is not a character.",
+      "\nDo you attempt to set a new specification? Please open an issue."
+    )
   }
 
   if (is.transform(spec) && is.null(names(spec))) {
@@ -30,10 +36,10 @@ update_spec <- function(spec, type, value) {
   }
   if (is.transform(spec) && !is.null(names(spec))) {
     updated_spec <- update_s_spec(spec, type, value)
-  } else if (is.type(spec))  {
+  } else if (is.type(spec)) {
     updated_spec <- update_s_spec(spec, is(spec), value)
   } else {
-      stop("Multiple or no specification is possible.")
+    stop("Multiple or no specification is possible.")
   }
   updated_spec
 }
@@ -63,13 +69,14 @@ update_s_spec <- function(spec, type, value) {
 
   # Restore to the original specs
   for (type_restart in restart_types) {
-
     if (is.na(spec[[type_restart]])) {
       next
     }
     fun <- match.fun(type_restart)
-    restored_transform <- fun(x = orig(spec[[type_restart]]$names),
-                              select = orig(spec[[type_restart]]$select))
+    restored_transform <- fun(
+      x = orig(spec[[type_restart]]$names),
+      select = orig(spec[[type_restart]]$select)
+    )
     spec[[type_restart]] <- restored_transform
   }
   spec

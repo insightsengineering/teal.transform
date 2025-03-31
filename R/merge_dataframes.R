@@ -1,4 +1,3 @@
-
 # self_merge(df1, df2) almost equal to self_merge(df2, df1): Only changes on the column order.
 self_merging <- function(e1, e2, ids, type) {
   # Get the name of the variables to use as suffix.
@@ -13,11 +12,26 @@ self_merging <- function(e1, e2, ids, type) {
 
   # Called by its side effects of adding the two variables the the current environment
   switch(type,
-    inner = {all.x = FALSE; all.y = FALSE},
-    full =  {all.x = TRUE;  all.y = TRUE},
-    left =  {all.x = TRUE;  all.y = FALSE},
-    right = {all.x = FALSE; all.y = TRUE},
-    {all.x = FALSE; all.y = FALSE}
+    inner = {
+      all.x <- FALSE
+      all.y <- FALSE
+    },
+    full = {
+      all.x <- TRUE
+      all.y <- TRUE
+    },
+    left = {
+      all.x <- TRUE
+      all.y <- FALSE
+    },
+    right = {
+      all.x <- FALSE
+      all.y <- TRUE
+    },
+    {
+      all.x <- FALSE
+      all.y <- FALSE
+    }
   )
 
   if (!is.null(names(ids))) {
@@ -33,11 +47,14 @@ self_merging <- function(e1, e2, ids, type) {
   # a) ask for the method to be implemented or
   # b) implement it ourselves here to be used internally.
   mm <- merge(e1, e2,
-              all.x = all.x, all.y = all.y,
-              by.x = name_ids, by.y = ids,
-              suffixes = c(suffix1, suffix2))
-  g <- grep(paste0("\\.[", "(", name1, ")|(", name2, ")]"),
-            colnames(mm))
+    all.x = all.x, all.y = all.y,
+    by.x = name_ids, by.y = ids,
+    suffixes = c(suffix1, suffix2)
+  )
+  g <- grep(
+    paste0("\\.[", "(", name1, ")|(", name2, ")]"),
+    colnames(mm)
+  )
   if (length(g)) {
     mix_columns <- setdiff(intersect(ce1, ce2), ids)
     for (column in mix_columns) {
@@ -52,5 +69,4 @@ self_merging <- function(e1, e2, ids, type) {
     }
   }
   mm
-
 }
