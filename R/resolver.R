@@ -38,7 +38,7 @@ resolver <- function(spec, data) {
     spec <- datasets(first) & spec
   }
 
-  stopifnot(is.transform(spec))
+  stopifnot(is.list(spec) || is.transform(spec))
   det <- determine(spec, data, spec = spec)
   det$type
 }
@@ -53,7 +53,7 @@ resolver <- function(spec, data) {
 #' @keywords internal
 #' @export
 determine <- function(type, data, ...) {
-  stopifnot(is.type(type) || is.transform(type))
+  stopifnot(is.type(type) || is.list(type) || is.transform(type))
   if (!is.delayed(type)) {
     return(list(type = type, data = data))
   }
