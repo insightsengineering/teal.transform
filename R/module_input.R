@@ -34,8 +34,6 @@ module_input_server <- function(id, spec, data) {
         variable <- names(input)[i]
         x <- input[[variable]]
         spec_v <- spec[[variable]]
-        # a <- !is.null(x) && all(x %in% $names)
-        # browser(expr = !isFALSE(a) && !isTRUE(a))
         if  (!is.null(x) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)) {
           spec <- spec |>
             update_spec(variable, input[[variable]]) |>
@@ -61,7 +59,7 @@ module_input_server <- function(id, spec, data) {
           choices = unorig(spec[[variable]]$names),
           selected = unorig(spec[[variable]]$select)
         )
-        # FIXME set on gray the input
+        # FIXME: set on gray the input
         # FIXME: Hide input field if any type on specification cannot be solved
       }
     })
