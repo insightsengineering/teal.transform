@@ -25,7 +25,7 @@ anyNA.type <- function(x, recursive = FALSE) {
 
 first <- function(x){
   if (length(x) > 0) {
-    false <- rep(FALSE, length.out = length(x))
+    false <- rep_len(FALSE, length.out = length(x))
     false[1] <- TRUE
     return(false)
   }
@@ -207,11 +207,10 @@ c.type <- function(...) {
     attr(new_type$names, "original") <- orig_names
 
     # From the possible names apply the original function
-    if (any(vapply(l, is.delayed, logical(1L)))) {
-      new_type$select <- orig_select
-    } else {
+    if (is.delayed(new_type)) {
       new_type$select <- functions_names(orig(new_type$select), new_type$names)
     }
+
     attr(new_type$select, "original") <- orig_select
 
     class(new_type) <- c(t, "type", "list")
