@@ -1,3 +1,40 @@
+# Allows merging arbitrary number of data.frames by ids and type
+merging <- function(..., ids, type) {
+  number_merges <- ...length() - 1L
+  stopifnot(
+    "Number of datasets is enough" = number_merges >= 1L,
+    "Number of arguments for ids matches data" = (length(ids) == number_merges && is.list(ids)) || length(ids) == 1L && is.character(ids),
+    "Number of arguments for type matches data" = length(type) == number_merges  || length(type) == 1L)
+  list_df <- list(...)
+
+  if (length(type) == 1L) {
+    type <- rep(type, number_merges)
+  }
+  if (length(ids) == 1L) {
+    ids <- rep(ids, number_merges)
+  }
+
+  if (number_merges == 1L) {
+    return(self_merging(..1, ..2, ids = ids, type = type))
+  }
+
+  # l <- list("a", "b", "c", "d")
+  # number_merges <- length(l) - 1L
+  m <- list()
+  for (merge_i in seq_len(number_merges)) {
+    message(merge_i)
+    if (merge_i == 1L) {
+      out <- self_merging(list_df[[merge_i]], list_df[[merge_i + 1L]],
+                          ids[[merge_i]], type = type[[merge_i]])
+    } else {
+      out <- self_merging(out, list_df[[merge_i + 1L]],
+                          ids[[merge_i]], type = type[[merge_i]])
+    }
+  }
+  out
+}
+
+
 
 # self_merge(df1, df2) almost equal to self_merge(df2, df1): Only changes on the column order.
 self_merging <- function(e1, e2, ids, type) {
@@ -35,19 +72,21 @@ self_merging <- function(e1, e2, ids, type) {
   mm <- merge(e1, e2,
               all.x = all.x, all.y = all.y,
               by.x = name_ids, by.y = ids,
-              suffixes = c(suffix1, suffix2))
-  g <- grep(paste0("\\.[", "(", name1, ")|(", name2, ")]"),
-            colnames(mm))
+              suffixes = c(".e1", ".e2"))
+  g <- grep("\\.[(e1)(e2)]", colnames(mm))
   if (length(g)) {
     mix_columns <- setdiff(intersect(ce1, ce2), ids)
     for (column in mix_columns) {
-      mc1 <- paste0(mix_columns, suffix1)
-      mc2 <- paste0(mix_columns, suffix2)
-
+      mc1 <- paste0(column, ".e1")
+      mc2 <- paste0(column, ".e2")
       # Rename column and delete one if they are the same
       if (identical(mm[, mc1], mm[, mc2])) {
         mm[, mc2] <- NULL
-        colnames(mm)[mc1 == colnames(mm)] <- column
+        colnames(mm)[colnames(mm) %in% mc1] <- column
+      } else {
+        # Rename to keep the suffic of the data names
+        colnames(mm)[colnames(mm) %in% mc1] <- paste0(column, suffix1)
+        colnames(mm)[colnames(mm) %in% mc2] <- paste0(column, suffix2)
       }
     }
   }
