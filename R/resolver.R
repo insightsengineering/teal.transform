@@ -3,7 +3,6 @@
 #' Given the specification of some data to extract find if they are available or not.
 #' The specification for selecting a variable shouldn't depend on the data of said variable.
 #' @param spec A object extraction specification.
-#' @param data A `qenv()`, or `teal.data::teal_data()` object.
 #'
 #' @returns A transform but resolved
 #' @export
@@ -29,6 +28,7 @@ resolver <- function(spec, data) {
   if (!is.delayed(spec)) {
     return(spec)
   }
+
   # Adding some default specifications if they are missing
   if ("values" %in% names(spec) && !"variables" %in% names(spec)) {
     spec <- variables(first) & spec
@@ -54,8 +54,10 @@ resolver <- function(spec, data) {
 #' @export
 determine <- function(type, data, ...) {
   stopifnot(is.type(type) || is.list(type) || is.transform(type))
-  if (!is.delayed(type)) {
-    return(list(type = type, data = data))
+  if (!is.delayed(type) && length(type$select) > 1L) {
+    return(list(type = type, data = data[unorig(type$select)]))
+  } else if (!is.delayed(type) && length(type$select) == 1L) {
+    return(list(type = type, data = data[[unorig(type$select)]]))
   }
   UseMethod("determine")
 }
@@ -65,7 +67,7 @@ determine.default <- function(type, data, ..., spec) {
   if (!is.null(names(spec)) && is.delayed(spec)) {
     rt <- determine(spec, data)
   } else {
-    rt <- lapply(spec, resolver, data = data, spec = spec)
+    rt <- lapply(spec, resolver, data = data)
     if (length(rt) == 1) {
       return(rt[[1]])
     }
@@ -82,55 +84,63 @@ determine.transform <- function(type, data, ..., spec) {
     return(specs)
   }
 
+  d <- data
   for (i in seq_along(type)) {
-    di <- determine(type[[i]], data, spec = spec)
-    # orverwrite so that next type in line receives the corresponding data and specification
+    di <- determine(type[[i]], d, spec = spec)
+    # overwrite so that next type in line receives the corresponding data and specification
     if (is.null(di$type)) {
       next
     }
     type[[i]] <- di$type
-    data <- di$data
+    d <- di$data
   }
   list(type = type, data = data) # It is the transform object resolved.
 }
 
-functions_names <- function(unresolved, reference) {
-  stopifnot(is.character(reference) || is.factor(reference) || is.null(reference)) # Allows for NA characters
-  if (is.null(reference)) {
+functions_names <- function(spec_criteria, names) {
+  stopifnot(is.character(names) || is.factor(names) || is.null(names)) # Allows for NA characters
+  if (is.null(names)) {
     return(NULL)
   }
-  is_fc <- vapply(unresolved, is.function, logical(1L))
-  fc_unresolved <- unresolved[is_fc]
-  x <- vector("character")
+  is_fc <- vapply(spec_criteria, is.function, logical(1L))
+  functions <- spec_criteria[is_fc]
+  new_names <- vector("character")
 
-  for (f in fc_unresolved) {
-
-    y <- tryCatch(f(reference), error = function(x) f )
-    if (!is.logical(y)) {
+  for (fun in functions) {
+    names_ok <- tryCatch(fun(names), error = function(new_names) FALSE )
+    if (!is.logical(names_ok)) {
       stop("Provided functions should return a logical object.")
     }
-    x <- c(x, reference[y[!is.na(y)]])
+    if (any(names_ok)) {
+      new_names <- c(new_names, names[names_ok])
+    }
   }
-  unique(unlist(c(unresolved[!is_fc], x), FALSE, FALSE))
+  old_names <- unique(unlist(spec_criteria[!is_fc], FALSE, FALSE))
+  c(new_names, old_names)
 }
 
-functions_data <- function(unresolved, data, names) {
+# Extract data and evaluate if the function
+functions_data <- function(spec_criteria, data, names_data) {
   stopifnot(!is.null(data)) # Must be something but not NULL
-  fc_unresolved <- unresolved[vapply(unresolved, is.function, logical(1L))]
-  l <- lapply(fc_unresolved, function(f) {
-    all_data <- tryCatch(f(data), error = function(x){FALSE})
-    if (any(all_data)) {
-      return(names[all_data])
+  is_fc <- vapply(spec_criteria, is.function, logical(1L))
+  functions <- spec_criteria[is_fc]
+
+  l <- lapply(functions, function(fun) {
+    data_ok <- tryCatch(fun(data), error = function(x){FALSE})
+    if (any(data_ok)) {
+      return(names_data[data_ok])
     } else {
       return(NULL)
     }
   })
-  unique(unlist(l, FALSE, FALSE))
+  new_names <- unique(unlist(l, FALSE, FALSE))
+  c(new_names, spec_criteria[!is_fc])
 }
 
 # Checks that for the given type and data names and data it can be resolved
 # The workhorse of the resolver
 determine_helper <- function(type, data_names, data) {
+  stopifnot(!is.null(type))
   orig_names <- type$names
   orig_select <- type$select
   names_variables_obj <- if (is.null(names(data))) { colnames(data)} else {names(data)}
@@ -160,7 +170,7 @@ determine_helper <- function(type, data_names, data) {
     old_names <- type$names
     new_names <- c(functions_names(type$names, names_variables_obj),
                    functions_data(type$names, data, data_names))
-    new_names <- unique(new_names[!is.na(new_names)])
+    new_names <- unlist(unique(new_names[!is.na(new_names)]), use.names = FALSE)
     if (!length(new_names)) {
       return(NULL)
       # stop("No ", is(type), " meet the requirements")
@@ -194,23 +204,33 @@ determine.datasets <- function(type, data, ...) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
-  l <- vector("list", length(data))
-  for (i in seq_along(data)){
+  l <- vector("list", length(names(data)))
+  # Somehow in some cases (I didn't explore much this was TRUE)
+  for (i in seq_along(l)){
     data_name_env <- names(data)[i]
-    out <- determine_helper(type, data_name_env, data[[data_name_env]])
+    out <- determine_helper(type, data_name_env, extract(data, data_name_env))
     if (!is.null(out)) {
       l[[i]] <- out
     }
   }
 
   # Merge together all the types
-  type <- do.call(c, l[lengths(l) > 1])
+  type <- do.call(c, l[lengths(l) > 1L])
+  # FIXME: This combine the different selections too.
+  # Instead it should apply once the select function and keep that instead.
+  # helper_something(type$select, type$names, data)
   # Not possible to know what is happening
-
-  if (!is.delayed(type) && length(type$select) > 1) {
-    list(type = type, data = data[type$select])
-  } else if (!is.delayed(type) && length(type$select) == 1) {
-    list(type = type, data = data[[type$select]])
+  for (name in type$names){
+    data_name_env <- names(data)[i]
+    out <- determine_helper(type, data_name_env, extract(data, data_name_env))
+    if (!is.null(out)) {
+      l[[i]] <- out
+    }
+  }
+  if (!is.delayed(type) && length(type$select) > 1L) {
+    list(type = type, data = data[unorig(type$select)])
+  } else if (!is.delayed(type) && length(type$select) == 1L) {
+    list(type = type, data = data[[unorig(type$select)]])
   } else {
     list(type = type, data = NULL)
   }
