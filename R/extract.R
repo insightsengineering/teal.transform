@@ -1,0 +1,53 @@
+#' Internal method to extract data from different objects
+#'
+#' Required to resolve a specification into something usable (by comparing with the existing data).
+#' Required by merging data based on a resolved specification.
+#' @export
+#' @noRd
+#' @keywords internal
+extract <- function(x, variable, ...) {
+  UseMethod("extract")
+}
+
+# Cases handled by the default method
+# @export
+# extract.MultiAssayExperiment <- function(x, variable) {
+#   # if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+#   #   stop("Required to have MultiAssayExperiment's package.")
+#   # }
+#   x[, variable, drop = TRUE]
+# }
+#
+# @export
+# extract.DataFrame <- function(x, variable) {
+#   # if (!requireNamespace("S4Vectors", quietly = TRUE)) {
+#   #   stop("Required to have S4Vectors's package.")
+#   # }
+#   x[, variable, drop = TRUE]
+# }
+#
+# @export
+# extract.matrix <- function(x, variable) {
+#   x[, variable, drop = TRUE]
+# }
+
+#' @export
+extract.default <- function(x, variable) {
+  if (length(dim(x)) == 2L) {
+    x[, variable, drop = TRUE]
+  } else {
+    x[[variable]]
+  }
+}
+
+# @export
+# @method extract data.frame
+# extract.data.frame <- function(x, variable) {
+#   # length(variable) == 1L
+#   x[, variable, drop = TRUE]
+# }
+
+# @export
+# extract.qenv <- function(x, variable) {
+#   x[[variable]]
+# }
