@@ -24,20 +24,27 @@ module_input_ui <- function(id, label, spec) {
 }
 
 module_input_server <- function(id, spec, data) {
+  stopifnot(is.transform(spec))
+  stopifnot(is.reactive(data))
+  stopifnot(is.character(id))
   moduleServer(id, function(input, output, session) {
-
     react_updates <- reactive({
+      d <- data()
       if (!anyNA(spec) && is.delayed(spec)) {
-        spec <- teal.transform::resolver(spec, data())
+        spec <- teal.transform::resolver(spec, d)
       }
-      for (i in seq_along(input)) {
+      for (i in seq_along(names(input))) {
         variable <- names(input)[i]
         x <- input[[variable]]
         spec_v <- spec[[variable]]
-        if  (!is.null(x) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)) {
+        # resolved <- !is.character(spec_v$names) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)
+
+        if  (!is.null(x) && any(nzchar(x))) {
           spec <- spec |>
-            update_spec(variable, input[[variable]]) |>
-            teal.transform::resolver(data())
+            update_spec(variable, x) |>
+            resolver(d)
+        } else {
+          spec <- resolver(spec, d)
         }
       }
       spec
