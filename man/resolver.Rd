@@ -8,8 +8,6 @@ resolver(spec, data)
 }
 \arguments{
 \item{spec}{A object extraction specification.}
-
-\item{data}{A \code{qenv()}, or \code{teal.data::teal_data()} object.}
 }
 \value{
 A transform but resolved
