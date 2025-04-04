@@ -21,10 +21,14 @@ Once a selection is made update the specification for different valid selection.
 }
 \examples{
 td <- within(teal.data::teal_data(), {
-    df <- data.frame(A = as.factor(letters[1:5]),
-                     Ab = LETTERS[1:5])
-    df_n <- data.frame(C = 1:5,
-                       Ab = as.factor(letters[1:5]))
+  df <- data.frame(
+    A = as.factor(letters[1:5]),
+    Ab = LETTERS[1:5]
+  )
+  df_n <- data.frame(
+    C = 1:5,
+    Ab = as.factor(letters[1:5])
+  )
 })
 data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
 res <- resolver(data_frames_factors, td)

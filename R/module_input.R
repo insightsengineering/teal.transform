@@ -1,4 +1,3 @@
-
 helper_input <- function(id,
                          label,
                          multiple = FALSE) {
@@ -7,7 +6,8 @@ helper_input <- function(id,
     label,
     choices = NULL,
     selected = NULL,
-    multiple = multiple)
+    multiple = multiple
+  )
 }
 
 module_input_ui <- function(id, label, spec) {
@@ -17,8 +17,9 @@ module_input_ui <- function(id, label, spec) {
   )
   l <- lapply(spec, function(x) {
     helper_input(ns(is(x)),
-                 paste("Select", is(x), collapse = " "),
-                 multiple = is(x) != "datasets")
+      paste("Select", is(x), collapse = " "),
+      multiple = is(x) != "datasets"
+    )
   })
   input <- tagList(input, l)
 }
@@ -86,5 +87,3 @@ module_input_server <- function(id, spec, data) {
     })
   })
 }
-
-

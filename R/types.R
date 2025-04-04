@@ -23,7 +23,7 @@ anyNA.type <- function(x, recursive = FALSE) {
   anyNA(unclass(x[c("names", "select")]), recursive)
 }
 
-first <- function(x){
+first <- function(x) {
   if (length(x) > 0) {
     false <- rep_len(FALSE, length.out = length(x))
     false[1] <- TRUE
@@ -34,12 +34,16 @@ first <- function(x){
 
 check_input <- function(input) {
   is.character(input) || is.function(input) ||
-    (is.list(input) && all(vapply(input, function(x){is.function(x) || is.character(x)}, logical(1L))))
+    (is.list(input) && all(vapply(input, function(x) {
+      is.function(x) || is.character(x)
+    }, logical(1L))))
 }
 
 type_helper <- function(x, select, type) {
-  stopifnot("Invalid options" = check_input(x),
-            "Invalid selection" = check_input(type))
+  stopifnot(
+    "Invalid options" = check_input(x),
+    "Invalid selection" = check_input(type)
+  )
   if (is.function(x)) {
     x <- list(x)
   }
@@ -156,7 +160,8 @@ c.transform <- function(...) {
       old_select <- new_type$select
       new_type$names <- c(old_names, l[[i]][[t]][["names"]])
       attr(new_type$names, "original") <- c(orig(
-        old_names), orig(l[[i]][[t]][["names"]]))
+        old_names
+      ), orig(l[[i]][[t]][["names"]]))
       new_type$select <- c(old_select, l[[i]][[t]][["select"]])
       attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][[t]][["select"]]))
     }
@@ -197,7 +202,8 @@ c.type <- function(...) {
       old_select <- new_type$select
       new_type$names <- c(old_names, l[[i]][["names"]])
       attr(new_type$names, "original") <- c(orig(
-        old_names), orig(l[[i]][["names"]]))
+        old_names
+      ), orig(l[[i]][["names"]]))
       new_type$select <- unique(c(old_select, l[[i]][["select"]]))
       attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][["select"]]))
     }
@@ -245,11 +251,14 @@ print.type <- function(x, ...) {
   nam_values <- length(x$names) - sum(nam_functions)
   if (any(nam_functions)) {
     msg_values <- paste0(msg_values, sum(nam_functions), " functions for possible choices.",
-                      collapse = "\n")
+      collapse = "\n"
+    )
   }
   if (nam_values) {
     msg_values <- paste0(msg_values, paste0(sQuote(x$names[!nam_functions]), collapse = ", "),
-                         " as possible choices.", collapse = "\n")
+      " as possible choices.",
+      collapse = "\n"
+    )
   }
 
   sel_list <- is.list(x$select)
@@ -263,12 +272,15 @@ print.type <- function(x, ...) {
   sel_values <- length(x$select) - sum(sel_functions)
   if (any(sel_functions)) {
     msg_sel <- paste0(msg_sel, sum(sel_functions), " functions to select.",
-                      collapse = "\n")
+      collapse = "\n"
+    )
   }
   if (sel_values) {
     msg_sel <- paste0(msg_sel, paste0(sQuote(x$select[!sel_functions]), collapse = ", "),
-                      " selected.", collapse = "\n")
+      " selected.",
+      collapse = "\n"
+    )
   }
-  cat(msg_values,  msg_sel)
+  cat(msg_values, msg_sel)
   return(x)
 }

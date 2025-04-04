@@ -1,5 +1,4 @@
 test_that("datasets", {
-
   expect_no_error(dataset0 <- datasets("df", "df"))
   out <- list(names = "df", select = "df")
   class(out) <- c("delayed", "datasets", "type", "list")
@@ -16,8 +15,12 @@ test_that("variables", {
   expect_no_error(var1 <- variables("a"))
   expect_no_error(var2 <- variables(is.factor))
   # Allowed to specify whatever we like, it is not until resolution that this raises errors
-  expect_no_error(var3 <- variables(is.factor, function(x){head(x, 1)}))
-  expect_no_error(var4 <- variables(is.matrix, function(x){head(x, 1)}))
+  expect_no_error(var3 <- variables(is.factor, function(x) {
+    head(x, 1)
+  }))
+  expect_no_error(var4 <- variables(is.matrix, function(x) {
+    head(x, 1)
+  }))
 })
 
 test_that("raw combine of types", {
@@ -31,6 +34,10 @@ test_that("values", {
   expect_no_error(val1 <- values("a"))
   expect_no_error(val2 <- values(is.factor))
   # Allowed to specify whatever we like, it is not until resolution that this raises errors
-  expect_no_error(val3 <- values(is.factor, function(x){head(x, 1)}))
-  expect_no_error(val4 <- values(is.matrix, function(x){head(x, 1)}))
+  expect_no_error(val3 <- values(is.factor, function(x) {
+    head(x, 1)
+  }))
+  expect_no_error(val4 <- values(is.matrix, function(x) {
+    head(x, 1)
+  }))
 })

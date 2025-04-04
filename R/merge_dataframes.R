@@ -86,7 +86,6 @@ merging <- function(..., ids, type) {
 }
 
 
-
 # self_merge(df1, df2) almost equal to self_merge(df2, df1): Only changes on the column order.
 self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), type) {
   # Get the name of the variables to use as suffix.
@@ -101,11 +100,26 @@ self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), ty
 
   # Called by its side effects of adding the two variables the the current environment
   switch(type,
-    inner = {all.x = FALSE; all.y = FALSE},
-    full =  {all.x = TRUE;  all.y = TRUE},
-    left =  {all.x = TRUE;  all.y = FALSE},
-    right = {all.x = FALSE; all.y = TRUE},
-    {all.x = FALSE; all.y = FALSE}
+    inner = {
+      all.x <- FALSE
+      all.y <- FALSE
+    },
+    full = {
+      all.x <- TRUE
+      all.y <- TRUE
+    },
+    left = {
+      all.x <- TRUE
+      all.y <- FALSE
+    },
+    right = {
+      all.x <- FALSE
+      all.y <- TRUE
+    },
+    {
+      all.x <- FALSE
+      all.y <- FALSE
+    }
   )
 
   if (!is.null(names(ids))) {
@@ -142,5 +156,4 @@ self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), ty
     }
   }
   mm
-
 }

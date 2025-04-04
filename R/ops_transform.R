@@ -2,16 +2,17 @@
 Ops.transform <- function(e1, e2) {
   if (missing(e2)) {
     # out <- switch(.Generic,
-           # "!" = Negate,
+    # "!" = Negate,
     stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE)
     # return(out)
   }
   switch(.Generic,
-         "!=" = NextMethod(),
-         "==" = NextMethod(),
-         "|" = or_transform(e1, e2),
-         "&" = nd_transform(e1, e2),
-         stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
+    "!=" = NextMethod(),
+    "==" = NextMethod(),
+    "|" = or_transform(e1, e2),
+    "&" = nd_transform(e1, e2),
+    stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE)
+  )
 }
 
 #' @export
@@ -23,11 +24,12 @@ Ops.type <- function(e1, e2) {
     # return(out)
   }
   out <- switch(.Generic,
-         "!=" = NextMethod(),
-         # "==" = NextMethod(),
-         "|" = or_type(e1, e2),
-         "&" = nd_type(e1, e2),
-         stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE))
+    "!=" = NextMethod(),
+    # "==" = NextMethod(),
+    "|" = or_type(e1, e2),
+    "&" = nd_type(e1, e2),
+    stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE)
+  )
   out
 }
 
@@ -86,7 +88,7 @@ nd_type <- function(e1, e2) {
   } else if (!is.transform(e1) && is.transform(e2)) {
     out <- c(e2, list(e1))
     names(out)[length(out)] <- is(e1)
-  } else if (is.transform(e1) && is.transform(e2)){
+  } else if (is.transform(e1) && is.transform(e2)) {
     out <- c(e1, e2)
   } else if (is.type(e1) && is.type(e2)) {
     out <- c(e1, e2)

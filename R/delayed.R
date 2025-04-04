@@ -34,18 +34,17 @@ is.delayed.transform <- function(x) {
 #' @export
 #' @method is.delayed type
 is.delayed.type <- function(x) {
-
   if (!is.na(x)) {
     return(!all(is.character(x$names)) || !all(is.character(x$select)))
   }
   FALSE
 }
 
-resolved <- function(x, type = is(x)){
+resolved <- function(x, type = is(x)) {
   s <- all(is.character(x$names)) && all(is.character(x$select))
 
   if (!s && !all(x$select %in% x$names)) {
-      stop("Selected ", type, " not resolved.")
+    stop("Selected ", type, " not resolved.")
   }
   attr(x, "delayed") <- NULL
   x

@@ -157,6 +157,7 @@ determine_helper <- function(type, data_names, data) {
   stopifnot(!is.null(type))
   orig_names <- type$names
   orig_select <- type$select
+
   if (is.delayed(type) && all(is.character(type$names))) {
     match <- intersect(data_names, type$names)
     type$names <- match
@@ -176,9 +177,11 @@ determine_helper <- function(type, data_names, data) {
     }
   } else if (is.delayed(type)) {
     old_names <- type$names
-    new_names <- c(functions_names(type$names, data_names),
-                   functions_data(type$names, data_names, data))
-    new_names <- unlist(unique(new_names[!is.na(new_names)]), use.names = FALSE)
+    new_names <- c(
+      functions_names(type$names, data_names),
+      functions_data(type$names, data_names, data))
+    new_names <- unlist(unique(new_names[!is.na(new_names)]),
+                        use.names = FALSE)
     if (!length(new_names)) {
       return(NULL)
       # stop("No ", is(type), " meet the requirements")
@@ -250,7 +253,7 @@ determine.variables <- function(type, data, ...) {
   # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
   # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
   l <- vector("list", ncol(data))
-  for (i in seq_len(ncol(data))){
+  for (i in seq_len(ncol(data))) {
     out <- determine_helper(type, colnames(data)[i], data[, i])
     if (!is.null(out)) {
       l[[i]] <- out
@@ -279,7 +282,7 @@ determine.mae_colData <- function(type, data, ...) {
 
   new_data <- colData(data)
   for (i in seq_along(new_data)){
-    determine_helper(type, colnames(new_data)[i], new_data[, i])
+    type <- determine_helper(type, colnames(new_data)[i], new_data[, i])
   }
   if (length(dim(new_data)) != 2L) {
     stop("Can't resolve variables from this object of class ", class(new_data))
@@ -296,7 +299,6 @@ determine.mae_colData <- function(type, data, ...) {
 
   if (length(type$select) > 1) {
     list(type = type, data = data[type$select])
-
   } else {
     list(type = type, data = data[[type$select]])
   }
@@ -316,12 +318,11 @@ determine.mae_experiments <- function(type, data, ...) {
 
   if (!is.delayed(type) && length(type$select) > 1) {
     list(type = type, data = new_data[type$select])
-
   } else if (!is.delayed(type) && length(type$select) == 1) {
     list(type = type, data = new_data[[type$select]])
   } else {
     return(list(type = type, data = NULL))
-    }
+  }
 }
 
 #' @export
@@ -340,7 +341,6 @@ determine.mae_sampleMap <- function(type, data, ...) {
 
   if (length(type$select) > 1) {
     list(type = type, data = data[type$select])
-
   } else {
     list(type = type, data = data[[type$select]])
   }
