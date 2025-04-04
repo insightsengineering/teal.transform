@@ -23,22 +23,34 @@ update_spec <- function(spec, type, value) {
          "\nDo you attempt to set a new specification? Please open an issue.")
   }
 
-  if (is.transform(spec) && is.null(names(spec))) {
+  if (!is.transform(spec) || !is.list(spec) && !is.type(spec)) {
+    stop("Unexpected object used as specification")
+  }
+
+  if (is.null(names(spec))) {
     updated_spec <- lapply(spec, update_s_spec, type, value)
     class(updated_spec) <- class(spec)
-    updated_spec
+    return(updated_spec)
   }
-  if (is.transform(spec) && !is.null(names(spec))) {
+  if (!is.null(names(spec))) {
     updated_spec <- update_s_spec(spec, type, value)
   } else if (is.type(spec))  {
     updated_spec <- update_s_spec(spec, is(spec), value)
-  } else {
-      stop("Multiple or no specification is possible.")
   }
   updated_spec
 }
 
 update_s_spec <- function(spec, type, value) {
+
+  if (is.type(spec)) {
+    l <- list(spec)
+    names(l) <- is(spec)
+    out <- update_s_spec(l, type, value)
+    return(out[[is(spec)]])
+  }
+
+
+
   spec_types <- names(spec)
   type <- match.arg(type, spec_types)
   restart_types <- spec_types[seq_along(spec_types) > which(type == spec_types)]
