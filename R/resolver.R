@@ -64,6 +64,7 @@ determine <- function(type, data, ...) {
 
 #' @export
 determine.default <- function(type, data, ..., spec) {
+  # Used when the type is of class list.
   if (!is.null(names(spec)) && is.delayed(spec)) {
     rt <- determine(spec, data)
   } else {
@@ -107,7 +108,12 @@ functions_names <- function(spec_criteria, names) {
   new_names <- vector("character")
 
   for (fun in functions) {
-    names_ok <- tryCatch(fun(names), error = function(new_names) FALSE )
+    names_ok <- tryCatch(fun(names),
+                         error = function(x){FALSE},
+                         warning = function(x){
+                           if (isTRUE(x) || isFALSE(x)){
+                             x
+                           } else {FALSE}} )
     if (!is.logical(names_ok)) {
       stop("Provided functions should return a logical object.")
     }
@@ -119,18 +125,26 @@ functions_names <- function(spec_criteria, names) {
   c(new_names, old_names)
 }
 
-# Extract data and evaluate if the function
-functions_data <- function(spec_criteria, data, names_data) {
-  stopifnot(!is.null(data)) # Must be something but not NULL
+# Evaluate if the function applied to the data
+# but we need to return the name of the data received
+functions_data <- function(spec_criteria, names_data, data) {
+  stopifnot(!is.null(data),
+            length(names_data) == 1L) # Must be something but not NULL
   is_fc <- vapply(spec_criteria, is.function, logical(1L))
   functions <- spec_criteria[is_fc]
 
   l <- lapply(functions, function(fun) {
-    data_ok <- tryCatch(fun(data), error = function(x){FALSE})
-    if (any(data_ok)) {
-      return(names_data[data_ok])
-    } else {
-      return(NULL)
+    data_ok <- tryCatch(fun(data),
+                        error = function(x){FALSE},
+                        warning = function(x){
+                          if (isTRUE(x) || isFALSE(x)){
+                            x
+                          } else {FALSE}})
+    if (!is.logical(data_ok)) {
+      stop("Provided functions should return a logical object.")
+    }
+    if ((length(data_ok) == 1L && any(data_ok)) || all(data_ok)) {
+      return(names_data)
     }
   })
   new_names <- unique(unlist(l, FALSE, FALSE))
@@ -143,19 +157,13 @@ determine_helper <- function(type, data_names, data) {
   stopifnot(!is.null(type))
   orig_names <- type$names
   orig_select <- type$select
-  names_variables_obj <- if (is.null(names(data))) { colnames(data)} else {names(data)}
   if (is.delayed(type) && all(is.character(type$names))) {
     match <- intersect(data_names, type$names)
-    missing <- setdiff(type$names, data_names)
-    if (length(missing)) {
-      return(NULL)
-      # stop("Missing datasets ", paste(sQuote(missing), collapse = ", "), " were specified.")
-    }
     type$names <- match
     if (length(match) == 0) {
       return(NULL)
       # stop("No selected ", is(type), " matching the conditions requested")
-    } else if (length(match) == 1) {
+    } else if (length(match) == 1L) {
       type$select <- match
     } else {
       new_select <- functions_names(type$select, type$names)
@@ -168,8 +176,8 @@ determine_helper <- function(type, data_names, data) {
     }
   } else if (is.delayed(type)) {
     old_names <- type$names
-    new_names <- c(functions_names(type$names, names_variables_obj),
-                   functions_data(type$names, data, data_names))
+    new_names <- c(functions_names(type$names, data_names),
+                   functions_data(type$names, data_names, data))
     new_names <- unlist(unique(new_names[!is.na(new_names)]), use.names = FALSE)
     if (!length(new_names)) {
       return(NULL)
@@ -184,7 +192,8 @@ determine_helper <- function(type, data_names, data) {
       type$select <- type$names
     }
 
-    new_select <- functions_names(type$select, type$names)
+    new_select <- c(functions_names(type$select, type$names),
+                    functions_data(type$select, type$names, data))
 
     new_select <- unique(new_select[!is.na(new_select)])
     if (!length(new_select)) {
@@ -216,17 +225,9 @@ determine.datasets <- function(type, data, ...) {
 
   # Merge together all the types
   type <- do.call(c, l[lengths(l) > 1L])
-  # FIXME: This combine the different selections too.
-  # Instead it should apply once the select function and keep that instead.
-  # helper_something(type$select, type$names, data)
-  # Not possible to know what is happening
-  for (name in type$names){
-    data_name_env <- names(data)[i]
-    out <- determine_helper(type, data_name_env, extract(data, data_name_env))
-    if (!is.null(out)) {
-      l[[i]] <- out
-    }
-  }
+  # Evaluate the selection based on all possible choices.
+  type <- eval_type_select(type, data)
+
   if (!is.delayed(type) && length(type$select) > 1L) {
     list(type = type, data = data[unorig(type$select)])
   } else if (!is.delayed(type) && length(type$select) == 1L) {
@@ -258,6 +259,8 @@ determine.variables <- function(type, data, ...) {
 
   # Merge together all the types
   type <- do.call(c, l[lengths(l) > 1])
+  # Check the selected values as they got appended.
+  type <- eval_type_select(type, data)
 
   # Not possible to know what is happening
   if (is.delayed(type)) {
@@ -276,7 +279,7 @@ determine.mae_colData <- function(type, data, ...) {
 
   new_data <- colData(data)
   for (i in seq_along(new_data)){
-    determine_helper(type, colnames(data)[i], new_data[, i])
+    determine_helper(type, colnames(new_data)[i], new_data[, i])
   }
   if (length(dim(new_data)) != 2L) {
     stop("Can't resolve variables from this object of class ", class(new_data))
@@ -284,7 +287,7 @@ determine.mae_colData <- function(type, data, ...) {
   if (ncol(new_data) <= 0L) {
     stop("Can't pull variable: No variable is available.")
   }
-  type <- determine_helper(type, colnames(data), data)
+  type <- determine_helper(type, colnames(new_data), new_data)
 
   # Not possible to know what is happening
   if (is.delayed(type)) {
@@ -362,4 +365,25 @@ orig <- function(x) {
 unorig <- function(x) {
   attr(x, "original") <- NULL
   x
+}
+
+
+eval_type_select <- function(type, data) {
+  l <- vector("list", length(type$names))
+  names(l) <- type$names
+  orig_select <- orig(type$select)
+  for (name in type$names){
+    out <- functions_data(orig_select, name, extract(data, name))
+    if (!is.null(out)) {
+      l[[name]] <- unlist(out)
+    }
+  }
+
+  new_select <- c(functions_names(orig(type$select), type$names),
+                  unlist(l, FALSE, FALSE))
+
+  new_select <- unique(new_select)
+  attr(new_select, "original") <- orig_select
+  type$select <- new_select
+  type
 }
