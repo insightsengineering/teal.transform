@@ -32,9 +32,9 @@ extract <- function(x, variable, ...) {
 # }
 
 #' @export
-extract.default <- function(x, variable) {
-  if (length(dim(x)) == 2L) {
-    x[, variable, drop = TRUE]
+extract.default <- function(x, variable, drop = TRUE) {
+  if (length(dim(x)) == 2L || length(variable) > 1L) {
+    x[, variable, drop = drop]
   } else {
     x[[variable]]
   }
