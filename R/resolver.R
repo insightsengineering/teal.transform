@@ -109,11 +109,17 @@ functions_names <- function(spec_criteria, names) {
 
   for (fun in functions) {
     names_ok <- tryCatch(fun(names),
-                         error = function(x){FALSE},
-                         warning = function(x){
-                           if (isTRUE(x) || isFALSE(x)){
-                             x
-                           } else {FALSE}} )
+      error = function(x) {
+        FALSE
+      },
+      warning = function(x) {
+        if (isTRUE(x) || isFALSE(x)) {
+          x
+        } else {
+          FALSE
+        }
+      }
+    )
     if (!is.logical(names_ok)) {
       stop("Provided functions should return a logical object.")
     }
@@ -128,18 +134,26 @@ functions_names <- function(spec_criteria, names) {
 # Evaluate if the function applied to the data
 # but we need to return the name of the data received
 functions_data <- function(spec_criteria, names_data, data) {
-  stopifnot(!is.null(data),
-            length(names_data) == 1L) # Must be something but not NULL
+  stopifnot(
+    !is.null(data),
+    length(names_data) == 1L
+  ) # Must be something but not NULL
   is_fc <- vapply(spec_criteria, is.function, logical(1L))
   functions <- spec_criteria[is_fc]
 
   l <- lapply(functions, function(fun) {
     data_ok <- tryCatch(fun(data),
-                        error = function(x){FALSE},
-                        warning = function(x){
-                          if (isTRUE(x) || isFALSE(x)){
-                            x
-                          } else {FALSE}})
+      error = function(x) {
+        FALSE
+      },
+      warning = function(x) {
+        if (isTRUE(x) || isFALSE(x)) {
+          x
+        } else {
+          FALSE
+        }
+      }
+    )
     if (!is.logical(data_ok)) {
       stop("Provided functions should return a logical object.")
     }
@@ -179,9 +193,11 @@ determine_helper <- function(type, data_names, data) {
     old_names <- type$names
     new_names <- c(
       functions_names(type$names, data_names),
-      functions_data(type$names, data_names, data))
+      functions_data(type$names, data_names, data)
+    )
     new_names <- unlist(unique(new_names[!is.na(new_names)]),
-                        use.names = FALSE)
+      use.names = FALSE
+    )
     if (!length(new_names)) {
       return(NULL)
       # stop("No ", is(type), " meet the requirements")
@@ -195,8 +211,10 @@ determine_helper <- function(type, data_names, data) {
       type$select <- type$names
     }
 
-    new_select <- c(functions_names(type$select, type$names),
-                    functions_data(type$select, type$names, data))
+    new_select <- c(
+      functions_names(type$select, type$names),
+      functions_data(type$select, type$names, data)
+    )
 
     new_select <- unique(new_select[!is.na(new_select)])
     if (!length(new_select)) {
@@ -218,7 +236,7 @@ determine.datasets <- function(type, data, ...) {
 
   l <- vector("list", length(names(data)))
   # Somehow in some cases (I didn't explore much this was TRUE)
-  for (i in seq_along(l)){
+  for (i in seq_along(l)) {
     data_name_env <- names(data)[i]
     out <- determine_helper(type, data_name_env, extract(data, data_name_env))
     if (!is.null(out)) {
@@ -281,7 +299,7 @@ determine.mae_colData <- function(type, data, ...) {
   }
 
   new_data <- colData(data)
-  for (i in seq_along(new_data)){
+  for (i in seq_along(new_data)) {
     type <- determine_helper(type, colnames(new_data)[i], new_data[, i])
   }
   if (length(dim(new_data)) != 2L) {
@@ -372,15 +390,17 @@ eval_type_select <- function(type, data) {
   l <- vector("list", length(type$names))
   names(l) <- type$names
   orig_select <- orig(type$select)
-  for (name in type$names){
+  for (name in type$names) {
     out <- functions_data(orig_select, name, extract(data, name))
     if (!is.null(out)) {
       l[[name]] <- unlist(out)
     }
   }
 
-  new_select <- c(functions_names(orig(type$select), type$names),
-                  unlist(l, FALSE, FALSE))
+  new_select <- c(
+    functions_names(orig(type$select), type$names),
+    unlist(l, FALSE, FALSE)
+  )
 
   new_select <- unique(new_select)
   attr(new_select, "original") <- orig_select
