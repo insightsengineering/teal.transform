@@ -1,34 +1,85 @@
+merge_module_ui <- function(id) {
+  ns <- NS(id)
+  renderText(ns("a"))
+}
+
+merge_module_srv <- function(id, data = data, input_list = input_list, ids, type) {
+  stopifnot(is.list(input_list))
+  stopifnot(is.reactive(data))
+  stopifnot(is.character(id))
+  moduleServer(id, function(input, output, session) {
+    out <- reactive({
+      input_data <- lapply(input_list, extract_input, data = data)
+      merging(input_data, ids, type)
+    })
+    output$out <- out
+  })
+}
+
+extract_input <- function(input, data) {
+  for (i in input) {
+    # Extract data recursively: only works on lists and square objects (no MAE or similar)
+    # To work on new classes implement an extract.class method
+    # Assumes order of extraction on the input: qenv > datasets > variables
+    # IF datasetes > variables > qenv order
+    data <- extract(data, i, drop = FALSE)
+  }
+  data
+}
+
 # Allows merging arbitrary number of data.frames by ids and type
+
 merging <- function(..., ids, type) {
-  number_merges <- ...length() - 1L
+  input_as_list <- is.list(..1) & ...length() == 1L
+  if (input_as_list) {
+    list_df <- ..1
+  } else {
+    list_df <- list(...)
+  }
+  number_merges <- length(list_df) - 1L
   stopifnot(
     "Number of datasets is enough" = number_merges >= 1L,
-    "Number of arguments for ids matches data" = (length(ids) == number_merges && is.list(ids)) || length(ids) == 1L && is.character(ids),
-    "Number of arguments for type matches data" = length(type) == number_merges  || length(type) == 1L)
-  list_df <- list(...)
+    "Number of arguments for type matches data" = length(type) == number_merges  || length(type) == 1L
+  )
 
-  if (length(type) == 1L) {
+  if (!missing(ids)) {
+    stopifnot("Number of arguments for ids matches data" = !(is.list(ids) && length(ids) == number_merges))
+  }
+  if (length(type) != number_merges) {
     type <- rep(type, number_merges)
   }
-  if (length(ids) == 1L) {
+  if (!missing(ids) && length(ids) != number_merges) {
     ids <- rep(ids, number_merges)
   }
 
-  if (number_merges == 1L) {
+  if (number_merges == 1L && !input_as_list && !missing(ids)) {
     return(self_merging(..1, ..2, ids = ids, type = type))
+  } else if (number_merges == 1L && !input_as_list && missing(ids)) {
+    return(self_merging(..1, ..2, type = type))
+  } else if (number_merges == 1L && input_as_list && missing(ids)) {
+    return(self_merging(list_df[[1]], list_df[[2]], type = type))
+  } else if (number_merges == 1L && input_as_list && !missing(ids)) {
+    return(self_merging(list_df[[1]], list_df[[2]], ids = ids, type = type))
   }
 
-  # l <- list("a", "b", "c", "d")
-  # number_merges <- length(l) - 1L
-  m <- list()
   for (merge_i in seq_len(number_merges)) {
     message(merge_i)
     if (merge_i == 1L) {
+      if (missing(ids)) {
+        ids <- intersect(colnames(list_df[[merge_i]]), colnames(list_df[[merge_i + 1L]]))
+      } else {
+        ids <- ids[[merge_i]]
+      }
       out <- self_merging(list_df[[merge_i]], list_df[[merge_i + 1L]],
-                          ids[[merge_i]], type = type[[merge_i]])
+                          ids, type = type[[merge_i]])
     } else {
+      if (missing(ids)) {
+        ids <- intersect(colnames(out, colnames(list_df[[merge_i + 1L]])))
+      } else {
+        ids <- ids[[merge_i]]
+      }
       out <- self_merging(out, list_df[[merge_i + 1L]],
-                          ids[[merge_i]], type = type[[merge_i]])
+                          ids, type = type[[merge_i]])
     }
   }
   out
@@ -37,7 +88,7 @@ merging <- function(..., ids, type) {
 
 
 # self_merge(df1, df2) almost equal to self_merge(df2, df1): Only changes on the column order.
-self_merging <- function(e1, e2, ids, type) {
+self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), type) {
   # Get the name of the variables to use as suffix.
   # If we need the name at higher environments (ie: f(self_merging()) ) it could use rlang (probably)
   name1 <- deparse(substitute(e1))
