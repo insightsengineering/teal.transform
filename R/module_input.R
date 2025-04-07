@@ -40,7 +40,7 @@ module_input_server <- function(id, spec, data) {
         spec_v <- spec[[variable]]
         # resolved <- !is.character(spec_v$names) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)
 
-        if  (!is.null(x) && any(nzchar(x))) {
+        if (!is.null(x) && any(nzchar(x))) {
           spec <- spec |>
             update_spec(variable, x) |>
             resolver(d)

@@ -48,7 +48,6 @@ update_spec <- function(spec, type, value) {
 
 #' @importFrom methods is
 update_s_spec <- function(spec, type, value) {
-
   if (is.type(spec)) {
     l <- list(spec)
     names(l) <- is(spec)

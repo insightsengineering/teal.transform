@@ -40,7 +40,7 @@ merging <- function(..., ids, type) {
   number_merges <- length(list_df) - 1L
   stopifnot(
     "Number of datasets is enough" = number_merges >= 1L,
-    "Number of arguments for type matches data" = length(type) == number_merges  || length(type) == 1L
+    "Number of arguments for type matches data" = length(type) == number_merges || length(type) == 1L
   )
 
   if (!missing(ids)) {
@@ -72,7 +72,9 @@ merging <- function(..., ids, type) {
         ids <- ids[[merge_i]]
       }
       out <- self_merging(list_df[[merge_i]], list_df[[merge_i + 1L]],
-                          ids, type = type[[merge_i]])
+        ids,
+        type = type[[merge_i]]
+      )
     } else {
       if (missing(ids)) {
         ids <- intersect(colnames(out, colnames(list_df[[merge_i + 1L]])))
@@ -80,7 +82,9 @@ merging <- function(..., ids, type) {
         ids <- ids[[merge_i]]
       }
       out <- self_merging(out, list_df[[merge_i + 1L]],
-                          ids, type = type[[merge_i]])
+        ids,
+        type = type[[merge_i]]
+      )
     }
   }
   out
@@ -136,9 +140,10 @@ self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), ty
   # a) ask for the method to be implemented or
   # b) implement it ourselves here to be used internally.
   mm <- merge(e1, e2,
-              all.x = all.x, all.y = all.y,
-              by.x = name_ids, by.y = ids,
-              suffixes = c(".e1", ".e2"))
+    all.x = all.x, all.y = all.y,
+    by.x = name_ids, by.y = ids,
+    suffixes = c(".e1", ".e2")
+  )
   g <- grep("\\.[(e1)(e2)]", colnames(mm))
   if (length(g)) {
     mix_columns <- setdiff(intersect(ce1, ce2), ids)
