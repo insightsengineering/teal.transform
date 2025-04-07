@@ -3,6 +3,7 @@
 #' Given the specification of some data to extract find if they are available or not.
 #' The specification for selecting a variable shouldn't depend on the data of said variable.
 #' @param spec A object extraction specification.
+#' @param data The qenv where the specification is evaluated.
 #'
 #' @returns A transform but resolved
 #' @export
@@ -74,6 +75,7 @@ determine.default <- function(type, data, ..., spec) {
     }
   }
   rt
+
 }
 
 #' @export
@@ -109,7 +111,7 @@ functions_names <- function(spec_criteria, names) {
 
   for (fun in functions) {
     names_ok <- tryCatch(fun(names),
-                         error = function(x){FALSE},
+                         error = function(x){x},
                          warning = function(x){
                            if (isTRUE(x) || isFALSE(x)){
                              x
@@ -135,7 +137,7 @@ functions_data <- function(spec_criteria, names_data, data) {
 
   l <- lapply(functions, function(fun) {
     data_ok <- tryCatch(fun(data),
-                        error = function(x){FALSE},
+                        error = function(x){x},
                         warning = function(x){
                           if (isTRUE(x) || isFALSE(x)){
                             x
@@ -143,7 +145,7 @@ functions_data <- function(spec_criteria, names_data, data) {
     if (!is.logical(data_ok)) {
       stop("Provided functions should return a logical object.")
     }
-    if ((length(data_ok) == 1L && any(data_ok)) || all(data_ok)) {
+    if ((length(data_ok) == 1L && (any(data_ok)) || all(data_ok))) {
       return(names_data)
     }
   })
@@ -231,6 +233,10 @@ determine.datasets <- function(type, data, ...) {
   # Evaluate the selection based on all possible choices.
   type <- eval_type_select(type, data)
 
+  if (is.null(type$names)) {
+    stop("No datasets meet the specification.", call. = FALSE)
+  }
+
   if (!is.delayed(type) && length(type$select) > 1L) {
     list(type = type, data = data[unorig(type$select)])
   } else if (!is.delayed(type) && length(type$select) == 1L) {
@@ -264,6 +270,10 @@ determine.variables <- function(type, data, ...) {
   type <- do.call(c, l[lengths(l) > 1])
   # Check the selected values as they got appended.
   type <- eval_type_select(type, data)
+
+  if (is.null(type$names)) {
+    stop("No variables meet the specification.", call. = FALSE)
+  }
 
   # Not possible to know what is happening
   if (is.delayed(type)) {

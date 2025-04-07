@@ -2,6 +2,10 @@ is.transform <- function(x) {
   inherits(x, "transform")
 }
 
+or.transform <- function(x) {
+  is.list(x) && all(vapply(x, function(x){is.transform(x) || is.type(x)}, logical(1L)))
+}
+
 na_type <- function(type) {
   out <- NA_character_
   class(out) <- c(type, "type")

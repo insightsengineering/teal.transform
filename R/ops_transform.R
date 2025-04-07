@@ -92,6 +92,10 @@ nd_type <- function(e1, e2) {
     out <- c(e1, e2)
   } else if (is.type(e1) && is.type(e2)) {
     out <- c(e1, e2)
+  } else if (or.transform(e1) && is.type(e2) ){
+    out <- lapply(e1, nd_type, e2 = e2)
+  } else if (or.transform(e2) && is.type(e1) ){
+    out <- lapply(e2, nd_type, e2 = e1)
   } else {
     stop("Maybe we should decide how to apply a type to a list of transformers...")
   }
@@ -104,7 +108,7 @@ or_type <- function(e1, e2) {
   if (substitute) {
     out <- e1
     e1[[is(e2)]] <- e2
-    return(add_type(out, e1))
+    return(nd_type(out, e1))
   }
   list(e1, e2)
 }

@@ -4,26 +4,26 @@ basic_ops <- function(fun) {
   types <- type1 & type1
   out <- list(names = "ABC", select = list(first))
   class(out) <- c(fun, "type", "list")
-  expect_equal(types[[fun]], out, check.attributes = FALSE)
+  expect_equal(types, out, check.attributes = FALSE)
   type2 <- FUN("ABC2")
   types <- type1 & type2
   out <- list(names = c("ABC", "ABC2"), select = list(first))
   class(out) <- c("delayed", fun, "type", "list")
-  expect_equal(types[[fun]], out, check.attributes = FALSE)
-  expect_equal(types[[fun]]$names, c("ABC", "ABC2"), check.attributes = FALSE)
+  expect_equal(types, out, check.attributes = FALSE)
+  expect_equal(types$names, c("ABC", "ABC2"), check.attributes = FALSE)
   types2 <- types & type2
-  expect_equal(types[[fun]]$names, c("ABC", "ABC2"), check.attributes = FALSE)
-  expect_s3_class(types[[fun]], class(out))
+  expect_equal(types$names, c("ABC", "ABC2"), check.attributes = FALSE)
+  expect_s3_class(types, class(out))
   type3 <- FUN("ABC2", select = all_choices)
   types <- type1 & type3
-  expect_length(types[[fun]]$select, 2)
+  expect_length(types$select, 2)
   type2b <- FUN(first_choice)
   type2c <- FUN(last_choice)
   out <- type2b & type2c
-  expect_length(out[[fun]]$names, 2)
+  expect_length(out$names, 2)
   expect_error(FUN("ABC") & 1)
   out <- type1 & type2b
-  expect_true(is.list(out[[fun]]$names))
+  expect_true(is.list(out$names))
 }
 
 test_that("datasets & work", {

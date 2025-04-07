@@ -2,11 +2,11 @@ test_that("datasets", {
   expect_no_error(dataset0 <- datasets("df", "df"))
   out <- list(names = "df", select = "df")
   class(out) <- c("delayed", "datasets", "type", "list")
-  expect_equal(dataset0[["datasets"]], out, check.attributes = FALSE)
+  expect_equal(dataset0, out, check.attributes = FALSE)
   expect_no_error(dataset1 <- datasets("df"))
-  expect_true(is(dataset1$datasets$names, "vector"))
+  expect_true(is(dataset1$names, "vector"))
   expect_no_error(dataset2 <- datasets(is.matrix))
-  expect_true(is(dataset2$datasets$names, "vector"))
+  expect_true(is(dataset2$names, "vector"))
   expect_no_error(dataset3 <- datasets(is.data.frame))
 })
 
@@ -25,8 +25,8 @@ test_that("variables", {
 
 test_that("raw combine of types", {
   out <- c(datasets("df"), variables("df"))
-  expect_length(out, 3)
-  expect_error(c(datasets("df"), variables("df"), values("df")))
+  expect_length(out, 2L)
+  expect_no_error(c(datasets("df"), variables("df"), values("df")))
 })
 
 test_that("values", {

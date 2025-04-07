@@ -29,12 +29,12 @@ update_spec <- function(spec, type, value) {
     )
   }
 
-  if (!is.transform(spec) || !is.list(spec) && !is.type(spec)) {
+  if (!((is.type(spec) || is.transform(spec)) || or.transform(spec))) {
     stop("Unexpected object used as specification")
   }
 
   if (is.null(names(spec))) {
-    updated_spec <- lapply(spec, update_s_spec, type, value)
+    updated_spec <- lapply(spec, update_s_spec, type = type, value = value)
     class(updated_spec) <- class(spec)
     return(updated_spec)
   }
@@ -46,6 +46,7 @@ update_spec <- function(spec, type, value) {
   updated_spec
 }
 
+#' @importFrom methods is
 update_s_spec <- function(spec, type, value) {
 
   if (is.type(spec)) {

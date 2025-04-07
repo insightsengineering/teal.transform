@@ -9,5 +9,4 @@ test_that("is.delayed works", {
   expect_false(is.delayed(1))
   da <- datasets(is.data.frame)
   expect_true(is.delayed(da))
-  expect_true(is.delayed(da$datasets))
 })

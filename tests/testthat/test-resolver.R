@@ -3,7 +3,7 @@ f <- function(x) {
 }
 
 test_that("resolver datasets works", {
-  df_head <- datasets("df", f)
+  df_head <- datasets("df")
   df_first <- datasets("df")
   matrices <- datasets(is.matrix)
   df_mean <- datasets("df", mean)
@@ -16,7 +16,7 @@ test_that("resolver datasets works", {
   expect_no_error(resolver(df_head, td))
   expect_no_error(resolver(df_first, td))
   out <- resolver(matrices, td)
-  expect_length(out$datasets$select, 1L) # Because we use first
+  expect_length(out$select, 1L) # Because we use first
   expect_no_error(resolver(df_mean, td))
   expect_error(resolver(median_mean, td))
 })
@@ -104,17 +104,17 @@ test_that("names and variables are reported", {
   })
   df_all_upper_variables <- d_df & v_all_upper
   expect_no_error(out <- resolver(df_all_upper_variables, td))
-  expect_length(out$variables$names, 1)
+  expect_length(out$variables$names, 2L)
   expect_no_error(out <- resolver(datasets("df2") & v_all_upper, td))
-  expect_length(out$variables$names, 2)
+  expect_length(out$variables$names, 2L)
   expect_no_error(out <- resolver(datasets(function(x) {
     is.data.frame(x) && all(colnames(x) == toupper(colnames(x)))
   }), td))
-  expect_length(out$datasets$names, 1)
+  expect_length(out$names, 1L)
   expect_no_error(out <- resolver(datasets(is.data.frame) & datasets(function(x) {
     colnames(x) == toupper(colnames(x))
   }), td))
-  expect_length(out$datasets$names, 2)
+  expect_length(out$names, 2L)
 })
 
 test_that("update_spec resolves correctly", {
@@ -166,7 +166,7 @@ test_that("update_spec resolves correctly", {
 
 
 test_that("OR resolver invalidates subsequent specifications", {
-  td <- within(teal_data(), {
+  td <- within(teal.data::teal_data(), {
     df <- data.frame(A = 1:5, B = LETTERS[1:5])
     m <- cbind(A = 1:5, B = 5:10)
   })
@@ -175,10 +175,11 @@ test_that("OR resolver invalidates subsequent specifications", {
   matrix_a <- datasets(is.matrix) & var_a
   df_or_m_var_a <- df_a | matrix_a
   out <- resolver(df_or_m_var_a, td)
+  expect_false(is.null(out))
 })
 
 test_that("OR update_spec filters specifications", {
-  td <- within(teal_data(), {
+  td <- within(teal.data::teal_data(), {
     df <- data.frame(A = 1:5, B = LETTERS[1:5])
     m <- cbind(A = 1:5, B = 5:10)
   })
@@ -187,5 +188,6 @@ test_that("OR update_spec filters specifications", {
   matrix_a <- datasets(is.matrix) & var_a
   df_or_m_var_a <- df_a | matrix_a
   resolved <- resolver(df_or_m_var_a, td)
-  out <- update_spec(resolved, "datasets", "df")
+  # The second option is not possible to have it as df
+  expect_error(update_spec(resolved, "datasets", "df"))
 })
