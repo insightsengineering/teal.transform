@@ -8,7 +8,7 @@ merge_module_srv <- function(id, ..., data, ids, type) {
   stopifnot(is.character(id))
   moduleServer(id, function(input, output, session) {
     out <- reactive({
-      input_list = list(...)
+      input_list <- list(...)
       input_data <- lapply(input_list, extract_input, data = data)
       merging(input_data, ids = ids, type = type)
     })

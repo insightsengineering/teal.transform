@@ -75,7 +75,6 @@ determine.default <- function(type, data, ..., spec) {
     }
   }
   rt
-
 }
 
 #' @export
@@ -111,11 +110,17 @@ functions_names <- function(spec_criteria, names) {
 
   for (fun in functions) {
     names_ok <- tryCatch(fun(names),
-                         error = function(x){x},
-                         warning = function(x){
-                           if (isTRUE(x) || isFALSE(x)){
-                             x
-                           } else {FALSE}} )
+      error = function(x) {
+        x
+      },
+      warning = function(x) {
+        if (isTRUE(x) || isFALSE(x)) {
+          x
+        } else {
+          FALSE
+        }
+      }
+    )
     if (!is.logical(names_ok)) {
       stop("Provided functions should return a logical object.")
     }
@@ -139,11 +144,17 @@ functions_data <- function(spec_criteria, names_data, data) {
 
   l <- lapply(functions, function(fun) {
     data_ok <- tryCatch(fun(data),
-                        error = function(x){x},
-                        warning = function(x){
-                          if (isTRUE(x) || isFALSE(x)){
-                            x
-                          } else {FALSE}})
+      error = function(x) {
+        x
+      },
+      warning = function(x) {
+        if (isTRUE(x) || isFALSE(x)) {
+          x
+        } else {
+          FALSE
+        }
+      }
+    )
     if (!is.logical(data_ok)) {
       stop("Provided functions should return a logical object.")
     }
