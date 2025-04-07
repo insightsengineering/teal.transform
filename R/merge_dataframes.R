@@ -3,16 +3,17 @@ merge_module_ui <- function(id) {
   renderText(ns("a"))
 }
 
-merge_module_srv <- function(id, data = data, input_list = input_list, ids, type) {
-  stopifnot(is.list(input_list))
-  stopifnot(is.reactive(data))
+merge_module_srv <- function(id, ..., data, ids, type) {
+  # stopifnot(is.reactive(data))
   stopifnot(is.character(id))
   moduleServer(id, function(input, output, session) {
     out <- reactive({
+      input_list = list(...)
       input_data <- lapply(input_list, extract_input, data = data)
-      merging(input_data, ids, type)
+      merging(input_data, ids = ids, type = type)
     })
     output$out <- out
+    out
   })
 }
 
