@@ -32,7 +32,7 @@ module_input_server <- function(id, spec, data) {
     react_updates <- reactive({
       d <- data()
       if (!anyNA(spec) && is.delayed(spec)) {
-        spec <- teal.transform::resolver(spec, d)
+        spec <- resolver(spec, d)
       }
       for (i in seq_along(names(input))) {
         variable <- names(input)[i]

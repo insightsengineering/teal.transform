@@ -6,6 +6,15 @@ delay <- function(x) {
   x
 }
 
+#' Is the specification resolved?
+#'
+#' Check that the specification is resolved against a given data source.
+#' @param x Object to be evaluated.
+#' @returns A single logical value.
+#' @examples
+#' is.delayed(1)
+#' is.delayed(variables("df", "df"))
+#' is.delayed(variables("df")) # Unknown selection
 #' @export
 is.delayed <- function(x) {
   UseMethod("is.delayed")

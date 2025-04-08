@@ -41,7 +41,11 @@ resolver <- function(spec, data) {
 
   stopifnot(is.list(spec) || is.transform(spec))
   det <- determine(spec, data, spec = spec)
-  det$type
+  if (is.null(names(det))) {
+    return(lapply(det, `[[`, 1))
+  } else {
+    det$type
+  }
 }
 
 #' A method that should take a type and resolve it.
@@ -66,10 +70,10 @@ determine <- function(type, data, ...) {
 #' @export
 determine.default <- function(type, data, ..., spec) {
   # Used when the type is of class list.
-  if (!is.null(names(spec)) && is.delayed(spec)) {
-    rt <- determine(spec, data)
+  if (!is.null(names(type)) && is.delayed(type)) {
+    rt <- determine(type, data)
   } else {
-    rt <- lapply(spec, resolver, data = data)
+    rt <- lapply(type, determine, data = data, spec = spec)
     if (length(rt) == 1) {
       return(rt[[1]])
     }
@@ -81,11 +85,6 @@ determine.default <- function(type, data, ..., spec) {
 #' @export
 determine.transform <- function(type, data, ..., spec) {
   stopifnot(inherits(data, "qenv"))
-  # Recursion for other transforms in a list spec | spec
-  if (is.null(names(spec))) {
-    specs <- lapply(type, data, spec = spec)
-    return(specs)
-  }
 
   d <- data
   for (i in seq_along(type)) {

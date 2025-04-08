@@ -2,9 +2,12 @@
 #'
 #' Required to resolve a specification into something usable (by comparing with the existing data).
 #' Required by merging data based on a resolved specification.
+#' @param x Object from which a subset/element is required.
+#' @param variable Name of the element to be extracted.
+#' @param ... Other arguments passed to the specific method.
 #' @export
-#' @noRd
-#' @keywords internal
+#' @examples
+#' extract(iris, "Sepal.Length")
 extract <- function(x, variable, ...) {
   UseMethod("extract")
 }

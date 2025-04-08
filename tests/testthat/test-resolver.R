@@ -160,12 +160,12 @@ test_that("update_spec resolves correctly", {
 
   expect_error(update_spec(res, "datasets", "error"))
   expect_error(update_spec(data_frames_factors, "datasets", "error"))
-  expect_no_error(update_spec(datasets(x = c("df", "df2")), "datasets", "df2"))
+  expect_error(update_spec(datasets(x = c("df", "df2")), "datasets", "df2"))
   expect_no_error(update_spec(datasets(x = c("df", "df2"), "df"), "datasets", "df2"))
 })
 
 
-test_that("OR resolver invalidates subsequent specifications", {
+test_that("OR specifications resolves correctly", {
   td <- within(teal.data::teal_data(), {
     df <- data.frame(A = 1:5, B = LETTERS[1:5])
     m <- cbind(A = 1:5, B = 5:10)
@@ -175,7 +175,20 @@ test_that("OR resolver invalidates subsequent specifications", {
   matrix_a <- datasets(is.matrix) & var_a
   df_or_m_var_a <- df_a | matrix_a
   out <- resolver(df_or_m_var_a, td)
-  expect_false(is.null(out))
+  expect_true(all(vapply(out, is.transform, logical(1L))))
+})
+
+test_that("OR specifications fail correctly", {
+  td <- within(teal.data::teal_data(), {
+    df <- data.frame(A = 1:5, B = LETTERS[1:5])
+    m <- cbind(A = 1:5, B = 5:10)
+  })
+  var_a <- variables("A")
+  df_a <- datasets(is.data.frame) & var_a
+  matrix_a <- datasets(is.matrix) & var_a
+  df_or_m_var_a <- df_a | matrix_a
+  out <- resolver(df_or_m_var_a, td)
+  expect_error(update_spec(out, "variables", "B"))
 })
 
 test_that("OR update_spec filters specifications", {
