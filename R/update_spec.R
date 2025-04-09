@@ -1,6 +1,6 @@
 #' Update a specification
 #'
-#' Once a selection is made update the specification for different valid selection.
+#' Update the specification for different selection.
 #' @param spec A resolved specification such as one created with datasets and variables.
 #' @param type Which type was updated? One of datasets, variables, values.
 #' @param value What is the new selection? One that is a valid value for the given type and specification.
@@ -55,7 +55,9 @@ update_s_spec <- function(spec, type, value) {
     return(out[[is(spec)]])
   }
 
-
+  if (is.delayed(spec)) {
+    stop("Specification is not resolved (`!is.delayed(spec)`) can't update selections.")
+  }
 
   spec_types <- names(spec)
   type <- match.arg(type, spec_types)
@@ -69,11 +71,16 @@ update_s_spec <- function(spec, type, value) {
     attr(spec[[type]][["select"]], "original") <- original_select
   } else if (!is.list(valid_names) && !all(value %in% valid_names)) {
     original_select <- orig(spec[[type]]$select)
+
     valid_values <- intersect(value, valid_names)
     if (!length(valid_values)) {
       stop("No valid value provided.")
     }
-    spec[[type]][["select"]] <- valid_values
+    if (!length(valid_values)) {
+      spec[[type]][["select"]] <- original_select
+    } else {
+      spec[[type]][["select"]] <- valid_values
+    }
     attr(spec[[type]][["select"]], "original") <- original_select
   } else {
     stop("It seems the specification needs to be resolved first.")
