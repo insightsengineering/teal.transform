@@ -3,12 +3,82 @@ merge_module_ui <- function(id) {
   renderText(ns("a"))
 }
 
+consolidate_extraction <- function(...) {
+  if (...length() > 1) {
+    input_resolved <- as.list(...)
+  } else {
+    input_resolved <- ..1
+  }
+
+  datasets <- lapply(input_resolved, function(x){x$datasets})
+  # Assume the data is a data.frame so no other specifications types are present.
+  variables <- lapply(input_resolved, function(x){x$variables})
+  lapply(unique(datasets),
+         function(dataset, x, y) {
+           list("datasets" = dataset, "variables" = y[x == dataset])
+         }, x = datasets, y = variables)
+}
+
+add_ids <- function(input, data) {
+
+  jk <- join_keys(data)
+  if (!length(jk)) {
+    return(input)
+  }
+
+  datasets <- names(input)
+  l <- lapply(datasets, function(x, join_keys, i) {
+    c(i[[x]], unique(unlist(jk[[x]])))
+  }, join_keys = jk, i = input)
+
+  names(l) <- datasets
+}
+
+
+extract_ids <- function(input, data) {
+  jk <- join_keys(data)
+  # No join_keys => input
+  if (!length(jk)) {
+    input <- unlist(input)
+    tab <- table(input)
+    out <- names(tab)[tab > 1]
+
+    if (length(out)) {
+      ei <- extract_input(input, data)
+      tab0 <- unlist(lapply(ei, colnames))
+      tab <- table(tab0)
+      out <- names(tab)[tab > 1]
+    }
+    return(out)
+  }
+
+  l <- lapply(datasets, function(x, join_keys) {
+    unique(unlist(jk[[x]]))
+  }, join_keys = jk)
+  out <- unique(unlist(l))
+}
+
 merge_module_srv <- function(id, ..., data, ids, type) {
   # stopifnot(is.reactive(data))
   stopifnot(is.character(id))
   moduleServer(id, function(input, output, session) {
     out <- reactive({
-      input_list <- list(...)
+      if (...length() == 1L && is.list(..1)) {
+        input_list <- ..1
+      } else {
+        input_list <- list(...)
+      }
+
+      input_list <- consolidate_extraction(input_list)
+
+      # No merge is needed
+      if (length(input_list) == 1L) {
+        out <- extract_input(input_list, data)
+        output$out <- out
+        return(out)
+      }
+      # Add ids to merge by them if known
+      input_list <- add_ids(input_list, data)
       input_data <- lapply(input_list, extract_input, data = data)
       merging(input_data, ids = ids, type = type)
     })
