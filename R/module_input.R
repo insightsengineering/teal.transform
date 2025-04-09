@@ -10,11 +10,17 @@ helper_input <- function(id,
   )
 }
 
+#' @export
 module_input_ui <- function(id, label, spec) {
   ns <- NS(id)
   input <- tagList(
     a(label),
   )
+
+  if (valid_transform(spec)) {
+    stop("Unexpected object used as specification.")
+  }
+
   l <- lapply(spec, function(x) {
     helper_input(ns(is(x)),
       paste("Select", is(x), collapse = " "),
@@ -24,6 +30,7 @@ module_input_ui <- function(id, label, spec) {
   input <- tagList(input, l)
 }
 
+#' @export
 module_input_server <- function(id, spec, data) {
   stopifnot(is.transform(spec))
   stopifnot(is.reactive(data))

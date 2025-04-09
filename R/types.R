@@ -2,6 +2,11 @@ is.transform <- function(x) {
   inherits(x, "transform")
 }
 
+
+valid_transform <- function(x) {
+  !((is.type(x) || is.transform(x)) || or.transform(x))
+}
+
 or.transform <- function(x) {
   is.list(x) && all(vapply(x, function(x) {
     is.transform(x) || is.type(x)

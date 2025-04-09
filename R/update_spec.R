@@ -29,7 +29,7 @@ update_spec <- function(spec, type, value) {
     )
   }
 
-  if (!((is.type(spec) || is.transform(spec)) || or.transform(spec))) {
+  if (valid_transform(spec)) {
     stop("Unexpected object used as specification")
   }
 
