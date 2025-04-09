@@ -17,7 +17,7 @@ update_spec(spec, type, value)
 The specification with restored choices and selection if caused by the update.
 }
 \description{
-Once a selection is made update the specification for different valid selection.
+Update the specification for different selection.
 }
 \examples{
 td <- within(teal.data::teal_data(), {

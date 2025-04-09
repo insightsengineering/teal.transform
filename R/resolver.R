@@ -300,77 +300,77 @@ determine.variables <- function(type, data, ...) {
   list(type = type, data = data[, type$select])
 }
 
-#' @export
-determine.mae_colData <- function(type, data, ...) {
-  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
-    stop("Requires 'MultiAssayExperiment' package.")
-  }
+# @export
+# determine.mae_colData <- function(type, data, ...) {
+#   if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+#     stop("Requires 'MultiAssayExperiment' package.")
+#   }
+#
+#   new_data <- colData(data)
+#   for (i in seq_along(new_data)) {
+#     type <- determine_helper(type, colnames(new_data)[i], new_data[, i])
+#   }
+#   if (length(dim(new_data)) != 2L) {
+#     stop("Can't resolve variables from this object of class ", class(new_data))
+#   }
+#   if (ncol(new_data) <= 0L) {
+#     stop("Can't pull variable: No variable is available.")
+#   }
+#   type <- determine_helper(type, colnames(new_data), new_data)
+#
+#   # Not possible to know what is happening
+#   if (is.delayed(type)) {
+#     return(list(type = type, data = NULL))
+#   }
+#
+#   if (length(type$select) > 1) {
+#     list(type = type, data = data[type$select])
+#   } else {
+#     list(type = type, data = data[[type$select]])
+#   }
+# }
 
-  new_data <- colData(data)
-  for (i in seq_along(new_data)) {
-    type <- determine_helper(type, colnames(new_data)[i], new_data[, i])
-  }
-  if (length(dim(new_data)) != 2L) {
-    stop("Can't resolve variables from this object of class ", class(new_data))
-  }
-  if (ncol(new_data) <= 0L) {
-    stop("Can't pull variable: No variable is available.")
-  }
-  type <- determine_helper(type, colnames(new_data), new_data)
+# @export
+# determine.mae_experiments <- function(type, data, ...) {
+#   if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+#     stop("Requires 'MultiAssayExperiment' package.")
+#   }
+#   new_data <- experiments(data)
+#   type <- determine_helper(type, names(new_data), new_data)
+#
+#   # Not possible to know what is happening
+#   if (is.delayed(type)) {
+#   }
+#
+#   if (!is.delayed(type) && length(type$select) > 1) {
+#     list(type = type, data = new_data[type$select])
+#   } else if (!is.delayed(type) && length(type$select) == 1) {
+#     list(type = type, data = new_data[[type$select]])
+#   } else {
+#     return(list(type = type, data = NULL))
+#   }
+# }
 
-  # Not possible to know what is happening
-  if (is.delayed(type)) {
-    return(list(type = type, data = NULL))
-  }
-
-  if (length(type$select) > 1) {
-    list(type = type, data = data[type$select])
-  } else {
-    list(type = type, data = data[[type$select]])
-  }
-}
-
-#' @export
-determine.mae_experiments <- function(type, data, ...) {
-  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
-    stop("Requires 'MultiAssayExperiment' package.")
-  }
-  new_data <- experiments(data)
-  type <- determine_helper(type, names(new_data), new_data)
-
-  # Not possible to know what is happening
-  if (is.delayed(type)) {
-  }
-
-  if (!is.delayed(type) && length(type$select) > 1) {
-    list(type = type, data = new_data[type$select])
-  } else if (!is.delayed(type) && length(type$select) == 1) {
-    list(type = type, data = new_data[[type$select]])
-  } else {
-    return(list(type = type, data = NULL))
-  }
-}
-
-#' @export
-determine.mae_sampleMap <- function(type, data, ...) {
-  if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
-    stop("Requires 'MultiAssayExperiment' package.")
-  }
-
-  new_data <- sampleMap(data)
-  type <- determine_helper(type, names(new_data), new_data)
-
-  # Not possible to know what is happening
-  if (is.delayed(type)) {
-    return(list(type = type, data = NULL))
-  }
-
-  if (length(type$select) > 1) {
-    list(type = type, data = data[type$select])
-  } else {
-    list(type = type, data = data[[type$select]])
-  }
-}
+# @export
+# determine.mae_sampleMap <- function(type, data, ...) {
+#   if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
+#     stop("Requires 'MultiAssayExperiment' package.")
+#   }
+#
+#   new_data <- sampleMap(data)
+#   type <- determine_helper(type, names(new_data), new_data)
+#
+#   # Not possible to know what is happening
+#   if (is.delayed(type)) {
+#     return(list(type = type, data = NULL))
+#   }
+#
+#   if (length(type$select) > 1) {
+#     list(type = type, data = data[type$select])
+#   } else {
+#     list(type = type, data = data[[type$select]])
+#   }
+# }
 
 #' @export
 determine.values <- function(type, data, ...) {
