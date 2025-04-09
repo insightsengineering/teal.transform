@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.738521654184305" branch-rate="0" lines-covered="2268" lines-valid="3071" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-04-09 07:34:55.160582">
+<coverage line-rate="0.746789594995061" branch-rate="0" lines-covered="2268" lines-valid="3037" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-04-09 07:54:03.667148">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
   <packages>
-    <package name="teal.transform" line-rate="0.738521654184305" branch-rate="0" complexity="0">
+    <package name="teal.transform" line-rate="0.746789594995061" branch-rate="0" complexity="0">
       <classes>
         <class name="call_utils.R" filename="R/call_utils.R" line-rate="0.205128205128205" branch-rate="0" complexity="0">
           <methods>
@@ -5915,7 +5915,7 @@
             <line number="288" hits="0" branch="false"/>
           </lines>
         </class>
-        <class name="resolver.R" filename="R/resolver.R" line-rate="0.730593607305936" branch-rate="0" complexity="0">
+        <class name="resolver.R" filename="R/resolver.R" line-rate="0.864864864864865" branch-rate="0" complexity="0">
           <methods>
             <method name="resolver" signature="" line-rate="0.769230769230769" branch-rate="0" complexity="0">
               <lines>
@@ -6114,52 +6114,6 @@
                 <line number="295" hits="16" branch="false"/>
                 <line number="296" hits="0" branch="false"/>
                 <line number="300" hits="16" branch="false"/>
-              </lines>
-            </method>
-            <method name="determine.mae_colData" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="305" hits="0" branch="false"/>
-                <line number="306" hits="0" branch="false"/>
-                <line number="309" hits="0" branch="false"/>
-                <line number="310" hits="0" branch="false"/>
-                <line number="311" hits="0" branch="false"/>
-                <line number="313" hits="0" branch="false"/>
-                <line number="314" hits="0" branch="false"/>
-                <line number="316" hits="0" branch="false"/>
-                <line number="317" hits="0" branch="false"/>
-                <line number="319" hits="0" branch="false"/>
-                <line number="322" hits="0" branch="false"/>
-                <line number="323" hits="0" branch="false"/>
-                <line number="326" hits="0" branch="false"/>
-                <line number="327" hits="0" branch="false"/>
-                <line number="329" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="determine.mae_experiments" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="335" hits="0" branch="false"/>
-                <line number="336" hits="0" branch="false"/>
-                <line number="338" hits="0" branch="false"/>
-                <line number="339" hits="0" branch="false"/>
-                <line number="342" hits="0" branch="false"/>
-                <line number="345" hits="0" branch="false"/>
-                <line number="346" hits="0" branch="false"/>
-                <line number="347" hits="0" branch="false"/>
-                <line number="348" hits="0" branch="false"/>
-                <line number="350" hits="0" branch="false"/>
-              </lines>
-            </method>
-            <method name="determine.mae_sampleMap" signature="" line-rate="0" branch-rate="0" complexity="0">
-              <lines>
-                <line number="356" hits="0" branch="false"/>
-                <line number="357" hits="0" branch="false"/>
-                <line number="360" hits="0" branch="false"/>
-                <line number="361" hits="0" branch="false"/>
-                <line number="364" hits="0" branch="false"/>
-                <line number="365" hits="0" branch="false"/>
-                <line number="368" hits="0" branch="false"/>
-                <line number="369" hits="0" branch="false"/>
-                <line number="371" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="determine.values" signature="" line-rate="0.75" branch-rate="0" complexity="0">
@@ -6365,40 +6319,6 @@
             <line number="295" hits="16" branch="false"/>
             <line number="296" hits="0" branch="false"/>
             <line number="300" hits="16" branch="false"/>
-            <line number="305" hits="0" branch="false"/>
-            <line number="306" hits="0" branch="false"/>
-            <line number="309" hits="0" branch="false"/>
-            <line number="310" hits="0" branch="false"/>
-            <line number="311" hits="0" branch="false"/>
-            <line number="313" hits="0" branch="false"/>
-            <line number="314" hits="0" branch="false"/>
-            <line number="316" hits="0" branch="false"/>
-            <line number="317" hits="0" branch="false"/>
-            <line number="319" hits="0" branch="false"/>
-            <line number="322" hits="0" branch="false"/>
-            <line number="323" hits="0" branch="false"/>
-            <line number="326" hits="0" branch="false"/>
-            <line number="327" hits="0" branch="false"/>
-            <line number="329" hits="0" branch="false"/>
-            <line number="335" hits="0" branch="false"/>
-            <line number="336" hits="0" branch="false"/>
-            <line number="338" hits="0" branch="false"/>
-            <line number="339" hits="0" branch="false"/>
-            <line number="342" hits="0" branch="false"/>
-            <line number="345" hits="0" branch="false"/>
-            <line number="346" hits="0" branch="false"/>
-            <line number="347" hits="0" branch="false"/>
-            <line number="348" hits="0" branch="false"/>
-            <line number="350" hits="0" branch="false"/>
-            <line number="356" hits="0" branch="false"/>
-            <line number="357" hits="0" branch="false"/>
-            <line number="360" hits="0" branch="false"/>
-            <line number="361" hits="0" branch="false"/>
-            <line number="364" hits="0" branch="false"/>
-            <line number="365" hits="0" branch="false"/>
-            <line number="368" hits="0" branch="false"/>
-            <line number="369" hits="0" branch="false"/>
-            <line number="371" hits="0" branch="false"/>
             <line number="377" hits="1" branch="false"/>
             <line number="380" hits="1" branch="false"/>
             <line number="381" hits="0" branch="false"/>
