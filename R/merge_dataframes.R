@@ -1,3 +1,4 @@
+
 merge_module_ui <- function(id) {
   ns <- NS(id)
   renderText(ns("a"))
@@ -5,7 +6,7 @@ merge_module_ui <- function(id) {
 
 consolidate_extraction <- function(...) {
   if (...length() > 1) {
-    input_resolved <- as.list(...)
+    input_resolved <- list(...)
   } else {
     input_resolved <- ..1
   }
@@ -15,7 +16,7 @@ consolidate_extraction <- function(...) {
   variables <- lapply(input_resolved, function(x){x$variables})
   lapply(unique(datasets),
          function(dataset, x, y) {
-           list("datasets" = dataset, "variables" = y[x == dataset])
+           list("datasets" = dataset, "variables" = unique(unlist(y[x == dataset])))
          }, x = datasets, y = variables)
 }
 
@@ -26,12 +27,14 @@ add_ids <- function(input, data) {
     return(input)
   }
 
-  datasets <- names(input)
-  l <- lapply(datasets, function(x, join_keys, i) {
-    c(i[[x]], unique(unlist(jk[[x]])))
-  }, join_keys = jk, i = input)
-
-  names(l) <- datasets
+  datasets <- lapply(input, function(x){x$datasets})
+  for (i in seq_along(input)) {
+    x <- input[[i]]
+    # Avoid adding as id something already present.
+    ids <- setdiff(unique(unlist(jk[[x$datasets]])), x$variables)
+    input[[i]][["variables"]] <- c(x$variables, ids)
+  }
+  input
 }
 
 
@@ -44,10 +47,7 @@ extract_ids <- function(input, data) {
     out <- names(tab)[tab > 1]
 
     if (length(out)) {
-      ei <- extract_input(input, data)
-      tab0 <- unlist(lapply(ei, colnames))
-      tab <- table(tab0)
-      out <- names(tab)[tab > 1]
+      return(NULL)
     }
     return(out)
   }
@@ -80,7 +80,9 @@ merge_module_srv <- function(id, ..., data, ids, type) {
       # Add ids to merge by them if known
       input_list <- add_ids(input_list, data)
       input_data <- lapply(input_list, extract_input, data = data)
-      merging(input_data, ids = ids, type = type)
+      # TODO: return an expression
+      # Evaluation should be addressed by eval_code(qenv, code = output)
+      merging(input_data, ids = extract_ids(input_list, data), type = type)
     })
     output$out <- out
     out
