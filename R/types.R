@@ -202,10 +202,9 @@ c.type <- function(...) {
   vector <- vector("list", length(utypes))
   names(vector) <- utypes
   for (t in utypes) {
-    new_type <- vector("list", length = 2)
-    names(new_type) <- c("names", "select")
+    new_type <- vector("list", length = 3)
+    names(new_type) <- c("names", "select", "except")
     for (i in seq_along(l)) {
-      names_l <- names(l[[i]])
       if (!is(l[[i]], t)) {
         next
       }
@@ -217,6 +216,10 @@ c.type <- function(...) {
       ), orig(l[[i]][["names"]]))
       new_type$select <- unique(c(old_select, l[[i]][["select"]]))
       attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][["select"]]))
+
+      new_type$except <- c(new_type$except, l[[i]][["except"]])
+      attr(new_type$except, "original") <- c(orig(l[[i]][["except"]]), orig(new_type$except))
+
     }
     orig_names <- unique(orig(new_type$names))
     orig_select <- unique(orig(new_type$select))
@@ -251,12 +254,7 @@ print.type <- function(x, ...) {
     return(x)
   }
 
-  nam_list <- is.list(x$names)
-  if (nam_list) {
-    nam_functions <- vapply(x$names, is.function, logical(1L))
-  } else {
-    nam_functions <- FALSE
-  }
+  nam_functions <- count_functions(x$names)
 
   msg_values <- character()
   nam_values <- length(x$names) - sum(nam_functions)
@@ -272,12 +270,7 @@ print.type <- function(x, ...) {
     )
   }
 
-  sel_list <- is.list(x$select)
-  if (sel_list) {
-    sel_functions <- vapply(x$select, is.function, logical(1L))
-  } else {
-    sel_functions <- FALSE
-  }
+  sel_functions <- count_functions(x$select)
 
   msg_sel <- character()
   sel_values <- length(x$select) - sum(sel_functions)
@@ -292,6 +285,33 @@ print.type <- function(x, ...) {
       collapse = "\n"
     )
   }
-  cat(msg_values, msg_sel)
+  if (!is.null(x[["except"]])) {
+    exc_functions <- count_functions(x$except)
+    msg_exc <- character()
+    sel_values <- length(x$except) - sum(exc_functions)
+    if (any(exc_functions)) {
+      msg_exc <- paste0(msg_exc, sum(exc_functions), " functions to exclude.",
+                         collapse = "\n"
+      )
+    }
+    if (sel_values) {
+      msg_exc <- paste0(msg_exc, paste0(sQuote(x$except[!exc_functions]), collapse = ", "),
+                         " excluded.",
+                         collapse = "\n"
+      )
+    }
+  } else {
+    msg_exc <- character()
+  }
+
+  cat(msg_values, msg_sel, msg_exc)
   return(x)
+}
+
+count_functions <- function(x) {
+  if (is.list(x)) {
+    vapply(x, is.function, logical(1L))
+  } else {
+    FALSE
+  }
 }

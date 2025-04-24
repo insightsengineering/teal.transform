@@ -171,15 +171,25 @@ determine_helper <- function(type, data_names, data) {
   stopifnot(!is.null(type))
   orig_names <- type$names
   orig_select <- type$select
+  orig_exc <- type$except
 
   if (is.delayed(type) && all(is.character(type$names))) {
-    match <- intersect(data_names, type$names)
-    type$names <- match
-    if (length(match) == 0) {
+    new_names <- intersect(data_names, type$names)
+
+    if (!is.null(type$except)) {
+      excludes <- c(functions_names(type$except, data_names),
+                    functions_data(type$except, data_names, data))
+      type$except <- excludes
+      original(type$except, "original") <- orig(orig_exc)
+      new_names <- setdiff(new_names, excludes)
+    }
+
+    type$names <- new_names
+    if (length(new_names) == 0) {
       return(NULL)
       # stop("No selected ", is(type), " matching the conditions requested")
-    } else if (length(match) == 1L) {
-      type$select <- match
+    } else if (length(new_names) == 1L) {
+      type$select <- new_names
     } else {
       new_select <- functions_names(type$select, type$names)
       new_select <- unique(new_select[!is.na(new_select)])
@@ -190,7 +200,6 @@ determine_helper <- function(type, data_names, data) {
       type$select <- new_select
     }
   } else if (is.delayed(type)) {
-    old_names <- type$names
     new_names <- c(
       functions_names(type$names, data_names),
       functions_data(type$names, data_names, data)
@@ -198,6 +207,17 @@ determine_helper <- function(type, data_names, data) {
     new_names <- unlist(unique(new_names[!is.na(new_names)]),
       use.names = FALSE
     )
+
+    if (!is.null(type$except)) {
+      excludes <- c(functions_names(type$except, data_names),
+                    functions_data(type$except, data_names, data))
+
+      type$except <- excludes
+      original(type$except, "original") <- orig(orig_exc)
+
+      new_names <- setdiff(new_names, excludes)
+    }
+
     if (!length(new_names)) {
       return(NULL)
       # stop("No ", is(type), " meet the requirements")

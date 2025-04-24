@@ -18,10 +18,11 @@ Ops.transform <- function(e1, e2) {
 #' @export
 Ops.type <- function(e1, e2) {
   if (missing(e2)) {
-    # out <- switch(.Generic,
-    #        "!" = Negate,
-    stop("Method ", sQuote(.Generic), " not implemented for this class ", .Class, ".", call. = FALSE)
-    # return(out)
+    out <- switch(.Generic,
+                  "!" = negate_type(e1),
+                  stop("Method ", sQuote(.Generic),
+                       " not implemented for this class ", .Class, ".", call. = FALSE))
+    return(out)
   }
   out <- switch(.Generic,
     "!=" = NextMethod(),
@@ -113,6 +114,12 @@ or_type <- function(e1, e2) {
   list(e1, e2)
 }
 
+
+negate_type <- function(e1, e2) {
+  out <- list(except = e1$names)
+  class(out) <- class(e1)
+  out
+}
 
 # chooseOpsMethod.list <- function(x, y, mx, my, cl, reverse) TRUE
 #' @export
