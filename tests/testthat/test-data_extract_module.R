@@ -26,7 +26,7 @@ testthat::test_that("Single filter", {
   testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide"))
 
   testthat::expect_equal(
-    filter$children[[1]]$children[[2]]$children[[4]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple,
+    filter$children[[1]]$children[[2]]$children[[3]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple,
     "multiple"
   )
 
