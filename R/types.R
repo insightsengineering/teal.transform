@@ -219,7 +219,6 @@ c.type <- function(...) {
 
       new_type$except <- c(new_type$except, l[[i]][["except"]])
       attr(new_type$except, "original") <- c(orig(l[[i]][["except"]]), orig(new_type$except))
-
     }
     orig_names <- unique(orig(new_type$names))
     orig_select <- unique(orig(new_type$select))
@@ -291,13 +290,13 @@ print.type <- function(x, ...) {
     sel_values <- length(x$except) - sum(exc_functions)
     if (any(exc_functions)) {
       msg_exc <- paste0(msg_exc, sum(exc_functions), " functions to exclude.",
-                         collapse = "\n"
+        collapse = "\n"
       )
     }
     if (sel_values) {
       msg_exc <- paste0(msg_exc, paste0(sQuote(x$except[!exc_functions]), collapse = ", "),
-                         " excluded.",
-                         collapse = "\n"
+        " excluded.",
+        collapse = "\n"
       )
     }
   } else {

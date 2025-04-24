@@ -11,15 +11,18 @@ consolidate_extraction <- function(...) {
   datasets <- lapply(input_resolved, `$`, name = datasets)
   variables <- lapply(input_resolved, `$`, name = variables)
   lapply(unique(datasets),
-         function(dataset, x, y) {
-           list("datasets" = dataset,
-                "variables" = unique(unlist(y[x == dataset])))
-         }, x = datasets, y = variables)
+    function(dataset, x, y) {
+      list(
+        "datasets" = dataset,
+        "variables" = unique(unlist(y[x == dataset]))
+      )
+    },
+    x = datasets, y = variables
+  )
 }
 
 # Function to add ids of data.frames to the output of modules to enable merging them.
 add_ids <- function(input, data) {
-
   jk <- join_keys(data)
   # If no join keys they should be on the input
   if (!length(jk)) {
@@ -61,7 +64,9 @@ merge_call_pair <- function(selections, by, data,
                             merge_function = "dplyr::full_join",
                             anl_name = "ANL") {
   stopifnot(length(selections) == 2L)
-  datasets <- sapply(selections, function(x){x$datasets})
+  datasets <- sapply(selections, function(x) {
+    x$datasets
+  })
   by <- extract_ids(input = selections, data)
 
   if (grepl("::", merge_function, fixed = TRUE)) {
@@ -72,21 +77,24 @@ merge_call_pair <- function(selections, by, data,
 
   if (!missing(by) && length(by)) {
     call_m <- call(merge_function,
-                   x = as.name(datasets[1]),
-                   y = as.name(datasets[2]),
-                   by = by)
+      x = as.name(datasets[1]),
+      y = as.name(datasets[2]),
+      by = by
+    )
   } else {
     call_m <- call(merge_function,
-                   x = as.name(datasets[1]),
-                   y = as.name(datasets[2]))
+      x = as.name(datasets[1]),
+      y = as.name(datasets[2])
+    )
   }
   call_m
 }
 
 merge_call_multiple <- function(input, ids, merge_function, data,
                                 anl_name = "ANL") {
-
-  datasets <- sapply(input, function(x){x$datasets})
+  datasets <- sapply(input, function(x) {
+    x$datasets
+  })
   stopifnot(is.character(datasets) && length(datasets) >= 1L)
   number_merges <- length(datasets) - 1L
   stopifnot(
@@ -121,22 +129,28 @@ merge_call_multiple <- function(input, ids, merge_function, data,
       if (!missing(ids)) {
         ids <- ids[[merge_i]]
         previous <- merge_call_pair(input[datasets_i],
-                               ids,
-                               merge_function[merge_i], data = data)
+          ids,
+          merge_function[merge_i],
+          data = data
+        )
       } else {
         previous <- merge_call_pair(input[datasets_i],
-                               merge_function[merge_i], data = data)
+          merge_function[merge_i],
+          data = data
+        )
       }
     } else {
       datasets_ids <- merge_i:(merge_i + 1L)
       if (!missing(ids)) {
         current <- merge_call_pair(input[datasets_ids],
-                            type = merge_function[merge_i], data = data)
+          type = merge_function[merge_i], data = data
+        )
       } else {
         ids <- ids[[merge_i]]
         current <- merge_call_pair(input[datasets_ids],
-                            ids,
-                            type = merge_function[merge_i], data = data)
+          ids,
+          type = merge_function[merge_i], data = data
+        )
       }
     }
     previous <- call("%>%", as.name(previous), as.name(current))

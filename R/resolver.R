@@ -177,8 +177,10 @@ determine_helper <- function(type, data_names, data) {
     new_names <- intersect(data_names, type$names)
 
     if (!is.null(type$except)) {
-      excludes <- c(functions_names(type$except, data_names),
-                    functions_data(type$except, data_names, data))
+      excludes <- c(
+        functions_names(type$except, data_names),
+        functions_data(type$except, data_names, data)
+      )
       type$except <- excludes
       original(type$except, "original") <- orig(orig_exc)
       new_names <- setdiff(new_names, excludes)
@@ -209,8 +211,10 @@ determine_helper <- function(type, data_names, data) {
     )
 
     if (!is.null(type$except)) {
-      excludes <- c(functions_names(type$except, data_names),
-                    functions_data(type$except, data_names, data))
+      excludes <- c(
+        functions_names(type$except, data_names),
+        functions_data(type$except, data_names, data)
+      )
 
       type$except <- excludes
       original(type$except, "original") <- orig(orig_exc)

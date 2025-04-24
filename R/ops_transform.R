@@ -19,9 +19,12 @@ Ops.transform <- function(e1, e2) {
 Ops.type <- function(e1, e2) {
   if (missing(e2)) {
     out <- switch(.Generic,
-                  "!" = negate_type(e1),
-                  stop("Method ", sQuote(.Generic),
-                       " not implemented for this class ", .Class, ".", call. = FALSE))
+      "!" = negate_type(e1),
+      stop("Method ", sQuote(.Generic),
+        " not implemented for this class ", .Class, ".",
+        call. = FALSE
+      )
+    )
     return(out)
   }
   out <- switch(.Generic,

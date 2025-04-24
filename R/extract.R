@@ -62,7 +62,6 @@ extract_srv <- function(id, input) {
   moduleServer(
     id,
     function(input, output, session) {
-
       obj <- extract(data(), input$datasets)
       method <- paste0("extract.", class(obj))
       method <- dynGet(method, ifnotfound = "extract.default", inherits = TRUE)
@@ -77,12 +76,17 @@ extract_srv <- function(id, input) {
 
       # Extraction happening:
       # FIXME assumes only to variables used
-      output <- call("<-", x = as.name(input$datasets), value =
-                       substitute(
-                         extract(obj, variables),
-                         list(obj = as.name(input$datasets),
-                              variables = input$variables)))
+      output <- call("<-",
+        x = as.name(input$datasets), value =
+          substitute(
+            extract(obj, variables),
+            list(
+              obj = as.name(input$datasets),
+              variables = input$variables
+            )
+          )
+      )
       q <- eval_code(q, code = output)
-    })
+    }
+  )
 }
-
