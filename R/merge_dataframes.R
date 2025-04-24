@@ -1,9 +1,5 @@
-
-merge_module_ui <- function(id) {
-  ns <- NS(id)
-  renderText(ns("a"))
-}
-
+# Simplify multiple datasets & variables into the bare minimum necessary.
+# This simplifies the number of extractions and merging required
 consolidate_extraction <- function(...) {
   if (...length() > 1) {
     input_resolved <- list(...)
@@ -11,42 +7,45 @@ consolidate_extraction <- function(...) {
     input_resolved <- ..1
   }
 
-  datasets <- lapply(input_resolved, function(x){x$datasets})
   # Assume the data is a data.frame so no other specifications types are present.
-  variables <- lapply(input_resolved, function(x){x$variables})
+  datasets <- lapply(input_resolved, `$`, name = datasets)
+  variables <- lapply(input_resolved, `$`, name = variables)
   lapply(unique(datasets),
          function(dataset, x, y) {
-           list("datasets" = dataset, "variables" = unique(unlist(y[x == dataset])))
+           list("datasets" = dataset,
+                "variables" = unique(unlist(y[x == dataset])))
          }, x = datasets, y = variables)
 }
 
+# Function to add ids of data.frames to the output of modules to enable merging them.
 add_ids <- function(input, data) {
 
   jk <- join_keys(data)
+  # If no join keys they should be on the input
   if (!length(jk)) {
     return(input)
   }
 
-  datasets <- lapply(input, function(x){x$datasets})
+  datasets <- lapply(input, `$`, name = datasets)
   for (i in seq_along(input)) {
     x <- input[[i]]
-    # Avoid adding as id something already present.
+    # Avoid adding as id something already present: No duplicating input.
     ids <- setdiff(unique(unlist(jk[[x$datasets]])), x$variables)
     input[[i]][["variables"]] <- c(x$variables, ids)
   }
   input
 }
 
-
+# Find common ids to enable merging.
 extract_ids <- function(input, data) {
-  jk <- join_keys(data)
+  jk <- teal.data::join_keys(data)
   # No join_keys => input
   if (!length(jk)) {
     input <- unlist(input)
     tab <- table(input)
     out <- names(tab)[tab > 1]
 
-    if (length(out)) {
+    if (!length(out)) {
       return(NULL)
     }
     return(out)
@@ -58,180 +57,90 @@ extract_ids <- function(input, data) {
   out <- unique(unlist(l))
 }
 
-merge_module_srv <- function(id, ..., data, ids, type) {
-  # stopifnot(is.reactive(data))
-  stopifnot(is.character(id))
-  moduleServer(id, function(input, output, session) {
-    out <- reactive({
-      if (...length() == 1L && is.list(..1)) {
-        input_list <- ..1
-      } else {
-        input_list <- list(...)
-      }
+merge_call_pair <- function(selections, by, data,
+                            merge_function = "dplyr::full_join",
+                            anl_name = "ANL") {
+  stopifnot(length(selections) == 2L)
+  datasets <- sapply(selections, function(x){x$datasets})
+  by <- extract_ids(input = selections, data)
 
-      input_list <- consolidate_extraction(input_list)
-
-      # No merge is needed
-      if (length(input_list) == 1L) {
-        out <- extract_input(input_list, data)
-        output$out <- out
-        return(out)
-      }
-      # Add ids to merge by them if known
-      input_list <- add_ids(input_list, data)
-      input_data <- lapply(input_list, extract_input, data = data)
-      # TODO: return an expression
-      # Evaluation should be addressed by eval_code(qenv, code = output)
-      merging(input_data, ids = extract_ids(input_list, data), type = type)
-    })
-    output$out <- out
-    out
-  })
-}
-
-extract_input <- function(input, data) {
-  for (i in input) {
-    # Extract data recursively: only works on lists and square objects (no MAE or similar)
-    # To work on new classes implement an extract.class method
-    # Assumes order of extraction on the input: qenv > datasets > variables
-    # IF datasetes > variables > qenv order
-    data <- extract(data, i, drop = FALSE)
+  if (grepl("::", merge_function, fixed = TRUE)) {
+    m <- strsplit(merge_function, split = "::", fixed = TRUE)[[1]]
+    data <- eval_code(data, call("library", m[1]))
+    merge_function <- m[2]
   }
-  data
-}
 
-# Allows merging arbitrary number of data.frames by ids and type
-
-merging <- function(..., ids, type) {
-  input_as_list <- is.list(..1) & ...length() == 1L
-  if (input_as_list) {
-    list_df <- ..1
+  if (!missing(by) && length(by)) {
+    call_m <- call(merge_function,
+                   x = as.name(datasets[1]),
+                   y = as.name(datasets[2]),
+                   by = by)
   } else {
-    list_df <- list(...)
+    call_m <- call(merge_function,
+                   x = as.name(datasets[1]),
+                   y = as.name(datasets[2]))
   }
-  number_merges <- length(list_df) - 1L
+  call_m
+}
+
+merge_call_multiple <- function(input, ids, merge_function, data,
+                                anl_name = "ANL") {
+
+  datasets <- sapply(input, function(x){x$datasets})
+  stopifnot(is.character(datasets) && length(datasets) >= 1L)
+  number_merges <- length(datasets) - 1L
   stopifnot(
     "Number of datasets is enough" = number_merges >= 1L,
-    "Number of arguments for type matches data" = length(type) == number_merges || length(type) == 1L
+    "Number of arguments for type matches data" = length(merge_function) == number_merges || length(merge_function) == 1L
   )
-
   if (!missing(ids)) {
     stopifnot("Number of arguments for ids matches data" = !(is.list(ids) && length(ids) == number_merges))
   }
-  if (length(type) != number_merges) {
-    type <- rep(type, number_merges)
+  if (length(merge_function) != number_merges) {
+    merge_function <- rep(merge_function, number_merges)
   }
   if (!missing(ids) && length(ids) != number_merges) {
     ids <- rep(ids, number_merges)
   }
 
-  if (number_merges == 1L && !input_as_list && !missing(ids)) {
-    return(self_merging(..1, ..2, ids = ids, type = type))
-  } else if (number_merges == 1L && !input_as_list && missing(ids)) {
-    return(self_merging(..1, ..2, type = type))
-  } else if (number_merges == 1L && input_as_list && missing(ids)) {
-    return(self_merging(list_df[[1]], list_df[[2]], type = type))
-  } else if (number_merges == 1L && input_as_list && !missing(ids)) {
-    return(self_merging(list_df[[1]], list_df[[2]], ids = ids, type = type))
+  if (number_merges == 1L && missing(ids)) {
+    previous <- merge_call_pair(input, merge_function = merge_function, data = data)
+    final_call <- call("<-", x = as.name(anl_name), value = previous)
+    return(eval_code(data, final_call))
+  } else if (number_merges == 1L && !missing(ids)) {
+    previous <- merge_call_pair(input, by = ids, merge_function = merge_function, data = data)
+    final_call <- call("<-", x = as.name(anl_name), value = previous)
+    return(eval_code(data, final_call))
   }
+
+
 
   for (merge_i in seq_len(number_merges)) {
-    message(merge_i)
     if (merge_i == 1L) {
-      if (missing(ids)) {
-        ids <- intersect(colnames(list_df[[merge_i]]), colnames(list_df[[merge_i + 1L]]))
-      } else {
+      datasets_i <- seq_len(2)
+      if (!missing(ids)) {
         ids <- ids[[merge_i]]
+        previous <- merge_call_pair(input[datasets_i],
+                               ids,
+                               merge_function[merge_i], data = data)
+      } else {
+        previous <- merge_call_pair(input[datasets_i],
+                               merge_function[merge_i], data = data)
       }
-      out <- self_merging(list_df[[merge_i]], list_df[[merge_i + 1L]],
-        ids,
-        type = type[[merge_i]]
-      )
     } else {
-      if (missing(ids)) {
-        ids <- intersect(colnames(out, colnames(list_df[[merge_i + 1L]])))
+      datasets_ids <- merge_i:(merge_i + 1L)
+      if (!missing(ids)) {
+        current <- merge_call_pair(input[datasets_ids],
+                            type = merge_function[merge_i], data = data)
       } else {
         ids <- ids[[merge_i]]
-      }
-      out <- self_merging(out, list_df[[merge_i + 1L]],
-        ids,
-        type = type[[merge_i]]
-      )
-    }
-  }
-  out
-}
-
-
-# self_merge(df1, df2) almost equal to self_merge(df2, df1): Only changes on the column order.
-self_merging <- function(e1, e2, ids = intersect(colnames(e1), colnames(e2)), type) {
-  # Get the name of the variables to use as suffix.
-  # If we need the name at higher environments (ie: f(self_merging()) ) it could use rlang (probably)
-  name1 <- deparse(substitute(e1))
-  name2 <- deparse(substitute(e2))
-  suffix1 <- paste0(".", name1)
-  suffix2 <- paste0(".", name2)
-  ce1 <- colnames(e1)
-  ce2 <- colnames(e2)
-  type <- match.arg(type, c("inner", "left", "right", "full"))
-
-  # Called by its side effects of adding the two variables the the current environment
-  switch(type,
-    inner = {
-      all.x <- FALSE
-      all.y <- FALSE
-    },
-    full = {
-      all.x <- TRUE
-      all.y <- TRUE
-    },
-    left = {
-      all.x <- TRUE
-      all.y <- FALSE
-    },
-    right = {
-      all.x <- FALSE
-      all.y <- TRUE
-    },
-    {
-      all.x <- FALSE
-      all.y <- FALSE
-    }
-  )
-
-  if (!is.null(names(ids))) {
-    name_ids <- names(ids)
-  } else {
-    name_ids <- ids
-  }
-
-  if (!all(ids %in% name_ids) && !all(ids %in% ce2)) {
-    stop("Not all ids are in both objects")
-  }
-  # The default generic should find the right method, if not we :
-  # a) ask for the method to be implemented or
-  # b) implement it ourselves here to be used internally.
-  mm <- merge(e1, e2,
-    all.x = all.x, all.y = all.y,
-    by.x = name_ids, by.y = ids,
-    suffixes = c(".e1", ".e2")
-  )
-  g <- grep("\\.[(e1)(e2)]", colnames(mm))
-  if (length(g)) {
-    mix_columns <- setdiff(intersect(ce1, ce2), ids)
-    for (column in mix_columns) {
-      mc1 <- paste0(column, ".e1")
-      mc2 <- paste0(column, ".e2")
-      # Rename column and delete one if they are the same
-      if (identical(mm[, mc1], mm[, mc2])) {
-        mm[, mc2] <- NULL
-        colnames(mm)[colnames(mm) %in% mc1] <- column
-      } else {
-        # Rename to keep the suffic of the data names
-        colnames(mm)[colnames(mm) %in% mc1] <- paste0(column, suffix1)
-        colnames(mm)[colnames(mm) %in% mc2] <- paste0(column, suffix2)
+        current <- merge_call_pair(input[datasets_ids],
+                            ids,
+                            type = merge_function[merge_i], data = data)
       }
     }
+    previous <- call("%>%", as.name(previous), as.name(current))
   }
-  mm
+  final_call <- call("<-", x = as.name(anl_name), value = previous)
+  eval_code(data, final_call)
 }

@@ -54,3 +54,35 @@ extract.default <- function(x, variable, ..., drop = TRUE) {
 # extract.qenv <- function(x, variable) {
 #   x[[variable]]
 # }
+
+# Get code to be evaluated & displayed by modules
+extract_srv <- function(id, input) {
+  stopifnot(is.null(input$datasets))
+  stopifnot(is.null(input$variables))
+  moduleServer(
+    id,
+    function(input, output, session) {
+
+      obj <- extract(data(), input$datasets)
+      method <- paste0("extract.", class(obj))
+      method <- dynGet(method, ifnotfound = "extract.default", inherits = TRUE)
+      if (identical(method, "extract.default")) {
+        b <- get("extract.default")
+      } else {
+        b <- get(method)
+      }
+      # Extract definition
+      extract_f_def <- call("<-", x = as.name("extract"), value = b)
+      q <- eval_code(data(), code = extract_f_def)
+
+      # Extraction happening:
+      # FIXME assumes only to variables used
+      output <- call("<-", x = as.name(input$datasets), value =
+                       substitute(
+                         extract(obj, variables),
+                         list(obj = as.name(input$datasets),
+                              variables = input$variables)))
+      q <- eval_code(q, code = output)
+    })
+}
+
