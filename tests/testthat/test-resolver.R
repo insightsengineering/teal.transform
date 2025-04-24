@@ -79,9 +79,11 @@ test_that("resolver values works", {
 
 test_that("resolver works with excluded types", {
   td <- within(teal.data::teal_data(), {
-    df <- data.frame(a = LETTERS[1:5],
-                     b = factor(letters[1:5]),
-                     c = factor(letters[1:5]))
+    df <- data.frame(
+      a = LETTERS[1:5],
+      b = factor(letters[1:5]),
+      c = factor(letters[1:5])
+    )
   })
   spec <- datasets("df") & variables(c("a", "b")) & !variables("b")
   expect_no_error(resolver(spec, td))
