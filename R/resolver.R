@@ -182,7 +182,7 @@ determine_helper <- function(type, data_names, data) {
         functions_data(type$except, data_names, data)
       )
       type$except <- excludes
-      original(type$except, "original") <- orig(orig_exc)
+      attr(type$except, "original") <- orig(orig_exc)
       new_names <- setdiff(new_names, excludes)
     }
 
@@ -217,7 +217,7 @@ determine_helper <- function(type, data_names, data) {
       )
 
       type$except <- excludes
-      original(type$except, "original") <- orig(orig_exc)
+      attr(type$except, "original") <- orig(orig_exc)
 
       new_names <- setdiff(new_names, excludes)
     }

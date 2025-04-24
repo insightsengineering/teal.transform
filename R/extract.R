@@ -56,13 +56,13 @@ extract.default <- function(x, variable, ..., drop = TRUE) {
 # }
 
 # Get code to be evaluated & displayed by modules
-extract_srv <- function(id, input) {
+extract_srv <- function(id, input, data) {
   stopifnot(is.null(input$datasets))
   stopifnot(is.null(input$variables))
   moduleServer(
     id,
     function(input, output, session) {
-      obj <- extract(data(), input$datasets)
+      obj <- extract(data, input$datasets)
       method <- paste0("extract.", class(obj))
       method <- dynGet(method, ifnotfound = "extract.default", inherits = TRUE)
       if (identical(method, "extract.default")) {
@@ -72,7 +72,7 @@ extract_srv <- function(id, input) {
       }
       # Extract definition
       extract_f_def <- call("<-", x = as.name("extract"), value = b)
-      q <- eval_code(data(), code = extract_f_def)
+      q <- teal.code::eval_code(data, code = extract_f_def)
 
       # Extraction happening:
       # FIXME assumes only to variables used
@@ -86,7 +86,7 @@ extract_srv <- function(id, input) {
             )
           )
       )
-      q <- eval_code(q, code = output)
+      q <- teal.code::eval_code(q, code = output)
     }
   )
 }

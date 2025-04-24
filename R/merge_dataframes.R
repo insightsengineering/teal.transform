@@ -23,7 +23,7 @@ consolidate_extraction <- function(...) {
 
 # Function to add ids of data.frames to the output of modules to enable merging them.
 add_ids <- function(input, data) {
-  jk <- join_keys(data)
+  jk <- teal.data::join_keys(data)
   # If no join keys they should be on the input
   if (!length(jk)) {
     return(input)
@@ -71,7 +71,7 @@ merge_call_pair <- function(selections, by, data,
 
   if (grepl("::", merge_function, fixed = TRUE)) {
     m <- strsplit(merge_function, split = "::", fixed = TRUE)[[1]]
-    data <- eval_code(data, call("library", m[1]))
+    data <- teal.code::eval_code(data, call("library", m[1]))
     merge_function <- m[2]
   }
 
@@ -114,11 +114,11 @@ merge_call_multiple <- function(input, ids, merge_function, data,
   if (number_merges == 1L && missing(ids)) {
     previous <- merge_call_pair(input, merge_function = merge_function, data = data)
     final_call <- call("<-", x = as.name(anl_name), value = previous)
-    return(eval_code(data, final_call))
+    return(teal.code::eval_code(data, final_call))
   } else if (number_merges == 1L && !missing(ids)) {
     previous <- merge_call_pair(input, by = ids, merge_function = merge_function, data = data)
     final_call <- call("<-", x = as.name(anl_name), value = previous)
-    return(eval_code(data, final_call))
+    return(teal.code::eval_code(data, final_call))
   }
 
 
@@ -143,18 +143,18 @@ merge_call_multiple <- function(input, ids, merge_function, data,
       datasets_ids <- merge_i:(merge_i + 1L)
       if (!missing(ids)) {
         current <- merge_call_pair(input[datasets_ids],
-          type = merge_function[merge_i], data = data
+          merge_function = merge_function[merge_i], data = data
         )
       } else {
         ids <- ids[[merge_i]]
         current <- merge_call_pair(input[datasets_ids],
           ids,
-          type = merge_function[merge_i], data = data
+          merge_function = merge_function[merge_i], data = data
         )
       }
     }
     previous <- call("%>%", as.name(previous), as.name(current))
   }
   final_call <- call("<-", x = as.name(anl_name), value = previous)
-  eval_code(data, final_call)
+  teal.code::eval_code(data, final_call)
 }
