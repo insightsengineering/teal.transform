@@ -24,6 +24,7 @@ basic_ops <- function(fun) {
   expect_error(FUN("ABC") & 1)
   out <- type1 & type2b
   expect_true(is.list(out$names))
+  expect_no_error(type1 & !type2)
 }
 
 test_that("datasets & work", {
