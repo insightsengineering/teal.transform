@@ -29,6 +29,13 @@ test_that("raw combine of types", {
   expect_no_error(c(datasets("df"), variables("df"), values("df")))
 })
 
+test_that("combine types", {
+  expect_no_error(c(
+    datasets(is.data.frame, select = "df1"),
+    variables(is.numeric)
+  ))
+})
+
 test_that("values", {
   expect_no_error(val0 <- values("a", "a"))
   expect_no_error(val1 <- values("a"))
