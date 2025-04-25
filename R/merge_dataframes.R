@@ -8,8 +8,8 @@ consolidate_extraction <- function(...) {
   }
 
   # Assume the data is a data.frame so no other specifications types are present.
-  datasets <- lapply(input_resolved, `$`, name = datasets)
-  variables <- lapply(input_resolved, `$`, name = variables)
+  datasets <- lapply(input_resolved, function(x){x$datasets})
+  variables <- lapply(input_resolved, function(x){x$variables})
   lapply(unique(datasets),
     function(dataset, x, y) {
       list(
@@ -29,7 +29,7 @@ add_ids <- function(input, data) {
     return(input)
   }
 
-  datasets <- lapply(input, `$`, name = datasets)
+  datasets <- lapply(input, function(x){x$datasets})
   for (i in seq_along(input)) {
     x <- input[[i]]
     # Avoid adding as id something already present: No duplicating input.
@@ -63,10 +63,13 @@ extract_ids <- function(input, data) {
 merge_call_pair <- function(selections, by, data,
                             merge_function = "dplyr::full_join",
                             anl_name = "ANL") {
+
+  selections <- consolidate_extraction(selections)
   stopifnot(length(selections) == 2L)
-  datasets <- sapply(selections, function(x) {
+  datasets <- unique(sapply(selections, function(x) {
     x$datasets
-  })
+  }))
+  stopifnot(length(datasets) >= 2)
   by <- extract_ids(input = selections, data)
 
   if (grepl("::", merge_function, fixed = TRUE)) {
@@ -92,6 +95,8 @@ merge_call_pair <- function(selections, by, data,
 
 merge_call_multiple <- function(input, ids, merge_function, data,
                                 anl_name = "ANL") {
+
+  input <- consolidate_extraction(input)
   datasets <- unique(sapply(input, function(x) {
     x$datasets
   }))
