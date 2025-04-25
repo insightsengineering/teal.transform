@@ -92,9 +92,9 @@ merge_call_pair <- function(selections, by, data,
 
 merge_call_multiple <- function(input, ids, merge_function, data,
                                 anl_name = "ANL") {
-  datasets <- sapply(input, function(x) {
+  datasets <- unique(sapply(input, function(x) {
     x$datasets
-  })
+  }))
   stopifnot(is.character(datasets) && length(datasets) >= 1L)
   number_merges <- length(datasets) - 1L
   stopifnot(
