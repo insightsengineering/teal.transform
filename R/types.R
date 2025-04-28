@@ -7,12 +7,6 @@ valid_transform <- function(x) {
   !((is.type(x) || is.transform(x)) || or.transform(x))
 }
 
-or.transform <- function(x) {
-  is.list(x) && all(vapply(x, function(x) {
-    is.transform(x) || is.type(x)
-  }, logical(1L)))
-}
-
 na_type <- function(type) {
   out <- NA_character_
   class(out) <- c(type, "type")
@@ -175,6 +169,7 @@ c.transform <- function(...) {
       ), orig(l[[i]][[t]][["names"]]))
       new_type$select <- c(old_select, l[[i]][[t]][["select"]])
       attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][[t]][["select"]]))
+      attr(new_type, "delayed") <- any(attr(new_type, "delayed"), attr(l[[i]], "delayed"))
     }
     orig_names <- unique(orig(new_type$names))
     new_type$names <- unique(new_type$names)
@@ -202,8 +197,8 @@ c.type <- function(...) {
   vector <- vector("list", length(utypes))
   names(vector) <- utypes
   for (t in utypes) {
-    new_type <- vector("list", length = 3)
-    names(new_type) <- c("names", "select", "except")
+    new_type <- vector("list", length = 2)
+    names(new_type) <- c("names", "select")
     for (i in seq_along(l)) {
       if (!is(l[[i]], t)) {
         next
@@ -216,9 +211,6 @@ c.type <- function(...) {
       ), orig(l[[i]][["names"]]))
       new_type$select <- unique(c(old_select, l[[i]][["select"]]))
       attr(new_type$select, "original") <- c(orig(old_select), orig(l[[i]][["select"]]))
-
-      new_type$except <- c(new_type$except, l[[i]][["except"]])
-      attr(new_type$except, "original") <- c(orig(l[[i]][["except"]]), orig(new_type$except))
     }
     orig_names <- unique(orig(new_type$names))
     orig_select <- unique(orig(new_type$select))
@@ -233,6 +225,7 @@ c.type <- function(...) {
     attr(new_type$select, "original") <- orig_select
 
     class(new_type) <- c(t, "type", "list")
+    attr(new_type, "delayed") <- is.delayed(new_type)
     vector[[t]] <- new_type
   }
   if (length(vector) == 1) {

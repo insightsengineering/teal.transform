@@ -5,7 +5,7 @@ test_that("is.delayed works", {
   expect_false(is.delayed(datasets("a", "a")))
   expect_true(is.delayed(v))
   expect_false(is.delayed(variables("b", "b")))
-  expect_true(is.delayed(d & v))
+  expect_true(is.delayed(c(d, v)))
   expect_false(is.delayed(1))
   da <- datasets(is.data.frame)
   expect_true(is.delayed(da))

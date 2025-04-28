@@ -24,9 +24,9 @@ test_that("variables", {
 })
 
 test_that("raw combine of types", {
-  out <- c(datasets("df"), variables("df"))
-  expect_length(out, 2L)
-  expect_no_error(c(datasets("df"), variables("df"), values("df")))
+  expect_equal(c(datasets("df")), datasets("df"))
+  expect_length(c(datasets("df"), variables("df")), 2L)
+  expect_length(c(datasets("df"), variables("df"), values("df")), 3L)
 })
 
 test_that("combine types", {
