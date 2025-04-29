@@ -66,9 +66,7 @@ merge_call_pair <- function(selections, by, data,
 
   selections <- consolidate_extraction(selections)
   stopifnot(length(selections) == 2L)
-  datasets <- unique(sapply(selections, function(x) {
-    x$datasets
-  }))
+  datasets <- unique(unlist(lapply(selections, `[[`, datasets), FALSE, FALSE))
   stopifnot(length(datasets) >= 2)
   by <- extract_ids(input = selections, data)
 
@@ -97,9 +95,7 @@ merge_call_multiple <- function(input, ids, merge_function, data,
                                 anl_name = "ANL") {
 
   input <- consolidate_extraction(input)
-  datasets <- unique(sapply(input, function(x) {
-    x$datasets
-  }))
+  datasets <- unique(unlist(lapply(input, `[[`, "datasets"), FALSE, FALSE))
   stopifnot(is.character(datasets) && length(datasets) >= 1L)
   number_merges <- length(datasets) - 1L
   stopifnot(
