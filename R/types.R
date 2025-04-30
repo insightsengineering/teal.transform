@@ -45,23 +45,12 @@ check_input <- function(input) {
 }
 
 type_helper <- function(x, select, type) {
-  stopifnot(
-    "Invalid options" = check_input(x),
-    "Invalid selection" = check_input(type)
-  )
-  if (is.function(x)) {
-    x <- list(x)
-  }
-  if (is.function(select)) {
-    select <- list(select)
-  }
   out <- list(names = x, select = select)
   class(out) <- c(type, "type", "list")
   attr(out$names, "original") <- x
   attr(out$select, "original") <- select
   delay(out)
 }
-
 
 #' @rdname types
 #' @name Types
@@ -78,66 +67,29 @@ type_helper <- function(x, select, type) {
 #' datasets("A") & variables(is.numeric)
 NULL
 
-
-
 #' @describeIn types Specify datasets.
 #' @export
-datasets <- function(x, select = first) {
-  type_helper(x, select, type = "datasets")
+datasets <- function(x, select = everything()) {
+  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "datasets")
 }
-
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(x, select = first) {
-  type_helper(x, select, type = "variables")
+variables <- function(x, select = everything()) {
+  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "variables")
 }
 
-#' @describeIn types Specify variables of MultiAssayExperiment col Data.
+#' @describeIn types Specify colData of SummarizedExperiment and derived classes.
 #' @export
-mae_colData <- function(x, select = first) {
-  type_helper(x, select, type = "mae_colData")
-}
-
-#' @describeIn types Specify variables of MultiAssayExperiment sampleMap.
-#' @export
-mae_sampleMap <- function(x, select = first) {
-  type_helper(x, select, type = "mae_sampleMap")
-}
-
-#' @describeIn types Specify variables of MultiAssayExperiment experiments.
-#' @export
-mae_experiments <- function(x, select = first) {
-  type_helper(x, select, type = "mae_experiments")
+colData <- function(x, select = everything()) {
+  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "colData")
 }
 
 #' @describeIn types Specify values.
 #' @export
-values <- function(x, select = first) {
-  type_helper(x, select, type = "values")
+values <- function(x, select = everything()) {
+  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "values")
 }
-
-# #' @export
-# c.type <- function(...) {
-#
-#   if (is.na(..1)) {
-#     return(..2)
-#   } else if (is.na(..2)) {
-#     return(..1)
-#   }
-#
-#   if (...length() > 2L) {
-#     stop("We can't combine this (yet)")
-#   } else if (all(class(..2) != class(..1))) {
-#     type_out <- ..1
-#     type_out$child <- ..2
-#     return(type_out)
-#   }
-#   out <- mapply(c, ..., SIMPLIFY = FALSE)
-#   out <- lapply(out, unique)
-#   class(out) <- c("transform", class(out))
-#   delay(out)
-# }
 
 #' @export
 c.transform <- function(...) {
