@@ -32,11 +32,11 @@ resolver <- function(spec, data) {
 
   # Adding some default specifications if they are missing
   if ("values" %in% names(spec) && !"variables" %in% names(spec)) {
-    spec <- variables(first) & spec
+    spec <- c(variables(first), spec)
   }
 
   if ("variables" %in% names(spec) && !"datasets" %in% names(spec)) {
-    spec <- datasets(first) & spec
+    spec <- c(datasets(first), spec)
   }
 
   stopifnot(is.list(spec) || is.transform(spec))
@@ -71,20 +71,20 @@ determine <- function(type, data, ...) {
 determine.default <- function(type, data, ..., spec) {
   # Used when the type is of class list.
   if (!is.null(names(type)) && is.delayed(type)) {
-    rt <- determine(type, data)
-  } else {
-    rt <- lapply(type, determine, data = data, spec = spec)
-    if (length(rt) == 1) {
-      return(rt[[1]])
-    }
+    return(determine(type, data))
   }
-  rt
+  d <- data
+  for (i in seq_along(type)) {
+    di <- determine(type[[i]], d, spec = spec)
+    type[[i]] <- di$type
+    d <- di$data
+  }
+  list(type = type, data = data)
 }
 
 #' @export
 determine.transform <- function(type, data, ..., spec) {
   stopifnot(inherits(data, "qenv"))
-
   d <- data
   for (i in seq_along(type)) {
     di <- determine(type[[i]], d, spec = spec)
@@ -242,8 +242,8 @@ determine_helper <- function(type, data_names, data) {
 
     new_select <- unique(new_select[!is.na(new_select)])
     if (!length(new_select)) {
-      return(NULL)
       stop("No ", is(type), " meet the requirements to be selected")
+      return(NULL)
     }
     type$select <- new_select
   }
@@ -254,32 +254,23 @@ determine_helper <- function(type, data_names, data) {
 
 #' @export
 determine.datasets <- function(type, data, ...) {
-  if (!inherits(data, "qenv")) {
+  if (is.null(data)) {
+    return(list(type = type, data = NULL))
+  } else if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
 
-  l <- vector("list", length(names(data)))
-  # Somehow in some cases (I didn't explore much this was TRUE)
-  for (i in seq_along(l)) {
-    data_name_env <- names(data)[i]
-    out <- determine_helper(type, data_name_env, extract(data, data_name_env))
-    if (!is.null(out)) {
-      l[[i]] <- out
-    }
+  # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
+  # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
+  type <- eval_type_names(type, data)
+
+  if (is.null(type$names) || !length(type$names)) {
+    stop("No ", class(type), " meet the specification.", call. = FALSE)
   }
 
-  # Merge together all the types
-  type <- do.call(c, l[lengths(l) > 1L])
-  # Evaluate the selection based on all possible choices.
-  type <- eval_type_select(type, data)
+  type <- eval_type_select(type, data[unorig(type$names)])
 
-  if (is.null(type$names)) {
-    stop("No datasets meet the specification.", call. = FALSE)
-  }
-
-  if (!is.delayed(type) && length(type$select) > 1L) {
-    list(type = type, data = data[unorig(type$select)])
-  } else if (!is.delayed(type) && length(type$select) == 1L) {
+  if (!is.delayed(type) && length(type$select) == 1L) {
     list(type = type, data = data[[unorig(type$select)]])
   } else {
     list(type = type, data = NULL)
@@ -288,8 +279,12 @@ determine.datasets <- function(type, data, ...) {
 
 #' @export
 determine.variables <- function(type, data, ...) {
-  if (length(dim(data)) != 2L) {
-    stop("Can't resolve variables from this object of class ", class(data))
+
+  if (is.null(data)) {
+    return(list(type = type, data = NULL))
+  } else if (length(dim(data)) != 2L) {
+    stop("Can't resolve variables from this object of class ",
+         toString(sQuote(class(data))))
   }
 
   if (ncol(data) <= 0L) {
@@ -298,22 +293,13 @@ determine.variables <- function(type, data, ...) {
 
   # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
   # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
-  l <- vector("list", ncol(data))
-  for (i in seq_len(ncol(data))) {
-    out <- determine_helper(type, colnames(data)[i], data[, i])
-    if (!is.null(out)) {
-      l[[i]] <- out
-    }
+  type <- eval_type_names(type, data)
+
+  if (is.null(type$names) || !length(type$names)) {
+    stop("No ", class(type), " meet the specification.", call. = FALSE)
   }
 
-  # Merge together all the types
-  type <- do.call(c, l[lengths(l) > 1])
-  # Check the selected values as they got appended.
   type <- eval_type_select(type, data)
-
-  if (is.null(type$names)) {
-    stop("No variables meet the specification.", call. = FALSE)
-  }
 
   # Not possible to know what is happening
   if (is.delayed(type)) {
@@ -417,25 +403,33 @@ unorig <- function(x) {
   x
 }
 
-
 eval_type_select <- function(type, data) {
-  l <- vector("list", length(type$names))
-  names(l) <- type$names
+  stopifnot(is.character(type$names))
+
   orig_select <- orig(type$select)
-  for (name in type$names) {
-    out <- functions_data(orig_select, name, extract(data, name))
-    if (!is.null(out)) {
-      l[[name]] <- unlist(out)
-    }
-  }
 
-  new_select <- c(
-    functions_names(orig(type$select), type$names),
-    unlist(l, FALSE, FALSE)
-  )
+  names <- seq_along(type$names)
+  names(names) <- type$names
+  select_data <- selector(data, type$select)
 
-  new_select <- unique(new_select)
+  # Keep only those that were already selected
+  new_select <- intersect(unique(names(c(select_data))), unorig(type$names))
   attr(new_select, "original") <- orig_select
+
   type$select <- new_select
+
+  type
+}
+
+
+eval_type_names <- function(type, data) {
+  orig_names <- orig(type$names)
+  new_names <- selector(data, type$names)
+
+    new_names <- unique(names(new_names))
+  attr(new_names, "original") <- orig_names
+
+  type$names <- new_names
+
   type
 }
