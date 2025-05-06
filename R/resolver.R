@@ -69,17 +69,40 @@ determine <- function(type, data, ...) {
 
 #' @export
 determine.default <- function(type, data, ..., spec) {
-  # Used when the type is of class list.
-  if (!is.null(names(type)) && is.delayed(type)) {
-    return(determine(type, data))
+  type <- eval_type_names(type, data)
+
+  if (is.null(type$names) || !length(type$names)) {
+    stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
   }
-  d <- data
-  for (i in seq_along(type)) {
-    di <- determine(type[[i]], d, spec = spec)
-    type[[i]] <- di$type
-    d <- di$data
+
+  type <- eval_type_select(type, data[unorig(type$names)])
+
+  if (!is.delayed(type) && length(type$select) == 1L) {
+    list(type = type, data = data[[unorig(type$select)]])
+  } else {
+    list(type = type, data = data[unorig(type$select)])
   }
-  list(type = type, data = data)
+}
+
+#' @export
+determine.colData <- function(type, data, ..., spec) {
+  if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+    stop("Requires SummarizedExperiment package from Bioconductor.")
+  }
+  data <- as.data.frame(colData(data))
+  type <- eval_type_names(type, data)
+
+  if (is.null(type$names) || !length(type$names)) {
+    stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
+  }
+
+  type <- eval_type_select(type, data[unorig(type$names)])
+
+  if (!is.delayed(type) && length(type$select) == 1L) {
+    list(type = type, data = data[[unorig(type$select)]])
+  } else {
+    list(type = type, data = data[unorig(type$select)])
+  }
 }
 
 #' @export
@@ -100,52 +123,52 @@ determine.transform <- function(type, data, ..., spec) {
 
 # Checks that for the given type and data names and data it can be resolved
 # The workhorse of the resolver
-determine_helper <- function(type, data_names, data) {
-  stopifnot(!is.null(type))
-  orig_names <- type$names
-  orig_select <- type$select
-
-  if (is.delayed(type) && all(is.character(type$names))) {
-    new_names <- intersect(data_names, type$names)
-
-    type$names <- new_names
-    if (length(new_names) == 0) {
-      return(NULL)
-      # stop("No selected ", is(type), " matching the conditions requested")
-    } else if (length(new_names) == 1L) {
-      type$select <- new_names
-    } else {
-      new_select <- selector(data, type$names)
-      if (!length(new_select)) {
-        return(NULL)
-        # stop("No ", is(type), " meet the requirements to be selected")
-      }
-      type$select <- new_select
-    }
-  } else if (is.delayed(type)) {
-    new_names <- selector(data, type$select)
-  }
-
-
-  if (!length(new_names)) {
-    return(NULL)
-    # stop("No ", is(type), " meet the requirements")
-  }
-  type$names <- new_names
-
-  if (length(type$names) == 0) {
-    return(NULL)
-    # stop("No selected ", is(type), " matching the conditions requested")
-  } else if (length(type$names) == 1) {
-    type$select <- type$names
-  }
-
-  new_select <- selector(data, type$select)
-  type$select <- new_select
-  attr(type$names, "original") <- orig(orig_names)
-  attr(type$select, "original") <- orig(orig_select)
-  resolved(type)
-}
+# determine_helper <- function(type, data_names, data) {
+#   stopifnot(!is.null(type))
+#   orig_names <- type$names
+#   orig_select <- type$select
+#
+#   if (is.delayed(type) && all(is.character(type$names))) {
+#     new_names <- intersect(data_names, type$names)
+#
+#     type$names <- new_names
+#     if (length(new_names) == 0) {
+#       return(NULL)
+#       # stop("No selected ", is(type), " matching the conditions requested")
+#     } else if (length(new_names) == 1L) {
+#       type$select <- new_names
+#     } else {
+#       new_select <- selector(data, type$names)
+#       if (!length(new_select)) {
+#         return(NULL)
+#         # stop("No ", is(type), " meet the requirements to be selected")
+#       }
+#       type$select <- new_select
+#     }
+#   } else if (is.delayed(type)) {
+#     new_names <- selector(data, type$select)
+#   }
+#
+#
+#   if (!length(new_names)) {
+#     return(NULL)
+#     # stop("No ", is(type), " meet the requirements")
+#   }
+#   type$names <- new_names
+#
+#   if (length(type$names) == 0) {
+#     return(NULL)
+#     # stop("No selected ", is(type), " matching the conditions requested")
+#   } else if (length(type$names) == 1) {
+#     type$select <- type$names
+#   }
+#
+#   new_select <- selector(data, type$select)
+#   type$select <- new_select
+#   attr(type$names, "original") <- orig(orig_names)
+#   attr(type$select, "original") <- orig(orig_select)
+#   resolved(type)
+# }
 
 #' @export
 determine.datasets <- function(type, data, ...) {
@@ -201,7 +224,7 @@ determine.variables <- function(type, data, ...) {
   }
   # This works for matrices and data.frames of length 1 or multiple
   # be aware of drop behavior on tibble vs data.frame
-  list(type = type, data = data[, type$select])
+  list(type = type, data = data[, type$select, drop = FALSE])
 }
 
 # @export
