@@ -93,8 +93,8 @@ update_s_spec <- function(spec, type, value) {
     }
     restored_transform <- type_helper(
       type = type_restart,
-      x = orig(spec[[type_restart]]$names)[[1]],
-      select = orig(spec[[type_restart]]$select)[[1]]
+      x = orig(spec[[type_restart]]$names),
+      select = orig(spec[[type_restart]]$select)
     )
     spec[[type_restart]] <- restored_transform
   }
