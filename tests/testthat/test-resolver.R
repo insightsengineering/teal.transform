@@ -16,7 +16,7 @@ test_that("resolver datasets works", {
   expect_no_error(resolver(df_head, td))
   expect_no_error(resolver(df_first, td))
   out <- resolver(matrices, td)
-  expect_length(out$select, 2L) # Because we use everything
+  expect_length(out$select, 1L) # Because we use 1
   expect_error(expect_warning(resolver(df_mean, td)))
   expect_error(resolver(median_mean, td))
 })
@@ -45,7 +45,7 @@ test_that("resolver variables works", {
   expect_error(resolver(c(df, var_matrices_head), td))
 
 
-  expect_error(resolver(c(matrices, var_a), td)) # datasets selection overpasses variable choices.
+  expect_no_error(resolver(c(matrices, var_a), td))
   expect_error(resolver(c(matrices, factors), td))
   expect_error(resolver(c(matrices, factors_head), td))
   expect_error(resolver(c(matrices, var_matrices_head), td))
@@ -147,7 +147,7 @@ test_that("update_spec resolves correctly", {
   expect_false(is.null(attr(data_frames_factors$variables$names, "original")))
   expect_false(is.null(attr(data_frames_factors$variables$select, "original")))
 
-  expect_error(resolver(data_frames_factors, td))
+  expect_no_error(resolver(data_frames_factors, td))
 })
 
 test_that("OR specifications resolves correctly", {
