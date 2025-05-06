@@ -30,7 +30,7 @@ td <- within(teal.data::teal_data(), {
     Ab = as.factor(letters[1:5])
   )
 })
-data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
+data_frames_factors <- c(datasets(where(is.data.frame)), variables(where(is.factor)))
 res <- resolver(data_frames_factors, td)
 update_spec(res, "datasets", "df_n")
 # update_spec(res, "datasets", "error")

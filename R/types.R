@@ -4,7 +4,7 @@ is.transform <- function(x) {
 
 
 valid_transform <- function(x) {
-  !((is.type(x) || is.transform(x)) || or.transform(x))
+  !((is.type(x) || is.transform(x)))
 }
 
 na_type <- function(type) {
@@ -37,12 +37,23 @@ first <- function(x) {
   return(FALSE)
 }
 
-check_input <- function(input) {
-  is.character(input) || is.function(input) ||
-    (is.list(input) && all(vapply(input, function(x) {
-      is.function(x) || is.character(x)
-    }, logical(1L))))
+first_var <- function(offset = 0L, vars = NULL) {
+  if (!rlang::is_integerish(offset, n = 1)) {
+    not <- class(offset)
+    cli::cli_abort("{.arg offset} must be a single integer, not {not}.")
+  }
+  vars <- vars %||% tidyselect::peek_vars(fn = "first_var")
+  n <- length(vars)
+  if (offset > n) {
+    cli::cli_abort("{.arg offset} ({offset}) must be smaller than the number of columns ({n}).")
+  } else if (n == 0) {
+    cli::cli_abort("Can't select last column when input is empty.")
+  } else {
+    1L
+  }
 }
+
+last_var <- tidyselect::last_col
 
 type_helper <- function(x, select, type) {
   out <- list(names = x, select = select)
@@ -62,32 +73,32 @@ type_helper <- function(x, select, type) {
 #' @returns An object of the same class as the function with two elements: names the content of x, and select.
 #' @examples
 #' datasets("A")
-#' datasets("A") | datasets("B")
-#' datasets(is.data.frame)
-#' datasets("A") & variables(is.numeric)
+#' c(datasets("A"), datasets("B"))
+#' datasets(where(is.data.frame))
+#' c(datasets("A"), variables(where(is.numeric)))
 NULL
 
 #' @describeIn types Specify datasets.
 #' @export
-datasets <- function(x, select = everything()) {
+datasets <- function(x, select = 1) {
   type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "datasets")
 }
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(x, select = everything()) {
+variables <- function(x, select = 1) {
   type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "variables")
 }
 
-#' @describeIn types Specify colData of SummarizedExperiment and derived classes.
+#' @describeIn types Specify colData.
 #' @export
-colData <- function(x, select = everything()) {
+mae_colData <- function(x, select = 1) {
   type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "colData")
 }
 
 #' @describeIn types Specify values.
 #' @export
-values <- function(x, select = everything()) {
+values <- function(x, select = 1) {
   type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "values")
 }
 
@@ -166,14 +177,16 @@ c.type <- function(...) {
     }
     orig_names <- unique(orig(new_type$names))
     orig_select <- unique(orig(new_type$select))
+
     new_type$names <- unique(new_type$names)
+    if (length(new_type$names) == 1) {
+      new_type$names <- new_type$names[[1]]
+    }
     attr(new_type$names, "original") <- orig_names
 
-    # From the possible names apply the original function
-    if (is.delayed(new_type)) {
-      new_type$select <- functions_names(orig(new_type$select), new_type$names)
+    if (length(new_type$select) == 1) {
+      new_type$select <- new_type$select[[1]]
     }
-
     attr(new_type$select, "original") <- orig_select
 
     class(new_type) <- c(t, "type", "list")
@@ -208,7 +221,7 @@ print.type <- function(x, ...) {
     )
   }
   if (nam_values) {
-    msg_values <- paste0(msg_values, paste0(sQuote(x$names[!nam_functions]), collapse = ", "),
+    msg_values <- paste0(msg_values, paste0(rlang::as_label(x$names[!nam_functions]), collapse = ", "),
       " as possible choices.",
       collapse = "\n"
     )
@@ -224,7 +237,7 @@ print.type <- function(x, ...) {
     )
   }
   if (sel_values) {
-    msg_sel <- paste0(msg_sel, paste0(sQuote(x$select[!sel_functions]), collapse = ", "),
+    msg_sel <- paste0(msg_sel, paste0(rlang::as_label(x$select[!sel_functions]), collapse = ", "),
       " selected.",
       collapse = "\n"
     )
@@ -239,7 +252,7 @@ print.type <- function(x, ...) {
       )
     }
     if (sel_values) {
-      msg_exc <- paste0(msg_exc, paste0(sQuote(x$except[!exc_functions]), collapse = ", "),
+      msg_exc <- paste0(msg_exc, paste0(rlang::as_label(x$except[!exc_functions]), collapse = ", "),
         " excluded.",
         collapse = "\n"
       )

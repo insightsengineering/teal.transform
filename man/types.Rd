@@ -5,22 +5,16 @@
 \alias{datasets}
 \alias{variables}
 \alias{mae_colData}
-\alias{mae_sampleMap}
-\alias{mae_experiments}
 \alias{values}
 \title{Type specification}
 \usage{
-datasets(x, select = first)
+datasets(x, select = 1)
 
-variables(x, select = first)
+variables(x, select = 1)
 
-mae_colData(x, select = first)
+mae_colData(x, select = 1)
 
-mae_sampleMap(x, select = first)
-
-mae_experiments(x, select = first)
-
-values(x, select = first)
+values(x, select = 1)
 }
 \arguments{
 \item{x}{Character specifying the names or functions to select them. The functions will be applied on the data or the names.}
@@ -39,18 +33,14 @@ Define how to select and extract data
 
 \item \code{variables()}: Specify variables.
 
-\item \code{mae_colData()}: Specify variables of MultiAssayExperiment col Data.
-
-\item \code{mae_sampleMap()}: Specify variables of MultiAssayExperiment sampleMap.
-
-\item \code{mae_experiments()}: Specify variables of MultiAssayExperiment experiments.
+\item \code{mae_colData()}: Specify colData.
 
 \item \code{values()}: Specify values.
 
 }}
 \examples{
 datasets("A")
-datasets("A") | datasets("B")
-datasets(is.data.frame)
-datasets("A") & variables(is.numeric)
+c(datasets("A"), datasets("B"))
+datasets(where(is.data.frame))
+c(datasets("A"), variables(where(is.numeric)))
 }

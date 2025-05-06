@@ -19,17 +19,17 @@ Given the specification of some data to extract find if they are available or no
 The specification for selecting a variable shouldn't depend on the data of said variable.
 }
 \examples{
-dataset1 <- datasets(is.data.frame)
-dataset2 <- datasets(is.matrix)
-spec <- dataset1 & variables("a", "a")
+dataset1 <- datasets(where(is.data.frame))
+dataset2 <- datasets(where(is.matrix))
+spec <- c(dataset1, variables("a", "a"))
 td <- within(teal.data::teal_data(), {
   df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
   df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
   m <- matrix()
 })
-resolver(spec | dataset2, td)
+resolver(list(spec, dataset2), td)
 resolver(dataset2, td)
 resolver(spec, td)
-spec <- dataset1 & variables("a", is.factor)
+spec <- c(dataset1, variables("a", where(is.character)))
 resolver(spec, td)
 }

@@ -22,6 +22,7 @@ Depends:
     R (>= 3.6)
 Imports:
     checkmate (>= 2.1.0),
+    cli (>= 3.6.4),
     dplyr (>= 1.1.0),
     lifecycle (>= 0.2.0),
     logger (>= 0.2.0),

@@ -9,18 +9,18 @@
 #' @export
 #'
 #' @examples
-#' dataset1 <- datasets(is.data.frame)
-#' dataset2 <- datasets(is.matrix)
-#' spec <- dataset1 & variables("a", "a")
+#' dataset1 <- datasets(where(is.data.frame))
+#' dataset2 <- datasets(where(is.matrix))
+#' spec <- c(dataset1, variables("a", "a"))
 #' td <- within(teal.data::teal_data(), {
 #'   df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
 #'   df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
 #'   m <- matrix()
 #' })
-#' resolver(spec | dataset2, td)
+#' resolver(list(spec, dataset2), td)
 #' resolver(dataset2, td)
 #' resolver(spec, td)
-#' spec <- dataset1 & variables("a", is.factor)
+#' spec <- c(dataset1, variables("a", where(is.character)))
 #' resolver(spec, td)
 resolver <- function(spec, data) {
   if (!inherits(data, "qenv")) {
@@ -98,93 +98,15 @@ determine.transform <- function(type, data, ..., spec) {
   list(type = type, data = data) # It is the transform object resolved.
 }
 
-functions_names <- function(spec_criteria, names) {
-  stopifnot(is.character(names) || is.factor(names) || is.null(names)) # Allows for NA characters
-  if (is.null(names)) {
-    return(NULL)
-  }
-  is_fc <- vapply(spec_criteria, is.function, logical(1L))
-  functions <- spec_criteria[is_fc]
-  new_names <- vector("character")
-
-  for (fun in functions) {
-    names_ok <- tryCatch(fun(names),
-      error = function(x) {
-        x
-      },
-      warning = function(x) {
-        if (isTRUE(x) || isFALSE(x)) {
-          x
-        } else {
-          FALSE
-        }
-      }
-    )
-    if (!is.logical(names_ok)) {
-      stop("Provided functions should return a logical object.")
-    }
-    if (any(names_ok)) {
-      new_names <- c(new_names, names[names_ok])
-    }
-  }
-  old_names <- unique(unlist(spec_criteria[!is_fc], FALSE, FALSE))
-  c(new_names, old_names)
-}
-
-# Evaluate if the function applied to the data
-# but we need to return the name of the data received
-functions_data <- function(spec_criteria, names_data, data) {
-  stopifnot(
-    !is.null(data),
-    length(names_data) == 1L
-  ) # Must be something but not NULL
-  is_fc <- vapply(spec_criteria, is.function, logical(1L))
-  functions <- spec_criteria[is_fc]
-
-  l <- lapply(functions, function(fun) {
-    data_ok <- tryCatch(fun(data),
-      error = function(x) {
-        x
-      },
-      warning = function(x) {
-        if (isTRUE(x) || isFALSE(x)) {
-          x
-        } else {
-          FALSE
-        }
-      }
-    )
-    if (!is.logical(data_ok)) {
-      stop("Provided functions should return a logical object.")
-    }
-    if ((length(data_ok) == 1L && (any(data_ok)) || all(data_ok))) {
-      return(names_data)
-    }
-  })
-  new_names <- unique(unlist(l, FALSE, FALSE))
-  c(new_names, spec_criteria[!is_fc])
-}
-
 # Checks that for the given type and data names and data it can be resolved
 # The workhorse of the resolver
 determine_helper <- function(type, data_names, data) {
   stopifnot(!is.null(type))
   orig_names <- type$names
   orig_select <- type$select
-  orig_exc <- type$except
 
   if (is.delayed(type) && all(is.character(type$names))) {
     new_names <- intersect(data_names, type$names)
-
-    if (!is.null(type$except)) {
-      excludes <- c(
-        functions_names(type$except, data_names),
-        functions_data(type$except, data_names, data)
-      )
-      type$except <- excludes
-      attr(type$except, "original") <- orig(orig_exc)
-      new_names <- setdiff(new_names, excludes)
-    }
 
     type$names <- new_names
     if (length(new_names) == 0) {
@@ -193,8 +115,7 @@ determine_helper <- function(type, data_names, data) {
     } else if (length(new_names) == 1L) {
       type$select <- new_names
     } else {
-      new_select <- functions_names(type$select, type$names)
-      new_select <- unique(new_select[!is.na(new_select)])
+      new_select <- selector(data, type$names)
       if (!length(new_select)) {
         return(NULL)
         # stop("No ", is(type), " meet the requirements to be selected")
@@ -202,51 +123,25 @@ determine_helper <- function(type, data_names, data) {
       type$select <- new_select
     }
   } else if (is.delayed(type)) {
-    new_names <- c(
-      functions_names(type$names, data_names),
-      functions_data(type$names, data_names, data)
-    )
-    new_names <- unlist(unique(new_names[!is.na(new_names)]),
-      use.names = FALSE
-    )
-
-    if (!is.null(type$except)) {
-      excludes <- c(
-        functions_names(type$except, data_names),
-        functions_data(type$except, data_names, data)
-      )
-
-      type$except <- excludes
-      attr(type$except, "original") <- orig(orig_exc)
-
-      new_names <- setdiff(new_names, excludes)
-    }
-
-    if (!length(new_names)) {
-      return(NULL)
-      # stop("No ", is(type), " meet the requirements")
-    }
-    type$names <- new_names
-
-    if (length(type$names) == 0) {
-      return(NULL)
-      # stop("No selected ", is(type), " matching the conditions requested")
-    } else if (length(type$names) == 1) {
-      type$select <- type$names
-    }
-
-    new_select <- c(
-      functions_names(type$select, type$names),
-      functions_data(type$select, type$names, data)
-    )
-
-    new_select <- unique(new_select[!is.na(new_select)])
-    if (!length(new_select)) {
-      stop("No ", is(type), " meet the requirements to be selected")
-      return(NULL)
-    }
-    type$select <- new_select
+    new_names <- selector(data, type$select)
   }
+
+
+  if (!length(new_names)) {
+    return(NULL)
+    # stop("No ", is(type), " meet the requirements")
+  }
+  type$names <- new_names
+
+  if (length(type$names) == 0) {
+    return(NULL)
+    # stop("No selected ", is(type), " matching the conditions requested")
+  } else if (length(type$names) == 1) {
+    type$select <- type$names
+  }
+
+  new_select <- selector(data, type$select)
+  type$select <- new_select
   attr(type$names, "original") <- orig(orig_names)
   attr(type$select, "original") <- orig(orig_select)
   resolved(type)
@@ -261,11 +156,11 @@ determine.datasets <- function(type, data, ...) {
   }
 
   # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
-  # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
+  # FIXME: What happens if colnames is null: colnames(array(dim = c(4, 2)))
   type <- eval_type_names(type, data)
 
   if (is.null(type$names) || !length(type$names)) {
-    stop("No ", class(type), " meet the specification.", call. = FALSE)
+    stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
   }
 
   type <- eval_type_select(type, data[unorig(type$names)])
@@ -273,30 +168,29 @@ determine.datasets <- function(type, data, ...) {
   if (!is.delayed(type) && length(type$select) == 1L) {
     list(type = type, data = data[[unorig(type$select)]])
   } else {
-    list(type = type, data = NULL)
+    list(type = type, data = data[unorig(type$select)])
   }
 }
 
 #' @export
 determine.variables <- function(type, data, ...) {
-
   if (is.null(data)) {
     return(list(type = type, data = NULL))
   } else if (length(dim(data)) != 2L) {
-    stop("Can't resolve variables from this object of class ",
-         toString(sQuote(class(data))))
+    stop(
+      "Can't resolve variables from this object of class ",
+      toString(sQuote(class(data)))
+    )
   }
 
   if (ncol(data) <= 0L) {
     stop("Can't pull variable: No variable is available.")
   }
 
-  # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
-  # FIXME: What happens if colnames is null: array(dim = c(4, 2)) |> colnames()
   type <- eval_type_names(type, data)
 
   if (is.null(type$names) || !length(type$names)) {
-    stop("No ", class(type), " meet the specification.", call. = FALSE)
+    stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
   }
 
   type <- eval_type_select(type, data)
@@ -384,14 +278,25 @@ determine.variables <- function(type, data, ...) {
 
 #' @export
 determine.values <- function(type, data, ...) {
-  type <- determine_helper(type, names(data), data)
+  if (!is.numeric(data)) {
+    d <- data
+    names(d) <- data
+  } else {
+    d <- data
+  }
+  sel <- selector(d, type$names)
+  type$names <- data[sel]
+
+
+  sel2 <- selector(d[sel], type$select)
+  type$select <- data[sel][sel2]
 
   # Not possible to know what is happening
   if (is.delayed(type)) {
     return(list(type = type, data = NULL))
   }
 
-  list(type = type, data = type$select)
+  list(type = type, data = data[sel])
 }
 
 orig <- function(x) {
@@ -407,6 +312,9 @@ eval_type_select <- function(type, data) {
   stopifnot(is.character(type$names))
 
   orig_select <- orig(type$select)
+  if (length(orig_select) == 1L) {
+    orig_select <- orig_select[[1L]]
+  }
 
   names <- seq_along(type$names)
   names(names) <- type$names
@@ -414,6 +322,9 @@ eval_type_select <- function(type, data) {
 
   # Keep only those that were already selected
   new_select <- intersect(unique(names(c(select_data))), unorig(type$names))
+  if (is.null(new_select)) {
+    stop("No ", is(type), " selection is possible.")
+  }
   attr(new_select, "original") <- orig_select
 
   type$select <- new_select
@@ -424,9 +335,13 @@ eval_type_select <- function(type, data) {
 
 eval_type_names <- function(type, data) {
   orig_names <- orig(type$names)
+  if (length(orig_names) == 1L) {
+    orig_names <- orig_names[[1L]]
+  }
+
   new_names <- selector(data, type$names)
 
-    new_names <- unique(names(new_names))
+  new_names <- unique(names(new_names))
   attr(new_names, "original") <- orig_names
 
   type$names <- new_names

@@ -17,7 +17,7 @@
 #'     Ab = as.factor(letters[1:5])
 #'   )
 #' })
-#' data_frames_factors <- datasets(is.data.frame) & variables(is.factor)
+#' data_frames_factors <- c(datasets(where(is.data.frame)), variables(where(is.factor)))
 #' res <- resolver(data_frames_factors, td)
 #' update_spec(res, "datasets", "df_n")
 #' # update_spec(res, "datasets", "error")
@@ -91,10 +91,10 @@ update_s_spec <- function(spec, type, value) {
     if (is.na(spec[[type_restart]])) {
       next
     }
-    fun <- match.fun(type_restart)
-    restored_transform <- fun(
-      x = orig(spec[[type_restart]]$names),
-      select = orig(spec[[type_restart]]$select)
+    restored_transform <- type_helper(
+      type = type_restart,
+      x = orig(spec[[type_restart]]$names)[[1]],
+      select = orig(spec[[type_restart]]$select)[[1]]
     )
     spec[[type_restart]] <- restored_transform
   }
