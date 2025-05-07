@@ -28,7 +28,7 @@ simple_des <- data_extract_spec(
   select = select_spec(choices = c("Petal.Length", "Species"))
 )
 
-ui <- fluidPage(
+ui <- bslib::page_fluid(
   data_extract_ui(
     id = "extract",
     label = "data extract ui",

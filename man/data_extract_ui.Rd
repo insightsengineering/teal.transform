@@ -72,9 +72,9 @@ response_spec <- data_extract_spec(
   )
 )
 # Call to use inside your teal module UI function
-standard_layout(
-  output = tableOutput("table"),
-  encoding = tags$div(
+bslib::layout_sidebar(
+  tableOutput("table"),
+  sidebar = tags$div(
     data_extract_ui(
       id = "regressor",
       label = "Regressor Variable",

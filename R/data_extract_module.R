@@ -109,9 +109,9 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
 #'   )
 #' )
 #' # Call to use inside your teal module UI function
-#' standard_layout(
-#'   output = tableOutput("table"),
-#'   encoding = tags$div(
+#' bslib::layout_sidebar(
+#'   tableOutput("table"),
+#'   sidebar = tags$div(
 #'     data_extract_ui(
 #'       id = "regressor",
 #'       label = "Regressor Variable",
@@ -322,9 +322,9 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' join_keys <- join_keys(join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 #'
 #' # App: data extraction with validation
-#' ui <- fluidPage(
-#'   standard_layout(
-#'     output = verbatimTextOutput("out1"),
+#' ui <- bslib::page_fluid(
+#'   bslib::layout_sidebar(
+#'     verbatimTextOutput("out1"),
 #'     encoding = tagList(
 #'       data_extract_ui(
 #'         id = "adsl_var",
@@ -364,10 +364,10 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' }
 #'
 #' # App: simplified data extraction
-#' ui <- fluidPage(
-#'   standard_layout(
-#'     output = verbatimTextOutput("out1"),
-#'     encoding = tagList(
+#' ui <- bslib::page_fluid(
+#'   bslib::layout_sidebar(
+#'     verbatimTextOutput("out1"),
+#'     sidebar = tagList(
 #'       data_extract_ui(
 #'         id = "adsl_var",
 #'         label = "ADSL selection",
@@ -613,11 +613,11 @@ data_extract_srv.list <- function(id,
 #'
 #' data_list <- list(iris = reactive(iris))
 #'
-#' ui <- fluidPage(
+#' ui <- bslib::page_fluid(
 #'   useShinyjs(),
-#'   standard_layout(
-#'     output = verbatimTextOutput("out1"),
-#'     encoding = tagList(
+#'   bslib::layout_sidebar(
+#'     verbatimTextOutput("out1"),
+#'     sidebar = tagList(
 #'       data_extract_ui(
 #'         id = "x_var",
 #'         label = "Please select an X column",
