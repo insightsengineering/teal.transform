@@ -69,6 +69,11 @@ determine <- function(type, data, ...) {
 
 #' @export
 determine.default <- function(type, data, ..., spec) {
+  if (is.list(type) && is.null(names(type))) {
+    l <- lapply(type, determine, data = data, spec = spec)
+    return(l)
+  }
+
   type <- eval_type_names(type, data)
 
   if (is.null(type$names) || !length(type$names)) {
@@ -345,8 +350,8 @@ eval_type_select <- function(type, data) {
 
   # Keep only those that were already selected
   new_select <- intersect(unique(names(c(select_data))), unorig(type$names))
-  if (is.null(new_select)) {
-    stop("No ", is(type), " selection is possible.")
+  if (is.null(new_select) || !length(new_select)) {
+    stop("No ", is(type), " selection is possible.", call. = FALSE)
   }
   attr(new_select, "original") <- orig_select
 
