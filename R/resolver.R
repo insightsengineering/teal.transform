@@ -59,10 +59,8 @@ resolver <- function(spec, data) {
 #' @export
 determine <- function(type, data, ...) {
   stopifnot(is.type(type) || is.list(type) || is.specification(type))
-  if (!is.delayed(type) && length(type$select) > 1L) {
-    return(list(type = type, data = data[unorig(type$select)]))
-  } else if (!is.delayed(type) && length(type$select) == 1L) {
-    return(list(type = type, data = data[[unorig(type$select)]]))
+  if (!is.delayed(type)) {
+    return(list(type = type, data = extract(data, unorig(type$select))))
   }
   UseMethod("determine")
 }
@@ -186,13 +184,9 @@ determine.datasets <- function(type, data, ...) {
     stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
   }
 
-  type <- eval_type_select(type, data[unorig(type$names)])
+  type <- eval_type_select(type, data)
 
-  if (!is.delayed(type) && length(type$select) == 1L) {
-    list(type = type, data = data[[unorig(type$select)]])
-  } else {
-    list(type = type, data = data[unorig(type$select)])
-  }
+  list(type = type, data = extract(data, unorig(type$select)))
 }
 
 #' @export
@@ -224,7 +218,7 @@ determine.variables <- function(type, data, ...) {
   }
   # This works for matrices and data.frames of length 1 or multiple
   # be aware of drop behavior on tibble vs data.frame
-  list(type = type, data = data[, type$select, drop = FALSE])
+  list(type = type, data = extract(data, unorig(type$select)))
 }
 
 # @export
@@ -349,8 +343,12 @@ eval_type_names <- function(type, data) {
 
 eval_type_select <- function(type, data) {
   stopifnot(is.character(type$names))
-  data <- extract(data, type$names)
-
+  if (!is(data, "qenv")) {
+    data <- extract(data, type$names)
+  } else {
+    # Do not extract; selection would be from the data extracted not from the names.
+    data <- data[type$names]
+  }
   orig_select <- orig(type$select)
   if (length(orig_select) == 1L) {
     orig_select <- orig_select[[1L]]
