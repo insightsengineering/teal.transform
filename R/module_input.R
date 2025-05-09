@@ -32,7 +32,7 @@ module_input_ui <- function(id, label, spec) {
 
 #' @export
 module_input_server <- function(id, spec, data) {
-  stopifnot(is.transform(spec))
+  stopifnot(is.specification(spec))
   stopifnot(is.reactive(data))
   stopifnot(is.character(id))
   moduleServer(id, function(input, output, session) {

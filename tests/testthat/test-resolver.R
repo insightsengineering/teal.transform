@@ -40,7 +40,7 @@ test_that("resolver variables works", {
   })
 
   expect_no_error(resolver(c(df, var_a), td))
-  expect_error(resolver(c(df, factors), td))
+  expect_no_error(resolver(c(df, factors), td))
   expect_error(resolver(c(df, factors_head), td))
   expect_error(resolver(c(df, var_matrices_head), td))
 
@@ -51,7 +51,7 @@ test_that("resolver variables works", {
   expect_error(resolver(c(matrices, var_matrices_head), td))
 
   expect_no_error(resolver(c(data_frames, var_a), td))
-  expect_error(resolver(c(data_frames, factors), td))
+  expect_no_error(resolver(c(data_frames, factors), td))
   expect_error(resolver(c(data_frames, factors_head), td))
   expect_error(resolver(c(data_frames, var_matrices_head), td))
 })
@@ -116,7 +116,7 @@ test_that("names and variables are reported", {
     all(x == toupper(x))
   }))
   df_all_upper_variables <- c(d_df, v_all_upper)
-  expect_error(out <- resolver(df_all_upper_variables, td))
+  expect_no_error(out <- resolver(df_all_upper_variables, td))
   expect_no_error(out <- resolver(c(datasets("df2"), v_all_upper), td))
   expect_length(out$variables$names, 2L)
   expect_no_error(out <- resolver(datasets(function(x) {
@@ -146,7 +146,7 @@ test_that("update_spec resolves correctly", {
   expect_false(is.null(attr(data_frames_factors$variables$names, "original")))
   expect_false(is.null(attr(data_frames_factors$variables$select, "original")))
 
-  expect_error(resolver(data_frames_factors, td))
+  expect_no_error(resolver(data_frames_factors, td))
 })
 
 test_that("OR specifications resolves correctly", {
@@ -159,7 +159,7 @@ test_that("OR specifications resolves correctly", {
   matrix_a <- c(datasets(where(is.matrix)), var_a)
   df_or_m_var_a <- list(df_a, matrix_a)
   out <- resolver(df_or_m_var_a, td)
-  expect_true(all(vapply(out, is.transform, logical(1L))))
+  expect_true(all(vapply(out, is.specification, logical(1L))))
 })
 
 test_that("OR specifications fail correctly", {

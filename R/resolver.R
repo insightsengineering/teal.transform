@@ -39,7 +39,7 @@ resolver <- function(spec, data) {
     spec <- c(datasets(first), spec)
   }
 
-  stopifnot(is.list(spec) || is.transform(spec))
+  stopifnot(is.list(spec) || is.specification(spec))
   det <- determine(spec, data, spec = spec)
   if (is.null(names(det))) {
     return(lapply(det, `[[`, 1))
@@ -58,7 +58,7 @@ resolver <- function(spec, data) {
 #' @keywords internal
 #' @export
 determine <- function(type, data, ...) {
-  stopifnot(is.type(type) || is.list(type) || is.transform(type))
+  stopifnot(is.type(type) || is.list(type) || is.specification(type))
   if (!is.delayed(type) && length(type$select) > 1L) {
     return(list(type = type, data = data[unorig(type$select)]))
   } else if (!is.delayed(type) && length(type$select) == 1L) {
@@ -75,11 +75,6 @@ determine.default <- function(type, data, ..., spec) {
   }
 
   type <- eval_type_names(type, data)
-
-  if (is.null(type$names) || !length(type$names)) {
-    stop("No ", toString(is(type)), " meet the specification.", call. = FALSE)
-  }
-
   type <- eval_type_select(type, data[unorig(type$names)])
 
   if (!is.delayed(type) && length(type$select) == 1L) {
@@ -111,7 +106,7 @@ determine.colData <- function(type, data, ..., spec) {
 }
 
 #' @export
-determine.transform <- function(type, data, ..., spec) {
+determine.specification <- function(type, data, ..., spec) {
   stopifnot(inherits(data, "qenv"))
   d <- data
   for (i in seq_along(type)) {
@@ -350,9 +345,6 @@ eval_type_select <- function(type, data) {
 
   # Keep only those that were already selected
   new_select <- intersect(unique(names(c(select_data))), unorig(type$names))
-  if (is.null(new_select) || !length(new_select)) {
-    stop("No ", is(type), " selection is possible.", call. = FALSE)
-  }
   attr(new_select, "original") <- orig_select
 
   type$select <- new_select
