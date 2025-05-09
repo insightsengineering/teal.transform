@@ -331,28 +331,6 @@ unorig <- function(x) {
   x
 }
 
-eval_type_select <- function(type, data) {
-  stopifnot(is.character(type$names))
-
-  orig_select <- orig(type$select)
-  if (length(orig_select) == 1L) {
-    orig_select <- orig_select[[1L]]
-  }
-
-  names <- seq_along(type$names)
-  names(names) <- type$names
-  select_data <- selector(data, type$select)
-
-  # Keep only those that were already selected
-  new_select <- intersect(unique(names(c(select_data))), unorig(type$names))
-  attr(new_select, "original") <- orig_select
-
-  type$select <- new_select
-
-  type
-}
-
-
 eval_type_names <- function(type, data) {
   orig_names <- orig(type$names)
   if (length(orig_names) == 1L) {
@@ -365,6 +343,25 @@ eval_type_names <- function(type, data) {
   attr(new_names, "original") <- orig_names
 
   type$names <- new_names
+
+  type
+}
+
+eval_type_select <- function(type, data) {
+  stopifnot(is.character(type$names))
+  data <- extract(data, type$names)
+
+  orig_select <- orig(type$select)
+  if (length(orig_select) == 1L) {
+    orig_select <- orig_select[[1L]]
+  }
+
+  names <- seq_along(type$names)
+  names(names) <- type$names
+  new_select <- names(selector(data, type$select))
+
+  attr(new_select, "original") <- orig_select
+  type$select <- new_select
 
   type
 }

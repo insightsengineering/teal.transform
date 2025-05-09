@@ -12,32 +12,20 @@ extract <- function(x, variable, ...) {
   UseMethod("extract")
 }
 
-# Cases handled by the default method
-# @export
-# extract.MultiAssayExperiment <- function(x, variable) {
-#   # if (!requireNamespace("MultiAssayExperiment", quietly = TRUE)) {
-#   #   stop("Required to have MultiAssayExperiment's package.")
-#   # }
-#   x[, variable, drop = TRUE]
-# }
-#
-# @export
-# extract.DataFrame <- function(x, variable) {
-#   # if (!requireNamespace("S4Vectors", quietly = TRUE)) {
-#   #   stop("Required to have S4Vectors's package.")
-#   # }
-#   x[, variable, drop = TRUE]
-# }
-#
-# @export
-# extract.matrix <- function(x, variable) {
-#   x[, variable, drop = TRUE]
-# }
 
 #' @export
-extract.default <- function(x, variable, ..., drop = TRUE) {
+extract.default <- function(x, variable, ..., drop = FALSE) {
   if (length(dim(x)) == 2L || length(variable) > 1L) {
     x[, variable, drop = drop]
+  } else {
+    x[[variable]]
+  }
+}
+
+#' @export
+extract.teal_data <- function(x, variable, ...) {
+  if (length(variable) > 1L) {
+    x[variable]
   } else {
     x[[variable]]
   }
