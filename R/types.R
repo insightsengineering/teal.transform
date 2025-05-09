@@ -1,10 +1,10 @@
-is.transform <- function(x) {
-  inherits(x, "transform")
+is.specification <- function(x) {
+  inherits(x, "specification")
 }
 
 
-valid_transform <- function(x) {
-  !((is.type(x) || is.transform(x)))
+valid_specification <- function(x) {
+  !((is.type(x) || is.specification(x)))
 }
 
 na_type <- function(type) {
@@ -55,10 +55,10 @@ first_var <- function(offset = 0L, vars = NULL) {
 
 last_var <- tidyselect::last_col
 
-type_helper <- function(x, select, type) {
-  out <- list(names = x, select = select)
+type_helper <- function(names, select, type) {
+  out <- list(names = names, select = select)
   class(out) <- c(type, "type", "list")
-  attr(out$names, "original") <- x
+  attr(out$names, "original") <- names
   attr(out$select, "original") <- select
   delay(out)
 }
@@ -68,7 +68,7 @@ type_helper <- function(x, select, type) {
 #' @title Type specification
 #' @description
 #' Define how to select and extract data
-#' @param x Character specifying the names or functions to select them. The functions will be applied on the data or the names.
+#' @param names Character specifying the names or functions to select them. The functions will be applied on the data or the names.
 #' @param select Character of `x` or functions to select on x (only on names or positional not on the data of the variable).
 #' @returns An object of the same class as the function with two elements: names the content of x, and select.
 #' @examples
@@ -80,33 +80,33 @@ NULL
 
 #' @describeIn types Specify datasets.
 #' @export
-datasets <- function(x, select = 1) {
-  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "datasets")
+datasets <- function(names, select = 1) {
+  type_helper(names = rlang::enquo(names), select = rlang::enquo(select), type = "datasets")
 }
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(x, select = 1) {
-  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "variables")
+variables <- function(names, select = 1) {
+  type_helper(names = rlang::enquo(names), select = rlang::enquo(select), type = "variables")
 }
 
 #' @describeIn types Specify colData.
 #' @export
-mae_colData <- function(x, select = 1) {
-  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "colData")
+mae_colData <- function(names, select = 1) {
+  type_helper(names = rlang::enquo(names), select = rlang::enquo(select), type = "colData")
 }
 
 #' @describeIn types Specify values.
 #' @export
-values <- function(x, select = 1) {
-  type_helper(x = rlang::enquo(x), select = rlang::enquo(select), type = "values")
+values <- function(names, select = 1) {
+  type_helper(names = rlang::enquo(names), select = rlang::enquo(select), type = "values")
 }
 
 #' @export
-c.transform <- function(...) {
+c.specification <- function(...) {
   l <- list(...)
   types <- lapply(l, names)
-  typesc <- vapply(l, is.transform, logical(1L))
+  typesc <- vapply(l, is.specification, logical(1L))
   if (!all(typesc)) {
     stop("An object in position ", which(!typesc), " is not a specification.")
   }
@@ -144,7 +144,7 @@ c.transform <- function(...) {
     class(new_type) <- c(t, "type", "list")
     vector[[t]] <- new_type
   }
-  class(vector) <- c("transform", "list")
+  class(vector) <- c("specification", "list")
   vector
 }
 
@@ -196,7 +196,7 @@ c.type <- function(...) {
   if (length(vector) == 1) {
     return(vector[[1]])
   }
-  class(vector) <- c("transform", "list")
+  class(vector) <- c("specification", "list")
   vector
 }
 

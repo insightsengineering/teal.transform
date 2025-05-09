@@ -5,7 +5,7 @@
 #' @param spec A object extraction specification.
 #' @param data The qenv where the specification is evaluated.
 #'
-#' @returns A transform but resolved
+#' @returns A specification but resolved: the names and selection is the name of the objects (if possible).
 #' @export
 #'
 #' @examples

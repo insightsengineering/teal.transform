@@ -8,16 +8,16 @@
 \alias{values}
 \title{Type specification}
 \usage{
-datasets(x, select = 1)
+datasets(names, select = 1)
 
-variables(x, select = 1)
+variables(names, select = 1)
 
-mae_colData(x, select = 1)
+mae_colData(names, select = 1)
 
-values(x, select = 1)
+values(names, select = 1)
 }
 \arguments{
-\item{x}{Character specifying the names or functions to select them. The functions will be applied on the data or the names.}
+\item{names}{Character specifying the names or functions to select them. The functions will be applied on the data or the names.}
 
 \item{select}{Character of \code{x} or functions to select on x (only on names or positional not on the data of the variable).}
 }

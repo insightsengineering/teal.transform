@@ -29,7 +29,7 @@ update_spec <- function(spec, type, value) {
     )
   }
 
-  if (valid_transform(spec)) {
+  if (valid_specification(spec)) {
     stop("Unexpected object used as specification")
   }
 
@@ -91,12 +91,12 @@ update_s_spec <- function(spec, type, value) {
     if (is.na(spec[[type_restart]])) {
       next
     }
-    restored_transform <- type_helper(
+    restored_specification <- type_helper(
       type = type_restart,
       x = orig(spec[[type_restart]]$names),
       select = orig(spec[[type_restart]]$select)
     )
-    spec[[type_restart]] <- restored_transform
+    spec[[type_restart]] <- restored_specification
   }
   spec
 }

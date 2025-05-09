@@ -12,7 +12,7 @@ resolver(spec, data)
 \item{data}{The qenv where the specification is evaluated.}
 }
 \value{
-A transform but resolved
+A specification but resolved: the names and selection is the name of the objects (if possible).
 }
 \description{
 Given the specification of some data to extract find if they are available or not.

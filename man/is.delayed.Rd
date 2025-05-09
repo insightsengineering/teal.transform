@@ -4,10 +4,10 @@
 \alias{is.delayed}
 \title{Is the specification resolved?}
 \usage{
-is.delayed(x)
+is.delayed(specification)
 }
 \arguments{
-\item{x}{Object to be evaluated.}
+\item{specification}{Object to be evaluated.}
 }
 \value{
 A single logical value.
