@@ -93,7 +93,7 @@ update_s_spec <- function(spec, type, value) {
     }
     restored_specification <- type_helper(
       type = type_restart,
-      x = orig(spec[[type_restart]]$names),
+      names = orig(spec[[type_restart]]$names),
       select = orig(spec[[type_restart]]$select)
     )
     spec[[type_restart]] <- restored_specification

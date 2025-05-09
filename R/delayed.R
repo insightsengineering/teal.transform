@@ -35,8 +35,8 @@ is.delayed.list <- function(specification) {
 }
 
 #' @export
-#' @method is.delayed transform
-is.delayed.transform <- function(specification) {
+#' @method is.delayed specification
+is.delayed.specification <- function(specification) {
   any(vapply(specification, is.delayed, logical(1L)))
 }
 

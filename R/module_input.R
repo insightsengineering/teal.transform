@@ -17,7 +17,7 @@ module_input_ui <- function(id, label, spec) {
     a(label),
   )
 
-  if (valid_transform(spec)) {
+  if (valid_specification(spec)) {
     stop("Unexpected object used as specification.")
   }
 
