@@ -40,7 +40,7 @@ resolver <- function(spec, data) {
   }
 
   stopifnot(is.list(spec) || is.specification(spec))
-  det <- determine(spec, data, spec = spec)
+  det <- determine(spec, data)
   if (is.null(names(det))) {
     return(lapply(det, `[[`, 1))
   } else {
@@ -66,7 +66,7 @@ determine <- function(type, data, ...) {
 }
 
 #' @export
-determine.default <- function(type, data, ..., spec) {
+determine.default <- function(type, data, ...) {
   if (is.list(type) && is.null(names(type))) {
     l <- lapply(type, determine, data = data, spec = spec)
     return(l)
@@ -83,7 +83,7 @@ determine.default <- function(type, data, ..., spec) {
 }
 
 #' @export
-determine.colData <- function(type, data, ..., spec) {
+determine.colData <- function(type, data, ...) {
   if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Requires SummarizedExperiment package from Bioconductor.")
   }
@@ -104,11 +104,11 @@ determine.colData <- function(type, data, ..., spec) {
 }
 
 #' @export
-determine.specification <- function(type, data, ..., spec) {
+determine.specification <- function(type, data, ...) {
   stopifnot(inherits(data, "qenv"))
   d <- data
   for (i in seq_along(type)) {
-    di <- determine(type[[i]], d, spec = spec)
+    di <- determine(type[[i]], d)
     # overwrite so that next type in line receives the corresponding data and specification
     if (is.null(di$type)) {
       next

@@ -28,33 +28,6 @@ anyNA.type <- function(x, recursive = FALSE) {
   anyNA(unclass(x[c("names", "select")]), recursive)
 }
 
-first <- function(x) {
-  if (length(x) > 0) {
-    false <- rep_len(FALSE, length.out = length(x))
-    false[1] <- TRUE
-    return(false)
-  }
-  return(FALSE)
-}
-
-first_var <- function(offset = 0L, vars = NULL) {
-  if (!rlang::is_integerish(offset, n = 1)) {
-    not <- class(offset)
-    cli::cli_abort("{.arg offset} must be a single integer, not {not}.")
-  }
-  vars <- vars %||% tidyselect::peek_vars(fn = "first_var")
-  n <- length(vars)
-  if (offset > n) {
-    cli::cli_abort("{.arg offset} ({offset}) must be smaller than the number of columns ({n}).")
-  } else if (n == 0) {
-    cli::cli_abort("Can't select last column when input is empty.")
-  } else {
-    1L
-  }
-}
-
-last_var <- tidyselect::last_col
-
 type_helper <- function(names, select, type) {
   out <- list(names = names, select = select)
   class(out) <- c(type, "type", "list")
