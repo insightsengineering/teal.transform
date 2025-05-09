@@ -44,8 +44,7 @@ test_that("resolver variables works", {
   expect_error(resolver(c(df, factors_head), td))
   expect_error(resolver(c(df, var_matrices_head), td))
 
-
-  expect_no_error(resolver(c(matrices, var_a), td))
+  expect_error(resolver(c(matrices, var_a), td))
   expect_error(resolver(c(matrices, factors), td))
   expect_error(resolver(c(matrices, factors_head), td))
   expect_error(resolver(c(matrices, var_matrices_head), td))
