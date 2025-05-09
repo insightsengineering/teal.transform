@@ -69,8 +69,8 @@ module_input_server <- function(id, spec, data) {
         shiny::updateSelectInput(
           session,
           variable,
-          choices = unorig(spec[[variable]]$names),
-          selected = unorig(spec[[variable]]$select)
+          choices = unorig(spec[[variable]]$choices),
+          selected = unorig(spec[[variable]]$selected)
         )
         # FIXME: set on gray the input
         # FIXME: Hide input field if any type on specification cannot be solved
@@ -86,7 +86,7 @@ module_input_server <- function(id, spec, data) {
       names(selection) <- names(spec)
       for (i in seq_along(spec)) {
         variable <- names(spec)[i]
-        selection[[variable]] <- unorig(spec[[variable]]$select)
+        selection[[variable]] <- unorig(spec[[variable]]$selected)
       }
       selection
     })

@@ -8,18 +8,18 @@
 \alias{values}
 \title{Type specification}
 \usage{
-datasets(names, select = 1)
+datasets(choices = everything(), select = 1)
 
-variables(names, select = 1)
+variables(choices = everything(), select = 1)
 
-mae_colData(names, select = 1)
+mae_colData(choices = everything(), select = 1)
 
-values(names, select = 1)
+values(choices = everything(), select = 1)
 }
 \arguments{
-\item{names}{Character specifying the names or functions to select them. The functions will be applied on the data or the names.}
+\item{choices}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick the choices.}
 
-\item{select}{Character of \code{x} or functions to select on x (only on names or positional not on the data of the variable).}
+\item{selected}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick from choices to be selected.}
 }
 \value{
 An object of the same class as the function with two elements: names the content of x, and select.
@@ -39,6 +39,7 @@ Define how to select and extract data
 
 }}
 \examples{
+datasets()
 datasets("A")
 c(datasets("A"), datasets("B"))
 datasets(where(is.data.frame))

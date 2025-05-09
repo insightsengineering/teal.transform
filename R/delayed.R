@@ -44,15 +44,15 @@ is.delayed.specification <- function(specification) {
 #' @method is.delayed type
 is.delayed.type <- function(specification) {
   if (!is.na(specification)) {
-    return(!all(is.character(specification$names)) || !all(is.character(specification$select)))
+    return(!all(is.character(specification$choices)) || !all(is.character(specification$selected)))
   }
   FALSE
 }
 
 resolved <- function(specification, type = is(specification)) {
-  s <- all(is.character(specification$names)) && all(is.character(specification$select))
+  s <- all(is.character(specification$choices)) && all(is.character(specification$selected))
 
-  if (!s && !all(specification$select %in% specification$names)) {
+  if (!s && !all(specification$selected %in% specification$choices)) {
     stop("Selected ", type, " not resolved.")
   }
   attr(specification, "delayed") <- NULL

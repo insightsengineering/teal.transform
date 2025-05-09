@@ -16,7 +16,7 @@ test_that("resolver datasets works", {
   expect_no_error(resolver(df_head, td))
   expect_no_error(resolver(df_first, td))
   out <- resolver(matrices, td)
-  expect_length(out$select, 1L) # Because we use 1
+  expect_length(out$datasets$selected, 1L) # Because we use 1
   expect_error(expect_warning(resolver(df_mean, td)))
   expect_error(resolver(median_mean, td))
 })
@@ -53,6 +53,15 @@ test_that("resolver variables works", {
   expect_no_error(resolver(c(data_frames, factors), td))
   expect_error(resolver(c(data_frames, factors_head), td))
   expect_error(resolver(c(data_frames, var_matrices_head), td))
+})
+
+test_that("resolver with missing type works", {
+  td <- within(teal.data::teal_data(), {
+    i <- iris
+  })
+
+  r <- expect_no_error(resolver(variables(where(is.numeric)), td))
+  expect_true(r$variables$selected == "i")
 })
 
 test_that("resolver values works", {
@@ -98,22 +107,22 @@ test_that("names and variables are reported", {
   # This should select A and Ab:
   #      A because the name is all capital letters and
   #      Ab values is all upper case.
-  # expect_length(out$variables$names, 2)
+  # expect_length(out$variables$choices, 2)
   v_all_upper <- variables(where(function(x) {
     all(x == toupper(x))
   }))
   df_all_upper_variables <- c(d_df, v_all_upper)
   expect_no_error(out <- resolver(df_all_upper_variables, td))
   expect_no_error(out <- resolver(c(datasets("df2"), v_all_upper), td))
-  expect_length(out$variables$names, 2L)
-  expect_no_error(out <- resolver(datasets(function(x) {
+  expect_length(out$variables$choices, 2L)
+  expect_no_error(out <- resolver(datasets(where(function(x) {
     is.data.frame(x) && all(colnames(x) == toupper(colnames(x)))
-  }), td))
-  expect_length(out$names, 1L)
+  })), td))
+  expect_length(out$datasets$choices, 1L)
   expect_no_error(out <- resolver(datasets(where(function(x) {
     is.data.frame(x) || any(colnames(x) == toupper(colnames(x)))
   })), td))
-  expect_length(out$names, 2L)
+  expect_length(out$datasets$choices, 2L)
 })
 
 test_that("update_spec resolves correctly", {
@@ -128,10 +137,10 @@ test_that("update_spec resolves correctly", {
     )
   })
   data_frames_factors <- c(datasets(where(is.data.frame)), variables(where(is.factor)))
-  expect_false(is.null(attr(data_frames_factors$datasets$names, "original")))
-  expect_false(is.null(attr(data_frames_factors$datasets$select, "original")))
-  expect_false(is.null(attr(data_frames_factors$variables$names, "original")))
-  expect_false(is.null(attr(data_frames_factors$variables$select, "original")))
+  expect_false(is.null(attr(data_frames_factors$datasets$choices, "original")))
+  expect_false(is.null(attr(data_frames_factors$datasets$selected, "original")))
+  expect_false(is.null(attr(data_frames_factors$variables$choices, "original")))
+  expect_false(is.null(attr(data_frames_factors$variables$selected, "original")))
 
   expect_no_error(resolver(data_frames_factors, td))
 })
