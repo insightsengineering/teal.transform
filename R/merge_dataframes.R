@@ -183,3 +183,20 @@ merge_call_multiple <- function(input, ids, merge_function, data,
   out$input <- input
   out
 }
+
+merge_selector_srv <- function(id, available, data) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+      req(input)
+      resolved_spec <- reactive({
+        resolved_spec <- lapply(names(available), function(x) {
+          module_input_server(x, available[[x]], data)()
+        })
+        names(resolved_spec) <- names(available)
+        resolved_spec
+      })
+      resolved_spec()
+    }
+  )
+}
