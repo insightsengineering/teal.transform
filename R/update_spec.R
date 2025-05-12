@@ -63,25 +63,25 @@ update_s_spec <- function(spec, type, value) {
   type <- match.arg(type, spec_types)
   restart_types <- spec_types[seq_along(spec_types) > which(type == spec_types)]
 
-  valid_names <- spec[[type]]$names
+  valid_names <- spec[[type]]$choices
 
   if (!is.list(valid_names) && all(value %in% valid_names)) {
     original_select <- orig(spec[[type]]$select)
-    spec[[type]][["select"]] <- value
-    attr(spec[[type]][["select"]], "original") <- original_select
+    spec[[type]][["selected"]] <- value
+    attr(spec[[type]][["selected"]], "original") <- original_select
   } else if (!is.list(valid_names) && !all(value %in% valid_names)) {
-    original_select <- orig(spec[[type]]$select)
+    original_select <- orig(spec[[type]]$selected)
 
     valid_values <- intersect(value, valid_names)
     if (!length(valid_values)) {
       stop("No valid value provided.")
     }
     if (!length(valid_values)) {
-      spec[[type]][["select"]] <- original_select
+      spec[[type]][["selected"]] <- original_select
     } else {
-      spec[[type]][["select"]] <- valid_values
+      spec[[type]][["selected"]] <- valid_values
     }
-    attr(spec[[type]][["select"]], "original") <- original_select
+    attr(spec[[type]][["selected"]], "original") <- original_select
   } else {
     stop("It seems the specification needs to be resolved first.")
   }
@@ -92,9 +92,9 @@ update_s_spec <- function(spec, type, value) {
       next
     }
     restored_specification <- type_helper(
-      type = type_restart,
-      names = orig(spec[[type_restart]]$names),
-      select = orig(spec[[type_restart]]$select)
+      orig(spec[[type_restart]]$choices),
+      orig(spec[[type_restart]]$selected),
+      type_restart
     )
     spec[[type_restart]] <- restored_specification
   }

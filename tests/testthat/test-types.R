@@ -26,7 +26,7 @@ test_that("raw combine of types", {
 
 test_that("combine types", {
   expect_no_error(c(
-    datasets(where(is.data.frame), select = "df1"),
+    datasets(where(is.data.frame), selected = "df1"),
     variables(where(is.numeric))
   ))
 })

@@ -70,7 +70,7 @@ determine.default <- function(type, data, ...) {
 #' @export
 determine.list <- function(type, data, ...) {
   if (is.list(type) && is.null(names(type))) {
-    l <- lapply(type, determine, data = data, spec = spec)
+    l <- lapply(type, determine, data = data)
     return(l)
   }
 

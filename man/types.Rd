@@ -8,18 +8,18 @@
 \alias{values}
 \title{Type specification}
 \usage{
-datasets(choices = everything(), select = 1)
+datasets(choices = tidyselect::everything(), selected = 1)
 
-variables(choices = everything(), select = 1)
+variables(choices = tidyselect::everything(), selected = 1)
 
-mae_colData(choices = everything(), select = 1)
+mae_colData(choices = tidyselect::everything(), selected = 1)
 
-values(choices = everything(), select = 1)
+values(choices = tidyselect::everything(), selected = 1)
 }
 \arguments{
-\item{choices}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick the choices.}
+\item{choices}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick the choices.}
 
-\item{selected}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick from choices to be selected.}
+\item{selected}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick from choices to be selected.}
 }
 \value{
 An object of the same class as the function with two elements: names the content of x, and select.

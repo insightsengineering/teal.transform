@@ -41,8 +41,8 @@ type_helper <- function(choices, selected, type) {
 #' @title Type specification
 #' @description
 #' Define how to select and extract data
-#' @param choices <[`tidy-select`][dplyr_tidy_select]> One unquoted expression to be used to pick the choices.
-#' @param selected <[`tidy-select`][dplyr_tidy_select]> One unquoted expression to be used to pick from choices to be selected.
+#' @param choices <[`tidy-select`][dplyr::dplyr_tidy_select]> One unquoted expression to be used to pick the choices.
+#' @param selected <[`tidy-select`][dplyr::dplyr_tidy_select]> One unquoted expression to be used to pick from choices to be selected.
 #' @returns An object of the same class as the function with two elements: names the content of x, and select.
 #' @examples
 #' datasets()
@@ -52,28 +52,29 @@ type_helper <- function(choices, selected, type) {
 #' c(datasets("A"), variables(where(is.numeric)))
 NULL
 
+#' @importFrom tidyselect everything
 #' @describeIn types Specify datasets.
 #' @export
-datasets <- function(choices = everything(), select = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(select), "datasets")
+datasets <- function(choices = tidyselect::everything(), selected = 1) {
+  type_helper(rlang::enquo(choices), rlang::enquo(selected), "datasets")
 }
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(choices = everything(), select = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(select), "variables")
+variables <- function(choices = tidyselect::everything(), selected = 1) {
+  type_helper(rlang::enquo(choices), rlang::enquo(selected), "variables")
 }
 
 #' @describeIn types Specify colData.
 #' @export
-mae_colData <- function(choices = everything(), select = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(select), "colData")
+mae_colData <- function(choices = tidyselect::everything(), selected = 1) {
+  type_helper(rlang::enquo(choices), rlang::enquo(selected), "colData")
 }
 
 #' @describeIn types Specify values.
 #' @export
-values <- function(choices = everything(), select = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(select), "values")
+values <- function(choices = tidyselect::everything(), selected = 1) {
+  type_helper(rlang::enquo(choices), rlang::enquo(selected), "values")
 }
 
 #' @export
