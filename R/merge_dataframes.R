@@ -102,8 +102,22 @@ merge_call_multiple <- function(input, ids, merge_function, data,
   datasets <- unique(unlist(lapply(input, `[[`, "datasets"), FALSE, FALSE))
   stopifnot(is.character(datasets) && length(datasets) >= 1L)
   number_merges <- length(datasets) - 1L
+
+  out <- vector("list", length = 2)
+  names(out) <- c("code", "specification")
+
+  if (number_merges == 0L) {
+    dataset <- names(input)
+    variables <- input[[1]]$variables
+    final_call <- call(
+      "<-", as.name(anl_name),
+      call("dplyr::select", as.name(dataset), as.names(variables))
+    )
+    out$code <- teal.code::eval_code(data, final_call)
+    out$input <- input
+    return(out)
+  }
   stopifnot(
-    "Number of datasets is enough" = number_merges >= 1L,
     "Number of arguments for type matches data" = length(merge_function) == number_merges || length(merge_function) == 1L
   )
   if (!missing(ids)) {
@@ -119,11 +133,15 @@ merge_call_multiple <- function(input, ids, merge_function, data,
   if (number_merges == 1L && missing(ids)) {
     previous <- merge_call_pair(input, merge_function = merge_function, data = data)
     final_call <- call("<-", x = as.name(anl_name), value = previous)
-    return(teal.code::eval_code(data, final_call))
+    out$code <- teal.code::eval_code(data, final_call)
+    out$input <- input
+    return(out)
   } else if (number_merges == 1L && !missing(ids)) {
     previous <- merge_call_pair(input, by = ids, merge_function = merge_function, data = data)
     final_call <- call("<-", x = as.name(anl_name), value = previous)
-    return(teal.code::eval_code(data, final_call))
+    out$code <- teal.code::eval_code(data, final_call)
+    out$input <- input
+    return(out)
   }
 
 
@@ -161,5 +179,7 @@ merge_call_multiple <- function(input, ids, merge_function, data,
     previous <- call("%>%", as.name(previous), as.name(current))
   }
   final_call <- call("<-", x = as.name(anl_name), value = previous)
-  teal.code::eval_code(data, final_call)
+  out$code <- teal.code::eval_code(data, final_call)
+  out$input <- input
+  out
 }
