@@ -66,7 +66,7 @@ update_s_spec <- function(spec, type, value) {
   valid_names <- spec[[type]]$choices
 
   if (!is.list(valid_names) && all(value %in% valid_names)) {
-    original_select <- orig(spec[[type]]$select)
+    original_select <- orig(spec[[type]]$selected)
     spec[[type]][["selected"]] <- value
     attr(spec[[type]][["selected"]], "original") <- original_select
   } else if (!is.list(valid_names) && !all(value %in% valid_names)) {
