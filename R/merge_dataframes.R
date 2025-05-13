@@ -66,61 +66,70 @@ extract_ids <- function(input, data) {
   out <- unique(unlist(l))
 }
 
-merge_call_pair <- function(selections, by, data,
-                            merge_function = "dplyr::full_join",
-                            anl_name = "ANL") {
-  selections <- consolidate_extraction(selections)
+merge_call_pair <- function(input_res, by, data,
+                            merge_function = "dplyr::full_join") {
+  selections <- consolidate_extraction(input_res)
   stopifnot(length(selections) == 2L)
   datasets <- unique(unlist(lapply(selections, `[[`, "datasets"), FALSE, FALSE))
   stopifnot(length(datasets) >= 2)
-  by <- extract_ids(input = selections, data)
-
-  if (grepl("::", merge_function, fixed = TRUE)) {
-    m <- strsplit(merge_function, split = "::", fixed = TRUE)[[1]]
-    data <- teal.code::eval_code(data, call("library", m[1]))
-    merge_function <- m[2]
+  if (is.reactive(data)) {
+    data <- data()
   }
 
+  if (is.null(by)) {
+    by <- extract_ids(input = selections, data)
+  }
+
+  data <- add_library_call(merge_function, data)
+
   if (!missing(by) && length(by)) {
-    call_m <- call(merge_function,
-      x = as.name(datasets[1]),
-      y = as.name(datasets[2]),
-      by = by
-    )
+    call_m <- as.call(c(
+      rlang::parse_expr(merge_function),
+      list(
+        x = as.name(datasets[1]),
+        y = as.name(datasets[2]),
+        by = by
+      )
+    ))
   } else {
-    call_m <- call(merge_function,
-      x = as.name(datasets[1]),
-      y = as.name(datasets[2])
-    )
+    call_m <- as.call(c(
+      rlang::parse_expr(merge_function),
+      list(
+        x = as.name(datasets[1]),
+        y = as.name(datasets[2])
+      )
+    ))
   }
   call_m
 }
 
-merge_call_multiple <- function(input, ids, merge_function, data,
-                                anl_name = "ANL") {
-  input <- consolidate_extraction(input)
-  datasets <- unique(unlist(lapply(input, `[[`, "datasets"), FALSE, FALSE))
+merge_call_multiple <- function(input_res, ids, data, merge_function = "dplyr::full_join",
+                                anl = "ANL") {
+  selections <- consolidate_extraction(input_res)
+  datasets <- unique(unlist(lapply(selections, `[[`, "datasets"), FALSE, FALSE))
   stopifnot(is.character(datasets) && length(datasets) >= 1L)
   number_merges <- length(datasets) - 1L
-
+  if (is.reactive(data)) {
+    data <- data()
+  }
   out <- vector("list", length = 2)
   names(out) <- c("code", "specification")
 
   if (number_merges == 0L) {
-    dataset <- names(input)
-    variables <- input[[1]]$variables
+    dataset <- names(selections)
+    variables <- selections[[1]]$variables
     final_call <- call(
-      "<-", as.name(anl_name),
+      "<-", as.name(anl),
       call("dplyr::select", as.name(dataset), as.names(variables))
     )
     out$code <- teal.code::eval_code(data, final_call)
-    out$input <- input
+    out$input <- input_res
     return(out)
   }
   stopifnot(
     "Number of arguments for type matches data" = length(merge_function) == number_merges || length(merge_function) == 1L
   )
-  if (!missing(ids)) {
+  if (!missing(ids) && !is.null(ids)) {
     stopifnot("Number of arguments for ids matches data" = !(is.list(ids) && length(ids) == number_merges))
   }
   if (length(merge_function) != number_merges) {
@@ -131,33 +140,33 @@ merge_call_multiple <- function(input, ids, merge_function, data,
   }
 
   if (number_merges == 1L && missing(ids)) {
-    previous <- merge_call_pair(input, merge_function = merge_function, data = data)
-    final_call <- call("<-", x = as.name(anl_name), value = previous)
+    data <- add_library_call(merge_function, data)
+    previous <- merge_call_pair(selections, merge_function = merge_function, data = data)
+    final_call <- call("<-", x = as.name(anl), value = previous)
     out$code <- teal.code::eval_code(data, final_call)
-    out$input <- input
+    out$input <- input_res
     return(out)
   } else if (number_merges == 1L && !missing(ids)) {
-    previous <- merge_call_pair(input, by = ids, merge_function = merge_function, data = data)
-    final_call <- call("<-", x = as.name(anl_name), value = previous)
+    data <- add_library_call(merge_function, data)
+    previous <- merge_call_pair(selections, by = ids, merge_function = merge_function, data = data)
+    final_call <- call("<-", x = as.name(anl), value = previous)
     out$code <- teal.code::eval_code(data, final_call)
-    out$input <- input
+    out$input <- input_res
     return(out)
   }
-
-
 
   for (merge_i in seq_len(number_merges)) {
     if (merge_i == 1L) {
       datasets_i <- seq_len(2)
       if (!missing(ids)) {
         ids <- ids[[merge_i]]
-        previous <- merge_call_pair(input[datasets_i],
+        previous <- merge_call_pair(selections[datasets_i],
           ids,
           merge_function[merge_i],
           data = data
         )
       } else {
-        previous <- merge_call_pair(input[datasets_i],
+        previous <- merge_call_pair(selections[datasets_i],
           merge_function[merge_i],
           data = data
         )
@@ -165,12 +174,12 @@ merge_call_multiple <- function(input, ids, merge_function, data,
     } else {
       datasets_ids <- merge_i:(merge_i + 1L)
       if (!missing(ids)) {
-        current <- merge_call_pair(input[datasets_ids],
+        current <- merge_call_pair(selections[datasets_ids],
           merge_function = merge_function[merge_i], data = data
         )
       } else {
         ids <- ids[[merge_i]]
-        current <- merge_call_pair(input[datasets_ids],
+        current <- merge_call_pair(selections[datasets_ids],
           ids,
           merge_function = merge_function[merge_i], data = data
         )
@@ -178,25 +187,44 @@ merge_call_multiple <- function(input, ids, merge_function, data,
     }
     previous <- call("%>%", as.name(previous), as.name(current))
   }
-  final_call <- call("<-", x = as.name(anl_name), value = previous)
+  final_call <- call("<-", x = as.name(anl), value = previous)
   out$code <- teal.code::eval_code(data, final_call)
-  out$input <- input
+  out$input <- input_res
   out
 }
 
-merge_selector_srv <- function(id, available, data) {
+merge_type_srv <- function(id, inputs, data, merge_function = "dplyr::full_join", anl_name = "ANL") {
+  checkmate::assert_list(inputs, names = "named")
+  stopifnot(make.names(anl_name) == anl_name)
+
   moduleServer(
     id,
     function(input, output, session) {
       req(input)
       resolved_spec <- reactive({
-        resolved_spec <- lapply(names(available), function(x) {
-          module_input_server(x, available[[x]], data)()
+        resolved_spec <- lapply(names(inputs), function(x) {
+          # Return characters not reactives
+          module_input_server(x, inputs[[x]], data)()
         })
-        names(resolved_spec) <- names(available)
+        # Keep input names
+        names(resolved_spec) <- names(inputs)
         resolved_spec
       })
-      resolved_spec()
+      td <- merge_call_multiple(resolved_spec(), NULL,
+        data,
+        merge_function = merge_function, anl = anl_name
+      )
     }
   )
+}
+
+add_library_call <- function(merge_function, data) {
+  if (is.reactive(data)) {
+    data <- data()
+  }
+  if (grepl("::", merge_function, fixed = TRUE)) {
+    m <- strsplit(merge_function, split = "::", fixed = TRUE)[[1]]
+    data <- teal.code::eval_code(data, call("library", m[1]))
+  }
+  data
 }
