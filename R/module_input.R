@@ -41,18 +41,23 @@ module_input_server <- function(id, spec, data) {
       } else {
         d <- data
       }
+
       if (!anyNA(spec) && is.delayed(spec)) {
         spec <- resolver(spec, d)
       }
+
       for (i in seq_along(names(input))) {
         variable <- names(input)[i]
         x <- input[[variable]]
-        spec_v <- spec[[variable]]
-        # resolved <- !is.character(spec_v$names) && all(x %in% spec_v$names) && any(!x %in% spec_v$select)
-
-        if (!is.null(x) && any(nzchar(x))) {
-          spec <- resolver(update_spec(spec, variable, x), d)
-        } else {
+        update_is_empty <- !is.null(x) && all(!nzchar(x))
+        if (update_is_empty) {
+          break
+        }
+        update_is_valid <- all(x %in% spec[[variable]][["choices"]])
+        # Includes for adding or removing but not reordering
+        selection_is_new <- length(x) != length(spec[[variable]][["selected"]])
+        if (update_is_valid && selection_is_new) {
+          spec <- update_spec(spec, variable, x)
           spec <- resolver(spec, d)
         }
       }
@@ -60,15 +65,12 @@ module_input_server <- function(id, spec, data) {
     })
 
     observe({
-      req(react_updates())
-      spec <- react_updates()
+      spec <- req(react_updates())
+      req(!is.delayed(spec))
+      # Relies on order of arguments
       for (i in seq_along(spec)) {
         variable <- names(spec)[i]
 
-        # Relies on order of arguments
-        if (is.delayed(spec[[variable]])) {
-          break
-        }
         shiny::updateSelectInput(
           session,
           variable,
@@ -85,6 +87,7 @@ module_input_server <- function(id, spec, data) {
     react_selection <- reactive({
       spec <- req(react_updates())
       req(!is.delayed(spec))
+      # FIXME: breaks with conditional specification: list(spec, spec)
       selection <- vector("list", length(spec))
       names(selection) <- names(spec)
       for (i in seq_along(spec)) {
