@@ -47,6 +47,18 @@ cond_data_extract_single_ui <- function(ns, single_data_extract_spec) {
   )
 }
 
+#' @keywords internal
+#' @noRd
+data_extract_deps <- function() {
+  htmltools::htmlDependency(
+    name = "teal-widgets-data-extract",
+    version = utils::packageVersion("teal.transform"),
+    package = "teal.transform",
+    src = "css",
+    stylesheet = "data-extract.css"
+  )
+}
+
 #' `teal` data extraction module user-interface
 #'
 #' @description
@@ -170,7 +182,7 @@ data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FA
     }
   }
   tagList(
-    include_css_files(pattern = "data_extract"),
+    data_extract_deps(),
     tags$div(
       class = "data-extract",
       tags$label(label),
