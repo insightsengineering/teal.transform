@@ -82,11 +82,11 @@ extract_choices_labels <- function(choices, values = NULL) {
 #'
 #' data_list <- list(iris = reactive(iris))
 #'
-#' ui <- fluidPage(
+#' ui <- bslib::page_fluid(
 #'   useShinyjs(),
-#'   standard_layout(
-#'     output = verbatimTextOutput("out1"),
-#'     encoding = tagList(
+#'   bslib::layout_sidebar(
+#'     verbatimTextOutput("out1"),
+#'     sidebar = tagList(
 #'       data_extract_ui(
 #'         id = "x_var",
 #'         label = "Please select an X column",

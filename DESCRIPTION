@@ -23,6 +23,7 @@ Depends:
 Imports:
     checkmate (>= 2.1.0),
     dplyr (>= 1.1.0),
+    htmltools,
     lifecycle (>= 0.2.0),
     logger (>= 0.2.0),
     methods,
@@ -38,6 +39,7 @@ Imports:
     tidyselect,
     utils
 Suggests:
+    bslib (>= 0.8.0),
     knitr (>= 1.42),
     rmarkdown (>= 2.23),
     roxy.shinylive (>= 1.0.0),
