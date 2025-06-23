@@ -25,10 +25,10 @@ testthat::test_that("Single filter", {
   testthat::expect_silent(filter <- input$children[[1]])
   testthat::expect_equal(filter$children[[1]]$children[[1]]$attribs, list(class = "shinyjs-hide"))
 
-  testthat::expect_equal(
-    filter$children[[1]]$children[[2]]$children[[3]]$children[[1]]$children[[1]]$children[[2]]$attribs$multiple,
-    "multiple"
-  )
+  tq <- htmltools::tagQuery(filter)
+  filter_options <- tq$find("#filter1-vals")$selectedTags()
+  testthat::expect_length(filter_options, 1L)
+  testthat::expect_equal(filter_options[[1]]$attribs$multiple, "multiple")
 
   # more tests - check levels of filtered variables
   # check also colummns selected
