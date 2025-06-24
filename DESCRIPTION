@@ -27,7 +27,7 @@ Imports:
     lifecycle (>= 0.2.0),
     logger (>= 0.2.0),
     methods,
-    rlang (>= 1.1.1),
+    rlang (>= 1.0.0),
     shiny (>= 1.6.0),
     shinyjs (>= 2.1.0),
     shinyvalidate (>= 0.1.3),
