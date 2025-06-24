@@ -1,12 +1,12 @@
-pandoc: 3.6.4
-pkgdown: 2.1.2
+pandoc: 3.7.0.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   combining-data-extract-with-data-merge: combining-data-extract-with-data-merge.html
   data-extract: data-extract.html
   data-merge: data-merge.html
   teal-transform: teal-transform.html
-last_built: 2025-05-23T14:18Z
+last_built: 2025-06-24T08:40Z
 urls:
   reference: https://insightsengineering.github.io/teal.transform/reference
   article: https://insightsengineering.github.io/teal.transform/articles
