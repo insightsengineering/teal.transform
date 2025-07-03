@@ -181,7 +181,7 @@ data_extract_ui <- function(id, label, data_extract_spec, is_single_dataset = FA
       )
     }
   }
-  tagList(
+  tags$div(
     data_extract_deps(),
     tags$div(
       class = "data-extract",
