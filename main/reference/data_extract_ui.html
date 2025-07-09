@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">teal.transform</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9004</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,96 +140,98 @@ The corresponding server module can be found in <code><a href="data_extract_srv.
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;div class="container-fluid"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div class="bslib-sidebar-layout bslib-mb-spacing html-fill-item" data-bslib-sidebar-init="TRUE" data-collapsible-desktop="true" data-collapsible-mobile="true" data-open-desktop="open" data-open-mobile="closed" data-require-bs-caller="layout_sidebar()" data-require-bs-version="5" style="--_sidebar-width:250px;"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;div class="main bslib-gap-spacing html-fill-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div id="table" class="shiny-html-output"&gt;&lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div id="table" class="shiny-html-output shiny-table-output"&gt;&lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;aside id="bslib-sidebar-2007" class="sidebar" hidden&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;aside id="bslib-sidebar-5703" class="sidebar" hidden&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;div class="sidebar-content bslib-gap-spacing"&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div class="data-extract"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;label&gt;Regressor Variable&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;span class="help-block"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               Dataset:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;code&gt;ADTTE&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/span&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;div class="data-extract"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;label&gt;Regressor Variable&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;span class="help-block"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 Dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;code&gt;ADTTE&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/span&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="filter_spec"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="shinyjs-hide"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="filter_spec"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div class="shinyjs-hide"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;script&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-filter1-col').on('change', function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-filter1-col_selected_text').html(select_concat);</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_input" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;label class="control-label shiny-label-null" for="regressor-dataset_ADTTE_singleextract-filter1-col" id="regressor-dataset_ADTTE_singleextract-filter1-col-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-col" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="PARAMCD" selected&gt;PARAMCD&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_input" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             &lt;label class="control-label shiny-label-null" for="regressor-dataset_ADTTE_singleextract-filter1-col" id="regressor-dataset_ADTTE_singleextract-filter1-col-label"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-col" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="PARAMCD" selected&gt;PARAMCD&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="CNSR" selected&gt;CNSR&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_fixed" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;label class="control-label"&gt;&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-col_selected_text"&gt;PARAMCD, CNSR&lt;/code&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-col_fixed" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;label class="control-label"&gt;&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-col_selected_text"&gt;PARAMCD, CNSR&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;script&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-filter1-vals').on('change', function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-filter1-vals_selected_text').html(select_concat);</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_input" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-filter1-vals-label" for="regressor-dataset_ADTTE_singleextract-filter1-vals"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-vals" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="OS-1" selected&gt;OS-1&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_input" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-filter1-vals-label" for="regressor-dataset_ADTTE_singleextract-filter1-vals"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             &lt;select data-actions-box="false" data-none-selected-text="- Nothing selected -" data-max-options="1" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-filter1-vals" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="OS-1" selected&gt;OS-1&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="OS-0"&gt;OS-0&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="PFS-1"&gt;PFS-1&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_fixed" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;label class="control-label"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-vals_selected_text"&gt;OS-1&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;div id="regressor-dataset_ADTTE_singleextract-filter1-vals_fixed" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;label class="control-label"&gt;Choose endpoint and Censor&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;code id="regressor-dataset_ADTTE_singleextract-filter1-vals_selected_text"&gt;OS-1&lt;/code&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;script&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;script&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         $(function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           $('#regressor-dataset_ADTTE_singleextract-select').on('change', function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             var select_concat = $(this).val().length ? $(this).val().join(', ') : 'NULL';</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             $('#regressor-dataset_ADTTE_singleextract-select_selected_text').html(select_concat);</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         })&lt;/script&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div id="regressor-dataset_ADTTE_singleextract-select_input" style="display: block;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div class="form-group shiny-input-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-select-label" for="regressor-dataset_ADTTE_singleextract-select"&gt;Column&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-select" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="AVAL" selected&gt;AVAL&lt;/option&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-select_input" style="display: block;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;div class="form-group shiny-input-container"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;label class="control-label" id="regressor-dataset_ADTTE_singleextract-select-label" for="regressor-dataset_ADTTE_singleextract-select"&gt;Column&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;select data-actions-box="true" data-none-selected-text="- Nothing selected -" data-max-options="Inf" data-show-subtext="true" data-live-search="false" data-container="body" data-state-input="true" id="regressor-dataset_ADTTE_singleextract-select" class="selectpicker form-control" autocomplete="off" multiple="multiple"&gt;&lt;option value="AVAL" selected&gt;AVAL&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="BMRKR1" selected&gt;BMRKR1&lt;/option&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;option value="AGE"&gt;AGE&lt;/option&gt;&lt;/select&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;div id="regressor-dataset_ADTTE_singleextract-select_fixed" style="display: none;"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;label class="control-label"&gt;Column&lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;code id="regressor-dataset_ADTTE_singleextract-select_selected_text"&gt;AVAL, BMRKR1&lt;/code&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div id="regressor-dataset_ADTTE_singleextract-select_fixed" style="display: none;"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;label class="control-label"&gt;Column&lt;/label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;code id="regressor-dataset_ADTTE_singleextract-select_selected_text"&gt;AVAL, BMRKR1&lt;/code&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;div class="form-group shiny-input-container shinyjs-disabled shinyjs-hide"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="checkbox"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;label&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;input id="regressor-dataset_ADTTE_singleextract-reshape" type="checkbox" class="shiny-input-checkbox"/&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;span&gt;Reshape long to wide format&lt;/span&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;div class="form-group shiny-input-container shinyjs-disabled shinyjs-hide"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;div class="checkbox"&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;input id="regressor-dataset_ADTTE_singleextract-reshape" type="checkbox" class="shiny-input-checkbox"/&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;span&gt;Reshape long to wide format&lt;/span&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;/label&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;/div&gt;</span>
@@ -237,7 +239,7 @@ The corresponding server module can be found in <code><a href="data_extract_srv.
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/aside&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;button class="collapse-toggle" type="button" title="Toggle sidebar" aria-expanded="true" aria-controls="bslib-sidebar-2007"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-chevron-left collapse-icon" style="fill:currentColor;" aria-hidden="true" role="img" &gt;&lt;path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;button class="collapse-toggle" type="button" title="Toggle sidebar" aria-expanded="true" aria-controls="bslib-sidebar-5703"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-chevron-left collapse-icon" style="fill:currentColor;" aria-hidden="true" role="img" &gt;&lt;path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;script data-bslib-sidebar-init&gt;bslib.Sidebar.initCollapsibleAll()&lt;/script&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/div&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/div&gt;</span>
