@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Queue" timestamp="2025-07-03T12:12:27Z" hostname="3b4977dffdb6" tests="21" skipped="0" failures="0" errors="0" time="0.1">
-    <testcase time="0.0209999999999999" classname="Queue" name="Queue_can_be_initialized"/>
-    <testcase time="0.015" classname="Queue" name="Queue_can_be_initialized"/>
-    <testcase time="0.01" classname="Queue" name="size_method_returns_number_of_elements_in_queue"/>
-    <testcase time="0.004" classname="Queue" name="push_method_adds_elements_to_queue"/>
-    <testcase time="0.001" classname="Queue" name="push_method_adds_elements_to_queue"/>
+  <testsuite name="Queue" timestamp="2025-07-09T19:07:34Z" hostname="394d7cffe2a7" tests="21" skipped="0" failures="0" errors="0" time="0.098">
+    <testcase time="0.02" classname="Queue" name="Queue_can_be_initialized"/>
+    <testcase time="0.0159999999999999" classname="Queue" name="Queue_can_be_initialized"/>
+    <testcase time="0.00900000000000001" classname="Queue" name="size_method_returns_number_of_elements_in_queue"/>
+    <testcase time="0.003" classname="Queue" name="push_method_adds_elements_to_queue"/>
     <testcase time="0.002" classname="Queue" name="push_method_adds_elements_to_queue"/>
-    <testcase time="0.005" classname="Queue" name="push_method_can_add_multiple_elements"/>
-    <testcase time="0.004" classname="Queue" name="get_method_returns_elements_of_queue"/>
-    <testcase time="0.003" classname="Queue" name="pop_method_removes_first_element_from_queue"/>
+    <testcase time="0.001" classname="Queue" name="push_method_adds_elements_to_queue"/>
+    <testcase time="0.00600000000000001" classname="Queue" name="push_method_can_add_multiple_elements"/>
+    <testcase time="0.003" classname="Queue" name="get_method_returns_elements_of_queue"/>
+    <testcase time="0.004" classname="Queue" name="pop_method_removes_first_element_from_queue"/>
     <testcase time="0.001" classname="Queue" name="pop_method_removes_first_element_from_queue"/>
-    <testcase time="0.004" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
+    <testcase time="0.003" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
+    <testcase time="0.002" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
+    <testcase time="0.005" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
     <testcase time="0.001" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
-    <testcase time="0.00600000000000001" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
-    <testcase time="0.001" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
-    <testcase time="0.001" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
+    <testcase time="0.002" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
     <testcase time="0.001" classname="Queue" name="remove_method_removes_specified_element_from_queue"/>
     <testcase time="0.003" classname="Queue" name="remove_method_can_remove_several_elements"/>
-    <testcase time="0.001" classname="Queue" name="remove_method_can_remove_several_elements"/>
-    <testcase time="0.004" classname="Queue" name="empty_method_removes_all_elements_from_queue"/>
+    <testcase time="0.002" classname="Queue" name="remove_method_can_remove_several_elements"/>
+    <testcase time="0.003" classname="Queue" name="empty_method_removes_all_elements_from_queue"/>
     <testcase time="0.00600000000000001" classname="Queue" name="empty_method_removes_all_elements_from_queue"/>
-    <testcase time="0.00600000000000001" classname="Queue" name="print_method_displays_proper_format"/>
+    <testcase time="0.005" classname="Queue" name="print_method_displays_proper_format"/>
   </testsuite>
-  <testsuite name="check_selector" timestamp="2025-07-03T12:12:27Z" hostname="3b4977dffdb6" tests="3" skipped="0" failures="0" errors="0" time="0.031">
-    <testcase time="0.02" classname="check_selector" name="check_selector_dataname"/>
+  <testsuite name="check_selector" timestamp="2025-07-09T19:07:34Z" hostname="394d7cffe2a7" tests="3" skipped="0" failures="0" errors="0" time="0.03">
+    <testcase time="0.019" classname="check_selector" name="check_selector_dataname"/>
     <testcase time="0.00700000000000001" classname="check_selector" name="check_selector_dataname"/>
     <testcase time="0.004" classname="check_selector" name="check_selector_dataname"/>
   </testsuite>
-  <testsuite name="choices_selected" timestamp="2025-07-03T12:12:27Z" hostname="3b4977dffdb6" tests="23" skipped="0" failures="0" errors="0" time="0.257">
-    <testcase time="0.0219999999999999" classname="choices_selected" name="delayed_version_of_choices_selected"/>
-    <testcase time="0.0830000000000001" classname="choices_selected" name="delayed_version_of_choices_selected"/>
+  <testsuite name="choices_selected" timestamp="2025-07-09T19:07:34Z" hostname="394d7cffe2a7" tests="23" skipped="0" failures="0" errors="0" time="0.24">
+    <testcase time="0.02" classname="choices_selected" name="delayed_version_of_choices_selected"/>
+    <testcase time="0.077" classname="choices_selected" name="delayed_version_of_choices_selected"/>
     <testcase time="0.002" classname="choices_selected" name="delayed_version_of_choices_selected"/>
     <testcase time="0.004" classname="choices_selected" name="delayed_version_of_choices_selected"/>
-    <testcase time="0.0740000000000001" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
-    <testcase time="0.00499999999999989" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
-    <testcase time="0.004" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
-    <testcase time="0.00499999999999989" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
+    <testcase time="0.0649999999999999" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
+    <testcase time="0.005" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
+    <testcase time="0.005" classname="choices_selected" name="choices_selected_throws_error_when_selected_is_not_found_in_choices"/>
+    <testcase time="0.004" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
     <testcase time="0.002" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
     <testcase time="0.002" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
     <testcase time="0.002" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
     <testcase time="0.002" classname="choices_selected" name="delayed_choices_select_the_desired_choices"/>
-    <testcase time="0.00800000000000001" classname="choices_selected" name="choices_selected_throws_when_selected_is_delayed_and_choices_are_not"/>
+    <testcase time="0.00700000000000001" classname="choices_selected" name="choices_selected_throws_when_selected_is_delayed_and_choices_are_not"/>
     <testcase time="0.00800000000000001" classname="choices_selected" name="choices_selected_throws_when_no_select_keyword_is_passed_to_it_as_a_choice"/>
     <testcase time="0.004" classname="choices_selected" name="is_returns_choices_selected_if_passed_a_choices_selected_object"/>
     <testcase time="0.004" classname="choices_selected" name="choices_selected_remove_duplicates"/>
-    <testcase time="0.00099999999999989" classname="choices_selected" name="choices_selected_remove_duplicates"/>
-    <testcase time="0.00300000000000011" classname="choices_selected" name="choices_selected_remove_duplicates"/>
     <testcase time="0.002" classname="choices_selected" name="choices_selected_remove_duplicates"/>
+    <testcase time="0.002" classname="choices_selected" name="choices_selected_remove_duplicates"/>
+    <testcase time="0.00300000000000011" classname="choices_selected" name="choices_selected_remove_duplicates"/>
+    <testcase time="0.00599999999999978" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
     <testcase time="0.00600000000000001" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
-    <testcase time="0.0069999999999999" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
-    <testcase time="0.002" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
-    <testcase time="0.00500000000000012" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
+    <testcase time="0.00499999999999989" classname="choices_selected" name="delayed_version_of_choices_selected_resolve_delayed"/>
   </testsuite>
-  <testsuite name="data_extract_datanames" timestamp="2025-07-03T12:12:27Z" hostname="3b4977dffdb6" tests="19" skipped="0" failures="0" errors="0" time="0.097">
-    <testcase time="0.0089999999999999" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_single_data_extract_spec_object"/>
+  <testsuite name="data_extract_datanames" timestamp="2025-07-09T19:07:35Z" hostname="394d7cffe2a7" tests="19" skipped="0" failures="0" errors="0" time="0.093">
+    <testcase time="0.00800000000000001" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_single_data_extract_spec_object"/>
     <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_data_extract_spec_objects"/>
     <testcase time="0.00500000000000012" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_lists_of_data_extract_spec_objects"/>
     <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_data_extract_spec_objects_and_NULL"/>
     <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_data_extract_spec_objects_and_logical"/>
     <testcase time="0.00499999999999989" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_lists_of_data_extract_spec_objects_and_NULL"/>
-    <testcase time="0.00500000000000012" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_lists_of_data_extract_spec_objects_and_logical"/>
-    <testcase time="0.00299999999999989" classname="data_extract_datanames" name="get_extract_datanames_returns_the_dataname_of_the_single_data_extract_spec_object"/>
+    <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_accepts_a_list_of_lists_of_data_extract_spec_objects_and_logical"/>
+    <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_returns_the_dataname_of_the_single_data_extract_spec_object"/>
     <testcase time="0.002" classname="data_extract_datanames" name="get_extract_datanames_returns_the_dataname_of_the_single_data_extract_spec_object"/>
     <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_returns_the_unique_datanames_from_the_list_of_data_extract_spec_objects"/>
     <testcase time="0.004" classname="data_extract_datanames" name="get_extract_datanames_returns_the_unique_datanames_from_the_list_of_lists_of_data_extract_spec_objects"/>
     <testcase time="0.00800000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
-    <testcase time="0.00600000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
-    <testcase time="0.00600000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
+    <testcase time="0.00500000000000012" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
     <testcase time="0.00600000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
     <testcase time="0.00499999999999989" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
-    <testcase time="0.00900000000000012" classname="data_extract_datanames" name="get_extract_datanames_throws_error_with_empty_list"/>
+    <testcase time="0.00600000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_when_no_data_extract_spec_nor_list_of_lists_of_data_extract_spec_is_passed"/>
+    <testcase time="0.00800000000000001" classname="data_extract_datanames" name="get_extract_datanames_throws_error_with_empty_list"/>
     <testcase time="0.00600000000000001" classname="data_extract_datanames" name="get_extract_datanames_returns_unique_dataname_when_data_extract_specs_have_the_same_dataname"/>
-    <testcase time="0.002" classname="data_extract_datanames" name="get_extract_datanames_returns_unique_dataname_when_data_extract_specs_have_the_same_dataname"/>
+    <testcase time="0.00100000000000011" classname="data_extract_datanames" name="get_extract_datanames_returns_unique_dataname_when_data_extract_specs_have_the_same_dataname"/>
   </testsuite>
-  <testsuite name="data_extract_module" timestamp="2025-07-03T12:12:27Z" hostname="3b4977dffdb6" tests="12" skipped="0" failures="0" errors="0" time="0.147">
-    <testcase time="0.091" classname="data_extract_module" name="Single_filter"/>
+  <testsuite name="data_extract_module" timestamp="2025-07-09T19:07:35Z" hostname="394d7cffe2a7" tests="12" skipped="0" failures="0" errors="0" time="0.139">
+    <testcase time="0.085" classname="data_extract_module" name="Single_filter"/>
+    <testcase time="0.00099999999999989" classname="data_extract_module" name="Single_filter"/>
     <testcase time="0.002" classname="data_extract_module" name="Single_filter"/>
-    <testcase time="0.002" classname="data_extract_module" name="Single_filter"/>
-    <testcase time="0.0069999999999999" classname="data_extract_module" name="Single_filter"/>
-    <testcase time="0.00100000000000011" classname="data_extract_module" name="Single_filter"/>
-    <testcase time="0.0129999999999999" classname="data_extract_module" name="Multiple_filters"/>
+    <testcase time="0.00700000000000012" classname="data_extract_module" name="Single_filter"/>
+    <testcase time="0.00099999999999989" classname="data_extract_module" name="Single_filter"/>
+    <testcase time="0.012" classname="data_extract_module" name="Multiple_filters"/>
     <testcase time="0.002" classname="data_extract_module" name="Multiple_filters"/>
     <testcase time="0.00100000000000011" classname="data_extract_module" name="Multiple_filters"/>
     <testcase time="0.002" classname="data_extract_module" name="Multiple_filters"/>
@@ -88,23 +88,23 @@
     <testcase time="0.00900000000000012" classname="data_extract_module" name="Multiple_datasets"/>
     <testcase time="0.016" classname="data_extract_module" name="Multiple_datasets"/>
   </testsuite>
-  <testsuite name="data_extract_multiple_srv" timestamp="2025-07-03T12:12:28Z" hostname="3b4977dffdb6" tests="14" skipped="0" failures="0" errors="0" time="0.205">
-    <testcase time="0.0329999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_a_named_list_of_data_extract_spec_"/>
+  <testsuite name="data_extract_multiple_srv" timestamp="2025-07-09T19:07:35Z" hostname="394d7cffe2a7" tests="14" skipped="0" failures="0" errors="0" time="0.199">
+    <testcase time="0.0299999999999998" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_a_named_list_of_data_extract_spec_"/>
     <testcase time="0.0720000000000001" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_a_named_reactive_list_with_reactives"/>
+    <testcase time="0.00300000000000011" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_a_named_reactive_list_with_reactives"/>
     <testcase time="0.00299999999999989" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_a_named_reactive_list_with_reactives"/>
-    <testcase time="0.004" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_a_named_reactive_list_with_reactives"/>
     <testcase time="0.00700000000000012" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_an_empty_list"/>
-    <testcase time="0.0089999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_an_empty_list_if_passed_an_empty_list"/>
-    <testcase time="0.00800000000000001" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_prunes_NULL_from_the_passed_list"/>
-    <testcase time="0.00900000000000012" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_datasets_as_FilteredData"/>
+    <testcase time="0.00800000000000001" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_returns_an_empty_list_if_passed_an_empty_list"/>
+    <testcase time="0.0089999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_prunes_NULL_from_the_passed_list"/>
+    <testcase time="0.00800000000000001" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_datasets_as_FilteredData"/>
     <testcase time="0.0069999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_datasets_list_of_reactive_data.frame"/>
-    <testcase time="0.00900000000000012" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_datasets_as_list_of_data.frame"/>
+    <testcase time="0.01" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_datasets_as_list_of_data.frame"/>
     <testcase time="0.01" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_throws_error_if_datasets_is_not_FilteredData_or_list_of_reactive_data.frame"/>
-    <testcase time="0.0149999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_throws_if_data_extract_is_not_a_named_list"/>
+    <testcase time="0.014" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_throws_if_data_extract_is_not_a_named_list"/>
     <testcase time="0.00800000000000001" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_works_with_join_keys_NULL_default_"/>
-    <testcase time="0.0109999999999999" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_throws_error_when_join_keys_argument_is_not_join_keys_object"/>
+    <testcase time="0.01" classname="data_extract_multiple_srv" name="data_extract_multiple_srv_accepts_throws_error_when_join_keys_argument_is_not_join_keys_object"/>
   </testsuite>
-  <testsuite name="data_extract_spec" timestamp="2025-07-03T12:12:28Z" hostname="3b4977dffdb6" tests="68" skipped="0" failures="0" errors="0" time="0.332">
+  <testsuite name="data_extract_spec" timestamp="2025-07-09T19:07:35Z" hostname="394d7cffe2a7" tests="68" skipped="0" failures="0" errors="0" time="0.323">
     <testcase time="0.0110000000000001" classname="data_extract_spec" name="data_extract_spec_throws_when_select_is_not_select_spec_or_NULL"/>
     <testcase time="0.004" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
@@ -119,40 +119,40 @@
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
     <testcase time="0.002" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
-    <testcase time="0.00100000000000011" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
+    <testcase time="0.002" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="data_extract_spec_works_with_valid_input"/>
-    <testcase time="0.016" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.0149999999999999" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.00900000000000012" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.00600000000000001" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.0069999999999999" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.00299999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.00500000000000012" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.0069999999999999" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
-    <testcase time="0.0409999999999999" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
+    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works"/>
+    <testcase time="0.0410000000000001" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
-    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
-    <testcase time="0.0350000000000001" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
+    <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
+    <testcase time="0.034" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_version_of_data_extract_spec"/>
-    <testcase time="0.00500000000000012" classname="data_extract_spec" name="data_extract_spec_allows_both_select_and_filter_parameters_to_be_NULL"/>
-    <testcase time="0.004" classname="data_extract_spec" name="data_extract_spec_returns_filter_spec_with_multiple_set_to_TRUE"/>
+    <testcase time="0.004" classname="data_extract_spec" name="data_extract_spec_allows_both_select_and_filter_parameters_to_be_NULL"/>
+    <testcase time="0.00500000000000012" classname="data_extract_spec" name="data_extract_spec_returns_filter_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="data_extract_spec_returns_filter_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.00300000000000011" classname="data_extract_spec" name="data_extract_spec_returns_filter_spec_with_multiple_set_to_TRUE"/>
-    <testcase time="0.00499999999999989" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
-    <testcase time="0.00100000000000011" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
+    <testcase time="0.004" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
+    <testcase time="0.00099999999999989" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.00600000000000001" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.00299999999999989" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.00300000000000011" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
-    <testcase time="0.002" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
-    <testcase time="0.002" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
+    <testcase time="0.00299999999999989" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
+    <testcase time="0.00100000000000011" classname="data_extract_spec" name="data_extract_spec_returns_select_spec_with_multiple_set_to_TRUE"/>
     <testcase time="0.01" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
@@ -160,113 +160,113 @@
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
-    <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
+    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.00800000000000001" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
-    <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.00600000000000001" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
-    <testcase time="0.0069999999999999" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
+    <testcase time="0.00600000000000001" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
-    <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
-    <testcase time="0.0379999999999998" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
-    <testcase time="0.002" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
+    <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_data_extract_spec_works_resolve_delayed"/>
+    <testcase time="0.036" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
     <testcase time="0.00100000000000011" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
-    <testcase time="0.038" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
     <testcase time="0.002" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
+    <testcase time="0.0369999999999999" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
     <testcase time="0.00099999999999989" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
+    <testcase time="0.002" classname="data_extract_spec" name="delayed_version_of_data_extract_spec_resolve_delayed"/>
   </testsuite>
-  <testsuite name="data_extract_srv" timestamp="2025-07-03T12:12:28Z" hostname="3b4977dffdb6" tests="47" skipped="0" failures="0" errors="0" time="1.423">
-    <testcase time="0.04" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_list_of_reactive_data_frames"/>
-    <testcase time="0.05" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_FilteredData"/>
-    <testcase time="0.0309999999999999" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_list_of_data_frames"/>
-    <testcase time="0.0300000000000002" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_mixed_list_of_reactive_and_not_reactive_data_frames"/>
-    <testcase time="0.0269999999999997" classname="data_extract_srv" name="data_extract_srv_works_with_join_keys_NULL_default_"/>
-    <testcase time="0.0100000000000002" classname="data_extract_srv" name="data_extract_srv_accepts_throws_error_when_join_keys_argument_is_not_a_join_keys_object"/>
-    <testcase time="0.0449999999999999" classname="data_extract_srv" name="data_extract_srv_returns_a_list_of_elements"/>
-    <testcase time="0.00199999999999978" classname="data_extract_srv" name="data_extract_srv_returns_a_list_of_elements"/>
-    <testcase time="0.0170000000000003" classname="data_extract_srv" name="data_extract_srv_throws_error_when_data_extract_spec_is_missing"/>
+  <testsuite name="data_extract_srv" timestamp="2025-07-09T19:07:35Z" hostname="394d7cffe2a7" tests="47" skipped="0" failures="0" errors="0" time="1.36">
+    <testcase time="0.0390000000000001" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_list_of_reactive_data_frames"/>
+    <testcase time="0.052" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_FilteredData"/>
+    <testcase time="0.0319999999999998" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_list_of_data_frames"/>
+    <testcase time="0.028" classname="data_extract_srv" name="data_extract_srv_datasets_accepts_a_mixed_list_of_reactive_and_not_reactive_data_frames"/>
+    <testcase time="0.026" classname="data_extract_srv" name="data_extract_srv_works_with_join_keys_NULL_default_"/>
+    <testcase time="0.0110000000000001" classname="data_extract_srv" name="data_extract_srv_accepts_throws_error_when_join_keys_argument_is_not_a_join_keys_object"/>
+    <testcase time="0.0439999999999998" classname="data_extract_srv" name="data_extract_srv_returns_a_list_of_elements"/>
+    <testcase time="0.00100000000000033" classname="data_extract_srv" name="data_extract_srv_returns_a_list_of_elements"/>
+    <testcase time="0.0169999999999999" classname="data_extract_srv" name="data_extract_srv_throws_error_when_data_extract_spec_is_missing"/>
     <testcase time="0.0109999999999997" classname="data_extract_srv" name="data_extract_srv_throws_error_when_data_extract_spec_is_missing"/>
-    <testcase time="0.0170000000000003" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.0129999999999999" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.016" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.0209999999999999" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.016" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.016" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.0169999999999999" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
-    <testcase time="0.0369999999999999" classname="data_extract_srv" name="data_extract_srv_uses_the_current_session_id_when_id_is_missing"/>
-    <testcase time="0.00100000000000033" classname="data_extract_srv" name="data_extract_srv_uses_the_current_session_id_when_id_is_missing"/>
-    <testcase time="0.0519999999999996" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_selection"/>
-    <testcase time="0.04" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_selection"/>
+    <testcase time="0.0150000000000001" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0140000000000002" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0149999999999997" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0190000000000001" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0150000000000001" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0150000000000001" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0149999999999997" classname="data_extract_srv" name="data_extract_srv_throws_when_data_extract_spec_don_t_get_data_extract_spec_object"/>
+    <testcase time="0.0350000000000001" classname="data_extract_srv" name="data_extract_srv_uses_the_current_session_id_when_id_is_missing"/>
+    <testcase time="0.00199999999999978" classname="data_extract_srv" name="data_extract_srv_uses_the_current_session_id_when_id_is_missing"/>
+    <testcase time="0.0490000000000004" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_selection"/>
+    <testcase time="0.0389999999999997" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_selection"/>
     <testcase time="0.00600000000000023" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_selection"/>
-    <testcase time="0.04" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_choices"/>
+    <testcase time="0.0379999999999998" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_choices"/>
+    <testcase time="0.00700000000000012" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_choices"/>
     <testcase time="0.00599999999999978" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_choices"/>
-    <testcase time="0.00600000000000023" classname="data_extract_srv" name="data_extract_srv_returns_select_ordered_according_to_choices"/>
-    <testcase time="0.0339999999999998" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
-    <testcase time="0.00700000000000012" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
-    <testcase time="0.00300000000000011" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
+    <testcase time="0.0330000000000004" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
     <testcase time="0.00599999999999978" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
-    <testcase time="0.101" classname="data_extract_srv" name="select_validation"/>
-    <testcase time="0.0300000000000002" classname="data_extract_srv" name="select_validation"/>
-    <testcase time="0.0529999999999999" classname="data_extract_srv" name="select_validation"/>
-    <testcase time="0.0819999999999999" classname="data_extract_srv" name="validation_only_runs_on_currently_selected_dataset_s_data_extract_spec"/>
-    <testcase time="0.069" classname="data_extract_srv" name="validation_only_runs_on_currently_selected_dataset_s_data_extract_spec"/>
-    <testcase time="0.0660000000000003" classname="data_extract_srv" name="filter_validation"/>
-    <testcase time="0.004" classname="data_extract_srv" name="filter_validation"/>
+    <testcase time="0.004" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
+    <testcase time="0.00600000000000023" classname="data_extract_srv" name="data_extract_srv_with_a_list_of_multiple_data_extract_spec"/>
+    <testcase time="0.0979999999999999" classname="data_extract_srv" name="select_validation"/>
+    <testcase time="0.02" classname="data_extract_srv" name="select_validation"/>
+    <testcase time="0.04" classname="data_extract_srv" name="select_validation"/>
+    <testcase time="0.0800000000000001" classname="data_extract_srv" name="validation_only_runs_on_currently_selected_dataset_s_data_extract_spec"/>
+    <testcase time="0.0659999999999998" classname="data_extract_srv" name="validation_only_runs_on_currently_selected_dataset_s_data_extract_spec"/>
+    <testcase time="0.0649999999999999" classname="data_extract_srv" name="filter_validation"/>
+    <testcase time="0.00300000000000011" classname="data_extract_srv" name="filter_validation"/>
     <testcase time="0.0249999999999999" classname="data_extract_srv" name="filter_validation"/>
-    <testcase time="0.0649999999999999" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
-    <testcase time="0.004" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
-    <testcase time="0.024" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
-    <testcase time="0.0669999999999997" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
-    <testcase time="0.0550000000000002" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
-    <testcase time="0.004" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.0640000000000001" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
+    <testcase time="0.00300000000000011" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
+    <testcase time="0.0229999999999997" classname="data_extract_srv" name="select_validation_accepts_function_as_validator"/>
+    <testcase time="0.0649999999999999" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.0530000000000004" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.00299999999999967" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
     <testcase time="0.032" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
-    <testcase time="0.00499999999999989" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
-    <testcase time="0.073" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
-    <testcase time="0.0470000000000002" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.004" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.0710000000000002" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
+    <testcase time="0.0449999999999999" classname="data_extract_srv" name="data_extract_multiple_srv_input_validation"/>
   </testsuite>
-  <testsuite name="delayed_choices" timestamp="2025-07-03T12:12:30Z" hostname="3b4977dffdb6" tests="27" skipped="0" failures="0" errors="0" time="0.07">
+  <testsuite name="delayed_choices" timestamp="2025-07-09T19:07:37Z" hostname="394d7cffe2a7" tests="27" skipped="0" failures="0" errors="0" time="0.067">
     <testcase time="0.0129999999999999" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
-    <testcase time="0.00200000000000022" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
     <testcase time="0.00100000000000033" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
-    <testcase time="0.00699999999999967" classname="delayed_choices" name="first_choices_and_last_choices_require_n"/>
-    <testcase time="0.00500000000000034" classname="delayed_choices" name="first_choices_and_last_choices_require_n"/>
-    <testcase time="0.00299999999999967" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_run_without_error"/>
+    <testcase time="0.00700000000000012" classname="delayed_choices" name="first_choices_and_last_choices_require_n"/>
+    <testcase time="0.004" classname="delayed_choices" name="first_choices_and_last_choices_require_n"/>
+    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
     <testcase time="0.00100000000000033" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
+    <testcase time="0.00199999999999978" classname="delayed_choices" name="delayed_choices_constructors_return_functions"/>
     <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
-    <testcase time="0.00199999999999978" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
-    <testcase time="0.00100000000000033" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
     <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
-    <testcase time="0.00199999999999978" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
+    <testcase time="0.00200000000000022" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_appropriate_subsets_of_atomic_input_data"/>
     <testcase time="0.004" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
-    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
-    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
-    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
+    <testcase time="0.00200000000000022" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
     <testcase time="0.00299999999999967" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
-    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
+    <testcase time="0.00300000000000011" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
+    <testcase time="0.00200000000000022" classname="delayed_choices" name="delayed_choices_functions_return_passed_NULL"/>
+    <testcase time="0.004" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
+    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
     <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
     <testcase time="0.00200000000000022" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
-    <testcase time="0.00099999999999989" classname="delayed_choices" name="delayed_choices_functions_return_passed_empty_vector"/>
   </testsuite>
-  <testsuite name="delayed_data_extract" timestamp="2025-07-03T12:12:30Z" hostname="3b4977dffdb6" tests="5" skipped="0" failures="0" errors="0" time="0.073">
-    <testcase time="0.0370000000000004" classname="delayed_data_extract" name="Delayed_data_extract_single_data_connector_with_two_scda_dataset_connectors"/>
+  <testsuite name="delayed_data_extract" timestamp="2025-07-09T19:07:37Z" hostname="394d7cffe2a7" tests="5" skipped="0" failures="0" errors="0" time="0.07">
+    <testcase time="0.0350000000000001" classname="delayed_data_extract" name="Delayed_data_extract_single_data_connector_with_two_scda_dataset_connectors"/>
     <testcase time="0.00099999999999989" classname="delayed_data_extract" name="Delayed_data_extract_single_data_connector_with_two_scda_dataset_connectors"/>
     <testcase time="0.00700000000000012" classname="delayed_data_extract" name="Delayed_choices_selected_single_data_connector_with_two_scda_dataset_connectors"/>
-    <testcase time="0.0269999999999997" classname="delayed_data_extract" name="Delayed_data_extract_filtered"/>
-    <testcase time="0.00100000000000033" classname="delayed_data_extract" name="Delayed_data_extract_filtered"/>
+    <testcase time="0.0249999999999999" classname="delayed_data_extract" name="Delayed_data_extract_filtered"/>
+    <testcase time="0.00200000000000022" classname="delayed_data_extract" name="Delayed_data_extract_filtered"/>
   </testsuite>
-  <testsuite name="dplyr_call_examples" timestamp="2025-07-03T12:12:30Z" hostname="3b4977dffdb6" tests="129" skipped="0" failures="0" errors="0" time="1.978">
-    <testcase time="0.0279999999999996" classname="dplyr_call_examples" name="Different_join_types"/>
-    <testcase time="0.0100000000000002" classname="dplyr_call_examples" name="Different_join_types"/>
-    <testcase time="0.0139999999999998" classname="dplyr_call_examples" name="Different_join_types"/>
-    <testcase time="0.00600000000000023" classname="dplyr_call_examples" name="Different_join_types"/>
+  <testsuite name="dplyr_call_examples" timestamp="2025-07-09T19:07:37Z" hostname="394d7cffe2a7" tests="129" skipped="0" failures="0" errors="0" time="1.879">
+    <testcase time="0.0269999999999997" classname="dplyr_call_examples" name="Different_join_types"/>
+    <testcase time="0.0089999999999999" classname="dplyr_call_examples" name="Different_join_types"/>
+    <testcase time="0.0140000000000002" classname="dplyr_call_examples" name="Different_join_types"/>
     <testcase time="0.00499999999999989" classname="dplyr_call_examples" name="Different_join_types"/>
-    <testcase time="0.00600000000000023" classname="dplyr_call_examples" name="Single_wide_dataset"/>
-    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_wide_dataset"/>
+    <testcase time="0.004" classname="dplyr_call_examples" name="Different_join_types"/>
+    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_wide_dataset"/>
+    <testcase time="0.00099999999999989" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.004" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.00099999999999989" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.004" classname="dplyr_call_examples" name="Single_wide_dataset"/>
@@ -279,470 +279,470 @@
     <testcase time="0.00099999999999989" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.004" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_wide_dataset"/>
+    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Single_wide_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_wide_dataset"/>
     <testcase time="0.004" classname="dplyr_call_examples" name="Single_wide_dataset"/>
-    <testcase time="0.00100000000000033" classname="dplyr_call_examples" name="Single_wide_dataset"/>
-    <testcase time="0.004" classname="dplyr_call_examples" name="Single_wide_dataset"/>
-    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_wide_dataset"/>
-    <testcase time="0.0260000000000002" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.00999999999999979" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.00099999999999989" classname="dplyr_call_examples" name="Single_wide_dataset"/>
+    <testcase time="0.0259999999999998" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
     <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.069" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.0219999999999998" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.069" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0089999999999999" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0680000000000001" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0220000000000002" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0679999999999996" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
     <testcase time="0.0250000000000004" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.0699999999999998" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.0230000000000001" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
-    <testcase time="0.00599999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.004" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.069" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.0209999999999999" classname="dplyr_call_examples" name="Multiple_wide_dataset"/>
+    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.004" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00499999999999989" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00099999999999989" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0180000000000002" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00599999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0140000000000002" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00599999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0389999999999997" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00700000000000056" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0339999999999998" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0119999999999996" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00600000000000023" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00100000000000033" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00500000000000034" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.004" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.016" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00699999999999967" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0130000000000003" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00599999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00600000000000023" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00599999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.036" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.032" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.012" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00499999999999989" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00500000000000034" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.004" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00299999999999967" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00500000000000034" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00499999999999989" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00699999999999967" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00600000000000023" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.000999999999999446" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.0149999999999997" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00699999999999967" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0150000000000006" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000022" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00700000000000012" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0149999999999997" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00700000000000056" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00800000000000001" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0199999999999996" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00800000000000001" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0389999999999997" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0380000000000003" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0460000000000003" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0440000000000005" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0150000000000006" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00499999999999989" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00100000000000033" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0399999999999991" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0130000000000008" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0450000000000008" classname="dplyr_call_examples" name="Single_long_dataset"/>
-    <testcase time="0.0199999999999996" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0380000000000003" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0119999999999996" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00399999999999956" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.0369999999999999" classname="dplyr_call_examples" name="Single_long_dataset"/>
+    <testcase time="0.016" classname="dplyr_call_examples" name="Single_long_dataset"/>
     <testcase time="0.0190000000000001" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0170000000000003" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00800000000000001" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.016" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00800000000000001" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.0169999999999995" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0200000000000005" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0169999999999995" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0120000000000005" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0149999999999997" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0200000000000005" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0110000000000001" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.069" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.016" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0219999999999994" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.147" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0129999999999999" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0199999999999996" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00200000000000067" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.069" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0230000000000006" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.146" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0350000000000001" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0759999999999996" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0339999999999998" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0750000000000002" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.0300000000000002" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
     <testcase time="0.0179999999999998" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
-    <testcase time="0.0220000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.00199999999999978" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_datasets"/>
+    <testcase time="0.0219999999999994" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
     <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.00999999999999979" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0300000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0169999999999995" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0590000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
     <testcase time="0.024" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0510000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0250000000000004" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.00300000000000011" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.00899999999999945" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.0499999999999998" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.0220000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.0499999999999998" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.0220000000000002" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
     <testcase time="0.0190000000000001" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.00999999999999979" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
-    <testcase time="0.0489999999999995" classname="dplyr_call_examples" name="Universal_example"/>
+    <testcase time="0.00900000000000034" classname="dplyr_call_examples" name="Multiple_long_combined_concatenated_filters"/>
+    <testcase time="0.0459999999999994" classname="dplyr_call_examples" name="Universal_example"/>
   </testsuite>
-  <testsuite name="filter_spec" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="85" skipped="0" failures="0" errors="0" time="0.423">
-    <testcase time="0.0180000000000007" classname="filter_spec" name="Proper_argument_types"/>
+  <testsuite name="filter_spec" timestamp="2025-07-09T19:07:39Z" hostname="394d7cffe2a7" tests="85" skipped="0" failures="0" errors="0" time="0.404">
+    <testcase time="0.0170000000000003" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
-    <testcase time="0.00599999999999934" classname="filter_spec" name="Proper_argument_types"/>
+    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
+    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
+    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00500000000000078" classname="filter_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00399999999999956" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
+    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
     <testcase time="0.00500000000000078" classname="filter_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="Single_choice"/>
+    <testcase time="0.00399999999999956" classname="filter_spec" name="Single_choice"/>
     <testcase time="0.00100000000000033" classname="filter_spec" name="Single_choice"/>
-    <testcase time="0.000999999999999446" classname="filter_spec" name="Single_choice"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="Single_choice"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="Single_choice"/>
     <testcase time="0.00200000000000067" classname="filter_spec" name="Single_choice"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="Single_choice"/>
     <testcase time="0.0110000000000001" classname="filter_spec" name="Multiple_choices"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_choices"/>
-    <testcase time="0.00299999999999923" classname="filter_spec" name="Multiple_choices"/>
-    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_choices"/>
+    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_choices"/>
+    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_choices"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_choices"/>
     <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_choices"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_choices"/>
-    <testcase time="0.00699999999999967" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_choices"/>
+    <testcase time="0.00700000000000056" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00200000000000067" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00200000000000067" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
     <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="Dropping_keys_attribute"/>
-    <testcase time="0.00300000000000011" classname="filter_spec" name="Dropping_keys_attribute"/>
+    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00199999999999978" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00300000000000011" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="Multiple_vars"/>
+    <testcase time="0.00500000000000078" classname="filter_spec" name="Dropping_keys_attribute"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="Dropping_keys_attribute"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="Dropping_keys_attribute"/>
-    <testcase time="0.00899999999999945" classname="filter_spec" name="delayed_filter_spec"/>
-    <testcase time="0.0170000000000003" classname="filter_spec" name="delayed_filter_spec"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="filter_spec_with_choices_selected_where_all_selected_in_choices_does_not_throw_an_error"/>
+    <testcase time="0.00300000000000011" classname="filter_spec" name="Dropping_keys_attribute"/>
+    <testcase time="0.00800000000000001" classname="filter_spec" name="delayed_filter_spec"/>
+    <testcase time="0.016" classname="filter_spec" name="delayed_filter_spec"/>
+    <testcase time="0.00399999999999956" classname="filter_spec" name="filter_spec_with_choices_selected_where_all_selected_in_choices_does_not_throw_an_error"/>
     <testcase time="0.00499999999999989" classname="filter_spec" name="filter_spec_internal"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="filter_spec_internal"/>
     <testcase time="0.00200000000000067" classname="filter_spec" name="filter_spec_internal"/>
     <testcase time="0.00599999999999934" classname="filter_spec" name="filter_spec_internal_contains_dataname"/>
-    <testcase time="0.00200000000000067" classname="filter_spec" name="filter_spec_internal_contains_dataname"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="filter_spec_internal_contains_dataname"/>
+    <testcase time="0.00499999999999989" classname="filter_spec" name="delayed_filter_spec_works"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="delayed_filter_spec_works"/>
     <testcase time="0.00399999999999956" classname="filter_spec" name="delayed_filter_spec_works"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_filter_spec_works"/>
     <testcase time="0.00400000000000045" classname="filter_spec" name="delayed_filter_spec_works"/>
-    <testcase time="0.00399999999999956" classname="filter_spec" name="delayed_filter_spec_works"/>
-    <testcase time="0.00600000000000023" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.0300000000000002" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.00599999999999934" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.0280000000000005" classname="filter_spec" name="delayed_version_of_filter_spec"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.00399999999999956" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.0209999999999999" classname="filter_spec" name="delayed_version_of_filter_spec"/>
+    <testcase time="0.00100000000000033" classname="filter_spec" name="delayed_version_of_filter_spec"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.00400000000000045" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.0220000000000002" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
+    <testcase time="0.00600000000000023" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
+    <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
     <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
-    <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_choices_passed_to_selected_select_desired_choices"/>
-    <testcase time="0.0119999999999996" classname="filter_spec" name="delayed_filter_spec_resolve_delayed"/>
     <testcase time="0.0110000000000001" classname="filter_spec" name="delayed_filter_spec_resolve_delayed"/>
-    <testcase time="0.00499999999999989" classname="filter_spec" name="filter_spec_with_choices_selected_where_all_selected_in_choices_does_not_throw_an_error_resolve_delayed"/>
+    <testcase time="0.0110000000000001" classname="filter_spec" name="delayed_filter_spec_resolve_delayed"/>
+    <testcase time="0.00399999999999956" classname="filter_spec" name="filter_spec_with_choices_selected_where_all_selected_in_choices_does_not_throw_an_error_resolve_delayed"/>
     <testcase time="0.00699999999999967" classname="filter_spec" name="delayed_filter_spec_works_resolve_delayed"/>
-    <testcase time="0.00500000000000078" classname="filter_spec" name="delayed_filter_spec_works_resolve_delayed"/>
-    <testcase time="0.0109999999999992" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
-    <testcase time="0.0310000000000006" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
+    <testcase time="0.00600000000000023" classname="filter_spec" name="delayed_filter_spec_works_resolve_delayed"/>
+    <testcase time="0.00999999999999979" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
+    <testcase time="0.0290000000000008" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
     <testcase time="0.000999999999999446" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
-    <testcase time="0.00200000000000067" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
-    <testcase time="0.00399999999999956" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
     <testcase time="0.0170000000000003" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
-    <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
+    <testcase time="0.000999999999999446" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
     <testcase time="0.00199999999999978" classname="filter_spec" name="delayed_version_of_filter_spec_resolve_delayed"/>
   </testsuite>
-  <testsuite name="format_data_extract" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="4" skipped="0" failures="0" errors="0" time="0.049">
+  <testsuite name="format_data_extract" timestamp="2025-07-09T19:07:39Z" hostname="394d7cffe2a7" tests="4" skipped="0" failures="0" errors="0" time="0.048">
     <testcase time="0.00600000000000023" classname="format_data_extract" name="format_data_extract_is_a_function_that_accepts_a_list"/>
-    <testcase time="0.00699999999999967" classname="format_data_extract" name="format_data_extract_asserts_its_argument_has_required_names"/>
-    <testcase time="0.00300000000000011" classname="format_data_extract" name="format_data_extract_returns_a_string_representation_of_the_extracted_data"/>
-    <testcase time="0.0330000000000004" classname="format_data_extract" name="format_data_extract_integrates_with_data_extract_srv"/>
+    <testcase time="0.00700000000000056" classname="format_data_extract" name="format_data_extract_asserts_its_argument_has_required_names"/>
+    <testcase time="0.00299999999999923" classname="format_data_extract" name="format_data_extract_returns_a_string_representation_of_the_extracted_data"/>
+    <testcase time="0.032" classname="format_data_extract" name="format_data_extract_integrates_with_data_extract_srv"/>
   </testsuite>
-  <testsuite name="get_dplyr_call" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="23" skipped="0" failures="0" errors="0" time="0.139">
-    <testcase time="0.00699999999999967" classname="get_dplyr_call" name="get_select_call"/>
-    <testcase time="0.00199999999999978" classname="get_dplyr_call" name="get_select_call"/>
+  <testsuite name="get_dplyr_call" timestamp="2025-07-09T19:07:39Z" hostname="394d7cffe2a7" tests="23" skipped="0" failures="0" errors="0" time="0.137">
+    <testcase time="0.00800000000000001" classname="get_dplyr_call" name="get_select_call"/>
     <testcase time="0.00100000000000033" classname="get_dplyr_call" name="get_select_call"/>
-    <testcase time="0.00400000000000045" classname="get_dplyr_call" name="get_filter_call"/>
+    <testcase time="0.00100000000000033" classname="get_dplyr_call" name="get_select_call"/>
+    <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_filter_call"/>
     <testcase time="0.00199999999999978" classname="get_dplyr_call" name="get_filter_call"/>
+    <testcase time="0.00200000000000067" classname="get_dplyr_call" name="get_filter_call"/>
     <testcase time="0.00199999999999978" classname="get_dplyr_call" name="get_filter_call"/>
-    <testcase time="0.00100000000000033" classname="get_dplyr_call" name="get_filter_call"/>
-    <testcase time="0.016" classname="get_dplyr_call" name="get_rename_call"/>
+    <testcase time="0.0149999999999997" classname="get_dplyr_call" name="get_rename_call"/>
     <testcase time="0.0129999999999999" classname="get_dplyr_call" name="get_rename_call"/>
-    <testcase time="0.0129999999999999" classname="get_dplyr_call" name="get_rename_call"/>
+    <testcase time="0.0120000000000005" classname="get_dplyr_call" name="get_rename_call"/>
     <testcase time="0.0190000000000001" classname="get_dplyr_call" name="get_rename_call"/>
-    <testcase time="0.00600000000000023" classname="get_dplyr_call" name="get_reshape_call"/>
-    <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_reshape_call"/>
+    <testcase time="0.00599999999999934" classname="get_dplyr_call" name="get_reshape_call"/>
+    <testcase time="0.00300000000000011" classname="get_dplyr_call" name="get_reshape_call"/>
     <testcase time="0.00600000000000023" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
-    <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
     <testcase time="0.00400000000000045" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
     <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
     <testcase time="0.00400000000000045" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
     <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
     <testcase time="0.00400000000000045" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
-    <testcase time="0.00999999999999979" classname="get_dplyr_call" name="get_dplyr_call_multiple_filter_s_or_multiple_select_s_"/>
+    <testcase time="0.00399999999999956" classname="get_dplyr_call" name="get_dplyr_call_single_filter_and_single_select"/>
+    <testcase time="0.00900000000000034" classname="get_dplyr_call" name="get_dplyr_call_multiple_filter_s_or_multiple_select_s_"/>
     <testcase time="0.00499999999999989" classname="get_dplyr_call" name="get_dplyr_call_multiple_filter_s_or_multiple_select_s_"/>
-    <testcase time="0.00400000000000045" classname="get_dplyr_call" name="get_dplyr_call_multiple_filter_s_or_multiple_select_s_"/>
+    <testcase time="0.00499999999999989" classname="get_dplyr_call" name="get_dplyr_call_multiple_filter_s_or_multiple_select_s_"/>
   </testsuite>
-  <testsuite name="get_filter_call-datasets" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="17" skipped="0" failures="0" errors="0" time="0.097">
-    <testcase time="0.0109999999999992" classname="get_filter_call_datasets" name="get_filter_call_throws_error_if_dataset_is_not_a_named_list_of_reactives"/>
-    <testcase time="0.00500000000000078" classname="get_filter_call_datasets" name="get_filter_call_data_NAs_and_one_column_one_selection"/>
+  <testsuite name="get_filter_call-datasets" timestamp="2025-07-09T19:07:39Z" hostname="394d7cffe2a7" tests="17" skipped="0" failures="0" errors="0" time="0.097">
+    <testcase time="0.0110000000000001" classname="get_filter_call_datasets" name="get_filter_call_throws_error_if_dataset_is_not_a_named_list_of_reactives"/>
+    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_NAs_and_one_column_one_selection"/>
     <testcase time="0.00399999999999956" classname="get_filter_call_datasets" name="get_filter_call_data_NAs_and_one_column_two_selections"/>
     <testcase time="0.0110000000000001" classname="get_filter_call_datasets" name="get_filter_call_data_NAs_and_two_columns"/>
-    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_some_of_factor_levels_and_integer"/>
+    <testcase time="0.00600000000000023" classname="get_filter_call_datasets" name="get_filter_call_data_some_of_factor_levels_and_integer"/>
     <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_trunc_POSIX_and_single_column"/>
     <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_trunc_POSIX_and_two_columns"/>
     <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_SEX_and_two_columns_SEX_variable_is_still_there"/>
-    <testcase time="0.00500000000000078" classname="get_filter_call_datasets" name="get_filter_call_data_three_columns"/>
-    <testcase time="0.00399999999999956" classname="get_filter_call_datasets" name="get_filter_call_data_non_empty_filter_as_NA_is_not_selected_and_there_are_missings"/>
-    <testcase time="0.00400000000000045" classname="get_filter_call_datasets" name="get_filter_call_FALSE_if_empty_selection_for_single"/>
-    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_all_factor_levels_and_integer"/>
+    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_three_columns"/>
+    <testcase time="0.00400000000000045" classname="get_filter_call_datasets" name="get_filter_call_data_non_empty_filter_as_NA_is_not_selected_and_there_are_missings"/>
+    <testcase time="0.00399999999999956" classname="get_filter_call_datasets" name="get_filter_call_FALSE_if_empty_selection_for_single"/>
+    <testcase time="0.00500000000000078" classname="get_filter_call_datasets" name="get_filter_call_data_all_factor_levels_and_integer"/>
     <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_data_empty_filter_as_all_levels_and_NA_for_DCSREAS_are_selected"/>
-    <testcase time="0.00600000000000023" classname="get_filter_call_datasets" name="get_filter_call_data_empty_as_all_levels_for_SEX_are_selected_no_missings"/>
-    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_skip_if_all_selected_for_single_variable"/>
+    <testcase time="0.00599999999999934" classname="get_filter_call_datasets" name="get_filter_call_data_empty_as_all_levels_for_SEX_are_selected_no_missings"/>
+    <testcase time="0.00500000000000078" classname="get_filter_call_datasets" name="get_filter_call_skip_if_all_selected_for_single_variable"/>
     <testcase time="0.00599999999999934" classname="get_filter_call_datasets" name="get_filter_call_skip_if_all_selected_for_multiple_variables"/>
-    <testcase time="0.00600000000000023" classname="get_filter_call_datasets" name="get_filter_call_skip_if_all_selected_for_multiple_variables_3_vars"/>
+    <testcase time="0.00499999999999989" classname="get_filter_call_datasets" name="get_filter_call_skip_if_all_selected_for_multiple_variables_3_vars"/>
   </testsuite>
-  <testsuite name="input_checks" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="5" skipped="0" failures="0" errors="0" time="0.024">
-    <testcase time="0.00999999999999979" classname="input_checks" name="check_no_multiple_selection_works"/>
+  <testsuite name="input_checks" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="5" skipped="0" failures="0" errors="0" time="0.025">
+    <testcase time="0.0110000000000001" classname="input_checks" name="check_no_multiple_selection_works"/>
     <testcase time="0.00400000000000045" classname="input_checks" name="check_no_multiple_selection_works"/>
-    <testcase time="0.00299999999999923" classname="input_checks" name="check_no_multiple_selection_works"/>
-    <testcase time="0.00400000000000045" classname="input_checks" name="list_extract_spec_works"/>
+    <testcase time="0.00300000000000011" classname="input_checks" name="check_no_multiple_selection_works"/>
+    <testcase time="0.00399999999999956" classname="input_checks" name="list_extract_spec_works"/>
     <testcase time="0.00300000000000011" classname="input_checks" name="list_extract_spec_works"/>
   </testsuite>
-  <testsuite name="merge_expression_module" timestamp="2025-07-03T12:12:32Z" hostname="3b4977dffdb6" tests="7" skipped="0" failures="0" errors="0" time="0.12">
-    <testcase time="0.0229999999999997" classname="merge_expression_module" name="merge_expression_module_accepts_a_list_of_data_extract_spec_a_list_of_reactive_data_frames_and_a_join_keys"/>
+  <testsuite name="merge_expression_module" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="7" skipped="0" failures="0" errors="0" time="0.117">
+    <testcase time="0.024" classname="merge_expression_module" name="merge_expression_module_accepts_a_list_of_data_extract_spec_a_list_of_reactive_data_frames_and_a_join_keys"/>
     <testcase time="0.00800000000000001" classname="merge_expression_module" name="merge_expression_module_returns_a_reactive_containing_a_list"/>
-    <testcase time="0.0490000000000004" classname="merge_expression_module" name="merge_expression_module_returns_a_reactive_containing_a_list"/>
-    <testcase time="0.00199999999999978" classname="merge_expression_module" name="merge_expression_module_returns_a_reactive_containing_a_list"/>
-    <testcase time="0.00999999999999979" classname="merge_expression_module" name="merge_expression_module_works_if_list_some_elements_of_the_list_are_NULL"/>
+    <testcase time="0.0469999999999997" classname="merge_expression_module" name="merge_expression_module_returns_a_reactive_containing_a_list"/>
+    <testcase time="0.00200000000000067" classname="merge_expression_module" name="merge_expression_module_returns_a_reactive_containing_a_list"/>
+    <testcase time="0.00900000000000034" classname="merge_expression_module" name="merge_expression_module_works_if_list_some_elements_of_the_list_are_NULL"/>
     <testcase time="0.0110000000000001" classname="merge_expression_module" name="merge_expression_module_throws_error_if_data_extract_is_not_a_list_of_data_extract_spec"/>
-    <testcase time="0.0170000000000003" classname="merge_expression_module" name="merge_expression_module_throws_error_if_data_extract_is_not_a_named_list"/>
+    <testcase time="0.016" classname="merge_expression_module" name="merge_expression_module_throws_error_if_data_extract_is_not_a_named_list"/>
   </testsuite>
-  <testsuite name="merge_expression_srv" timestamp="2025-07-03T12:12:33Z" hostname="3b4977dffdb6" tests="24" skipped="0" failures="0" errors="0" time="0.323">
+  <testsuite name="merge_expression_srv" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="24" skipped="0" failures="0" errors="0" time="0.309">
     <testcase time="0.0179999999999998" classname="merge_expression_srv" name="merge_expression_srv_returns_a_reactive_containing_a_list"/>
     <testcase time="0.00600000000000023" classname="merge_expression_srv" name="merge_expression_srv_returns_a_reactive_containing_a_list"/>
-    <testcase time="0.000999999999999446" classname="merge_expression_srv" name="merge_expression_srv_returns_a_reactive_containing_a_list"/>
-    <testcase time="0.016" classname="merge_expression_srv" name="merge_expression_srv_throws_error_with_missing_selector_list_and_datasets_arguments"/>
-    <testcase time="0.0129999999999999" classname="merge_expression_srv" name="merge_expression_srv_throws_error_with_missing_selector_list_and_datasets_arguments"/>
-    <testcase time="0.00800000000000001" classname="merge_expression_srv" name="merge_expression_srv_default_merge_function_is_dplyr_full_join"/>
-    <testcase time="0.00900000000000034" classname="merge_expression_srv" name="merge_expression_srv_default_anl_name_is_ANL"/>
-    <testcase time="0.0129999999999999" classname="merge_expression_srv" name="merge_expression_srv_default_anl_name_is_ANL"/>
-    <testcase time="0.0219999999999994" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
+    <testcase time="0.00199999999999978" classname="merge_expression_srv" name="merge_expression_srv_returns_a_reactive_containing_a_list"/>
+    <testcase time="0.0149999999999997" classname="merge_expression_srv" name="merge_expression_srv_throws_error_with_missing_selector_list_and_datasets_arguments"/>
+    <testcase time="0.0120000000000005" classname="merge_expression_srv" name="merge_expression_srv_throws_error_with_missing_selector_list_and_datasets_arguments"/>
+    <testcase time="0.00899999999999945" classname="merge_expression_srv" name="merge_expression_srv_default_merge_function_is_dplyr_full_join"/>
+    <testcase time="0.00800000000000001" classname="merge_expression_srv" name="merge_expression_srv_default_anl_name_is_ANL"/>
+    <testcase time="0.00800000000000001" classname="merge_expression_srv" name="merge_expression_srv_default_anl_name_is_ANL"/>
+    <testcase time="0.0260000000000007" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
+    <testcase time="0.0149999999999997" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
     <testcase time="0.016" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
-    <testcase time="0.0170000000000003" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
-    <testcase time="0.016" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
-    <testcase time="0.0229999999999997" classname="merge_expression_srv" name="merge_expression_srv_throws_error_selector_list_is_not_a_list_or_a_reactive"/>
+    <testcase time="0.0149999999999997" classname="merge_expression_srv" name="merge_expression_srv_throws_error_when_anl_name_is_not_character_or_using_non_allowed_names"/>
+    <testcase time="0.0209999999999999" classname="merge_expression_srv" name="merge_expression_srv_throws_error_selector_list_is_not_a_list_or_a_reactive"/>
     <testcase time="0.0190000000000001" classname="merge_expression_srv" name="merge_expression_srv_throws_error_selector_list_is_not_a_list_or_a_reactive"/>
-    <testcase time="0.0200000000000005" classname="merge_expression_srv" name="merge_expression_srv_throws_error_if_selector_list_is_not_named_list"/>
-    <testcase time="0.0139999999999993" classname="merge_expression_srv" name="merge_expression_srv_accepts_reactive_and_character_merge_function"/>
-    <testcase time="0.0110000000000001" classname="merge_expression_srv" name="merge_expression_srv_accepts_reactive_and_character_merge_function"/>
+    <testcase time="0.0179999999999998" classname="merge_expression_srv" name="merge_expression_srv_throws_error_if_selector_list_is_not_named_list"/>
+    <testcase time="0.0130000000000008" classname="merge_expression_srv" name="merge_expression_srv_accepts_reactive_and_character_merge_function"/>
+    <testcase time="0.00999999999999979" classname="merge_expression_srv" name="merge_expression_srv_accepts_reactive_and_character_merge_function"/>
     <testcase time="0.032" classname="merge_expression_srv" name="merge_expression_srv_returns_merge_expression_when_passing_2_extracts_in_selector_list"/>
-    <testcase time="0.00300000000000011" classname="merge_expression_srv" name="merge_expression_srv_returns_merge_expression_when_passing_2_extracts_in_selector_list"/>
-    <testcase time="0.00199999999999978" classname="merge_expression_srv" name="merge_expression_srv_returns_merge_expression_when_passing_2_extracts_in_selector_list"/>
+    <testcase time="0.00399999999999956" classname="merge_expression_srv" name="merge_expression_srv_returns_merge_expression_when_passing_2_extracts_in_selector_list"/>
+    <testcase time="0.00100000000000033" classname="merge_expression_srv" name="merge_expression_srv_returns_merge_expression_when_passing_2_extracts_in_selector_list"/>
     <testcase time="0.00800000000000001" classname="merge_expression_srv" name="merge_expression_srv_throws_error_if_datasets_is_not_a_named_list"/>
-    <testcase time="0.0190000000000001" classname="merge_expression_srv" name="merge_expression_srv_throws_error_if_join_keys_is_not_a_join_keys_object"/>
-    <testcase time="0.00999999999999979" classname="merge_expression_srv" name="merge_expression_srv_accepts_a_list_of_reactive_data.frames_for_datasets_argument"/>
-    <testcase time="0.00700000000000056" classname="merge_expression_srv" name="merge_expression_srv_accepts_a_list_of_reactive_data.frames_for_datasets_argument"/>
+    <testcase time="0.0179999999999998" classname="merge_expression_srv" name="merge_expression_srv_throws_error_if_join_keys_is_not_a_join_keys_object"/>
+    <testcase time="0.00900000000000034" classname="merge_expression_srv" name="merge_expression_srv_accepts_a_list_of_reactive_data.frames_for_datasets_argument"/>
+    <testcase time="0.00599999999999934" classname="merge_expression_srv" name="merge_expression_srv_accepts_a_list_of_reactive_data.frames_for_datasets_argument"/>
   </testsuite>
-  <testsuite name="merge_utils" timestamp="2025-07-03T12:12:33Z" hostname="3b4977dffdb6" tests="36" skipped="0" failures="0" errors="0" time="0.171">
-    <testcase time="0.00899999999999945" classname="merge_utils" name="merge_selectors_makes_no_changes_when_single_selector_is_provided"/>
+  <testsuite name="merge_utils" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="36" skipped="0" failures="0" errors="0" time="0.161">
+    <testcase time="0.00800000000000001" classname="merge_utils" name="merge_selectors_makes_no_changes_when_single_selector_is_provided"/>
     <testcase time="0.00400000000000045" classname="merge_utils" name="merge_selectors_combines_two_selectors_into_one_if_dataname_filters_keys_reshape_are_identical"/>
     <testcase time="0.00399999999999956" classname="merge_utils" name="merge_selectors_combines_two_selectorsdespite_duplicated_internal_id"/>
     <testcase time="0.00400000000000045" classname="merge_utils" name="Two_pairs_of_selectors_combined_into_two_selectors"/>
     <testcase time="0.00399999999999956" classname="merge_utils" name="merge_does_not_merge_when_reshape_differs"/>
     <testcase time="0.00400000000000045" classname="merge_utils" name="merge_does_not_merge_when_filters_differs"/>
     <testcase time="0.00399999999999956" classname="merge_utils" name="get_merge_key_pair_works"/>
-    <testcase time="0.00600000000000023" classname="merge_utils" name="get_merge_key_pair_works"/>
+    <testcase time="0.00500000000000078" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
-    <testcase time="0.00300000000000011" classname="merge_utils" name="get_merge_key_pair_works"/>
-    <testcase time="0.00200000000000067" classname="merge_utils" name="get_merge_key_pair_works"/>
+    <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00200000000000067" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.000999999999999446" classname="merge_utils" name="get_merge_key_pair_works"/>
-    <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00200000000000067" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
     <testcase time="0.00100000000000033" classname="merge_utils" name="get_merge_key_pair_works"/>
-    <testcase time="0.00399999999999956" classname="merge_utils" name="get_merge_call"/>
-    <testcase time="0.00800000000000001" classname="merge_utils" name="get_merge_call"/>
-    <testcase time="0.00700000000000056" classname="merge_utils" name="get_merge_call"/>
+    <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
+    <testcase time="0.00199999999999978" classname="merge_utils" name="get_merge_key_pair_works"/>
+    <testcase time="0.00400000000000045" classname="merge_utils" name="get_merge_call"/>
+    <testcase time="0.00699999999999967" classname="merge_utils" name="get_merge_call"/>
+    <testcase time="0.00600000000000023" classname="merge_utils" name="get_merge_call"/>
     <testcase time="0.0229999999999997" classname="merge_utils" name="get_merge_call"/>
-    <testcase time="0.00499999999999989" classname="merge_utils" name="get_relabel_call"/>
-    <testcase time="0.00100000000000033" classname="merge_utils" name="get_relabel_call"/>
+    <testcase time="0.00400000000000045" classname="merge_utils" name="get_relabel_call"/>
+    <testcase time="0.000999999999999446" classname="merge_utils" name="get_relabel_call"/>
     <testcase time="0.00100000000000033" classname="merge_utils" name="get_relabel_call"/>
     <testcase time="0.00499999999999989" classname="merge_utils" name="are_all_keys_provided_returns_TRUE_if_merged_selector_list_has_a_single_element"/>
-    <testcase time="0.0110000000000001" classname="merge_utils" name="are_all_keys_provided_returns_FALSE_if_slices_come_from_the_same_dataset_and_the_dataset_has_no_join_keys"/>
+    <testcase time="0.00900000000000034" classname="merge_utils" name="are_all_keys_provided_returns_FALSE_if_slices_come_from_the_same_dataset_and_the_dataset_has_no_join_keys"/>
     <testcase time="0.00800000000000001" classname="merge_utils" name="are_all_keys_provided_returns_TRUE_if_two_slices_come_from_the_same_dataset_and_the_dataset_has_the_join_keys"/>
     <testcase time="0.00499999999999989" classname="merge_utils" name="are_all_keys_provided_returns_TRUE_if_no_slices_are_passed"/>
-    <testcase time="0.0140000000000002" classname="merge_utils" name="are_all_keys_provided_returns_TRUE_if_three_slices_from_different_datasets_are_provided_and_have_the_join_keys"/>
+    <testcase time="0.0129999999999999" classname="merge_utils" name="are_all_keys_provided_returns_TRUE_if_three_slices_from_different_datasets_are_provided_and_have_the_join_keys"/>
     <testcase time="0.00499999999999989" classname="merge_utils" name="validate_keys_sufficient_returns_TRUE_for_empty_inputs"/>
-    <testcase time="0.00800000000000001" classname="merge_utils" name="validate_keys_sufficient_raises_an_error_for_two_slices_with_no_join_keys"/>
+    <testcase time="0.00700000000000056" classname="merge_utils" name="validate_keys_sufficient_raises_an_error_for_two_slices_with_no_join_keys"/>
   </testsuite>
-  <testsuite name="resolve" timestamp="2025-07-03T12:12:33Z" hostname="3b4977dffdb6" tests="16" skipped="0" failures="0" errors="0" time="0.189">
-    <testcase time="0.0520000000000005" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
+  <testsuite name="resolve" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="16" skipped="0" failures="0" errors="0" time="0.176">
+    <testcase time="0.0489999999999995" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.00400000000000045" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00399999999999956" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00500000000000078" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00499999999999989" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.000999999999999446" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00200000000000067" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.0499999999999998" classname="resolve" name="resolve.list_works_correctly"/>
-    <testcase time="0.0110000000000001" classname="resolve" name="resolve_throws_error_with_non_reactive_data.frames_or_unnamed_list_as_input_to_datasets"/>
+    <testcase time="0.00199999999999978" classname="resolve" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.0450000000000008" classname="resolve" name="resolve.list_works_correctly"/>
+    <testcase time="0.00999999999999979" classname="resolve" name="resolve_throws_error_with_non_reactive_data.frames_or_unnamed_list_as_input_to_datasets"/>
     <testcase time="0.00800000000000001" classname="resolve" name="resolve_throws_error_with_non_reactive_data.frames_or_unnamed_list_as_input_to_datasets"/>
-    <testcase time="0.0110000000000001" classname="resolve" name="resolve_throws_error_with_unnamed_list_or_wrong_names_as_input_to_keys"/>
+    <testcase time="0.00999999999999979" classname="resolve" name="resolve_throws_error_with_unnamed_list_or_wrong_names_as_input_to_keys"/>
     <testcase time="0.00699999999999967" classname="resolve" name="resolve_throws_error_with_unnamed_list_or_wrong_names_as_input_to_keys"/>
-    <testcase time="0.0110000000000001" classname="resolve" name="resolve_throws_error_with_missing_arguments"/>
-    <testcase time="0.00700000000000056" classname="resolve" name="resolve_throws_error_with_missing_arguments"/>
+    <testcase time="0.00999999999999979" classname="resolve" name="resolve_throws_error_with_missing_arguments"/>
+    <testcase time="0.00600000000000023" classname="resolve" name="resolve_throws_error_with_missing_arguments"/>
   </testsuite>
-  <testsuite name="resolve_delayed" timestamp="2025-07-03T12:12:33Z" hostname="3b4977dffdb6" tests="14" skipped="0" failures="0" errors="0" time="0.316">
-    <testcase time="0.0190000000000001" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
+  <testsuite name="resolve_delayed" timestamp="2025-07-09T19:07:40Z" hostname="394d7cffe2a7" tests="14" skipped="0" failures="0" errors="0" time="0.307">
+    <testcase time="0.0179999999999998" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
     <testcase time="0.00400000000000045" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00199999999999978" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.00100000000000033" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
-    <testcase time="0.0810000000000004" classname="resolve_delayed" name="resolve_delayed.FilteredData_works_correctly"/>
-    <testcase time="0.0869999999999997" classname="resolve_delayed" name="resolve_delayed.list_works_correctly_with_reactive_objects"/>
-    <testcase time="0.0869999999999997" classname="resolve_delayed" name="resolve_delayed.list_works_correctly_with_non_reactive_objects"/>
+    <testcase time="0.00499999999999989" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.00399999999999956" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.00200000000000067" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.000999999999999446" classname="resolve_delayed" name="resolve_delayed_expr_works_correctly"/>
+    <testcase time="0.0819999999999999" classname="resolve_delayed" name="resolve_delayed.FilteredData_works_correctly"/>
+    <testcase time="0.0800000000000001" classname="resolve_delayed" name="resolve_delayed.list_works_correctly_with_reactive_objects"/>
+    <testcase time="0.0870000000000006" classname="resolve_delayed" name="resolve_delayed.list_works_correctly_with_non_reactive_objects"/>
     <testcase time="0.00800000000000001" classname="resolve_delayed" name="resolving_delayed_choices_removes_selected_not_in_choices_and_give_a_log_output"/>
-    <testcase time="0.00200000000000067" classname="resolve_delayed" name="resolving_delayed_choices_removes_selected_not_in_choices_and_give_a_log_output"/>
+    <testcase time="0.000999999999999446" classname="resolve_delayed" name="resolving_delayed_choices_removes_selected_not_in_choices_and_give_a_log_output"/>
   </testsuite>
-  <testsuite name="select_spec" timestamp="2025-07-03T12:12:34Z" hostname="3b4977dffdb6" tests="63" skipped="0" failures="0" errors="0" time="0.216">
-    <testcase time="0.00800000000000001" classname="select_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="select_spec" name="Proper_argument_types"/>
+  <testsuite name="select_spec" timestamp="2025-07-09T19:07:41Z" hostname="394d7cffe2a7" tests="63" skipped="0" failures="0" errors="0" time="0.213">
+    <testcase time="0.00999999999999979" classname="select_spec" name="Proper_argument_types"/>
+    <testcase time="0.00500000000000078" classname="select_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="select_spec" name="Proper_argument_types"/>
     <testcase time="0.00399999999999956" classname="select_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="select_spec" name="Proper_argument_types"/>
     <testcase time="0.00400000000000045" classname="select_spec" name="Proper_argument_types"/>
     <testcase time="0.00499999999999989" classname="select_spec" name="Proper_argument_types"/>
-    <testcase time="0.00499999999999989" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.000999999999999446" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00700000000000056" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00399999999999956" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00400000000000045" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00200000000000067" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.000999999999999446" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
-    <testcase time="0.000999999999999446" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00600000000000023" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00299999999999923" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00400000000000045" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
+    <testcase time="0.00299999999999923" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00100000000000033" classname="select_spec" name="Single_choice"/>
     <testcase time="0.00699999999999967" classname="select_spec" name="Multiple_choices"/>
     <testcase time="0.00199999999999978" classname="select_spec" name="Multiple_choices"/>
     <testcase time="0.00200000000000067" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00199999999999978" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00100000000000033" classname="select_spec" name="Multiple_choices"/>
     <testcase time="0.000999999999999446" classname="select_spec" name="Multiple_choices"/>
     <testcase time="0.00100000000000033" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00299999999999923" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="Multiple_choices"/>
     <testcase time="0.00100000000000033" classname="select_spec" name="Multiple_choices"/>
-    <testcase time="0.00499999999999989" classname="select_spec" name="resolve_select_spec_works"/>
-    <testcase time="0.00199999999999978" classname="select_spec" name="resolve_select_spec_works"/>
-    <testcase time="0.00400000000000045" classname="select_spec" name="resolve_select_spec_works"/>
-    <testcase time="0.00399999999999956" classname="select_spec" name="delayed_version_of_select_spec"/>
-    <testcase time="0.00800000000000001" classname="select_spec" name="delayed_version_of_select_spec"/>
-    <testcase time="0.00200000000000067" classname="select_spec" name="delayed_version_of_select_spec"/>
-    <testcase time="0.00999999999999979" classname="select_spec" name="delayed_version_of_select_spec"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00300000000000011" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00300000000000011" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00499999999999989" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="Multiple_choices"/>
+    <testcase time="0.00599999999999934" classname="select_spec" name="resolve_select_spec_works"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="resolve_select_spec_works"/>
+    <testcase time="0.00399999999999956" classname="select_spec" name="resolve_select_spec_works"/>
+    <testcase time="0.00400000000000045" classname="select_spec" name="delayed_version_of_select_spec"/>
+    <testcase time="0.00699999999999967" classname="select_spec" name="delayed_version_of_select_spec"/>
+    <testcase time="0.00300000000000011" classname="select_spec" name="delayed_version_of_select_spec"/>
+    <testcase time="0.00900000000000034" classname="select_spec" name="delayed_version_of_select_spec"/>
     <testcase time="0.00499999999999989" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
     <testcase time="0.00199999999999978" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="delayed_choices_passed_to_selected_selects_desired_choices"/>
-    <testcase time="0.00599999999999934" classname="select_spec" name="multiple_is_set_to_TRUE_if_all_choices_is_passed_to_selected"/>
+    <testcase time="0.00499999999999989" classname="select_spec" name="multiple_is_set_to_TRUE_if_all_choices_is_passed_to_selected"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="multiple_is_set_to_TRUE_if_all_choices_is_passed_to_selected"/>
     <testcase time="0.00400000000000045" classname="select_spec" name="default_values"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="default_values"/>
-    <testcase time="0.00300000000000011" classname="select_spec" name="default_values"/>
     <testcase time="0.00299999999999923" classname="select_spec" name="default_values"/>
     <testcase time="0.00300000000000011" classname="select_spec" name="default_values"/>
-    <testcase time="0.00100000000000033" classname="select_spec" name="default_values"/>
-    <testcase time="0.00600000000000023" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
-    <testcase time="0.000999999999999446" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
-    <testcase time="0.00400000000000045" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
+    <testcase time="0.00200000000000067" classname="select_spec" name="default_values"/>
+    <testcase time="0.00199999999999978" classname="select_spec" name="default_values"/>
+    <testcase time="0.00499999999999989" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
+    <testcase time="0.00100000000000033" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
+    <testcase time="0.00399999999999956" classname="select_spec" name="resolve_delayed_select_spec_works_resolve_delayed"/>
+    <testcase time="0.00400000000000045" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
+    <testcase time="0.00899999999999945" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
     <testcase time="0.00499999999999989" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
-    <testcase time="0.00699999999999967" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
-    <testcase time="0.00200000000000067" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
-    <testcase time="0.00599999999999934" classname="select_spec" name="delayed_version_of_select_spec_resolve_delayed"/>
   </testsuite>
-  <testsuite name="value_choices" timestamp="2025-07-03T12:12:34Z" hostname="3b4977dffdb6" tests="21" skipped="0" failures="0" errors="0" time="0.157">
-    <testcase time="0.016" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
-    <testcase time="0.00499999999999989" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
-    <testcase time="0.00400000000000045" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
-    <testcase time="0.00499999999999989" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
-    <testcase time="0.00400000000000045" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
-    <testcase time="0.00499999999999989" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+  <testsuite name="value_choices" timestamp="2025-07-09T19:07:41Z" hostname="394d7cffe2a7" tests="21" skipped="0" failures="0" errors="0" time="0.15">
+    <testcase time="0.0149999999999997" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+    <testcase time="0.00500000000000078" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
     <testcase time="0.00399999999999956" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
     <testcase time="0.00499999999999989" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
     <testcase time="0.00400000000000045" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+    <testcase time="0.00399999999999956" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+    <testcase time="0.00499999999999989" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+    <testcase time="0.00400000000000045" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
+    <testcase time="0.00300000000000011" classname="value_choices" name="Will_output_warnings_when_value_choices_applied_on_datasets_with_missing_values_and_or_labels"/>
     <testcase time="0.00399999999999956" classname="value_choices" name="delayed_version_of_value_choices"/>
-    <testcase time="0.0140000000000002" classname="value_choices" name="delayed_version_of_value_choices"/>
-    <testcase time="0.00199999999999978" classname="value_choices" name="delayed_version_of_value_choices"/>
     <testcase time="0.0129999999999999" classname="value_choices" name="delayed_version_of_value_choices"/>
-    <testcase time="0.00100000000000033" classname="value_choices" name="delayed_version_of_value_choices"/>
+    <testcase time="0.00200000000000067" classname="value_choices" name="delayed_version_of_value_choices"/>
+    <testcase time="0.0129999999999999" classname="value_choices" name="delayed_version_of_value_choices"/>
+    <testcase time="0.000999999999999446" classname="value_choices" name="delayed_version_of_value_choices"/>
     <testcase time="0.0220000000000002" classname="value_choices" name="delayed_version_of_value_choices"/>
-    <testcase time="0.00399999999999956" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
-    <testcase time="0.0140000000000002" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
-    <testcase time="0.00199999999999978" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
     <testcase time="0.0129999999999999" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
-    <testcase time="0.00200000000000067" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
-    <testcase time="0.0139999999999993" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
+    <testcase time="0.00199999999999978" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
+    <testcase time="0.0120000000000005" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
+    <testcase time="0.00199999999999978" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
+    <testcase time="0.0140000000000002" classname="value_choices" name="delayed_version_of_value_choices_resolve_delayed"/>
   </testsuite>
-  <testsuite name="variable_choices" timestamp="2025-07-03T12:12:34Z" hostname="3b4977dffdb6" tests="15" skipped="0" failures="0" errors="0" time="0.169">
+  <testsuite name="variable_choices" timestamp="2025-07-09T19:07:41Z" hostname="394d7cffe2a7" tests="15" skipped="0" failures="0" errors="0" time="0.159">
     <testcase time="0.00800000000000001" classname="variable_choices" name="Can_create_variable_choices_with_datasets_with_no_or_missing_labels"/>
-    <testcase time="0.00200000000000067" classname="variable_choices" name="Can_create_variable_choices_with_datasets_with_no_or_missing_labels"/>
     <testcase time="0.00199999999999978" classname="variable_choices" name="Can_create_variable_choices_with_datasets_with_no_or_missing_labels"/>
+    <testcase time="0.00100000000000033" classname="variable_choices" name="Can_create_variable_choices_with_datasets_with_no_or_missing_labels"/>
     <testcase time="0.00399999999999956" classname="variable_choices" name="delayed_version_of_variable_choices"/>
-    <testcase time="0.122" classname="variable_choices" name="delayed_version_of_variable_choices"/>
+    <testcase time="0.114" classname="variable_choices" name="delayed_version_of_variable_choices"/>
+    <testcase time="0.00100000000000033" classname="variable_choices" name="delayed_version_of_variable_choices"/>
+    <testcase time="0.00399999999999956" classname="variable_choices" name="delayed_version_of_variable_choices"/>
     <testcase time="0.00200000000000067" classname="variable_choices" name="delayed_version_of_variable_choices"/>
     <testcase time="0.00399999999999956" classname="variable_choices" name="delayed_version_of_variable_choices"/>
-    <testcase time="0.00199999999999978" classname="variable_choices" name="delayed_version_of_variable_choices"/>
-    <testcase time="0.00300000000000011" classname="variable_choices" name="delayed_version_of_variable_choices"/>
-    <testcase time="0.00499999999999989" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
     <testcase time="0.00400000000000045" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
-    <testcase time="0.00100000000000033" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
     <testcase time="0.00399999999999956" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
+    <testcase time="0.00199999999999978" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
+    <testcase time="0.00300000000000011" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
     <testcase time="0.00199999999999978" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
     <testcase time="0.00400000000000045" classname="variable_choices" name="delayed_version_of_variable_choices_resolve_delayed"/>
   </testsuite>
