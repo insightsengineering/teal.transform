@@ -112,9 +112,9 @@ data_list <- list(ADSL = reactive(ADSL))
 join_keys <- join_keys(join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")))
 
 # App: data extraction with validation
-ui <- fluidPage(
-  standard_layout(
-    output = verbatimTextOutput("out1"),
+ui <- bslib::page_fluid(
+  bslib::layout_sidebar(
+    verbatimTextOutput("out1"),
     encoding = tagList(
       data_extract_ui(
         id = "adsl_var",
@@ -154,10 +154,10 @@ if (interactive()) {
 }
 
 # App: simplified data extraction
-ui <- fluidPage(
-  standard_layout(
-    output = verbatimTextOutput("out1"),
-    encoding = tagList(
+ui <- bslib::page_fluid(
+  bslib::layout_sidebar(
+    verbatimTextOutput("out1"),
+    sidebar = tagList(
       data_extract_ui(
         id = "adsl_var",
         label = "ADSL selection",

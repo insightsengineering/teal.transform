@@ -116,7 +116,7 @@ no_select_keyword <- "-- no selection --"
 #'   selected = "A"
 #' )
 #'
-#' ui <- fluidPage(
+#' ui <- bslib::page_fluid(
 #'   optionalSelectInput(
 #'     inputId = "id",
 #'     choices = cs$choices,

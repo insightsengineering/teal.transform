@@ -1,7 +1,7 @@
 /* teal.transform data_extract css */
 
 .data-extract {
-  border-left: 3px solid #e3e3e3;
+  border-left: 3px solid var(--bs-gray-200);
   padding-left: 0.6em;
   border-radius: 5px;
   margin-left: -0.6em;

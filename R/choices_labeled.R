@@ -39,7 +39,7 @@
 #'   subset = c("ARMCD", "ARM")
 #' )
 #'
-#' ui <- fluidPage(
+#' ui <- bslib::page_fluid(
 #'   selectInput("c1",
 #'     label = "Choices from ADSL",
 #'     choices = choices1,

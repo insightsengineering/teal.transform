@@ -80,13 +80,13 @@
 #'   )
 #' )
 #'
-#' ui <- fluidPage(
-#'   standard_layout(
-#'     output = tags$div(
+#' ui <- bslib::page_fluid(
+#'   bslib::layout_sidebar(
+#'     tags$div(
 #'       verbatimTextOutput("expr"),
 #'       dataTableOutput("data")
 #'     ),
-#'     encoding = tagList(
+#'     sidebar = tagList(
 #'       data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
 #'       data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
 #'     )
@@ -278,13 +278,13 @@ merge_expression_module.list <- function(datasets,
 #'   )
 #' )
 #'
-#' ui <- fluidPage(
-#'   standard_layout(
-#'     output = tags$div(
+#' ui <- bslib::page_fluid(
+#'   bslib::layout_sidebar(
+#'     tags$div(
 #'       verbatimTextOutput("expr"),
 #'       dataTableOutput("data")
 #'     ),
-#'     encoding = tagList(
+#'     sidebar = tagList(
 #'       data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
 #'       data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
 #'     )
