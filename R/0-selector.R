@@ -1,4 +1,4 @@
-selector <- function(data, ...) {
+.eval_select <- function(data, ...) {
   if (is.environment(data)) {
     # To keep the "order" of the names in the extraction: avoids suprises
     data <- as.list(data)[names(data)]

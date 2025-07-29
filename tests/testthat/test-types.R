@@ -1,4 +1,32 @@
-test_that("datasets", {
+testthat::describe("selected_choices() basic asserts:", {
+  it("selected_choices(choices) argument accepts character, integer and tidyselect", {
+    testthat::expect_no_error(datasets(choices = "test"))
+    testthat::expect_no_error(datasets(choices = 1))
+    testthat::expect_no_error(datasets(choices = tidyselect::everything()))
+    testthat::expect_error(datasets(choices = character(0)))
+    testthat::expect_error(datasets(choices = NULL))
+    testthat::expect_error(datasets(choices = list()))
+  })
+  it("datasets(selected) argument accepts NULL, character, integer and tidyselect", {
+    testthat::expect_no_error(datasets(selected = "test"))
+    testthat::expect_no_error(datasets(selected = 1))
+    testthat::expect_no_error(datasets(selected = tidyselect::everything()))
+    testthat::expect_no_error(datasets(selected = NULL))
+  })
+  it("datasets(selected) disallow values outside of the non-delayed choices", {
+    testthat::expect_error(datasets(choices = c("a", "b"), selected = "c")
+    testthat::expect_error(datasets(choices = c("a", "b"), selected = c("a","c"))
+    testthat::expect_no_error(datasets(choices = tidyselect::everything(), selected = "c")
+    testthat::expect_no_error(datasets(choices = 1, selected = "c")
+  })
+
+  it("datasets returns datasets object", {
+    testthat::expect_s3_class(datasets(choices = c("a", "b"), selected = "a"), "datasets")
+    testthat::expect_s3_class(datasets(choices = c("a", "b"), selected = "a"), "datasets")
+  })
+})
+
+testthat::test_that("datasets", {
   expect_no_error(dataset0 <- datasets("df", "df"))
   expect_no_error(dataset1 <- datasets("df"))
   expect_no_error(dataset2 <- datasets(where(is.matrix)))

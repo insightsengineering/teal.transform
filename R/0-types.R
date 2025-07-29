@@ -1,41 +1,3 @@
-is.specification <- function(x) {
-  inherits(x, "specification")
-}
-
-
-valid_specification <- function(x) {
-  !((is.type(x) || is.specification(x)))
-}
-
-na_type <- function(type) {
-  out <- NA_character_
-  class(out) <- c(type, "type")
-  out
-}
-
-is.type <- function(x) {
-  inherits(x, "type")
-}
-
-#' @export
-#' @method is.na type
-is.na.type <- function(x) {
-  anyNA(unclass(x[c("names", "selected")]))
-}
-
-#' @export
-anyNA.type <- function(x, recursive = FALSE) {
-  anyNA(unclass(x[c("choices", "selected")]), recursive)
-}
-
-type_helper <- function(choices, selected, type) {
-  out <- list(choices = choices, selected = selected)
-  class(out) <- c(type, "type", "list")
-  attr(out$choices, "original") <- choices
-  attr(out$selected, "original") <- selected
-  delay(out)
-}
-
 #' @rdname types
 #' @name Types
 #' @title Type specification
@@ -52,36 +14,48 @@ type_helper <- function(choices, selected, type) {
 #' c(datasets("A"), variables(where(is.numeric)))
 NULL
 
-#' @importFrom tidyselect everything
 #' @describeIn types Specify datasets.
 #' @export
 datasets <- function(choices = tidyselect::everything(), selected = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(selected), "datasets")
+  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+  class(out) <- c("datasets", class(out))
+  out
 }
 
 #' @describeIn types Specify variables.
 #' @export
 variables <- function(choices = tidyselect::everything(), selected = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(selected), "variables")
+  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+  class(out) <- c("variables", class(out))
+  out
 }
 
 #' @describeIn types Specify colData.
 #' @export
 mae_colData <- function(choices = tidyselect::everything(), selected = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(selected), "colData")
+  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+  class(out) <- c("colData", class(out))
+  out
 }
 
 #' @describeIn types Specify values.
 #' @export
 values <- function(choices = tidyselect::everything(), selected = 1) {
-  type_helper(rlang::enquo(choices), rlang::enquo(selected), "values")
+  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+  class(out) <- c("values", class(out))
+  out
+}
+
+#' @export
+anyNA.type <- function(x, recursive = FALSE) {
+  anyNA(unclass(x[c("choices", "selected")]), recursive = recursive)
 }
 
 #' @export
 c.specification <- function(...) {
   l <- list(...)
   types <- lapply(l, names)
-  typesc <- vapply(l, is.specification, logical(1L))
+  typesc <- vapply(l, .is.specification, logical(1L))
   if (!all(typesc)) {
     stop("An object in position ", which(!typesc), " is not a specification.")
   }
@@ -127,7 +101,7 @@ c.specification <- function(...) {
 c.type <- function(...) {
   l <- list(...)
   types <- lapply(l, is)
-  typesc <- vapply(l, is.type, logical(1L))
+  typesc <- vapply(l, .is.type, logical(1L))
   if (!all(typesc)) {
     stop("An object in position ", which(!typesc), " is not a type.")
   }
@@ -175,9 +149,8 @@ c.type <- function(...) {
   vector
 }
 
-simplify_c <- function(x) {
-  unique(unlist(x, FALSE, FALSE))
-}
+#' @export
+is.na.type <- function(x) anyNA(x)
 
 #' @export
 print.type <- function(x, ...) {
@@ -186,7 +159,7 @@ print.type <- function(x, ...) {
     return(x)
   }
 
-  choices_fns <- count_functions(x$choices)
+  choices_fns <- .count_functions(x$choices)
 
   msg_values <- character()
   choices_values <- length(x$choices) - sum(choices_fns)
@@ -202,7 +175,7 @@ print.type <- function(x, ...) {
     )
   }
 
-  selected_fns <- count_functions(x$selected)
+  selected_fns <- .count_functions(x$selected)
 
   msg_sel <- character()
   sel_values <- length(x$selected) - sum(selected_fns)
@@ -222,10 +195,41 @@ print.type <- function(x, ...) {
   return(x)
 }
 
-count_functions <- function(x) {
+.count_functions <- function(x) {
   if (is.list(x)) {
     vapply(x, is.function, logical(1L))
   } else {
     FALSE
   }
+}
+
+.is.specification <- function(x) {
+  inherits(x, "specification")
+}
+
+.is.tidyselect <- function(x) {
+  err <- try(force(x), silent = TRUE)
+  inherits(err, "error") && grepl("must be used within a *selecting*", err$message)
+}
+
+.is.type <- function(x) {
+  inherits(x, "type")
+}
+
+.selected_choices <- function(choices, selected, keep_order = FALSE, fixed = FALSE) {
+  out <- structure(
+    list(choices = choices, selected = selected),
+    keep_order = keep_order,
+    fixed = fixed,
+    class = "type"
+  )
+  as.delayed(out)
+}
+
+.simplity_c <- function(x) {
+  unique(unlist(x, FALSE, FALSE))
+}
+
+.valid_specification <- function(x) {
+  !((.is.type(x) || .is.specification(x)))
 }
