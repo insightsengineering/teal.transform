@@ -22,5 +22,5 @@ Name of the analysis dataset.}
 (\code{call}) to relabel \code{dataset} and assign to \code{anl_name}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Gets the relabel call
 }

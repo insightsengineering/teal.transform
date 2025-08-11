@@ -30,8 +30,6 @@ keys selected in filter part.}
 \code{data_extract_spec} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 The Data extract input can be used to filter and select columns from a data set.
 This function enables such an input in \code{teal}.
 Please use the constructor function \link{data_extract_spec} to set it up.

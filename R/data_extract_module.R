@@ -61,7 +61,7 @@ data_extract_deps <- function() {
 
 #' `teal` data extraction module user-interface
 #'
-#' @description
+#' @description Data extraction module.
 #'
 #' @details
 #' There are three inputs that will be rendered

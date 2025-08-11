@@ -13,5 +13,5 @@ no_selected_as_NULL(x)
 The word or \code{NULL}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Check select choices for no choice made
 }

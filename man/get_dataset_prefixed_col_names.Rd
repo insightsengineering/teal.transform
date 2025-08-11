@@ -14,7 +14,7 @@ created by \code{\link[=data_extract_srv]{data_extract_srv()}}, which returns a 
 A named \code{character} vector with the non-key columns of the \code{data}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Returns non-key column names from data.
 }
 \references{
 \code{\link[=data_extract_srv]{data_extract_srv()}}
