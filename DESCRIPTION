@@ -24,7 +24,6 @@ Imports:
     checkmate (>= 2.1.0),
     dplyr (>= 1.1.0),
     htmltools,
-    lifecycle (>= 0.2.0),
     logger (>= 0.2.0),
     methods,
     rlang (>= 1.0.0),
@@ -48,12 +47,10 @@ Suggests:
 VignetteBuilder:
     knitr,
     rmarkdown
-RdMacros:
-    lifecycle
 Remotes:
     insightsengineering/teal.widgets
 Config/Needs/verdepcheck: mllg/checkmate, tidyverse/dplyr,
-    r-lib/lifecycle, daroczig/logger, r-lib/rlang, rstudio/shiny,
+    daroczig/logger, r-lib/rlang, rstudio/shiny,
     daattali/shinyjs, rstudio/shinyvalidate,
     insightsengineering/teal.data, insightsengineering/teal.logger,
     insightsengineering/teal.widgets, tidyverse/tidyr, r-lib/tidyselect,
