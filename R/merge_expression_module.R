@@ -1,7 +1,6 @@
 #' Merge expression module
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' Convenient wrapper to combine `data_extract_multiple_srv()` and
 #' `merge_expression_srv()` when no additional processing is required.
@@ -198,8 +197,6 @@ merge_expression_module.list <- function(datasets,
 }
 
 #' Data merge module server
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' When additional processing of the `data_extract` list input is required,
 #' `merge_expression_srv()` can be combined with `data_extract_multiple_srv()`

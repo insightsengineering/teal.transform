@@ -62,7 +62,6 @@ data_extract_deps <- function() {
 #' `teal` data extraction module user-interface
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' @details
 #' There are three inputs that will be rendered
@@ -581,7 +580,6 @@ data_extract_srv.list <- function(id,
 #' Creates a named list of `data_extract_srv` output
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' `data_extract_multiple_srv` loops over the list of `data_extract` given and
 #' runs `data_extract_srv` for each one returning a list of reactive objects.
