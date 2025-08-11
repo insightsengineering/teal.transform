@@ -1,7 +1,5 @@
 #' Resolve delayed inputs by evaluating the code within the provided datasets
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @param x (`delayed_data`, `list`) to resolve.
 #' @param datasets (`FilteredData` or named `list`) to use as a reference to resolve `x`.
 #' @param keys (named `list`) with primary keys for each dataset from `datasets`. `names(keys)`

@@ -273,7 +273,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' Extraction of the selector(s) details
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Extracting details of the selection(s) in [data_extract_ui] elements.
 #'

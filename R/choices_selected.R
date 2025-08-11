@@ -3,7 +3,6 @@ no_select_keyword <- "-- no selection --"
 #' Choices selected
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Construct a single list containing available choices, the default selected value, and
 #' additional settings such as to order the choices with the selected elements appearing first
@@ -201,8 +200,6 @@ is.choices_selected <- function(x) { # nolint: object_name_linter.
 
 #' Add empty choice to choices selected
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @param x (`choices_selected`) object.
 #' @param multiple (`logical(1)`) whether multiple selections are allowed or not.
 #'
@@ -226,8 +223,6 @@ add_no_selected_choices <- function(x, multiple = FALSE) {
 }
 
 #' Check select choices for no choice made
-#'
-#' `r lifecycle::badge("stable")`
 #'
 #' @param x (`character`) Word that shall be checked for `NULL`, empty, "--no-selection".
 #'
