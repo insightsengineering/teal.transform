@@ -1,7 +1,5 @@
 #' Resolve delayed inputs by evaluating the code within the provided datasets
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @note This is an internal function that is used by [resolve_delayed()].
 #' All the methods are used internally only.
 #'

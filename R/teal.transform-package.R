@@ -4,7 +4,6 @@
 
 #' @import shiny
 #' @importFrom dplyr %>%
-#' @importFrom lifecycle badge
 NULL
 
 #' @export

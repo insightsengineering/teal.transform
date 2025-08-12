@@ -15,5 +15,5 @@ list_extract_spec(x, allow_null = FALSE)
 \code{x} as a list if it is not already.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Make sure that the extract specification is in list format
 }

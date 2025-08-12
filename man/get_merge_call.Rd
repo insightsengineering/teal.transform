@@ -35,8 +35,6 @@ Name of the analysis dataset.}
 List with merge \code{call} elements.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Creates list of calls depending on selector(s) and type of the merge.
 The merge order is the same as in selectors passed to the function.
 }

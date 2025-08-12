@@ -14,8 +14,5 @@ check_no_multiple_selection(extract_input)
 Raises an error when check fails, otherwise, it returns \code{NULL}, invisibly.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
 Stops if condition not met.
 }

@@ -15,7 +15,5 @@ objects that do not contain \code{NULL}}
 \code{FALSE} otherwise.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Checks if the input \code{data_extract_spec} objects all come from the same dataset.
 }

@@ -4,8 +4,6 @@
 
 #' Make sure that the extract specification is in list format
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @param x (`data_extract_spec` or `list`) of `data_extract_spec` elements.
 #' @param allow_null (`logical`) whether x can be `NULL`.
 #'
@@ -26,8 +24,6 @@ list_extract_spec <- function(x, allow_null = FALSE) {
 
 #' Checks that the `extract_input` specification does not allow multiple
 #' selection
-#'
-#' `r lifecycle::badge("stable")`
 #'
 #' Stops if condition not met.
 #'

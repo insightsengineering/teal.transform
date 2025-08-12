@@ -1,7 +1,6 @@
 #' Get merge call from a list of selectors
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Creates list of calls depending on selector(s) and type of the merge.
 #' The merge order is the same as in selectors passed to the function.
@@ -352,8 +351,6 @@ get_dropped_filters <- function(selector) {
 
 #' Gets the relabel call
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @inheritParams merge_datasets
 #' @param columns_source (named `list`)
 #' where names are column names, values are labels + additional attribute `dataname`
@@ -422,8 +419,6 @@ get_anl_relabel_call <- function(columns_source, datasets, anl_name = "ANL") {
 #' Create relabel call from named character
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
-#'
 #' Function creates relabel call from named character.
 #'
 #' @param labels (named `character`)

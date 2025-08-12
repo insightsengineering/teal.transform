@@ -17,7 +17,6 @@ repos:
         additional_dependencies:
           - checkmate
           - dplyr
-          - lifecycle
           - logger
           - methods
           - rlang

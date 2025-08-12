@@ -21,7 +21,7 @@ Shiny \code{\link[shiny:selectInput]{shiny::selectInput}}\code{s} that allow to 
 a specific dataset. The input elements will be returned inside a \link[shiny:reexports]{shiny::div} container.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Data extraction module.
 }
 \details{
 There are three inputs that will be rendered

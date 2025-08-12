@@ -1,7 +1,6 @@
 #' Data extract filter specification
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' It consists in choices and additionally the variable names for the choices.
 #'

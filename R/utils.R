@@ -1,7 +1,5 @@
 #' Split by separator (matched exactly)
 #'
-#' `r lifecycle::badge("stable")`
-#'
 #' @param x (`character`) Character vector, each element of which is to be split.
 #' Other inputs, including a factor return themselves.
 #' @param sep (`character`) separator to use for splitting.
