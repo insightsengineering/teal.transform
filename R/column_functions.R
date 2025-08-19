@@ -1,6 +1,6 @@
 #' Returns non-key column names from data
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description Returns non-key column names from data.
 #'
 #' @param data (`data.frame`) Data with attribute `filter_and_columns`. This can only be
 #' created by [data_extract_srv()], which returns a shiny [shiny::reactive()].

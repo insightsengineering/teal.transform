@@ -1,7 +1,6 @@
 #' Column selection input specification
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' `select_spec` is used inside `teal` to create a [shiny::selectInput()]
 #' that will select columns from a dataset.

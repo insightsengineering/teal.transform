@@ -38,8 +38,6 @@ with the primary key and display the appropriate icon for them in the
 Named \code{character} vector with additional attributes or \code{delayed_data} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Wrapper on \link{choices_labeled} to label variables basing on existing labels in data.
 }
 \examples{

@@ -4,7 +4,6 @@
 #' @docType class
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' Abstract data type that stores and returns any number of elements.
 #'

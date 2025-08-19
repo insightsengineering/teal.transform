@@ -74,8 +74,6 @@ A reactive \code{list} containing following fields:
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Extracting details of the selection(s) in \link{data_extract_ui} elements.
 }
 \examples{

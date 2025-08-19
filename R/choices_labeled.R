@@ -1,7 +1,6 @@
 #' Set "`<choice>:<label>`" type of names
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' This is often useful for [choices_selected()] as it marks up the drop-down boxes
 #' for [shiny::selectInput()].
@@ -123,7 +122,6 @@ choices_labeled <- function(choices, labels, subset = NULL, types = NULL) {
 #' Variable label extraction and custom selection from data
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Wrapper on [choices_labeled] to label variables basing on existing labels in data.
 #'
@@ -244,7 +242,6 @@ variable_choices.data.frame <- function(data, subset = NULL, fill = TRUE, key = 
 #' Value labeling and filtering based on variable relationship
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Wrapper on [choices_labeled] to label variable values basing on other variable values.
 #'

@@ -1,7 +1,6 @@
 #' Help text with available datasets input
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Creates [shiny::helpText()] with the names of available datasets for the
 #' current module.
@@ -23,7 +22,6 @@ datanames_input <- function(data_extracts) {
 #' Gets names of the datasets from a list of `data_extract_spec` objects
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Fetches `dataname` slot per `data_extract_spec` from a list of
 #' `data_extract_spec`.
@@ -67,7 +65,6 @@ get_extract_datanames <- function(data_extracts) {
 #' Verify uniform dataset source across data extract specification
 #'
 #' @description
-#'  `r lifecycle::badge("stable")`
 #'
 #' Checks if the input `data_extract_spec` objects all come from the same dataset.
 #'

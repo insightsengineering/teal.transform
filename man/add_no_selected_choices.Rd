@@ -15,5 +15,5 @@ add_no_selected_choices(x, multiple = FALSE)
 \code{choices_selected} object with an empty option added to the choices.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Add empty choice to choices selected
 }

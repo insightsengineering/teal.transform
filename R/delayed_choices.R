@@ -1,7 +1,6 @@
 #' Bare constructor for `delayed_choices` object
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' Special S3 structures that delay selection of possible choices in a
 #' `filter_spec`, `select_spec` or `choices_selected` object.

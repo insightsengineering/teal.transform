@@ -69,8 +69,6 @@ reactive named \code{list} containing outputs from \code{\link[=data_extract_srv
 Output list names are the same as \code{data_extract} input argument.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{data_extract_multiple_srv} loops over the list of \code{data_extract} given and
 runs \code{data_extract_srv} for each one returning a list of reactive objects.
 }

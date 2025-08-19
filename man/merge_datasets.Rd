@@ -57,8 +57,6 @@ the variables that are selected from the data sets.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Combines/merges multiple datasets with specified keys attribute.
 }
 \details{
