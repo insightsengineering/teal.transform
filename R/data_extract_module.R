@@ -61,8 +61,7 @@ data_extract_deps <- function() {
 
 #' `teal` data extraction module user-interface
 #'
-#' @description
-#' `r lifecycle::badge("experimental")`
+#' @description Data extraction module.
 #'
 #' @details
 #' There are three inputs that will be rendered
@@ -273,7 +272,6 @@ check_data_extract_spec_react <- function(datasets, data_extract) {
 #' Extraction of the selector(s) details
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
 #'
 #' Extracting details of the selection(s) in [data_extract_ui] elements.
 #'
@@ -582,7 +580,6 @@ data_extract_srv.list <- function(id,
 #' Creates a named list of `data_extract_srv` output
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' `data_extract_multiple_srv` loops over the list of `data_extract` given and
 #' runs `data_extract_srv` for each one returning a list of reactive objects.

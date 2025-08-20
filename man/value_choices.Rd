@@ -34,8 +34,6 @@ See examples for more details.}
 named character vector or \code{delayed_data} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Wrapper on \link{choices_labeled} to label variable values basing on other variable values.
 }
 \examples{

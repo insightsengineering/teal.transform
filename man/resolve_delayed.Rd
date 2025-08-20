@@ -28,7 +28,7 @@ should match \code{names(datasets)}.}
 Resolved object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Resolve delayed inputs by evaluating the code within the provided datasets
 }
 \section{Methods (by class)}{
 \itemize{

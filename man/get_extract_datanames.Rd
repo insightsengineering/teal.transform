@@ -14,8 +14,6 @@ of \code{data_extract_spec}.}
 \code{character} vector with the unique \code{dataname} set.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 Fetches \code{dataname} slot per \code{data_extract_spec} from a list of
 \code{data_extract_spec}.
 }

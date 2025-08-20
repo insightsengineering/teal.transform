@@ -29,8 +29,6 @@ that returns the appropriate subset of its argument.
 also have an additional class for internal use.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Special S3 structures that delay selection of possible choices in a
 \code{filter_spec}, \code{select_spec} or \code{choices_selected} object.
 }

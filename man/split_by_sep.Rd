@@ -16,5 +16,5 @@ Other inputs, including a factor return themselves.}
 List of character vectors split by \code{sep}. Self if \code{x} is not a \code{character}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+Split by separator (matched exactly)
 }
