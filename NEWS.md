@@ -1,4 +1,8 @@
-# teal.transform 0.6.0.9006
+# teal.transform 0.7.0
+
+### Enhancements
+
+* Update all UI components to use `bslib` (#250).
 
 # teal.transform 0.6.0
 
