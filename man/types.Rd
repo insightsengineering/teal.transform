@@ -2,19 +2,22 @@
 % Please edit documentation in R/0-types.R
 \name{Types}
 \alias{Types}
+\alias{spec}
 \alias{datasets}
 \alias{variables}
 \alias{mae_colData}
 \alias{values}
 \title{Type specification}
 \usage{
+spec(...)
+
 datasets(choices = tidyselect::everything(), selected = 1)
 
-variables(choices = tidyselect::everything(), selected = 1)
+variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 
-mae_colData(choices = tidyselect::everything(), selected = 1)
+mae_colData(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 
-values(choices = tidyselect::everything(), selected = 1)
+values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 }
 \arguments{
 \item{choices}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick the choices.}
@@ -29,6 +32,8 @@ Define how to select and extract data
 }
 \section{Functions}{
 \itemize{
+\item \code{spec()}: specify a selector.
+
 \item \code{datasets()}: Specify datasets.
 
 \item \code{variables()}: Specify variables.

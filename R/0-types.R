@@ -14,34 +14,58 @@
 #' c(datasets("A"), variables(where(is.numeric)))
 NULL
 
+#' @describeIn types specify a selector.
+#' @export
+spec <- function(...) {
+  spec <- list(...)
+  names(spec) <- vapply(spec, FUN = is, FUN.VALUE = character(1))
+  structure(spec, class = c("specification", "list"))
+}
+
 #' @describeIn types Specify datasets.
 #' @export
 datasets <- function(choices = tidyselect::everything(), selected = 1) {
-  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+  out <- .selected_choices(
+    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
+    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    multiple = FALSE
+  )
   class(out) <- c("datasets", class(out))
   out
 }
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(choices = tidyselect::everything(), selected = 1) {
-  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+variables <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+  out <- .selected_choices(
+    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
+    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    multiple = multiple
+  )
   class(out) <- c("variables", class(out))
   out
 }
 
 #' @describeIn types Specify colData.
 #' @export
-mae_colData <- function(choices = tidyselect::everything(), selected = 1) {
-  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+mae_colData <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+  out <- .selected_choices(
+    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
+    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    multiple = multiple
+  )
   class(out) <- c("colData", class(out))
   out
 }
 
 #' @describeIn types Specify values.
 #' @export
-values <- function(choices = tidyselect::everything(), selected = 1) {
-  out <- .selected_choices(choices = rlang::enquo(choices), selected = rlang::enquo(selected))
+values <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+  out <- .selected_choices(
+    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
+    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    multiple = multiple
+  )
   class(out) <- c("values", class(out))
   out
 }
@@ -49,104 +73,6 @@ values <- function(choices = tidyselect::everything(), selected = 1) {
 #' @export
 anyNA.type <- function(x, recursive = FALSE) {
   anyNA(unclass(x[c("choices", "selected")]), recursive = recursive)
-}
-
-#' @export
-c.specification <- function(...) {
-  l <- list(...)
-  types <- lapply(l, names)
-  typesc <- vapply(l, .is.specification, logical(1L))
-  if (!all(typesc)) {
-    stop("An object in position ", which(!typesc), " is not a specification.")
-  }
-  utypes <- unique(unlist(types, FALSE, FALSE))
-  vector <- vector("list", length(utypes))
-  names(vector) <- utypes
-  for (t in utypes) {
-    new_type <- vector("list", length = 2)
-    names(new_type) <- c("choices", "selected")
-    class(new_type) <- c("type", "list")
-    for (i in seq_along(l)) {
-      if (!t %in% names(l[[i]])) {
-        next
-      }
-      # Slower but less code duplication:
-      # new_type <- c(new_type, l[[i]][[t]])
-      # then we need class(new_type) <- c(t, "type", "list") outside the loop
-      old_choices <- new_type$choices
-      old_selected <- new_type$selected
-      new_type$choices <- c(old_choices, l[[i]][[t]][["choices"]])
-      attr(new_type$choices, "original") <- c(orig(
-        old_choices
-      ), orig(l[[i]][[t]][["names"]]))
-      new_type$selected <- c(old_selected, l[[i]][[t]][["selected"]])
-      attr(new_type$selected, "original") <- c(orig(old_selected), orig(l[[i]][[t]][["selected"]]))
-      attr(new_type, "delayed") <- any(attr(new_type, "delayed"), attr(l[[i]], "delayed"))
-    }
-    orig_choices <- unique(orig(new_type$choices))
-    new_type$choices <- unique(new_type$choices)
-    attr(new_type$choices, "original") <- orig_choices
-
-    orig_selected <- unique(orig(new_type$selected))
-    new_type$selected <- unique(new_type$selected)
-    attr(new_type$selected, "original") <- orig_selected
-    class(new_type) <- c(t, "type", "list")
-    vector[[t]] <- new_type
-  }
-  class(vector) <- c("specification", "list")
-  vector
-}
-
-#' @export
-c.type <- function(...) {
-  l <- list(...)
-  types <- lapply(l, is)
-  typesc <- vapply(l, .is.type, logical(1L))
-  if (!all(typesc)) {
-    stop("An object in position ", which(!typesc), " is not a type.")
-  }
-  utypes <- unique(unlist(types, FALSE, FALSE))
-  vector <- vector("list", length(utypes))
-  names(vector) <- utypes
-  for (t in utypes) {
-    new_type <- vector("list", length = 2)
-    names(new_type) <- c("choices", "selected")
-    for (i in seq_along(l)) {
-      if (!is(l[[i]], t)) {
-        next
-      }
-      old_choices <- new_type$choices
-      old_selected <- new_type$selected
-      new_type$choices <- c(old_choices, l[[i]][["choices"]])
-      attr(new_type$choices, "original") <- c(orig(
-        old_choices
-      ), orig(l[[i]][["choices"]]))
-      new_type$selected <- unique(c(old_selected, l[[i]][["selected"]]))
-      attr(new_type$selected, "original") <- c(orig(old_selected), orig(l[[i]][["selected"]]))
-    }
-    orig_choices <- unique(orig(new_type$choices))
-    orig_selected <- unique(orig(new_type$selected))
-
-    new_type$choices <- unique(new_type$choices)
-    if (length(new_type$choices) == 1) {
-      new_type$choices <- new_type$choices[[1]]
-    }
-    attr(new_type$choices, "original") <- orig_choices
-
-    if (length(new_type$selected) == 1) {
-      new_type$selected <- new_type$selected[[1]]
-    }
-    attr(new_type$selected, "original") <- orig_selected
-
-    class(new_type) <- c(t, "type", "list")
-    attr(new_type, "delayed") <- is.delayed(new_type)
-    vector[[t]] <- new_type
-  }
-  if (length(vector) == 1) {
-    return(vector[[1]])
-  }
-  class(vector) <- c("specification", "list")
-  vector
 }
 
 #' @export
@@ -195,6 +121,7 @@ print.type <- function(x, ...) {
   return(x)
 }
 
+
 .count_functions <- function(x) {
   if (is.list(x)) {
     vapply(x, is.function, logical(1L))
@@ -216,20 +143,46 @@ print.type <- function(x, ...) {
   inherits(x, "type")
 }
 
-.selected_choices <- function(choices, selected, keep_order = FALSE, fixed = FALSE) {
+.selected_choices <- function(choices,
+                              selected,
+                              multiple = length(selected) > 1,
+                              keep_order = FALSE) {
+  is_choices_delayed <- inherits(choices, "quosure")
+  is_selected_delayed <- inherits(selected, "quosure")
+  if (is_choices_delayed && !is_selected_delayed) {
+    warning(
+      deparse(sys.call(-1)),
+      "\n - Setting explicit `selected` while `choices` are delayed (set using `tidyselect`) might lead to the", "situation where `selected` is not in dynamically obtained `choices`.",
+      call. = FALSE
+    )
+  }
+
   out <- structure(
     list(choices = choices, selected = selected),
+    multiple = multiple,
     keep_order = keep_order,
-    fixed = fixed,
     class = "type"
   )
-  as.delayed(out)
-}
-
-.simplity_c <- function(x) {
-  unique(unlist(x, FALSE, FALSE))
 }
 
 .valid_specification <- function(x) {
   !((.is.type(x) || .is.specification(x)))
+}
+
+
+#' Is an object created using tidyselect
+#'
+#' `choices` and `selected` can be provided using `tidyselect`, (e.g. [tidyselect::everything()]
+#' [tidyselect::match()], [tidyselect::starts_with()]). These functions can't be called
+#' independently but rather as an argument of function which consumes them.
+#' `.is_tidyselect` safely determines if `x` can be evaluated with `tidyselect::eval_select()`
+#' @param x `choices` or `selected`
+#' @return `logical(1)`
+#' @internal
+.is_tidyselect <- function(x) {
+  out <- tryCatch(x, error = function(e) e)
+  inherits(out, "error") && # because tidyselect calls return error if not used in select
+    grepl("must be used within a \\*selecting\\* function", paste(out$message, collapse = "\n")) ||
+    checkmate::test_function(out, args = "x") || # because tidyselect::where(foo) returns a function(x, ...)
+    checkmate::test_integerish(out) # integer is not a column/dataset name
 }

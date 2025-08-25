@@ -1,11 +1,3 @@
-# Only delay if the type or object really needs it and is not already delayed
-as.delayed <- function(x) {
-  if (is.delayed(x)) {
-    attr(x, "delayed") <- TRUE
-  }
-  x
-}
-
 #' Is the specification resolved?
 #'
 #' Check that the specification is resolved against a given data source.
@@ -44,16 +36,7 @@ is.delayed.specification <- function(x) {
 #' @method is.delayed type
 is.delayed.type <- function(x) {
   if (!is.na(x)) {
-    return(!all(is.character(x$choices)) || !all(is.character(x$selected)))
+    return(!is.character(x$choices) || !is.character(x$selected))
   }
   FALSE
-}
-
-resolved <- function(x) {
-  s <- all(is.character(x$choices)) && all(is.character(x$selected))
-  if (!s && !all(x$selected %in% x$choices)) {
-    stop("Selected not resolved.")
-  }
-  attr(x, "delayed") <- NULL
-  x
 }

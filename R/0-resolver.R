@@ -55,7 +55,7 @@ resolver <- function(spec, data) {
 determine <- function(x, data, ...) {
   stopifnot(.is.type(x) || is.list(x) || .is.specification(x))
   if (!is.delayed(x)) {
-    return(list(x = x, data = extract(data, unorig(x$selected))))
+    return(list(x = x, data = extract(data, x$selected)))
   }
   UseMethod("determine")
 }
@@ -71,10 +71,7 @@ determine.colData <- function(x, data, ...) {
     stop("Requires SummarizedExperiment package from Bioconductor.")
   }
   data <- as.data.frame(colData(data))
-
-  x <- NextMethod("determine", x)
-
-  list(x = x, data = extract(data, unorig(x$selected)))
+  NextMethod("determine", x)
 }
 
 #' @export
@@ -84,29 +81,14 @@ determine.datasets <- function(x, data, ...) {
   } else if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-
   # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
   # FIXME: What happens if colnames is null: colnames(array(dim = c(4, 2)))
-  x <- NextMethod("determine", x)
-
-  list(x = x, data = extract(data, unorig(x$selected)))
-}
-
-#' @export
-determine.list <- function(x, data, ...) {
-  if (is.list(x) && is.null(names(x))) {
-    l <- lapply(x, determine, data = data)
-    return(l)
-  }
-
-  x <- NextMethod("determine", x)
-
-  list(x = x, data = extract(data, unorig(x$selected)))
+  NextMethod("determine", x)
 }
 
 #' @export
 determine.specification <- function(x, data, ...) {
-  stopifnot(inherits(data, "qenv"))
+  checkmate::assert_class(data, "qenv")
 
   # Adding some default specifications if they are missing
   if ("values" %in% names(x) && !"variables" %in% names(x)) {
@@ -117,17 +99,18 @@ determine.specification <- function(x, data, ...) {
     x <- append(x, list(variables = datasets()), length(x) - 1)
   }
 
-  d <- data
+  data_i <- data
   for (i in seq_along(x)) {
-    di <- determine(x[[i]], d)
+    determined_i <- determine(x[[i]], data_i)
     # overwrite so that next x in line receives the corresponding data and specification
-    if (is.null(di$x)) {
+    if (is.null(determined_i$x)) {
       next
     }
-    x[[i]] <- di$x
-    d <- di$data
+    x[[i]] <- determined_i$x
+    data_i <- determined_i$data
   }
-  list(x = x, data = data) # It is the transform object resolved.
+
+  list(x = x, data = data)
 }
 
 #' @export
@@ -169,66 +152,39 @@ determine.variables <- function(x, data, ...) {
     stop("Can't pull variable: No variable is available.")
   }
 
-  x <- NextMethod("determine", x)
-
-  # Not possible to know what is happening
-  if (is.delayed(x)) {
-    return(list(x = x, data = NULL))
-  }
-  # This works for matrices and data.frames of length 1 or multiple
-  # be aware of drop behavior on tibble vs data.frame
-  list(x = x, data = extract(data, unorig(x$selected)))
-}
-
-orig <- function(x) {
-  attr(x, "original")
-}
-
-unorig <- function(x) {
-  attr(x, "original") <- NULL
-  x
+  NextMethod("determine", x)
 }
 
 #' @export
 determine.type <- function(x, data) {
-  x <- determine_choices(x, data)
-  x <- determine_selected(x, data)
+  x <- .determine_choices(x, data)
+  x <- .determine_selected(x, data)
+  list(x = x, data = extract(data, x$selected))
 }
 
-determine_choices <- function(x, data) {
-  orig_choices <- orig(x$choices)
-  if (length(orig_choices) == 1L) {
-    orig_choices <- orig_choices[[1L]]
+.determine_choices <- function(x, data) {
+  if (is.delayed(x)) {
+    new_choices <- unique(names(.eval_select(data, x$choices)))
+    x$choices <- new_choices
   }
-
-  new_choices <- unique(names(.eval_select(data, x$choices)))
-  # if (!length(new_choices)) {
-  #   stop("No ", toString(is(x)), " meet the specification.", call. = FALSE)
-  # }
-  attr(new_choices, "original") <- orig_choices
-  x$choices <- new_choices
   x
 }
 
-determine_selected <- function(x, data) {
-  stopifnot(is.character(x$choices))
+.determine_selected <- function(x, data) {
+  checkmate::assert_character(x$choices)
   if (!is(data, "qenv")) {
     data <- extract(data, x$choices)
   } else {
     # Do not extract; selection would be from the data extracted not from the names.
     data <- data[x$choices]
   }
-  orig_selected <- orig(x$selected)
-  if (length(orig_selected) == 1L) {
-    orig_selected <- orig_selected[[1L]]
+  res <- try(unique(names(.eval_select(data, x$selected))), silent = TRUE)
+  if (inherits(res, "try-error")) {
+    warning("`selected` outside of possible `choices`. Emptying `selecting` field.", call. = FALSE)
+    x$selected <- NULL
+  } else {
+    x$selected <- res
   }
-
-  choices <- seq_along(x$choices)
-  names(choices) <- x$choices
-  new_selected <- names(.eval_select(data, x$selected))
-
-  attr(new_selected, "original") <- orig_selected
-  x$selected <- new_selected
 
   x
 }
