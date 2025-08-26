@@ -165,7 +165,12 @@ determine.type <- function(x, data) {
 .determine_choices <- function(x, data) {
   if (is.delayed(x)) {
     new_choices <- unique(names(.eval_select(data, x$choices)))
-    x$choices <- new_choices
+    labels <- vapply(
+      new_choices,
+      FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
+      FUN.VALUE = character(1)
+    )
+    x$choices <- setNames(new_choices, labels)
   }
   x
 }

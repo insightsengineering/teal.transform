@@ -40,7 +40,7 @@ module_input_srv <- function(id = "", spec, data) {
 #' @export
 module_input_srv.list <- function(id, spec, data) {
   sapply(
-    Filter(length, names(spec)),
+    names(Filter(length, spec)),
     USE.NAMES = TRUE,
     function(name) module_input_srv(name, spec[[name]], data)
   )
@@ -137,12 +137,20 @@ module_input_srv.specification <- function(id, spec, data) {
 
 .selected_choices_ui <- function(id, x) {
   ns <- shiny::NS(id)
-  shiny::selectInput(
+  shinyWidgets::pickerInput(
     inputId = ns("selected"),
     label = paste("Select", is(x), collapse = " "),
-    choices = if (!is.delayed(x$choices)) x$choices,
-    selected = if (!is.delayed(x$selected)) x$selected,
-    multiple = isTRUE(attr(x, "multiple"))
+    choices = if (is.character(x$choices)) x$choices,
+    selected = if (is.character(x$selected)) x$selected,
+    multiple = isTRUE(attr(x, "multiple")),
+    choicesOpt = if (is.character(x$choices)) list(content = toupper(x$choices)),
+    options = list(
+      "actions-box" = isTRUE(attr(x, "multiple")),
+      "none-selected-text" = "- Nothing selected -",
+      "allow-clear" = !isTRUE(attr(x, "multiple")),
+      "max-options" = ifelse(isTRUE(attr(x, "multiple")), Inf, 1),
+      "show-subtext" = TRUE
+    )
   )
 }
 
@@ -157,10 +165,26 @@ module_input_srv.specification <- function(id, spec, data) {
         shinyjs::hide("selected")
       }
 
-      shiny::updateSelectInput(
+
+      # todo: add to the input choice icon = attached to choices when determine
+      content <- ifelse(
+        names(x()$choices) == unname(x()$choices),
+        sprintf("<span>%s</span>", x()$choices),
+        sprintf(
+          '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
+          unname(x()$choices),
+          names(x()$choices)
+        )
+      )
+
+      shinyWidgets::updatePickerInput(
         inputId = "selected",
         choices = x()$choices,
-        selected = x()$selected
+        selected = x()$selected,
+        choicesOpt = list(content = content),
+        options = list(
+          "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE)
+        )
       )
     })
     selected <- shiny::reactiveVal()
