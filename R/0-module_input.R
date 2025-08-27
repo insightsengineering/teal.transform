@@ -52,7 +52,6 @@ module_input_srv.specification <- function(id, spec, data) {
     attr(spec, ".callback") <- reactiveVal(NULL) # callback to be used outside
 
     data_r <- shiny::reactive(if (shiny::is.reactive(data)) data() else data)
-    # todo: bookmarking (decide whether it should be built on reactiveVal or setting inputs)
     spec_resolved <- shiny::reactiveVal(
       restoreValue(
         session$ns("selectors"),
@@ -106,6 +105,7 @@ module_input_srv.specification <- function(id, spec, data) {
       shiny::observeEvent(
         selected(),
         ignoreInit = TRUE, # because spec_resolved is a initial state
+        ignoreNULL = FALSE,
         {
           logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
           new_spec_unresolved <- spec
@@ -113,7 +113,7 @@ module_input_srv.specification <- function(id, spec, data) {
           new_spec_unresolved[seq_len(i)] <- spec_resolved()[seq_len(i)]
           new_spec_unresolved[[slot_name]]$selected <- selected()
 
-          resolver_warnings <- character()
+          resolver_warnings <- character(0)
           new_spec_resolved <- withCallingHandlers(
             resolver(new_spec_unresolved, data_r()),
             warning = function(w) {
@@ -165,23 +165,22 @@ module_input_srv.specification <- function(id, spec, data) {
         shinyjs::hide("selected")
       }
 
-
-      # todo: add to the input choice icon = attached to choices when determine
-      content <- ifelse(
-        names(x()$choices) == unname(x()$choices),
-        sprintf("<span>%s</span>", x()$choices),
-        sprintf(
-          '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
-          unname(x()$choices),
-          names(x()$choices)
-        )
-      )
-
       shinyWidgets::updatePickerInput(
         inputId = "selected",
         choices = x()$choices,
         selected = x()$selected,
-        choicesOpt = list(content = content),
+        choicesOpt = list(
+          content = ifelse(
+            # todo: add to the input choice icon = attached to choices when determine
+            names(x()$choices) == unname(x()$choices),
+            sprintf("<span>%s</span>", x()$choices),
+            sprintf(
+              '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
+              unname(x()$choices),
+              names(x()$choices)
+            )
+          )
+        ),
         options = list(
           "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE)
         )
@@ -189,10 +188,12 @@ module_input_srv.specification <- function(id, spec, data) {
     })
     selected <- shiny::reactiveVal()
     # todo: if only one choice then replace with the text only
-    shiny::observeEvent(input$selected, {
-      if (!identical(input$selected, selected)) {
+    shiny::observeEvent(input$selected, ignoreNULL = FALSE, {
+      # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
+      new_selected <- if (length(input$selected) && !identical(input$selected, "")) input$selected
+      if (!identical(new_selected, selected())) {
         logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
-        selected(input$selected)
+        selected(new_selected)
       }
     })
     selected

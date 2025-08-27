@@ -14,6 +14,13 @@ is.delayed <- function(x) {
 
 #' @export
 #' @method is.delayed default
+is.delayed.character <- function(x) {
+  # FIXME: A warning?
+  FALSE
+}
+
+#' @export
+#' @method is.delayed default
 is.delayed.default <- function(x) {
   # FIXME: A warning?
   FALSE

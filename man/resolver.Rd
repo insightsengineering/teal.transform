@@ -4,12 +4,12 @@
 \alias{resolver}
 \title{Resolve the specification}
 \usage{
-resolver(spec, data)
+resolver(x, data)
 }
 \arguments{
-\item{spec}{A object extraction specification.}
-
 \item{data}{The qenv where the specification is evaluated.}
+
+\item{spec}{A object extraction specification.}
 }
 \value{
 A specification but resolved: the names and selection is the name of the objects (if possible).

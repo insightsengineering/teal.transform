@@ -22,25 +22,23 @@
 #' resolver(spec, td)
 #' spec <- c(dataset1, variables("a", where(is.character)))
 #' resolver(spec, td)
-resolver <- function(spec, data) {
+resolver <- function(x, data) {
   checkmate::assert_environment(data)
-  if (!is.delayed(spec)) {
-    return(spec)
+  if (is.delayed(x)) {
+    data_i <- data
+    join_keys_i <- teal.data::join_keys(data)
+    for (i in seq_along(x)) {
+      determined_i <- determine(x[[i]], data = data_i, join_keys = join_keys_i)
+      # overwrite so that next x in line receives the corresponding data and specification
+      if (is.null(determined_i$x)) {
+        next
+      }
+      x[[i]] <- determined_i$x
+      data_i <- determined_i$data
+      join_keys_i <- determined_i$join_keys
+    }
   }
-
-  stopifnot(is.list(spec) || .is.specification(spec))
-  if (.is.type(spec)) {
-    spec <- list(spec)
-    names(spec) <- is(spec[[1]])
-    class(spec) <- c("specification", class(spec))
-  }
-
-  det <- determine(spec, data)
-  if (is.null(names(det))) {
-    return(lapply(det, `[[`, 1))
-  } else {
-    det$x
-  }
+  x
 }
 
 #' A method that should take a type and resolve it.
@@ -51,22 +49,17 @@ resolver <- function(spec, data) {
 #' @param data The minimal data required.
 #' @return A list with two elements, the `type` resolved and the data extracted.
 #' @keywords internal
-#' @export
-determine <- function(x, data, ...) {
-  stopifnot(.is.type(x) || is.list(x) || .is.specification(x))
-  if (!is.delayed(x)) {
-    return(list(x = x, data = extract(data, x$selected)))
-  }
+determine <- function(x, data, join_keys, ...) {
   UseMethod("determine")
 }
 
 #' @export
-determine.default <- function(x, data, ...) {
+determine.default <- function(x, data, join_keys, ...) {
   stop("There is not a specific method to pick choices.")
 }
 
 #' @export
-determine.colData <- function(x, data, ...) {
+determine.colData <- function(x, data, join_keys, ...) {
   if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Requires SummarizedExperiment package from Bioconductor.")
   }
@@ -75,70 +68,30 @@ determine.colData <- function(x, data, ...) {
 }
 
 #' @export
-determine.datasets <- function(x, data, ...) {
+determine.datasets <- function(x, data, join_keys, ...) {
+  checkmate::assert_environment(data)
+  checkmate::assert_class(join_keys, "join_keys")
   if (is.null(data)) {
     return(list(x = x, data = NULL))
   } else if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-  # Assumes the object has colnames method (true for major object classes: DataFrame, tibble, Matrix, array)
-  # FIXME: What happens if colnames is null: colnames(array(dim = c(4, 2)))
-  NextMethod("determine", x)
+
+  x <- .determine_choices(x, data)
+  x <- .determine_selected(x, data)
+
+  if (length(x$selected) != 1) {
+    warning("`dataset` must be a single selection. Forcing to first possible choice.")
+    x$selected <- x$choices[1]
+  }
+  list(x = x, data = data[[x$selected]], join_keys = join_keys[[x$selected]])
 }
 
 #' @export
-determine.specification <- function(x, data, ...) {
-  checkmate::assert_class(data, "qenv")
+determine.variables <- function(x, data, join_keys, ...) {
+  checkmate::assert_multi_class(data, c("data.frame", "tbl_df", "data.table", "DataFrame"))
+  checkmate::assert_list(join_keys)
 
-  # Adding some default specifications if they are missing
-  if ("values" %in% names(x) && !"variables" %in% names(x)) {
-    x <- append(x, list(variables = variables()), length(x) - 1)
-  }
-
-  if ("variables" %in% names(x) && !"datasets" %in% names(x)) {
-    x <- append(x, list(variables = datasets()), length(x) - 1)
-  }
-
-  data_i <- data
-  for (i in seq_along(x)) {
-    determined_i <- determine(x[[i]], data_i)
-    # overwrite so that next x in line receives the corresponding data and specification
-    if (is.null(determined_i$x)) {
-      next
-    }
-    x[[i]] <- determined_i$x
-    data_i <- determined_i$data
-  }
-
-  list(x = x, data = data)
-}
-
-#' @export
-determine.values <- function(x, data, ...) {
-  if (!is.numeric(data)) {
-    d <- data
-    names(d) <- data
-  } else {
-    d <- data
-  }
-
-  # todo: replace with NextMethod?
-  sel <- .eval_select(d, x$choices)
-  x$choices <- data[sel]
-
-  sel2 <- .eval_select(d[sel], x$selected)
-  x$selected <- data[sel][sel2]
-
-  # Not possible to know what is happening
-  if (is.delayed(x)) {
-    return(list(x = x, data = NULL))
-  }
-
-  list(x = x, data = data[sel])
-}
-
-#' @export
-determine.variables <- function(x, data, ...) {
   if (is.null(data)) {
     return(list(x = x, data = NULL))
   } else if (length(dim(data)) != 2L) {
@@ -152,44 +105,77 @@ determine.variables <- function(x, data, ...) {
     stop("Can't pull variable: No variable is available.")
   }
 
-  NextMethod("determine", x)
-}
+  # ↓ see ?tidyselectors
+  for (join_keys_i in join_keys) {
+    for (key_column in names(join_keys_i)) {
+      attr(data[[key_column]], "join_key") <- TRUE
+    }
+  }
 
-#' @export
-determine.type <- function(x, data) {
   x <- .determine_choices(x, data)
   x <- .determine_selected(x, data)
-  list(x = x, data = extract(data, x$selected))
+
+  list(x = x, data = data[x$selected], join_keys = join_keys)
 }
 
 .determine_choices <- function(x, data) {
-  if (is.delayed(x)) {
-    new_choices <- unique(names(.eval_select(data, x$choices)))
-    labels <- vapply(
-      new_choices,
-      FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
-      FUN.VALUE = character(1)
-    )
-    x$choices <- setNames(new_choices, labels)
+  choices <- if (is.character(x$choices)) {
+    x$choices
+  } else {
+    idx <- .eval_select(data, x$choices)
+    unique(names(data)[idx])
   }
+  labels <- vapply(
+    choices,
+    FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
+    FUN.VALUE = character(1)
+  )
+  x$choices <- setNames(choices, labels)
   x
 }
 
 .determine_selected <- function(x, data) {
-  checkmate::assert_character(x$choices)
-  if (!is(data, "qenv")) {
-    data <- extract(data, x$choices)
-  } else {
-    # Do not extract; selection would be from the data extracted not from the names.
+  if (!is.null(x$selected) && length(x$choices)) {
     data <- data[x$choices]
+    res <- try(unique(names(.eval_select(data, x$selected))), silent = TRUE)
+    if (inherits(res, "try-error")) {
+      warning("`selected` outside of possible `choices`. Emptying `selecting` field.", call. = FALSE)
+      x$selected <- NULL
+    } else {
+      x$selected <- res
+    }
   }
-  res <- try(unique(names(.eval_select(data, x$selected))), silent = TRUE)
-  if (inherits(res, "try-error")) {
-    warning("`selected` outside of possible `choices`. Emptying `selecting` field.", call. = FALSE)
-    x$selected <- NULL
-  } else {
-    x$selected <- res
-  }
-
   x
+}
+
+
+#' Internal method to extract data from different objects
+#'
+#' Required to resolve a specification into something usable (by comparing with the existing data).
+#' Required by merging data based on a resolved specification.
+#' @param x Object from which a subset/element is required.
+#' @param variable Name of the element to be extracted.
+#' @param ... Other arguments passed to the specific method.
+#' @keywords internal
+.extract <- function(x, variable, ...) {
+  UseMethod(".extract")
+}
+
+
+#' @export
+.extract.default <- function(x, variable, ..., drop = FALSE) {
+  if (length(dim(x)) == 2L || length(variable) > 1L) {
+    x[, variable, drop = drop]
+  } else {
+    x[[variable]]
+  }
+}
+
+#' @export
+.extract.teal_data <- function(x, variable, ...) {
+  if (length(variable) > 1L) {
+    x[variable]
+  } else {
+    x[variable]
+  }
 }

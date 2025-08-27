@@ -181,8 +181,5 @@ print.type <- function(x, ...) {
 #' @internal
 .is_tidyselect <- function(x) {
   out <- tryCatch(x, error = function(e) e)
-  inherits(out, "error") && # because tidyselect calls return error if not used in select
-    grepl("must be used within a \\*selecting\\* function", paste(out$message, collapse = "\n")) ||
-    checkmate::test_function(out, args = "x") || # because tidyselect::where(foo) returns a function(x, ...)
-    checkmate::test_integerish(out) # integer is not a column/dataset name
+  !is.character(out)
 }

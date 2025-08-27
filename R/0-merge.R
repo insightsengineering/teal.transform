@@ -135,6 +135,7 @@ map_merged <- function(selectors, join_keys) {
       init = teal.data::join_keys()
     )
   }
+
   mapping <- lapply( # what has been selected in each selector
     selectors,
     function(x) {
@@ -155,7 +156,7 @@ map_merged <- function(selectors, join_keys) {
     )
 
     # mapping will be reused so needs to be reordered as well
-    mapping <- mapping[rank(match(mapped_datanames, datanames))]
+    mapping <- mapping[order(match(mapped_datanames, datanames))]
   }
   remaining_datanames <- datanames
   join_keys <- join_keys[datanames]
