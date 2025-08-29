@@ -4,7 +4,7 @@
 \alias{tm_merge}
 \title{Merge module}
 \usage{
-tm_merge(label = "merge-module", inputs)
+tm_merge(label = "merge-module", inputs, transformators = list())
 }
 \description{
 Example module

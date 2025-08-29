@@ -5,8 +5,8 @@
 \alias{picks}
 \alias{datasets}
 \alias{variables}
-\alias{mae_colData}
 \alias{values}
+\alias{mae_colData}
 \title{Variables choices settings}
 \usage{
 picks(...)
@@ -14,6 +14,8 @@ picks(...)
 datasets(choices = tidyselect::everything(), selected = 1)
 
 variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+
+values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 
 mae_colData(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 
@@ -39,6 +41,8 @@ Define choices and default selection of variables from datasets.
 \item \code{datasets()}: Specify datasets.
 
 \item \code{variables()}: Specify variables.
+
+\item \code{values()}: Specify variables.
 
 \item \code{mae_colData()}: Specify colData.
 
