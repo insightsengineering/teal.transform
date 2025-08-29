@@ -1,7 +1,7 @@
 #' Merge module
 #'
 #' Example module
-tm_merge <- function(label = "merge-module", inputs) {
+tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
   module(
     label = label,
     ui = function(id, inputs) {
@@ -56,6 +56,7 @@ tm_merge <- function(label = "merge-module", inputs) {
       })
     },
     ui_args = list(inputs = inputs),
-    server_args = list(inputs = inputs)
+    server_args = list(inputs = inputs),
+    transformators = transformators
   )
 }

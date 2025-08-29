@@ -24,6 +24,7 @@
 #' resolver(spec, td)
 resolver <- function(x, data) {
   checkmate::assert_environment(data)
+  brows
   if (is.delayed(x)) {
     data_i <- data
     join_keys_i <- teal.data::join_keys(data)
@@ -55,7 +56,8 @@ determine <- function(x, data, join_keys, ...) {
 
 #' @export
 determine.default <- function(x, data, join_keys, ...) {
-  stop("There is not a specific method to pick choices.")
+  browser()
+  stop("There is not a specific method to picks choices.")
 }
 
 #' @export
@@ -115,7 +117,28 @@ determine.variables <- function(x, data, join_keys, ...) {
   x <- .determine_choices(x, data)
   x <- .determine_selected(x, data)
 
-  list(x = x, data = data[x$selected], join_keys = join_keys)
+  list(x = x, data = if (length(x$selected) == 1) data[[x$selected]], join_keys = join_keys)
+}
+
+determine.values <- function(x, data, join_keys, ...) {
+  if (is.character(data) || is.factor(data)) {
+    d <- data
+    names(d) <- data
+    # todo: replace with NextMethod?
+    x$choices <- unique(names(.eval_select(d, x$choices)))
+    names(x$choices) <- x$choices
+    if (length(x$choices)) {
+      x$selected <- unique(names(.eval_select(x$choices, x$selected)))
+    } else {
+      x$selected <- NULL
+    }
+
+    list(x = x) # nothing more after this (no need to pass data further)
+  } else {
+    x$choices <- character(0)
+    x$selected <- NULL
+    list(x = x)
+  }
 }
 
 .determine_choices <- function(x, data) {
@@ -137,12 +160,12 @@ determine.variables <- function(x, data, join_keys, ...) {
 .determine_selected <- function(x, data) {
   if (!is.null(x$selected) && length(x$choices)) {
     data <- data[x$choices]
-    res <- try(unique(names(.eval_select(data, x$selected))), silent = TRUE)
-    if (inherits(res, "try-error")) {
+    res <- try(.eval_select(data, x$selected), silent = TRUE)
+    x$selected <- if (inherits(res, "try-error")) {
       warning("`selected` outside of possible `choices`. Emptying `selecting` field.", call. = FALSE)
-      x$selected <- NULL
+      NULL
     } else {
-      x$selected <- res
+      unique(names(res))
     }
   }
   x

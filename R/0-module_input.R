@@ -16,9 +16,9 @@ module_input_ui.list <- function(id, spec) {
 }
 
 #' @export
-module_input_ui.specification <- function(id, spec) {
-  if (.valid_specification(spec)) {
-    stop("Unexpected object used as specification.")
+module_input_ui.picks <- function(id, spec) {
+  if (.valid_picks(spec)) {
+    stop("Unexpected object used as spec. Use `picks` to create the object.")
   }
   ns <- shiny::NS(id)
   badge_label <- shiny::textOutput(ns("summary"), container = htmltools::tags$span)
@@ -47,7 +47,7 @@ module_input_srv.list <- function(id, spec, data) {
 }
 
 #' @export
-module_input_srv.specification <- function(id, spec, data) {
+module_input_srv.picks <- function(id, spec, data) {
   moduleServer(id, function(input, output, session) {
     attr(spec, ".callback") <- reactiveVal(NULL) # callback to be used outside
 
@@ -107,7 +107,11 @@ module_input_srv.specification <- function(id, spec, data) {
         ignoreInit = TRUE, # because spec_resolved is a initial state
         ignoreNULL = FALSE,
         {
+          if (identical(selected(), spec_resolved()[[slot_name]]$selected)) {
+            return(NULL)
+          }
           logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
+
           new_spec_unresolved <- spec
           # ↓ everything after `i` is to resolve
           new_spec_unresolved[seq_len(i)] <- spec_resolved()[seq_len(i)]
@@ -123,10 +127,8 @@ module_input_srv.specification <- function(id, spec, data) {
           if (length(resolver_warnings)) {
             showNotification(resolver_warnings, type = "error")
           }
-          if (!identical(new_spec_resolved, spec_resolved())) {
-            logger::log_info("Update spec { slot_name } after selection change.")
-            spec_resolved(new_spec_resolved)
-          }
+
+          spec_resolved(new_spec_resolved)
         }
       )
     })

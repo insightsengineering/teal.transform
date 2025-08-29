@@ -1,5 +1,5 @@
 #' Merge expression for selectors
-#' @param selectors (`list` of `specification`)
+#' @param selectors (`list` of `picks`)
 #' @param output_name (`character(1)`)
 #' @param join_fun (`character(1)`) name of the merge function.
 #' @param join_keys (`join_keys`)
@@ -9,7 +9,7 @@ merge_expr <- function(selectors,
                        join_fun = "dplyr::left_join",
                        join_keys,
                        allow_cartesian = FALSE) {
-  checkmate::assert_list(selectors, c("specification", "reactive"))
+  checkmate::assert_list(selectors, c("picks", "reactive"))
   checkmate::assert_string(output_name)
   checkmate::assert_string(join_fun)
   checkmate::assert_class(join_keys, "join_keys")
@@ -127,7 +127,7 @@ map_merged <- function(selectors, join_keys) {
 #'
 #' @keywords internal
 .merge_summary_list <- function(selectors, join_keys) {
-  checkmate::assert_list(selectors, c("reactive", "specification"))
+  checkmate::assert_list(selectors, c("picks", "reactive"))
   if (missing(join_keys)) {
     join_keys <- Reduce(
       function(all, this) c(all, attr(this, "join_keys")),

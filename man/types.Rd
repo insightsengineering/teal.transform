@@ -2,14 +2,14 @@
 % Please edit documentation in R/0-types.R
 \name{Types}
 \alias{Types}
-\alias{spec}
+\alias{picks}
 \alias{datasets}
 \alias{variables}
 \alias{mae_colData}
 \alias{values}
-\title{Type specification}
+\title{Variables choices settings}
 \usage{
-spec(...)
+picks(...)
 
 datasets(choices = tidyselect::everything(), selected = 1)
 
@@ -20,19 +20,21 @@ mae_colData(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 }
 \arguments{
-\item{choices}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick the choices.}
+\item{choices}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}} or \code{character}>
+One unquoted expression to be used to picks the choices.}
 
-\item{selected}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> One unquoted expression to be used to pick from choices to be selected.}
+\item{selected}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}} or \code{character}>
+One unquoted expression to be used to picks from choices to be selected.}
 }
 \value{
-An object of the same class as the function with two elements: names the content of x, and select.
+\code{picks} object containing specified settings
 }
 \description{
-Define how to select and extract data
+Define choices and default selection of variables from datasets.
 }
 \section{Functions}{
 \itemize{
-\item \code{spec()}: specify a selector.
+\item \code{picks()}: specify a selector.
 
 \item \code{datasets()}: Specify datasets.
 
@@ -44,9 +46,23 @@ Define how to select and extract data
 
 }}
 \examples{
-datasets()
-datasets("A")
-c(datasets("A"), datasets("B"))
-datasets(where(is.data.frame))
-c(datasets("A"), variables(where(is.numeric)))
+
+# Initialize selector for `iris` to select columns between `Sepal.Length` and `Petal.Width`
+#  with first
+picks(
+  datasets(choices = "iris"),
+  variables(choices = Sepal.Length:Petal.Width, selected = 1)
+)
+picks(
+  datasets(choices = c("iris", "mtcars"), selected = "iris"),
+  variables(choices = tidyselect::everything(), selected = 1)
+)
+picks(
+  datasets(choices = c("iris", "mtcars"), selected = 1),
+  variables(choices = tidyselect::where(is.numeric), selected = 1)
+)
+picks(
+  datasets(choices = tidyselect::everything(), selected = 1),
+  variables(choices = is_categorical(min.len = 2, max.len = 15), selected = 1:2)
+)
 }

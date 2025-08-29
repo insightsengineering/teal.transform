@@ -13,7 +13,7 @@ merge_expr(
 )
 }
 \arguments{
-\item{selectors}{(\code{list} of \code{specification})}
+\item{selectors}{(\code{list} of \code{picks})}
 
 \item{output_name}{(\code{character(1)})}
 
