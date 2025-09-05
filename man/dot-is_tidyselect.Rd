@@ -14,7 +14,8 @@
 }
 \description{
 \code{choices} and \code{selected} can be provided using \code{tidyselect}, (e.g. \code{\link[tidyselect:everything]{tidyselect::everything()}}
-\code{\link[tidyselect:match]{tidyselect::match()}}, \code{\link[tidyselect:starts_with]{tidyselect::starts_with()}}). These functions can't be called
+\code{\link[tidyselect:where]{tidyselect::where()}}, \code{\link[tidyselect:starts_with]{tidyselect::starts_with()}}). These functions can't be called
 independently but rather as an argument of function which consumes them.
 \code{.is_tidyselect} safely determines if \code{x} can be evaluated with \code{tidyselect::eval_select()}
 }
+\keyword{internal}

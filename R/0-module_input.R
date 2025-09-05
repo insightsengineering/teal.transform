@@ -21,7 +21,7 @@ module_input_ui.picks <- function(id, spec) {
     stop("Unexpected object used as spec. Use `picks` to create the object.")
   }
   ns <- shiny::NS(id)
-  badge_label <- shiny::textOutput(ns("summary"), container = htmltools::tags$span)
+  badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
   # todo: icon or color to indicate a column class
   content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x)), x))
   htmltools::tags$div(
@@ -66,24 +66,31 @@ module_input_srv.picks <- function(id, spec, data) {
     # join_keys are needed to variables after merge
     attr(spec_resolved, "join_keys") <- teal.data::join_keys(shiny::isolate(data_r())) # todo: do the same as with .callback
 
-    badge_text <- shiny::reactive({
-      paste(
+    badge <- shiny::reactive({
+      tagList(
         lapply(
           spec_resolved(),
           function(x) {
-            if (length(x$selected)) {
+            if (inherits(x, "values")) {
+              if (!identical(as.vector(x$choices), as.vector(x$selected))) {
+                bsicons::bs_icon("funnel")
+              }
+            } else if (length(x$selected)) {
               toString(x$selected)
             } else {
               "~"
             }
           }
-        ),
-        collapse = ": "
+        )
       )
     })
 
     # todo: modify when data changes
-    output$summary <- shiny::renderText(badge_text())
+    output$summary <- shiny::renderUI(badge())
+
+    observeEvent(data(), {
+
+    })
 
     lapply(seq_along(spec), function(i) {
       slot_name <- names(spec)[i]
@@ -107,7 +114,7 @@ module_input_srv.picks <- function(id, spec, data) {
         ignoreInit = TRUE, # because spec_resolved is a initial state
         ignoreNULL = FALSE,
         {
-          if (identical(selected(), spec_resolved()[[slot_name]]$selected)) {
+          if (identical(as.vector(selected()), as.vector(spec_resolved()[[slot_name]]$selected))) {
             return(NULL)
           }
           logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
@@ -139,21 +146,7 @@ module_input_srv.picks <- function(id, spec, data) {
 
 .selected_choices_ui <- function(id, x) {
   ns <- shiny::NS(id)
-  shinyWidgets::pickerInput(
-    inputId = ns("selected"),
-    label = paste("Select", is(x), collapse = " "),
-    choices = if (is.character(x$choices)) x$choices,
-    selected = if (is.character(x$selected)) x$selected,
-    multiple = isTRUE(attr(x, "multiple")),
-    choicesOpt = if (is.character(x$choices)) list(content = toupper(x$choices)),
-    options = list(
-      "actions-box" = isTRUE(attr(x, "multiple")),
-      "none-selected-text" = "- Nothing selected -",
-      "allow-clear" = !isTRUE(attr(x, "multiple")),
-      "max-options" = ifelse(isTRUE(attr(x, "multiple")), Inf, 1),
-      "show-subtext" = TRUE
-    )
-  )
+  uiOutput(ns("selected_container"))
 }
 
 .selected_choices_srv <- function(id, x) {
@@ -161,41 +154,72 @@ module_input_srv.picks <- function(id, spec, data) {
   checkmate::assert_true(is.reactive(x))
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
-    shiny::observeEvent(x(), {
-      logger::log_debug(".selected_choices_srv@1 x has changed (caused by upstream resolve)")
-      if (length(x()$choices) == 1) {
-        shinyjs::hide("selected")
-      }
-
-      shinyWidgets::updatePickerInput(
-        inputId = "selected",
-        choices = x()$choices,
-        selected = x()$selected,
-        choicesOpt = list(
-          content = ifelse(
-            # todo: add to the input choice icon = attached to choices when determine
-            names(x()$choices) == unname(x()$choices),
-            sprintf("<span>%s</span>", x()$choices),
-            sprintf(
-              '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
-              unname(x()$choices),
-              names(x()$choices)
-            )
-          )
-        ),
-        options = list(
-          "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE)
+    output$selected_container <- renderUI({
+      if (isTRUE(attr(x(), "fixed")) || length(x()$choices) == 1) {
+      } else if (is.numeric(x()$choices)) {
+        shinyWidgets::numericRangeInput(
+          inputId = session$ns("range"),
+          label = paste("Select", is(x()), collapse = " "),
+          min = unname(x()$choices[1]),
+          max = unname(tail(x()$choices, 1)),
+          value = unname(x()$selected)
         )
-      )
+      } else {
+        shinyWidgets::pickerInput(
+          inputId = session$ns("selected"),
+          label = paste("Select", is(x()), collapse = " "),
+          choices = x()$choices,
+          selected = x()$selected,
+          multiple = attr(x(), "multiple"),
+          choicesOpt = list(
+            content = ifelse(
+              # todo: add to the input choice icon = attached to choices when determine
+              names(x()$choices) == unname(x()$choices),
+              sprintf("<span>%s</span>", x()$choices),
+              sprintf(
+                '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
+                unname(x()$choices),
+                names(x()$choices)
+              )
+            )
+          ),
+          options = list(
+            "actions-box" = attr(x(), "multiple"),
+            # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
+            "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
+            # "max-options" = attr(x(), "max-options"),
+            "none-selected-text" = "- Nothing selected -",
+            "show-subtext" = TRUE
+          )
+        )
+      }
     })
+
     selected <- shiny::reactiveVal()
     # todo: if only one choice then replace with the text only
-    shiny::observeEvent(input$selected, ignoreNULL = FALSE, {
-      # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
-      new_selected <- if (length(input$selected) && !identical(input$selected, "")) input$selected
-      if (!identical(new_selected, selected())) {
+
+    # for numeric
+    range_debounced <- reactive(input$range) |> debounce(1000)
+    shiny::observeEvent(range_debounced(), {
+      if (length(input$range) != 2) {
+        return(NULL)
+      }
+      if (!identical(input$range, selected())) {
         logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
-        selected(new_selected)
+        selected(input$range)
+      }
+    })
+
+
+    # for non-numeric
+    shiny::observeEvent(input$selected_open, {
+      if (!isTRUE(input$selection_open)) {
+        # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
+        new_selected <- if (length(input$selected) && !identical(input$selected, "")) input$selected
+        if (!identical(new_selected, selected())) {
+          logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
+          selected(new_selected)
+        }
       }
     })
     selected
@@ -222,16 +246,24 @@ module_input_srv.picks <- function(id, spec, data) {
           if(container.style.display === 'none' || container.style.display === '') {
             container.style.display = 'block';
 
+            // Trigger Shiny input events to ensure renderUI gets called
+            $(container).trigger('shown');
+            Shiny.bindAll(container);
+
             // Add click outside handler
             setTimeout(function() {
               function handleClickOutside(event) {
                 if (!container.contains(event.target) && !summary.contains(event.target)) {
                   container.style.display = 'none';
+                  $(container).trigger('hidden');
                   document.removeEventListener('click', handleClickOutside);
                 }
               }
               document.addEventListener('click', handleClickOutside);
             }, 10);
+          } else {
+            container.style.display = 'none';
+            $(container).trigger('hidden');
           }
         ",
           ns("inputs_container"),

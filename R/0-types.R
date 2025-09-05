@@ -1,10 +1,14 @@
-#' Variables choices settings
+#' Choices/selected settings
 #'
 #' Define choices and default selection of variables from datasets.
 #' @param choices <[`tidy-select`][dplyr::dplyr_tidy_select] or `character`>
 #'  One unquoted expression to be used to picks the choices.
 #' @param selected <[`tidy-select`][dplyr::dplyr_tidy_select] or `character`>
 #'  One unquoted expression to be used to picks from choices to be selected.
+#' @param multiple <`logical(1)`> if more than one selection is possible.
+#' @param fixed <`logical(1)`> selection will be fixed and not possible to change interactively.
+#' @param ... additional arguments delivered to `pickerInput`
+#'
 #' @returns `picks` object containing specified settings
 #' @examples
 #'
@@ -35,6 +39,7 @@ NULL
 picks <- function(...) {
   # todo: assert that datasets is on the first place?
   picks <- list(...)
+  checkmate::assert_list(picks, types = "type")
   names(picks) <- vapply(picks, FUN = is, FUN.VALUE = character(1))
   for (i in seq_along(picks)) {
     if (isTRUE(picks[[i]]$multiple) && i < length(picks)) {
@@ -47,13 +52,30 @@ picks <- function(...) {
   structure(picks, class = c("picks", "list"))
 }
 
+#' @export
+datanames <- function(x) {
+  if (inherits(x, "picks")) {
+    x <- list(x)
+  }
+  checkmate::assert_list(x, c("picks", "NULL"))
+  unique(unlist(lapply(x, function(x) {
+    if (is.character(x$datasets$choices)) x$datasets$choices
+  })))
+}
+
 #' @describeIn types Specify datasets.
 #' @export
-datasets <- function(choices = tidyselect::everything(), selected = 1) {
+datasets <- function(choices = tidyselect::everything(),
+                     selected = 1,
+                     fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                     ...) {
+  # todo: implement ... in pickerInput like `max-options`, `allow-clear`
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
-    multiple = FALSE
+    multiple = FALSE,
+    fixed = fixed,
+    ...
   )
   class(out) <- c("datasets", class(out))
   out
@@ -61,11 +83,17 @@ datasets <- function(choices = tidyselect::everything(), selected = 1) {
 
 #' @describeIn types Specify variables.
 #' @export
-variables <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+variables <- function(choices = tidyselect::everything(),
+                      selected = 1,
+                      multiple = !.is_tidyselect(selected) && length(selected) > 1,
+                      fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                      ...) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
-    multiple = multiple
+    multiple = multiple,
+    fixed = fixed,
+    ...
   )
   class(out) <- c("variables", class(out))
   out
@@ -73,15 +101,22 @@ variables <- function(choices = tidyselect::everything(), selected = 1, multiple
 
 #' @describeIn types Specify variables.
 #' @export
-values <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+values <- function(choices = tidyselect::everything(),
+                   selected = 1,
+                   multiple = !.is_tidyselect(selected) && length(selected) > 1,
+                   fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                   ...) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
-    multiple = multiple
+    multiple = multiple,
+    fixed = fixed,
+    ...
   )
   class(out) <- c("values", class(out))
   out
 }
+
 
 #' @describeIn types Specify colData.
 #' @export
@@ -92,18 +127,6 @@ mae_colData <- function(choices = tidyselect::everything(), selected = 1, multip
     multiple = multiple
   )
   class(out) <- c("colData", class(out))
-  out
-}
-
-#' @describeIn types Specify values.
-#' @export
-values <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
-  out <- .selected_choices(
-    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
-    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
-    multiple = multiple
-  )
-  class(out) <- c("values", class(out))
   out
 }
 
@@ -151,9 +174,13 @@ print.type <- function(x, ...) {
 .selected_choices <- function(choices,
                               selected,
                               multiple = length(selected) > 1,
-                              keep_order = FALSE) {
-  is_choices_delayed <- inherits(choices, "quosure")
+                              keep_order = FALSE,
+                              fixed = FALSE,
+                              ...) {
+  is_choices_delayed <- inherits(choices, "quosure") ||
+    checkmate::test_multi_class(choices, c("variable_choices", "value_choices"))
   is_selected_eager <- is.character(selected)
+
   if (is_choices_delayed && is_selected_eager) {
     warning(
       deparse(sys.call(-1)),
@@ -162,10 +189,20 @@ print.type <- function(x, ...) {
     )
   }
 
+  if (inherits(choices, "choices_labeled")) {
+    choices <- setNames(as.vector(choices), names(choices))
+  }
+
+  if (inherits(selected, "choices_labeled")) {
+    selected <- setNames(as.vector(selected), names(selected))
+  }
+
   out <- structure(
     list(choices = choices, selected = selected),
     multiple = multiple,
     keep_order = keep_order,
+    fixed = fixed,
+    ...,
     class = "type"
   )
 }
@@ -177,25 +214,15 @@ print.type <- function(x, ...) {
 
 #' Is an object created using tidyselect
 #'
+#' @description
 #' `choices` and `selected` can be provided using `tidyselect`, (e.g. [tidyselect::everything()]
-#' [tidyselect::match()], [tidyselect::starts_with()]). These functions can't be called
+#' [tidyselect::where()], [tidyselect::starts_with()]). These functions can't be called
 #' independently but rather as an argument of function which consumes them.
 #' `.is_tidyselect` safely determines if `x` can be evaluated with `tidyselect::eval_select()`
 #' @param x `choices` or `selected`
 #' @return `logical(1)`
-#' @internal
+#' @keywords internal
 .is_tidyselect <- function(x) {
   out <- tryCatch(x, error = function(e) e)
-  !is.character(out) && !is.null(out)
-}
-
-#' @export
-datanames <- function(x) {
-  if (inherits(x, "picks")) {
-    x <- list(x)
-  }
-  checkmate::assert_list(x, c("picks", "NULL"))
-  unique(unlist(lapply(x, function(x) {
-    if (is.character(x$datasets$choices)) x$datasets$choices
-  })))
+  !is.character(out) && !is.null(out) && !inherits(out, "delayed_data")
 }

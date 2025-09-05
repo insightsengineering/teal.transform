@@ -12,20 +12,6 @@ is.delayed <- function(x) {
   UseMethod("is.delayed")
 }
 
-#' @export
-#' @method is.delayed default
-is.delayed.character <- function(x) {
-  # FIXME: A warning?
-  FALSE
-}
-
-#' @export
-#' @method is.delayed default
-is.delayed.default <- function(x) {
-  # FIXME: A warning?
-  FALSE
-}
-
 # Handling a list of transformers e1 | e2
 #' @export
 #' @method is.delayed list

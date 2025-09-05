@@ -23,8 +23,8 @@
 #' spec <- c(dataset1, variables("a", where(is.character)))
 #' resolver(spec, td)
 resolver <- function(x, data) {
+  checkmate::assert_class(x, "picks")
   checkmate::assert_environment(data)
-  brows
   if (is.delayed(x)) {
     data_i <- data
     join_keys_i <- teal.data::join_keys(data)
@@ -56,7 +56,6 @@ determine <- function(x, data, join_keys, ...) {
 
 #' @export
 determine.default <- function(x, data, join_keys, ...) {
-  browser()
   stop("There is not a specific method to picks choices.")
 }
 
@@ -86,21 +85,17 @@ determine.datasets <- function(x, data, join_keys, ...) {
     warning("`dataset` must be a single selection. Forcing to first possible choice.")
     x$selected <- x$choices[1]
   }
+
   list(x = x, data = data[[x$selected]], join_keys = join_keys[[x$selected]])
 }
 
 #' @export
 determine.variables <- function(x, data, join_keys, ...) {
   checkmate::assert_multi_class(data, c("data.frame", "tbl_df", "data.table", "DataFrame"))
-  checkmate::assert_list(join_keys)
+  checkmate::assert_list(join_keys, null.ok = TRUE)
 
   if (is.null(data)) {
     return(list(x = x, data = NULL))
-  } else if (length(dim(data)) != 2L) {
-    stop(
-      "Can't resolve variables from this object of class ",
-      toString(sQuote(class(data)))
-    )
   }
 
   if (ncol(data) <= 0L) {
@@ -120,6 +115,7 @@ determine.variables <- function(x, data, join_keys, ...) {
   list(x = x, data = if (length(x$selected) == 1) data[[x$selected]], join_keys = join_keys)
 }
 
+#' @export
 determine.values <- function(x, data, join_keys, ...) {
   if (is.character(data) || is.factor(data)) {
     d <- data
@@ -134,20 +130,26 @@ determine.values <- function(x, data, join_keys, ...) {
     }
 
     list(x = x) # nothing more after this (no need to pass data further)
-  } else {
-    x$choices <- character(0)
-    x$selected <- NULL
+  } else if (is.numeric(data)) {
+    x$choices <- range(data)
+    x$selected <- if (is.numeric(x$selected)) x$selected else x$choices
     list(x = x)
   }
 }
 
 .determine_choices <- function(x, data) {
-  choices <- if (is.character(x$choices)) {
+  choices <- if (inherits(x$choices, "delayed_data")) {
+    x$choices$subset(data)
+  } else if (is.character(x$choices)) {
     x$choices
   } else {
     idx <- .eval_select(data, x$choices)
     unique(names(data)[idx])
   }
+  if (length(choices) == 0) {
+    stop("Can't determine choices: ", rlang::as_label(x$choices))
+  }
+
   labels <- vapply(
     choices,
     FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
@@ -167,8 +169,23 @@ determine.values <- function(x, data, join_keys, ...) {
     } else {
       unique(names(res))
     }
+    if (!isTRUE(x$multiple)) {
+      x$selected <- x$selected[1]
+    }
   }
   x
+}
+
+.is_selected_equal <- function(x, y) {
+  all(
+    vapply(
+      seq_along(x),
+      FUN = function(i) {
+        identical(as.vector(x[[i]]$selected), as.vector(y[[i]]$selected))
+      },
+      FUN.VALUE = logical(1)
+    )
+  )
 }
 
 

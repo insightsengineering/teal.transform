@@ -6,11 +6,11 @@ teal_transform_filter <- function(x, label = "Filter") {
     label = label,
     ui <- function(id) {
       ns <- NS(id)
-      module_input_ui(ns("elo"), spec = x)
+      module_input_ui(ns("transformer"), spec = x)
     },
     server <- function(id, data) {
       moduleServer(id, function(input, output, session) {
-        selector <- module_input_srv("elo", spec = x, data = data)
+        selector <- module_input_srv("transformer", spec = x, data = data)
 
         reactive({
           req(data(), selector())

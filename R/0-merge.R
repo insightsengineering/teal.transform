@@ -22,7 +22,6 @@ merge_expr <- function(selectors,
     x$variables <- stats::setNames(names(x$variables), unname(x$variables))
     x
   })
-
   datanames <- unique(unlist(lapply(mapping, `[[`, "datasets")))
   calls <- expression()
   anl_datanames <- character(0) # to follow what anl is composed of (to determine keys)
@@ -30,6 +29,9 @@ merge_expr <- function(selectors,
   for (i in seq_along(datanames)) {
     dataname <- datanames[i]
     this_mapping <- Filter(function(x) x$datasets == dataname, mapping)
+    this_filter_mapping <- Filter(function(x) {
+      "values" %in% names(x)
+    }, this_mapping)
     this_foreign_keys <- .fk(join_keys, dataname)
     this_primary_keys <- join_keys[dataname, dataname]
     this_variables <- c(
@@ -40,6 +42,10 @@ merge_expr <- function(selectors,
 
     # todo: extract call is datasets (class, class) specific
     this_call <- .call_dplyr_select(dataname = dataname, variables = this_variables)
+    if (length(this_filter_mapping)) {
+      this_call <- calls_combine_by("%>%", c(this_call, .call_dplyr_filter(this_filter_mapping)))
+    }
+
     if (i > 1) {
       merge_keys <- join_keys["anl", dataname]
       if (!length(merge_keys)) {
@@ -168,20 +174,48 @@ map_merged <- function(selectors, join_keys) {
     #     remaining datasets/datanames: datasets (or names) which are about to be merged
     #
     # Rules:
-    #   1. selected variables are added to anl.
-    #   2. duplicated variables added to anl should be renamed
-    #   3. anl "inherits" foreign keys from anl datasets to remaining datasets
-    #   4. foreign keys of current dataset are added to anl join_keys but only if no relation from anl already.
-    #   5. foreign keys should be renamed if duplicated with anl colnames
-    #   6. (for later) selected datasets might not be directly mergable, we need to find the "path" which
+    #   1. anl "inherits" foreign keys from anl datasets to remaining datasets
+    #   2. foreign keys of current dataset are added to anl join_keys but only if no relation from anl already.
+    #   3. foreign keys should be renamed if duplicated with anl colnames
+    #   4. (for later) selected datasets might not be directly mergable, we need to find the "path" which
     #     will probably involve add intermediate datasets in between to perform merge
+    #   5. selected variables are added to anl.
+    #   6. duplicated variables added to anl should be renamed
     remaining_datanames <- setdiff(remaining_datanames, dataname)
+
+    # todo: if this dataset has no join_keys to anl (anl_datasets) then error saying
+    #       can't merge {dataset} with merged dataset composed of {anl_datasets}
+
+    # ↓  1. anl "inherits" foreign keys from anl datasets to remaining datasets
+    this_join_keys <- do.call(
+      teal.data::join_keys,
+      lapply(
+        remaining_datanames,
+        function(dataset_2) {
+          new_keys <- join_keys[dataname, dataset_2]
+          # ↓ 2. foreign keys of current dataset are added to anl join_keys but only if no relation from anl already
+          if (length(new_keys) && !dataset_2 %in% names(join_keys[["anl"]])) {
+            # ↓ 3. foreign keys should be renamed if duplicated with anl colnames
+            new_key_names <- .suffix_duplicated_vars(
+              vars = names(new_keys), # names because we change the key of dataset_1 (not dataset_2)
+              all_vars = anl_colnames,
+              suffix = dataname
+            )
+            names(new_keys) <- new_key_names
+            join_key(dataset_1 = "anl", dataset_2 = dataset_2, keys = new_keys)
+          }
+        }
+      )
+    )
+    join_keys <- c(this_join_keys, join_keys)
+
+
     mapping_ds <- mapping_by_dataset[[dataname]]
     mapping_ds <- lapply(mapping_ds, function(x) {
       new_vars <- .suffix_duplicated_vars(
         #       is dropped by merge call. We should refer this selected foreign-key-variable
         #       to equivalent key variable added in previous iteration (existing anl foreign key)
-        # 4. duplicated variables added to anl should be renamed
+        # 6. duplicated variables added to anl should be renamed
         vars = x$variables,
         all_vars = anl_colnames,
         suffix = dataname
@@ -200,31 +234,6 @@ map_merged <- function(selectors, join_keys) {
     this_colnames <- unique(unlist(lapply(mapping_ds, `[[`, "variables")))
     anl_colnames <- c(anl_colnames, this_colnames)
 
-    # todo: if this dataset has no join_keys to anl (anl_datasets) then error saying
-    #       can't merge {dataset} with merged dataset composed of {anl_datasets}
-
-    # ↓  3. anl "inherits" foreign keys from anl datasets to remaining datasets
-    this_join_keys <- do.call(
-      teal.data::join_keys,
-      lapply(
-        remaining_datanames,
-        function(dataset_2) {
-          new_keys <- join_keys[dataname, dataset_2]
-          # ↓ 4. foreign keys of current dataset are added to anl join_keys but only if no relation from anl already
-          if (length(new_keys) && !dataset_2 %in% names(join_keys[["anl"]])) {
-            # ↓ 5. foreign keys should be renamed if duplicated with anl colnames
-            new_key_names <- .suffix_duplicated_vars(
-              vars = names(new_keys), # names because we change the key of dataset_1 (not dataset_2)
-              all_vars = anl_colnames,
-              suffix = dataname
-            )
-            names(new_keys) <- new_key_names
-            join_key(dataset_1 = "anl", dataset_2 = dataset_2, keys = new_keys)
-          }
-        }
-      )
-    )
-    join_keys <- c(this_join_keys, join_keys)
     anl_colnames <- union(anl_colnames, .fk(join_keys, "anl"))
   }
 

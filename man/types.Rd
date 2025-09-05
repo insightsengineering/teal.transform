@@ -11,9 +11,20 @@
 \usage{
 picks(...)
 
-datasets(choices = tidyselect::everything(), selected = 1)
+datasets(
+  choices = tidyselect::everything(),
+  selected = 1,
+  fixed = !.is_tidyselect(choices) && length(choices) == 1,
+  ...
+)
 
-variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+variables(
+  choices = tidyselect::everything(),
+  selected = 1,
+  multiple = !.is_tidyselect(selected) && length(selected) > 1,
+  fixed = !.is_tidyselect(choices) && length(choices) == 1,
+  ...
+)
 
 values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 
@@ -22,11 +33,17 @@ mae_colData(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 }
 \arguments{
+\item{...}{additional arguments delivered to \code{pickerInput}}
+
 \item{choices}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}} or \code{character}>
 One unquoted expression to be used to picks the choices.}
 
 \item{selected}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}} or \code{character}>
 One unquoted expression to be used to picks from choices to be selected.}
+
+\item{fixed}{<\code{logical(1)}> selection will be fixed and not possible to change interactively.}
+
+\item{multiple}{<\code{logical(1)}> if more than one selection is possible.}
 }
 \value{
 \code{picks} object containing specified settings

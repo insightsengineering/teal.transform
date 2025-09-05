@@ -71,11 +71,11 @@ call_condition_choice <- function(varname, choices) {
 
 
   if (length(choices) == 1) {
-    call("==", varname, choices)
+    call("==", varname, unname(choices))
   } else {
     c_call <- do.call(
       "call",
-      append(list("c"), choices)
+      append(list("c"), unname(choices))
     )
     # c_call needed because it needs to be vector call
     # instead of vector. SummarizedExperiment.subset
@@ -104,8 +104,8 @@ call_condition_range <- function(varname, range) {
   varname <- call_check_parse_varname(varname)
   call(
     "&",
-    call(">=", varname, range[1]),
-    call("<=", varname, range[2])
+    call(">=", varname, unname(range[1])),
+    call("<=", varname, unname(range[2]))
   )
 }
 
@@ -388,4 +388,15 @@ calls_combine_by <- function(operator, calls) {
       lapply(unname(variables), str2lang)
     )
   )
+}
+
+.call_dplyr_filter <- function(A) {
+  predicates <- lapply(unname(A), function(x) {
+    if (is.numeric(x$values)) {
+      call_condition_range(varname = x$variables, range = x$values)
+    } else {
+      call_condition_choice(varname = x$variables, choices = x$values)
+    }
+  })
+  as.call(c(list(str2lang("dplyr::filter")), predicates))
 }
