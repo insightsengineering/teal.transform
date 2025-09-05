@@ -77,9 +77,8 @@ determine.datasets <- function(x, data, join_keys, ...) {
   } else if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
-
-  x <- .determine_choices(x, data)
-  x <- .determine_selected(x, data)
+  x$choices <- .determine_choices(x$choices, data = data)
+  x$selected <- .determine_selected(x$selected, data = data[x$choices], multiple = x$multiple)
 
   if (length(x$selected) != 1) {
     warning("`dataset` must be a single selection. Forcing to first possible choice.")
@@ -109,8 +108,10 @@ determine.variables <- function(x, data, join_keys, ...) {
     }
   }
 
-  x <- .determine_choices(x, data)
-  x <- .determine_selected(x, data)
+  new_choices <- .determine_choices(x$choices, data = data)
+  new_selected <- .determine_selected(x$selected, data = data[new_choices], multiple = x$multiple)
+  x$choices <- new_choices
+  x$selected <- new_selected
 
   list(x = x, data = if (length(x$selected) == 1) data[[x$selected]], join_keys = join_keys)
 }
@@ -138,16 +139,16 @@ determine.values <- function(x, data, join_keys, ...) {
 }
 
 .determine_choices <- function(x, data) {
-  choices <- if (inherits(x$choices, "delayed_data")) {
-    x$choices$subset(data)
-  } else if (is.character(x$choices)) {
-    x$choices
+  choices <- if (inherits(x, "delayed_data")) {
+    x$subset(data)
+  } else if (is.character(x)) {
+    x
   } else {
-    idx <- .eval_select(data, x$choices)
+    idx <- .eval_select(data, x)
     unique(names(data)[idx])
   }
   if (length(choices) == 0) {
-    stop("Can't determine choices: ", rlang::as_label(x$choices))
+    stop("Can't determine choices: ", rlang::as_label(x))
   }
 
   labels <- vapply(
@@ -155,22 +156,20 @@ determine.values <- function(x, data, join_keys, ...) {
     FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
     FUN.VALUE = character(1)
   )
-  x$choices <- setNames(choices, labels)
-  x
+  setNames(choices, labels)
 }
 
-.determine_selected <- function(x, data) {
-  if (!is.null(x$selected) && length(x$choices)) {
-    data <- data[x$choices]
-    res <- try(.eval_select(data, x$selected), silent = TRUE)
-    x$selected <- if (inherits(res, "try-error")) {
+.determine_selected <- function(x, data, multiple) {
+  if (!is.null(x) && length(data)) {
+    res <- try(.eval_select(data, x), silent = TRUE)
+    x <- if (inherits(res, "try-error")) {
       warning("`selected` outside of possible `choices`. Emptying `selecting` field.", call. = FALSE)
       NULL
     } else {
       unique(names(res))
     }
-    if (!isTRUE(x$multiple)) {
-      x$selected <- x$selected[1]
+    if (!isTRUE(multiple)) {
+      x <- x[1]
     }
   }
   x
