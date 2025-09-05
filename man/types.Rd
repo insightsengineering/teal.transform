@@ -7,7 +7,7 @@
 \alias{variables}
 \alias{values}
 \alias{mae_colData}
-\title{Variables choices settings}
+\title{Choices/selected settings}
 \usage{
 picks(...)
 
@@ -26,11 +26,15 @@ variables(
   ...
 )
 
-values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+values(
+  choices = tidyselect::everything(),
+  selected = 1,
+  multiple = !.is_tidyselect(selected) && length(selected) > 1,
+  fixed = !.is_tidyselect(choices) && length(choices) == 1,
+  ...
+)
 
 mae_colData(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
-
-values(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 }
 \arguments{
 \item{...}{additional arguments delivered to \code{pickerInput}}
@@ -62,8 +66,6 @@ Define choices and default selection of variables from datasets.
 \item \code{values()}: Specify variables.
 
 \item \code{mae_colData()}: Specify colData.
-
-\item \code{values()}: Specify values.
 
 }}
 \examples{
