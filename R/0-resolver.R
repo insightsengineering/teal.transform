@@ -85,7 +85,8 @@ determine.datasets <- function(x, data, join_keys, ...) {
     x$selected <- x$choices[1]
   }
 
-  list(x = x, data = data[[x$selected]], join_keys = join_keys[[x$selected]])
+  # TODO: .raw_data doesn't contain data created in teal_transform!
+  list(x = x, data = data$.raw_data[[x$selected]], join_keys = join_keys[[x$selected]])
 }
 
 #' @export
@@ -113,7 +114,7 @@ determine.variables <- function(x, data, join_keys, ...) {
   x$choices <- new_choices
   x$selected <- new_selected
 
-  list(x = x, data = if (length(x$selected) == 1) data[[x$selected]], join_keys = join_keys)
+  list(x = x, data = data[[x$selected]], join_keys = join_keys)
 }
 
 #' @export
@@ -175,46 +176,12 @@ determine.values <- function(x, data, join_keys, ...) {
   x
 }
 
-.is_selected_equal <- function(x, y) {
-  all(
-    vapply(
-      seq_along(x),
-      FUN = function(i) {
-        identical(as.vector(x[[i]]$selected), as.vector(y[[i]]$selected))
-      },
-      FUN.VALUE = logical(1)
-    )
-  )
-}
-
-
-#' Internal method to extract data from different objects
-#'
-#' Required to resolve a specification into something usable (by comparing with the existing data).
-#' Required by merging data based on a resolved specification.
-#' @param x Object from which a subset/element is required.
-#' @param variable Name of the element to be extracted.
-#' @param ... Other arguments passed to the specific method.
-#' @keywords internal
-.extract <- function(x, variable, ...) {
-  UseMethod(".extract")
-}
-
-
-#' @export
-.extract.default <- function(x, variable, ..., drop = FALSE) {
-  if (length(dim(x)) == 2L || length(variable) > 1L) {
-    x[, variable, drop = drop]
-  } else {
-    x[[variable]]
-  }
-}
-
-#' @export
-.extract.teal_data <- function(x, variable, ...) {
-  if (length(variable) > 1L) {
-    x[variable]
-  } else {
-    x[variable]
+.extract <- function(x, data) {
+  if (inherits(x, "datasets")) {
+    data[[x$selected]]
+  } else if (inherits(x, "variables")) {
+    if (length(x$selected) == 1) {
+      data[[x$selected]]
+    }
   }
 }

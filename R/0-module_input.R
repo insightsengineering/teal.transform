@@ -88,57 +88,68 @@ module_input_srv.picks <- function(id, spec, data) {
     # todo: modify when data changes
     output$summary <- shiny::renderUI(badge())
 
-    observeEvent(data(), {
-
-    })
-
-    lapply(seq_along(spec), function(i) {
-      slot_name <- names(spec)[i]
-      selected <- .selected_choices_srv(
-        id = is(spec[[slot_name]]),
-        x = shiny::reactive(spec_resolved()[[slot_name]])
-      )
-
-      # this works as follows:
-      #  Each observer is observes input$selected of i-th element of spec ($datasets, $variables, ...)
-      #  When i-th select input changes then
-      #   - spec_resolved containing current state is being unresolved but only after the i-th element as
-      #     values are sequentially dependent. For example if variables (i=2) is selected we don't want
-      #     to unresolve (restart) dataset.
-      #   - new value (selected) is replacing old value in current slot (i)
-      #   - we call resolve which resolves only "unresolved" (delayed) values
-      #   - new spec is replacing reactiveValue
-      # Thanks to this design reactive values are triggered only once
-      shiny::observeEvent(
-        selected(),
-        ignoreInit = TRUE, # because spec_resolved is a initial state
-        ignoreNULL = FALSE,
-        {
-          if (identical(as.vector(selected()), as.vector(spec_resolved()[[slot_name]]$selected))) {
-            return(NULL)
-          }
-          logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
-
-          new_spec_unresolved <- spec
-          # ↓ everything after `i` is to resolve
-          new_spec_unresolved[seq_len(i)] <- spec_resolved()[seq_len(i)]
-          new_spec_unresolved[[slot_name]]$selected <- selected()
-
-          resolver_warnings <- character(0)
-          new_spec_resolved <- withCallingHandlers(
-            resolver(new_spec_unresolved, data_r()),
-            warning = function(w) {
-              resolver_warnings <<- paste(conditionMessage(w), collapse = " ")
+    Reduce(
+      function(data, i) {
+        slot_name <- names(spec)[i]
+        selected <- .selected_choices_srv(
+          id = is(spec[[slot_name]]),
+          x = shiny::reactive(spec_resolved()[[slot_name]]),
+          choices_range = reactive({
+            if (inherits(data(), c("environment", "data.frame", "DataFrame"))) {
+              names(data())
+            } else if (is.numeric(data())) {
+              range(data())
+            } else if (is.factor(data()) || is.character(data())) {
+              unique(data())
             }
-          )
-          if (length(resolver_warnings)) {
-            showNotification(resolver_warnings, type = "error")
-          }
+          })
+        )
 
-          spec_resolved(new_spec_resolved)
-        }
-      )
-    })
+        # this works as follows:
+        #  Each observer is observes input$selected of i-th element of spec ($datasets, $variables, ...)
+        #  When i-th select input changes then
+        #   - spec_resolved containing current state is being unresolved but only after the i-th element as
+        #     values are sequentially dependent. For example if variables (i=2) is selected we don't want
+        #     to unresolve (restart) dataset.
+        #   - new value (selected) is replacing old value in current slot (i)
+        #   - we call resolve which resolves only "unresolved" (delayed) values
+        #   - new spec is replacing reactiveValue
+        # Thanks to this design reactive values are triggered only once
+        shiny::observeEvent(
+          selected(),
+          ignoreInit = TRUE, # because spec_resolved is a initial state
+          ignoreNULL = FALSE,
+          {
+            if (identical(as.vector(selected()), as.vector(spec_resolved()[[slot_name]]$selected))) {
+              return(NULL)
+            }
+            logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
+
+            new_spec_unresolved <- spec
+            # ↓ everything after `i` is to resolve
+            new_spec_unresolved[seq_len(i)] <- spec_resolved()[seq_len(i)]
+            new_spec_unresolved[[slot_name]]$selected <- selected()
+
+            resolver_warnings <- character(0)
+            new_spec_resolved <- withCallingHandlers(
+              resolver(new_spec_unresolved, data_r()),
+              warning = function(w) {
+                resolver_warnings <<- paste(conditionMessage(w), collapse = " ")
+              }
+            )
+            if (length(resolver_warnings)) {
+              showNotification(resolver_warnings, type = "error")
+            }
+
+            spec_resolved(new_spec_resolved)
+          }
+        )
+
+        reactive(.extract(x = isolate(spec_resolved()[[slot_name]]), data()))
+      },
+      x = seq_along(spec),
+      init = data_r
+    )
 
     spec_resolved
   })
@@ -149,7 +160,7 @@ module_input_srv.picks <- function(id, spec, data) {
   uiOutput(ns("selected_container"))
 }
 
-.selected_choices_srv <- function(id, x) {
+.selected_choices_srv <- function(id, x, choices_range) {
   checkmate::assert_string(id)
   checkmate::assert_true(is.reactive(x))
   shiny::moduleServer(id, function(input, output, session) {
@@ -165,21 +176,35 @@ module_input_srv.picks <- function(id, spec, data) {
           value = unname(x()$selected)
         )
       } else {
+        # todo: provide information about data class in choices_range() so we can provide icons in the pickerInput
+
+        missing_choices <- setdiff(x()$choices, choices_range())
+
+        # Reorder choices to put missing ones at the end
+        available_choices <- x()$choices[!unname(x()$choices) %in% missing_choices]
+        missing_choices_subset <- x()$choices[unname(x()$choices) %in% missing_choices]
+        reordered_choices <- c(available_choices, missing_choices_subset)
+
         shinyWidgets::pickerInput(
           inputId = session$ns("selected"),
           label = paste("Select", is(x()), collapse = " "),
-          choices = x()$choices,
+          choices = reordered_choices,
           selected = x()$selected,
           multiple = attr(x(), "multiple"),
           choicesOpt = list(
             content = ifelse(
               # todo: add to the input choice icon = attached to choices when determine
-              names(x()$choices) == unname(x()$choices),
-              sprintf("<span>%s</span>", x()$choices),
+              names(reordered_choices) == unname(reordered_choices),
               sprintf(
-                '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
-                unname(x()$choices),
-                names(x()$choices)
+                "<span%s>%s</span>",
+                ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+                reordered_choices
+              ),
+              sprintf(
+                '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
+                ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+                unname(reordered_choices),
+                names(reordered_choices)
               )
             )
           ),
@@ -189,7 +214,8 @@ module_input_srv.picks <- function(id, spec, data) {
             "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
             # "max-options" = attr(x(), "max-options"),
             "none-selected-text" = "- Nothing selected -",
-            "show-subtext" = TRUE
+            "show-subtext" = TRUE,
+            "selected-text-format" = "count"
           )
         )
       }
@@ -215,8 +241,8 @@ module_input_srv.picks <- function(id, spec, data) {
     shiny::observeEvent(input$selected_open, {
       if (!isTRUE(input$selection_open)) {
         # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
-        new_selected <- if (length(input$selected) && !identical(input$selected, "")) input$selected
-        if (!identical(new_selected, selected())) {
+        new_selected <- if (length(input$selected) && !identical(input$selected, "")) as.vector(input$selected)
+        if (!setequal(new_selected, selected())) {
           logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
           selected(new_selected)
         }
