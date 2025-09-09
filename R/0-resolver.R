@@ -85,8 +85,7 @@ determine.datasets <- function(x, data, join_keys, ...) {
     x$selected <- x$choices[1]
   }
 
-  # TODO: .raw_data doesn't contain data created in teal_transform!
-  list(x = x, data = data$.raw_data[[x$selected]], join_keys = join_keys[[x$selected]])
+  list(x = x, data = data[[x$selected]], join_keys = join_keys[[x$selected]])
 }
 
 #' @export

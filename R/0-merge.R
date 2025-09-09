@@ -1,20 +1,47 @@
 #' Merge expression for selectors
-#' @param selectors (`list` of `picks`)
-#' @param output_name (`character(1)`)
+#' @param x ([teal.data::teal_data])
+#' @param selectors (`named list` of `picks`)
+#' @param output_name (`character(1)`) name of the merged dataset.
 #' @param join_fun (`character(1)`) name of the merge function.
-#' @param join_keys (`join_keys`)
+#' @param allow_cartesian (`logical(1)`) name of the merge function.
 #' @export
-merge_expr <- function(selectors,
-                       output_name = "merged",
-                       join_fun = "dplyr::left_join",
-                       join_keys,
-                       allow_cartesian = FALSE) {
-  checkmate::assert_list(selectors, c("picks", "reactive"))
+qenv_merge_selectors <- function(x,
+                                 selectors,
+                                 output_name = "merged",
+                                 join_fun = "dplyr::left_join",
+                                 allow_cartesian = TRUE) {
+  checkmate::assert_class(x, "teal_data")
+  checkmate::assert_list(selectors, c("picks", "reactive"), names = "named")
+  checkmate::assert_string(join_fun)
+  checkmate::assert_flag(allow_cartesian)
+
+  merge_summary <- .merge_summary_list(selectors, join_keys = teal.data::join_keys(x))
+  expr <- .merge_expr(
+    merge_summary = merge_summary,
+    output_name = output_name,
+    join_fun = join_fun,
+    allow_cartesian = allow_cartesian
+  )
+  merged_q <- eval_code(x, expr)
+  teal.data::join_keys(merged_q) <- merge_summary$join_keys
+  merged_q
+}
+
+#' @export
+map_merged <- function(selectors, join_keys) {
+  .merge_summary_list(selectors, join_keys = join_keys)$mapping
+}
+
+#'
+.merge_expr <- function(merge_summary,
+                        output_name = "merged",
+                        join_fun = "dplyr::left_join",
+                        allow_cartesian = FALSE) {
+  checkmate::assert_list(merge_summary)
   checkmate::assert_string(output_name)
   checkmate::assert_string(join_fun)
-  checkmate::assert_class(join_keys, "join_keys")
+  checkmate::assert_flag(allow_cartesian)
 
-  merge_summary <- .merge_summary_list(selectors, join_keys = join_keys)
   join_keys <- merge_summary$join_keys
   mapping <- merge_summary$mapping
   mapping <- lapply(mapping, function(x) {
@@ -78,49 +105,6 @@ merge_expr <- function(selectors,
   }
 
   call("<-", str2lang(output_name), calls_combine_by("%>%", calls))
-}
-
-
-merge_srv <- function(data, selectors, join_fun = "dplyr::left_join", output_name = "merged") {
-  checkmate::assert_class(data, "reactive")
-  checkmate::assert_list(selectors, "specification")
-  checkmate::assert_string(join_fun)
-  session <- shiny::getDefaultReactiveDomain()
-
-  inputs_out <- sapply(names(selectors), USE.NAMES = TRUE, function(id) {
-    module_input_srv(id, spec = selectors[[id]], data = data)
-  })
-
-  selectors_r <- reactive(lapply(inputs_out, function(x) x()))
-
-
-  merged_data <- reactive({
-    req(data(), selectors_r())
-    expr <- merge_expr(selectors = selectors_r(), join_keys = teal.data::join_keys(data()), output_name = output_name)
-    teal.code::eval_code(data(), expr)
-  })
-
-  merged_data
-}
-
-#' @export
-qenv_merge_selectors <- function(x,
-                                 selectors,
-                                 output_name = "merged",
-                                 join_fun = "dplyr::left_join",
-                                 allow_cartesian = TRUE) {
-  expr <- merge_expr(
-    selectors = selectors,
-    output_name = output_name,
-    join_fun = join_fun,
-    join_keys = teal.data::join_keys(x),
-    allow_cartesian = allow_cartesian
-  )
-  eval_code(x, expr)
-}
-
-map_merged <- function(selectors, join_keys) {
-  .merge_summary_list(selectors, join_keys = join_keys)$mapping
 }
 
 

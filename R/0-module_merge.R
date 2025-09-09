@@ -22,6 +22,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
         ),
         shiny::div(
           reactable::reactableOutput(ns("table_merged")),
+          shiny::verbatimTextOutput(ns("join_keys")),
           shiny::verbatimTextOutput(ns("mapped")),
           shiny::verbatimTextOutput(ns("src"))
         )
@@ -52,6 +53,9 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
             teal.code::get_code(req(table_q()))
           )
         })
+
+        output$join_keys <- renderPrint(teal.data::join_keys(merged_q()))
+
         output$mapped <- renderText(yaml::as.yaml(map_merged(selectors)))
       })
     },

@@ -1,3 +1,9 @@
+#' Module's interactive input
+#'
+#' @description
+#'
+
+
 #' @export
 module_input_ui <- function(id, spec) {
   checkmate::assert_string(id)
@@ -26,7 +32,7 @@ module_input_ui.picks <- function(id, spec) {
   content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x)), x))
   htmltools::tags$div(
     # todo: spec to have a label attribute
-    .badge_dropdown(ns("inputs"), label = badge_label, content = content)
+    teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
   )
 }
 
@@ -117,7 +123,7 @@ module_input_srv.picks <- function(id, spec, data) {
         # Thanks to this design reactive values are triggered only once
         shiny::observeEvent(
           selected(),
-          ignoreInit = TRUE, # because spec_resolved is a initial state
+          ignoreInit = TRUE, # because spec_resolved is already resolved and `selected()` is being set
           ignoreNULL = FALSE,
           {
             if (identical(as.vector(selected()), as.vector(spec_resolved()[[slot_name]]$selected))) {
@@ -166,7 +172,7 @@ module_input_srv.picks <- function(id, spec, data) {
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
     output$selected_container <- renderUI({
-      if (isTRUE(attr(x(), "fixed")) || length(x()$choices) == 1) {
+      if (isTRUE(attr(x(), "fixed")) || length(choices_range()) == 1) {
       } else if (is.numeric(x()$choices)) {
         shinyWidgets::numericRangeInput(
           inputId = session$ns("range"),
@@ -177,45 +183,45 @@ module_input_srv.picks <- function(id, spec, data) {
         )
       } else {
         # todo: provide information about data class in choices_range() so we can provide icons in the pickerInput
-
         missing_choices <- setdiff(x()$choices, choices_range())
+        reordered_choices <- c(
+          x()$choices[!unname(x()$choices) %in% missing_choices],
+          x()$choices[unname(x()$choices) %in% missing_choices]
+        )
 
-        # Reorder choices to put missing ones at the end
-        available_choices <- x()$choices[!unname(x()$choices) %in% missing_choices]
-        missing_choices_subset <- x()$choices[unname(x()$choices) %in% missing_choices]
-        reordered_choices <- c(available_choices, missing_choices_subset)
-
-        shinyWidgets::pickerInput(
-          inputId = session$ns("selected"),
-          label = paste("Select", is(x()), collapse = " "),
-          choices = reordered_choices,
-          selected = x()$selected,
-          multiple = attr(x(), "multiple"),
-          choicesOpt = list(
-            content = ifelse(
-              # todo: add to the input choice icon = attached to choices when determine
-              names(reordered_choices) == unname(reordered_choices),
-              sprintf(
-                "<span%s>%s</span>",
-                ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-                reordered_choices
-              ),
-              sprintf(
-                '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
-                ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-                unname(reordered_choices),
-                names(reordered_choices)
+        htmltools::div(
+          style = "max-width: 500px;",
+          shinyWidgets::pickerInput(
+            inputId = session$ns("selected"),
+            label = paste("Select", is(x()), collapse = " "),
+            choices = reordered_choices,
+            selected = x()$selected,
+            multiple = attr(x(), "multiple"),
+            choicesOpt = list(
+              content = ifelse(
+                # todo: add to the input choice icon = attached to choices when determine
+                names(reordered_choices) == unname(reordered_choices),
+                sprintf(
+                  "<span%s>%s</span>",
+                  ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+                  reordered_choices
+                ),
+                sprintf(
+                  '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
+                  ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+                  unname(reordered_choices),
+                  names(reordered_choices)
+                )
               )
+            ),
+            options = list(
+              "actions-box" = attr(x(), "multiple"),
+              # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
+              "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
+              # "max-options" = attr(x(), "max-options"),
+              "none-selected-text" = "- Nothing selected -",
+              "show-subtext" = TRUE
             )
-          ),
-          options = list(
-            "actions-box" = attr(x(), "multiple"),
-            # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
-            "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
-            # "max-options" = attr(x(), "max-options"),
-            "none-selected-text" = "- Nothing selected -",
-            "show-subtext" = TRUE,
-            "selected-text-format" = "count"
           )
         )
       }
@@ -251,60 +257,6 @@ module_input_srv.picks <- function(id, spec, data) {
     selected
   })
 }
-
-.badge_dropdown <- function(id, label, content) {
-  ns <- shiny::NS(id)
-  htmltools::tagList(
-    htmltools::tags$style(".choices-selected-badge-dropdown:has(~ div .shiny-validation-message) {
-      border-color: red !important;
-    }"),
-    htmltools::tags$div(
-      htmltools::tags$span(
-        label,
-        id = ns("summary_badge"),
-        class = "badge bg-primary choices-selected-badge-dropdown",
-        style = "cursor: pointer; user-select: none; border: 1px solid transparent;",
-        onclick = sprintf(
-          "
-          var container = document.getElementById('%s');
-          var summary = document.getElementById('%s');
-
-          if(container.style.display === 'none' || container.style.display === '') {
-            container.style.display = 'block';
-
-            // Trigger Shiny input events to ensure renderUI gets called
-            $(container).trigger('shown');
-            Shiny.bindAll(container);
-
-            // Add click outside handler
-            setTimeout(function() {
-              function handleClickOutside(event) {
-                if (!container.contains(event.target) && !summary.contains(event.target)) {
-                  container.style.display = 'none';
-                  $(container).trigger('hidden');
-                  document.removeEventListener('click', handleClickOutside);
-                }
-              }
-              document.addEventListener('click', handleClickOutside);
-            }, 10);
-          } else {
-            container.style.display = 'none';
-            $(container).trigger('hidden');
-          }
-        ",
-          ns("inputs_container"),
-          ns("summary_badge")
-        )
-      ),
-      htmltools::tags$div(
-        content,
-        id = ns("inputs_container"),
-        style = "display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px; z-index: 1000; min-width: 200px;",
-      )
-    )
-  )
-}
-
 
 #' Restore value from bookmark.
 #'
