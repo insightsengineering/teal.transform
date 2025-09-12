@@ -29,7 +29,7 @@ module_input_ui.picks <- function(id, spec) {
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
   # todo: icon or color to indicate a column class
-  content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x)), x))
+  content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x))))
   htmltools::tags$div(
     # todo: spec to have a label attribute
     teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
@@ -96,56 +96,45 @@ module_input_srv.picks <- function(id, spec, data) {
 
     Reduce(
       function(data, i) {
-        slot_name <- names(spec)[i]
-        resolved_on_data <- reactive(determine(x = spec[[i]], data = data()))
-        selected <- .selected_choices_srv(
-          id = is(spec[[slot_name]]),
-          x = shiny::reactive(spec_resolved()[[slot_name]]),
-          choices_range = reactive(resolved_on_data()$x$choices)
+        choices <- reactiveVal(isolate(spec_resolved())[[i]]$choices)
+        selected <- reactiveVal(isolate(spec_resolved())[[i]]$selected)
+        all_choices <- reactive(determine(x = spec[[i]], data = data())$x$choices)
+
+        observeEvent(all_choices(), ignoreInit = TRUE, {
+          if (!all(spec_resolved()[[i]]$selected %in% all_choices())) {
+            logger::log_debug("module_input_srv@1 selected is outside of the possible choices for { names(spec)[i] }")
+            .update_rv(selected, intersect(spec_resolved()[[i]]$selected, all_choices()))
+          }
+          if (!isTRUE(all.equal(spec_resolved()[[i]]$choices, all_choices()))) {
+            logger::log_debug("module_input_srv@1 choices are outside of the possible choices for { names(spec)[i] }")
+            .update_rv(choices, all_choices())
+          }
+        })
+
+        observeEvent(spec_resolved()[[i]], ignoreInit = TRUE, {
+          .update_rv(choices, spec_resolved()[[i]]$choices)
+          .update_rv(selected, spec_resolved()[[i]]$selected)
+        })
+
+        args <- attributes(spec[[i]])
+        .selected_choices_srv(
+          id = is(spec[[i]]),
+          type = is(spec[[i]]),
+          choices = choices,
+          selected = selected,
+          args = args[!names(args) %in% c("names", "class")]
         )
 
         # this works as follows:
         #  Each observer is observes input$selected of i-th element of spec ($datasets, $variables, ...)
-        #  When i-th select input changes then
-        #   - spec_resolved containing current state is being unresolved but only after the i-th element as
-        #     values are sequentially dependent. For example if variables (i=2) is selected we don't want
-        #     to unresolve (restart) dataset.
-        #   - new value (selected) is replacing old value in current slot (i)
-        #   - we call resolve which resolves only "unresolved" (delayed) values
-        #   - new spec is replacing reactiveValue
-        # Thanks to this design reactive values are triggered only once
         shiny::observeEvent(
           selected(),
           ignoreInit = TRUE, # because spec_resolved is already resolved and `selected()` is being set
-          ignoreNULL = FALSE,
-          {
-            if (isTRUE(all.equal(selected(), spec_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
-              # tolerance 1e-15 is a max precision (significant digits) in widgets.
-              return(NULL)
-            }
-            logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
-
-            new_spec_unresolved <- spec
-            # ↓ everything after `i` is to resolve
-            new_spec_unresolved[seq_len(i)] <- spec_resolved()[seq_len(i)]
-            new_spec_unresolved[[slot_name]]$selected <- selected()
-
-            resolver_warnings <- character(0)
-            new_spec_resolved <- withCallingHandlers(
-              resolver(new_spec_unresolved, data_r()),
-              warning = function(w) {
-                resolver_warnings <<- paste(conditionMessage(w), collapse = " ")
-              }
-            )
-            if (length(resolver_warnings)) {
-              showNotification(resolver_warnings, type = "error")
-            }
-
-            spec_resolved(new_spec_resolved)
-          }
+          ignoreNULL = FALSE, # because input$selected can be empty
+          .resolve(selected(), slot_idx = i, spec_resolved = spec_resolved, old_spec = spec, data = data_r())
         )
 
-        reactive(resolved_on_data()$data)
+        reactive(.extract(x = isolate(spec_resolved()[[i]]), data()))
       },
       x = seq_along(spec),
       init = data_r
@@ -155,24 +144,37 @@ module_input_srv.picks <- function(id, spec, data) {
   })
 }
 
-.selected_choices_ui <- function(id, x) {
+.selected_choices_ui <- function(id) {
   ns <- shiny::NS(id)
   uiOutput(ns("selected_container"))
 }
 
-.selected_choices_srv <- function(id, x, choices_range) {
+.selected_choices_srv <- function(id, type, choices, selected, args) {
   checkmate::assert_string(id)
-  checkmate::assert_true(is.reactive(x))
+  checkmate::assert_class(choices, "reactiveVal")
+  checkmate::assert_class(selected, "reactiveVal")
+  checkmate::assert_list(args)
+
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
-    selected <- shiny::reactiveVal(isolate(x())$selected)
     output$selected_container <- renderUI({
-      if (isTRUE(attr(x(), "fixed")) || length(choices_range()) == 1) {
-      } else if (is.numeric(x()$choices)) {
-        .selected_choices_ui_numeric(session$ns("range"), x = x, choices_range = choices_range)
+      if (isTRUE(args$fixed) || length(choices()) == 1) {
+      } else if (is.numeric(choices())) {
+        .selected_choices_ui_numeric(session$ns("range"),
+          type = type,
+          choices = choices(),
+          selected = selected(),
+          args = args
+        )
       } else {
-        # todo: provide information about data class in choices_range() so we can provide icons in the pickerInput
-        .selected_choices_ui_categorical(session$ns("selected"), x = x, choices_range = choices_range)
+        # todo: provide information about data class so we can provide icons in the pickerInput
+        .selected_choices_ui_categorical(
+          session$ns("selected"),
+          type = type,
+          choices = choices(),
+          selected = selected(),
+          args = args
+        )
       }
     })
 
@@ -182,15 +184,8 @@ module_input_srv.picks <- function(id, spec, data) {
       if (length(input$range) != 2) {
         return(NULL)
       }
-      if (!isTRUE(all.equal(input$range, selected(), tolerance = 1e-15))) {
-        # tolerance 1e-15 is a max precision (significant digits) in widgets.
-        logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
-        selected(input$range)
-      }
+      .update_rv(selected, input$range)
     })
-
-    .selected_choices_srv_categorical("selected", x = x, choices_range = choices_range)
-
 
     # for non-numeric
     shiny::observeEvent(input$selected_open, {
@@ -207,53 +202,42 @@ module_input_srv.picks <- function(id, spec, data) {
   })
 }
 
-
-.selected_choices_ui_numeric <- function(id, x, choices_range) {
+.selected_choices_ui_numeric <- function(id, type, choices, selected, args) {
   shinyWidgets::numericRangeInput(
     inputId = id,
-    label = paste("Select", is(x()), collapse = " "),
-    min = unname(x()$choices[1]),
-    max = unname(tail(x()$choices, 1)),
-    value = unname(x()$selected)
+    label = paste("Select", type, collapse = " "),
+    min = unname(choices[1]),
+    max = unname(tail(choices, 1)),
+    value = unname(selected)
   )
 }
 
-
-
-.selected_choices_ui_categorical <- function(id, x, choices_range) {
-  missing_choices <- setdiff(x()$choices, choices_range())
-  reordered_choices <- x()$choices[order(unname(x()$choices) %in% missing_choices)]
-
+.selected_choices_ui_categorical <- function(id, type, choices, selected, args) {
   htmltools::div(
     style = "max-width: 500px;",
     shinyWidgets::pickerInput(
       inputId = id,
-      label = paste("Select", is(x()), collapse = " "),
-      choices = reordered_choices,
-      selected = x()$selected,
-      multiple = attr(x(), "multiple"),
+      label = paste("Select", type, collapse = " "),
+      choices = choices,
+      selected = selected,
+      multiple = args$multiple,
       choicesOpt = list(
         content = ifelse(
           # todo: add to the input choice icon = attached to choices when determine
-          names(reordered_choices) == unname(reordered_choices),
+          names(choices) == unname(choices),
+          sprintf("<span>%s</span>", choices),
           sprintf(
-            "<span%s>%s</span>",
-            ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-            reordered_choices
-          ),
-          sprintf(
-            '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
-            ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-            unname(reordered_choices),
-            names(reordered_choices)
+            '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
+            unname(choices),
+            names(choices)
           )
         )
       ),
       options = list(
-        "actions-box" = attr(x(), "multiple"),
-        # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
-        "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
-        # "max-options" = attr(x(), "max-options"),
+        "actions-box" = args$multiple,
+        # "allow-clear" = args$multiple || args$`allow-clear`,
+        "live-search" = length(choices) > 10,
+        # "max-options" = args$`max-options`,
         "none-selected-text" = "- Nothing selected -",
         "show-subtext" = TRUE
       )
@@ -261,13 +245,59 @@ module_input_srv.picks <- function(id, spec, data) {
   )
 }
 
-.selected_choices_srv_numeric <- function(id, x, choices_range) {
-
+.update_rv <- function(rv, value, log) {
+  if (!isTRUE(all.equal(rv(), value, tolerance = 1e-15))) {
+    # tolerance 1e-15 is a max precision (significant digits) in widgets.
+    rv(value)
+  }
 }
 
-.selected_choices_srv_categorical <- function(id, x, choices_range) {
-}
+#' Resolve downstream after selected changes
+#'
+#'  @description
+#'  When i-th select input changes then
+#'   - spec_resolved containing current state is being unresolved but only after the i-th element as
+#'     values are sequentially dependent. For example if variables (i=2) is selected we don't want
+#'     to unresolve (restart) dataset.
+#'   - new value (selected) is replacing old value in current slot (i)
+#'   - we call resolve which resolves only "unresolved" (delayed) values
+#'   - new spec is replacing reactiveValue
+#' Thanks to this design reactive values are triggered only once
+#' @param selected (`vector`) rather `character`, or `factor`. `numeric(2)` for `values()` based on numeric column.
+#' @param slot_idx (`integer`)
+#' @param spec_resolved (`reactiveVal`)
+#' @param old_spec (`picks`)
+#' @param data (`any` asserted further in `resolver`)
+#' @keywords internal
+.resolve <- function(selected, slot_idx, spec_resolved, old_spec, data) {
+  checkmate::assert_atomic_vector(selected)
+  checkmate::assert_integerish(slot_idx, lower = 1)
+  checkmate::assert_class(spec_resolved, "reactiveVal")
+  checkmate::assert_class(old_spec, "picks")
 
+  if (isTRUE(all.equal(selected, spec_resolved()[[slot_idx]]$selected, tolerance = 1e-15))) {
+    return(NULL)
+  }
+  logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
+
+  new_spec_unresolved <- old_spec
+  # ↓ everything after `slot_idx` is to resolve
+  new_spec_unresolved[seq_len(slot_idx - 1)] <- spec_resolved()[seq_len(slot_idx - 1)]
+  new_spec_unresolved[[slot_idx]]$selected <- selected
+
+  resolver_warnings <- character(0)
+  new_spec_resolved <- withCallingHandlers(
+    resolver(new_spec_unresolved, data),
+    warning = function(w) {
+      resolver_warnings <<- paste(conditionMessage(w), collapse = " ")
+    }
+  )
+  if (length(resolver_warnings)) {
+    showNotification(resolver_warnings, type = "error")
+  }
+
+  spec_resolved(new_spec_resolved)
+}
 #' Restore value from bookmark.
 #'
 #' Get value from bookmark or return default.
