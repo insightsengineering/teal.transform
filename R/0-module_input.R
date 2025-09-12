@@ -97,18 +97,11 @@ module_input_srv.picks <- function(id, spec, data) {
     Reduce(
       function(data, i) {
         slot_name <- names(spec)[i]
+        resolved_on_data <- reactive(determine(x = spec[[i]], data = data()))
         selected <- .selected_choices_srv(
           id = is(spec[[slot_name]]),
           x = shiny::reactive(spec_resolved()[[slot_name]]),
-          choices_range = reactive({
-            if (inherits(data(), c("environment", "data.frame", "DataFrame"))) {
-              names(data())
-            } else if (is.numeric(data())) {
-              range(data())
-            } else if (is.factor(data()) || is.character(data())) {
-              unique(data())
-            }
-          })
+          choices_range = reactive(resolved_on_data()$x$choices)
         )
 
         # this works as follows:
@@ -126,7 +119,8 @@ module_input_srv.picks <- function(id, spec, data) {
           ignoreInit = TRUE, # because spec_resolved is already resolved and `selected()` is being set
           ignoreNULL = FALSE,
           {
-            if (identical(as.vector(selected()), as.vector(spec_resolved()[[slot_name]]$selected))) {
+            if (isTRUE(all.equal(selected(), spec_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
+              # tolerance 1e-15 is a max precision (significant digits) in widgets.
               return(NULL)
             }
             logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
@@ -151,7 +145,7 @@ module_input_srv.picks <- function(id, spec, data) {
           }
         )
 
-        reactive(.extract(x = isolate(spec_resolved()[[slot_name]]), data()))
+        reactive(resolved_on_data()$data)
       },
       x = seq_along(spec),
       init = data_r
@@ -171,64 +165,16 @@ module_input_srv.picks <- function(id, spec, data) {
   checkmate::assert_true(is.reactive(x))
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
+    selected <- shiny::reactiveVal(isolate(x())$selected)
     output$selected_container <- renderUI({
       if (isTRUE(attr(x(), "fixed")) || length(choices_range()) == 1) {
       } else if (is.numeric(x()$choices)) {
-        shinyWidgets::numericRangeInput(
-          inputId = session$ns("range"),
-          label = paste("Select", is(x()), collapse = " "),
-          min = unname(x()$choices[1]),
-          max = unname(tail(x()$choices, 1)),
-          value = unname(x()$selected)
-        )
+        .selected_choices_ui_numeric(session$ns("range"), x = x, choices_range = choices_range)
       } else {
         # todo: provide information about data class in choices_range() so we can provide icons in the pickerInput
-        missing_choices <- setdiff(x()$choices, choices_range())
-        reordered_choices <- c(
-          x()$choices[!unname(x()$choices) %in% missing_choices],
-          x()$choices[unname(x()$choices) %in% missing_choices]
-        )
-
-        htmltools::div(
-          style = "max-width: 500px;",
-          shinyWidgets::pickerInput(
-            inputId = session$ns("selected"),
-            label = paste("Select", is(x()), collapse = " "),
-            choices = reordered_choices,
-            selected = x()$selected,
-            multiple = attr(x(), "multiple"),
-            choicesOpt = list(
-              content = ifelse(
-                # todo: add to the input choice icon = attached to choices when determine
-                names(reordered_choices) == unname(reordered_choices),
-                sprintf(
-                  "<span%s>%s</span>",
-                  ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-                  reordered_choices
-                ),
-                sprintf(
-                  '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
-                  ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
-                  unname(reordered_choices),
-                  names(reordered_choices)
-                )
-              )
-            ),
-            options = list(
-              "actions-box" = attr(x(), "multiple"),
-              # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
-              "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
-              # "max-options" = attr(x(), "max-options"),
-              "none-selected-text" = "- Nothing selected -",
-              "show-subtext" = TRUE
-            )
-          )
-        )
+        .selected_choices_ui_categorical(session$ns("selected"), x = x, choices_range = choices_range)
       }
     })
-
-    selected <- shiny::reactiveVal()
-    # todo: if only one choice then replace with the text only
 
     # for numeric
     range_debounced <- reactive(input$range) |> debounce(1000)
@@ -236,11 +182,14 @@ module_input_srv.picks <- function(id, spec, data) {
       if (length(input$range) != 2) {
         return(NULL)
       }
-      if (!identical(input$range, selected())) {
+      if (!isTRUE(all.equal(input$range, selected(), tolerance = 1e-15))) {
+        # tolerance 1e-15 is a max precision (significant digits) in widgets.
         logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
         selected(input$range)
       }
     })
+
+    .selected_choices_srv_categorical("selected", x = x, choices_range = choices_range)
 
 
     # for non-numeric
@@ -256,6 +205,67 @@ module_input_srv.picks <- function(id, spec, data) {
     })
     selected
   })
+}
+
+
+.selected_choices_ui_numeric <- function(id, x, choices_range) {
+  shinyWidgets::numericRangeInput(
+    inputId = id,
+    label = paste("Select", is(x()), collapse = " "),
+    min = unname(x()$choices[1]),
+    max = unname(tail(x()$choices, 1)),
+    value = unname(x()$selected)
+  )
+}
+
+
+
+.selected_choices_ui_categorical <- function(id, x, choices_range) {
+  missing_choices <- setdiff(x()$choices, choices_range())
+  reordered_choices <- x()$choices[order(unname(x()$choices) %in% missing_choices)]
+
+  htmltools::div(
+    style = "max-width: 500px;",
+    shinyWidgets::pickerInput(
+      inputId = id,
+      label = paste("Select", is(x()), collapse = " "),
+      choices = reordered_choices,
+      selected = x()$selected,
+      multiple = attr(x(), "multiple"),
+      choicesOpt = list(
+        content = ifelse(
+          # todo: add to the input choice icon = attached to choices when determine
+          names(reordered_choices) == unname(reordered_choices),
+          sprintf(
+            "<span%s>%s</span>",
+            ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+            reordered_choices
+          ),
+          sprintf(
+            '<span%s>%s</span>&nbsp;<small class="text-muted">%s</small>',
+            ifelse(unname(reordered_choices) %in% missing_choices, ' style="opacity: 0.5;"', ""),
+            unname(reordered_choices),
+            names(reordered_choices)
+          )
+        )
+      ),
+      options = list(
+        "actions-box" = attr(x(), "multiple"),
+        # "allow-clear" = attr(x(), "multiple") || attr(x(), "allow-clear"),
+        "live-search" = ifelse(length(x()$choices) > 10, TRUE, FALSE),
+        # "max-options" = attr(x(), "max-options"),
+        "none-selected-text" = "- Nothing selected -",
+        "show-subtext" = TRUE
+      )
+    )
+  )
+}
+
+.selected_choices_srv_numeric <- function(id, x, choices_range) {
+
+}
+
+.selected_choices_srv_categorical <- function(id, x, choices_range) {
 }
 
 #' Restore value from bookmark.

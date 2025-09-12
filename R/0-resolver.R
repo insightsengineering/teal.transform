@@ -27,16 +27,14 @@ resolver <- function(x, data) {
   checkmate::assert_environment(data)
   if (is.delayed(x)) {
     data_i <- data
-    join_keys_i <- teal.data::join_keys(data)
     for (i in seq_along(x)) {
-      determined_i <- determine(x[[i]], data = data_i, join_keys = join_keys_i)
+      determined_i <- determine(x[[i]], data = data_i)
       # overwrite so that next x in line receives the corresponding data and specification
       if (is.null(determined_i$x)) {
         next
       }
       x[[i]] <- determined_i$x
       data_i <- determined_i$data
-      join_keys_i <- determined_i$join_keys
     }
   }
   x
@@ -50,17 +48,17 @@ resolver <- function(x, data) {
 #' @param data The minimal data required.
 #' @return A list with two elements, the `type` resolved and the data extracted.
 #' @keywords internal
-determine <- function(x, data, join_keys, ...) {
+determine <- function(x, data, ...) {
   UseMethod("determine")
 }
 
 #' @export
-determine.default <- function(x, data, join_keys, ...) {
+determine.default <- function(x, data, ...) {
   stop("There is not a specific method to picks choices.")
 }
 
 #' @export
-determine.colData <- function(x, data, join_keys, ...) {
+determine.colData <- function(x, data) {
   if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
     stop("Requires SummarizedExperiment package from Bioconductor.")
   }
@@ -69,9 +67,8 @@ determine.colData <- function(x, data, join_keys, ...) {
 }
 
 #' @export
-determine.datasets <- function(x, data, join_keys, ...) {
+determine.datasets <- function(x, data) {
   checkmate::assert_environment(data)
-  checkmate::assert_class(join_keys, "join_keys")
   if (is.null(data)) {
     return(list(x = x, data = NULL))
   } else if (!inherits(data, "qenv")) {
@@ -85,13 +82,12 @@ determine.datasets <- function(x, data, join_keys, ...) {
     x$selected <- x$choices[1]
   }
 
-  list(x = x, data = data[[x$selected]], join_keys = join_keys[[x$selected]])
+  list(x = x, data = data[[x$selected]])
 }
 
 #' @export
-determine.variables <- function(x, data, join_keys, ...) {
+determine.variables <- function(x, data) {
   checkmate::assert_multi_class(data, c("data.frame", "tbl_df", "data.table", "DataFrame"))
-  checkmate::assert_list(join_keys, null.ok = TRUE)
 
   if (is.null(data)) {
     return(list(x = x, data = NULL))
@@ -101,23 +97,16 @@ determine.variables <- function(x, data, join_keys, ...) {
     stop("Can't pull variable: No variable is available.")
   }
 
-  # ↓ see ?tidyselectors
-  for (join_keys_i in join_keys) {
-    for (key_column in names(join_keys_i)) {
-      attr(data[[key_column]], "join_key") <- TRUE
-    }
-  }
-
   new_choices <- .determine_choices(x$choices, data = data)
   new_selected <- .determine_selected(x$selected, data = data[new_choices], multiple = x$multiple)
   x$choices <- new_choices
   x$selected <- new_selected
 
-  list(x = x, data = data[[x$selected]], join_keys = join_keys)
+  list(x = x, data = data[[x$selected]])
 }
 
 #' @export
-determine.values <- function(x, data, join_keys, ...) {
+determine.values <- function(x, data) {
   if (is.character(data) || is.factor(data)) {
     d <- data
     names(d) <- data

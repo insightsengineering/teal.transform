@@ -16,13 +16,6 @@
 #     during eval_select.
 #   - having predicates to be utilized by `tidyselect::where` is `tidyselect` compatible and more predictable
 
-
-#' @rdname tidyselectors
-#' @export
-is_key <- function() {
-  where(function(x) isTRUE(attr(x, "join_key")))
-}
-
 #' @rdname tidyselectors
 #' @param min.len (`integer(1)`) minimal number of unique values
 #' @param max.len (`integer(1)`) maximal number of unique values
