@@ -101,19 +101,31 @@ module_input_srv.picks <- function(id, spec, data) {
         all_choices <- reactive(determine(x = spec[[i]], data = data())$x$choices)
 
         observeEvent(all_choices(), ignoreInit = TRUE, {
-          if (!all(spec_resolved()[[i]]$selected %in% all_choices())) {
-            logger::log_debug("module_input_srv@1 selected is outside of the possible choices for { names(spec)[i] }")
-            .update_rv(selected, intersect(spec_resolved()[[i]]$selected, all_choices()))
+          current_choices <- spec_resolved()[[i]]$choices
+          current_selected <- spec_resolved()[[i]]$selected
+
+          unavailable_selected <- setdiff(current_selected, all_choices())
+          if (length(unavailable_selected)) {
+            log <- sprintf(
+              "module_input_srv@1 %s$%s$selected is outside of the possible choices: %s",
+              id, names(spec)[i], toString(unavailable_selected)
+            )
+            .update_rv(selected, intersect(spec_resolved()[[i]]$selected, all_choices()), log)
           }
-          if (!isTRUE(all.equal(spec_resolved()[[i]]$choices, all_choices()))) {
-            logger::log_debug("module_input_srv@1 choices are outside of the possible choices for { names(spec)[i] }")
-            .update_rv(choices, all_choices())
+
+          unavailable_choices <- setdiff(current_choices, all_choices())
+          if (length(unavailable_choices)) {
+            log <- sprintf(
+              "module_input_srv@1 %s$%s$choices is outside of the possible choices: %s",
+              id, names(spec)[i], toString(unavailable_choices)
+            )
+            .update_rv(choices, all_choices(), log)
           }
         })
 
         observeEvent(spec_resolved()[[i]], ignoreInit = TRUE, {
-          .update_rv(choices, spec_resolved()[[i]]$choices)
-          .update_rv(selected, spec_resolved()[[i]]$selected)
+          .update_rv(choices, spec_resolved()[[i]]$choices, log = "module_input_srv@1 update input choices")
+          .update_rv(selected, spec_resolved()[[i]]$selected, log = "module_input_srv@1 update input selected")
         })
 
         args <- attributes(spec[[i]])
@@ -184,7 +196,7 @@ module_input_srv.picks <- function(id, spec, data) {
       if (length(input$range) != 2) {
         return(NULL)
       }
-      .update_rv(selected, input$range)
+      .update_rv(selected, input$range, log = ".selected_choices_srv@1 update selected after input changed")
     })
 
     # for non-numeric
@@ -192,10 +204,7 @@ module_input_srv.picks <- function(id, spec, data) {
       if (!isTRUE(input$selection_open)) {
         # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
         new_selected <- if (length(input$selected) && !identical(input$selected, "")) as.vector(input$selected)
-        if (!setequal(new_selected, selected())) {
-          logger::log_debug(".selected_choices_srv@2 input$selected has changed.")
-          selected(new_selected)
-        }
+        .update_rv(selected, new_selected, log = ".selected_choices_srv@1 update selected after input changed")
       }
     })
     selected
@@ -246,8 +255,8 @@ module_input_srv.picks <- function(id, spec, data) {
 }
 
 .update_rv <- function(rv, value, log) {
-  if (!isTRUE(all.equal(rv(), value, tolerance = 1e-15))) {
-    # tolerance 1e-15 is a max precision (significant digits) in widgets.
+  if (!isTRUE(all.equal(rv(), value, tolerance = 1e-15))) { # tolerance 1e-15 is a max precision in widgets.
+    logger::log_debug(log)
     rv(value)
   }
 }

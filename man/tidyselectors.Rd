@@ -2,13 +2,10 @@
 % Please edit documentation in R/0-tidyselect-helpers.R
 \name{tidyselectors}
 \alias{tidyselectors}
-\alias{is_key}
 \alias{is_categorical}
 \alias{no_more_choices_than}
 \title{\code{tidyselect} helpers}
 \usage{
-is_key()
-
 is_categorical(max.len, min.len)
 
 no_more_choices_than(max.len)

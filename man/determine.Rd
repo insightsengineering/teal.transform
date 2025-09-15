@@ -4,7 +4,7 @@
 \alias{determine}
 \title{A method that should take a type and resolve it.}
 \usage{
-determine(x, data, join_keys, ...)
+determine(x, data, ...)
 }
 \arguments{
 \item{x}{The specification to resolve.}
