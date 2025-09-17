@@ -82,7 +82,7 @@ determine.datasets <- function(x, data) {
     x$selected <- x$choices[1]
   }
 
-  list(x = x, data = data[[x$selected]])
+  list(x = x, data = .extract(x, data))
 }
 
 #' @export
@@ -102,7 +102,7 @@ determine.variables <- function(x, data) {
   x$choices <- new_choices
   x$selected <- new_selected
 
-  list(x = x, data = data[[x$selected]])
+  list(x = x, data = .extract(x, data))
 }
 
 #' @export
@@ -165,10 +165,10 @@ determine.values <- function(x, data) {
 }
 
 .extract <- function(x, data) {
-  if (inherits(x, "datasets")) {
-    data[[x$selected]]
-  } else if (inherits(x, "variables")) {
-    if (length(x$selected) == 1) {
+  if (length(x$selected) == 1) {
+    if (inherits(x, "datasets")) {
+      data[[x$selected]]
+    } else if (inherits(x, "variables")) {
       data[[x$selected]]
     }
   }

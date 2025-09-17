@@ -103,24 +103,23 @@ module_input_srv.picks <- function(id, spec, data) {
         observeEvent(all_choices(), ignoreInit = TRUE, {
           current_choices <- spec_resolved()[[i]]$choices
           current_selected <- spec_resolved()[[i]]$selected
+          .update_rv(
+            selected,
+            if (is.numeric(all_choices())) {
+              all_choices()
+            } else {
+              intersect(spec_resolved()[[i]]$selected, all_choices())
+            },
+            sprintf("module_input_srv@1 %s$%s$selected is outside of the possible choices", id, names(spec)[i])
+          )
 
-          unavailable_selected <- setdiff(current_selected, all_choices())
-          if (length(unavailable_selected)) {
-            log <- sprintf(
-              "module_input_srv@1 %s$%s$selected is outside of the possible choices: %s",
-              id, names(spec)[i], toString(unavailable_selected)
+          .update_rv(
+            choices,
+            all_choices(),
+            sprintf(
+              "module_input_srv@1 %s$%s$choices is outside of the possible choices", id, names(spec)[i]
             )
-            .update_rv(selected, intersect(spec_resolved()[[i]]$selected, all_choices()), log)
-          }
-
-          unavailable_choices <- setdiff(current_choices, all_choices())
-          if (length(unavailable_choices)) {
-            log <- sprintf(
-              "module_input_srv@1 %s$%s$choices is outside of the possible choices: %s",
-              id, names(spec)[i], toString(unavailable_choices)
-            )
-            .update_rv(choices, all_choices(), log)
-          }
+          )
         })
 
         observeEvent(spec_resolved()[[i]], ignoreInit = TRUE, {
