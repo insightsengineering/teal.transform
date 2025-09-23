@@ -32,6 +32,7 @@ module_input_ui.picks <- function(id, spec) {
   content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x))))
   htmltools::tags$div(
     # todo: spec to have a label attribute
+    # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
     teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
   )
 }
@@ -55,44 +56,37 @@ module_input_srv.list <- function(id, spec, data) {
 #' @export
 module_input_srv.picks <- function(id, spec, data) {
   moduleServer(id, function(input, output, session) {
-    attr(spec, ".callback") <- reactiveVal(NULL) # callback to be used outside
-
     data_r <- shiny::reactive(if (shiny::is.reactive(data)) data() else data)
     spec_resolved <- shiny::reactiveVal(
       restoreValue(
-        session$ns("selectors"),
+        session$ns("picks"),
         resolver(spec, shiny::isolate(data_r()))
       )
     )
     session$onBookmark(function(state) {
-      logger::log_debug("module_input_srv@onBookmark: storing current selectors")
-      state$values$selectors <- spec_resolved()
+      logger::log_debug("module_input_srv@onBookmark: storing current picks")
+      state$values$picks <- spec_resolved()
     })
 
     # join_keys are needed to variables after merge
-    attr(spec_resolved, "join_keys") <- teal.data::join_keys(shiny::isolate(data_r())) # todo: do the same as with .callback
+    attr(spec_resolved, "join_keys") <- teal.data::join_keys(shiny::isolate(data_r()))
 
     badge <- shiny::reactive({
-      tagList(
-        lapply(
-          spec_resolved(),
-          function(x) {
-            if (inherits(x, "values")) {
-              if (!identical(as.vector(x$choices), as.vector(x$selected))) {
-                bsicons::bs_icon("funnel")
-              }
-            } else if (length(x$selected)) {
-              toString(x$selected)
-            } else {
-              "~"
-            }
+      lapply(
+        spec_resolved(),
+        function(x) {
+          label <- if (length(x$selected)) {
+            toString(x$selected)
+          } else {
+            "~"
           }
-        )
+          label
+        }
       )
     })
 
     # todo: modify when data changes
-    output$summary <- shiny::renderUI(badge())
+    output$summary <- shiny::renderUI(tagList(badge()))
 
     Reduce(
       function(data, i) {
@@ -104,22 +98,12 @@ module_input_srv.picks <- function(id, spec, data) {
           current_choices <- spec_resolved()[[i]]$choices
           current_selected <- spec_resolved()[[i]]$selected
           .update_rv(
-            selected,
-            if (is.numeric(all_choices())) {
-              # todo: implement Date and POSIXct as well
-              all_choices()
-            } else {
-              intersect(spec_resolved()[[i]]$selected, all_choices())
-            },
+            selected, .intersect(current_selected, all_choices()),
             sprintf("module_input_srv@1 %s$%s$selected is outside of the possible choices", id, names(spec)[i])
           )
-
           .update_rv(
-            choices,
-            all_choices(),
-            sprintf(
-              "module_input_srv@1 %s$%s$choices is outside of the possible choices", id, names(spec)[i]
-            )
+            choices, all_choices(),
+            sprintf("module_input_srv@1 %s$%s$choices is outside of the possible choices", id, names(spec)[i])
           )
         })
 
@@ -170,10 +154,13 @@ module_input_srv.picks <- function(id, spec, data) {
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
     output$selected_container <- renderUI({
+      logger::log_debug(".selected_choices_srv@1 rerender input")
       if (isTRUE(args$fixed) || length(choices()) == 1) {
+
       } else if (is.numeric(choices())) {
-        .selected_choices_ui_numeric(session$ns("range"),
-          type = type,
+        .selected_choices_ui_numeric(
+          session$ns("range"),
+          label = sprintf("Select %s range:", type),
           choices = choices(),
           selected = selected(),
           args = args
@@ -182,7 +169,7 @@ module_input_srv.picks <- function(id, spec, data) {
         # todo: provide information about data class so we can provide icons in the pickerInput
         .selected_choices_ui_categorical(
           session$ns("selected"),
-          type = type,
+          label = sprintf("Select %s:", type),
           choices = choices(),
           selected = selected(),
           args = args
@@ -196,7 +183,7 @@ module_input_srv.picks <- function(id, spec, data) {
       if (length(input$range) != 2) {
         return(NULL)
       }
-      .update_rv(selected, input$range, log = ".selected_choices_srv@1 update selected after input changed")
+      .update_rv(selected, input$range, log = ".selected_choices_srv@2 update selected after input changed")
     })
 
     # for non-numeric
@@ -211,22 +198,22 @@ module_input_srv.picks <- function(id, spec, data) {
   })
 }
 
-.selected_choices_ui_numeric <- function(id, type, choices, selected, args) {
+.selected_choices_ui_numeric <- function(id, label, choices, selected, args) {
   shinyWidgets::numericRangeInput(
     inputId = id,
-    label = paste("Select", type, collapse = " "),
+    label = label,
     min = unname(choices[1]),
     max = unname(tail(choices, 1)),
     value = unname(selected)
   )
 }
 
-.selected_choices_ui_categorical <- function(id, type, choices, selected, args) {
+.selected_choices_ui_categorical <- function(id, label, choices, selected, args) {
   htmltools::div(
     style = "max-width: 500px;",
     shinyWidgets::pickerInput(
       inputId = id,
-      label = paste("Select", type, collapse = " "),
+      label = label,
       choices = choices,
       selected = selected,
       multiple = args$multiple,
@@ -307,6 +294,7 @@ module_input_srv.picks <- function(id, spec, data) {
 
   spec_resolved(new_spec_resolved)
 }
+
 #' Restore value from bookmark.
 #'
 #' Get value from bookmark or return default.
@@ -341,5 +329,17 @@ restoreValue <- function(value, default) { # nolint: object_name.
     session$restoreContext$values[[value]]
   } else {
     default
+  }
+}
+
+
+.intersect <- function(x, y) {
+  if (is.numeric(x) && is.numeric(y)) {
+    c(
+      max(x[1], y[1], na.rm = TRUE),
+      min(x[2], y[2], na.rm = TRUE)
+    )
+  } else {
+    intersect(x, y)
   }
 }
