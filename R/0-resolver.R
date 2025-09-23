@@ -74,14 +74,13 @@ determine.datasets <- function(x, data) {
   } else if (!inherits(data, "qenv")) {
     stop("Please use qenv() or teal_data() objects.")
   }
+
   x$choices <- .determine_choices(x$choices, data = data)
-  x$selected <- .determine_selected(x$selected, data = data[x$choices], multiple = x$multiple)
-
-  if (length(x$selected) != 1) {
-    warning("`dataset` must be a single selection. Forcing to first possible choice.")
-    x$selected <- x$choices[1]
-  }
-
+  x$selected <- .determine_selected(
+    x$selected,
+    data = data[intersect(x$choices, names(data))],
+    multiple = attr(x, "multiple")
+  )
   list(x = x, data = .extract(x, data))
 }
 
@@ -94,13 +93,15 @@ determine.variables <- function(x, data) {
   }
 
   if (ncol(data) <= 0L) {
-    stop("Can't pull variable: No variable is available.")
+    stop("Can't pull variable: No variables is available.")
   }
 
-  new_choices <- .determine_choices(x$choices, data = data)
-  new_selected <- .determine_selected(x$selected, data = data[new_choices], multiple = x$multiple)
-  x$choices <- new_choices
-  x$selected <- new_selected
+  x$choices <- .determine_choices(x$choices, data = data)
+  x$selected <- .determine_selected(
+    x$selected,
+    data = data[intersect(x$choices, colnames(data))],
+    multiple = attr(x, "multiple")
+  )
 
   list(x = x, data = .extract(x, data))
 }
@@ -108,34 +109,26 @@ determine.variables <- function(x, data) {
 #' @export
 determine.values <- function(x, data) {
   if (is.character(data) || is.factor(data)) {
-    d <- data
-    names(d) <- data
-    # todo: replace with NextMethod?
-    x$choices <- unique(names(.eval_select(d, x$choices)))
-    names(x$choices) <- x$choices
-    if (length(x$choices)) {
-      x$selected <- unique(names(.eval_select(x$choices, x$selected)))
-    } else {
-      x$selected <- NULL
+    d <- unique(data)
+    x$choices <- .determine_choices(x$choices, data = setNames(d, d)) # .determine_* uses names
+    x$selected <- if (length(x$choices)) {
+      .determine_selected(x$selected, data = setNames(x$choices, x$choices), multiple = attr(x, "multiple"))
     }
-
     list(x = x) # nothing more after this (no need to pass data further)
-  } else if (is.numeric(data)) {
-    x$choices <- range(data)
-    x$selected <- if (is.numeric(x$selected)) x$selected else x$choices
+  } else if (is.numeric(data) || inherits(data, c("Date", "POSIXct"))) {
+    x$choices <- range(data, na.rm = TRUE)
+    x$selected <- if (is.numeric(x$selected) || inherits(data, c("Date", "POSIXct"))) x$selected else x$choices
     list(x = x)
   }
 }
 
 .determine_choices <- function(x, data) {
-  choices <- if (inherits(x, "delayed_data")) {
-    x$subset(data)
-  } else if (is.character(x)) {
-    x
-  } else {
-    idx <- .eval_select(data, x)
-    unique(names(data)[idx])
+  if (is.character(x) && length(x)) {
+    return(x)
   }
+
+  idx <- .eval_select(data, x)
+  choices <- unique(names(data)[idx])
   if (length(choices) == 0) {
     stop("Can't determine choices: ", rlang::as_label(x))
   }

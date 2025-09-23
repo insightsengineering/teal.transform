@@ -106,6 +106,7 @@ module_input_srv.picks <- function(id, spec, data) {
           .update_rv(
             selected,
             if (is.numeric(all_choices())) {
+              # todo: implement Date and POSIXct as well
               all_choices()
             } else {
               intersect(spec_resolved()[[i]]$selected, all_choices())

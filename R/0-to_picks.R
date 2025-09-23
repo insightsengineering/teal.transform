@@ -1,3 +1,9 @@
+to_picks <- function(x, dataname) {
+  if (checkmate::test_list(x, "data_extract_spec")) {
+
+  }
+}
+
 des_to_picks <- function(x) {
   if (inherits(x, "picks")) {
     x
@@ -7,9 +13,9 @@ des_to_picks <- function(x) {
       list(
         datasets(choices = x$dataname, fixed = TRUE),
         select_spec_to_variables(x$select)
-        # don't use filter_spec as they doesn't have to be linked with selected variables
+        # don't use filter_spec as they are not necessary linked with `select` (selected variables)
         #  as filter_spec can be speciefied on the variable(s) different than select_spec for example:
-        #  (pseudocode) select_spec(AVAL); filter_spec(PARAMCD, AVISIT)
+        #  for example: #pseudocode select = select_spec(AVAL); filter = filter_spec(PARAMCD))
       )
     )
     do.call(picks, args)
@@ -28,27 +34,21 @@ select_spec_to_variables <- function(x) {
   }
 }
 
-
-extract_filters <- function(selectors) {
-  unlist(
-    lapply(selectors, function(des) {
-      if (checkmate::test_list(des, "data_extract_spec")) {
-        unlist(extract_filters(des), recursive = FALSE)
-      } else if (inherits(des, "data_extract_spec")) {
-        filter <- if (inherits(des$filter, "filter_spec")) {
-          list(des$filter)
-        } else {
-          des$filter
-        }
-        lapply(filter, function(x) {
-          picks(
-            datasets(choices = des$dataname, selected = des$dataname),
-            variables(choices = x$vars_choices, selected = x$vars_selected, multiple = FALSE),
-            values(choices = x$choices, selected = x$selected, multiple = x$multiple)
-          )
-        })
-      }
-    }),
-    recursive = FALSE
-  )
+extract_filters <- function(elem, dataname) {
+  if (inherits(elem, "filter_spec")) {
+    picks(
+      datasets(choices = dataname, selected = dataname),
+      variables(choices = elem$vars_choices, selected = elem$vars_selected, multiple = FALSE), # can't be multiple
+      values(choices = elem$choices, selected = elem$selected, multiple = elem$multiple)
+    )
+  } else if (checkmate::test_list(elem, "filter_spec")) {
+    lapply(elem, extract_filters, dataname = dataname)
+  } else if (inherits(elem, "data_extract_spec")) {
+    extract_filters(elem$filter, dataname = elem$dataname)
+  } else if (checkmate::test_list(elem, c("data_extract_spec", "list", "NULL"))) {
+    unlist(
+      lapply(Filter(length, elem), extract_filters),
+      recursive = FALSE
+    )
+  }
 }

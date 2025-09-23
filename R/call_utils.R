@@ -385,7 +385,7 @@ calls_combine_by <- function(operator, calls) {
         str2lang("dplyr::select"),
         str2lang(dataname)
       ),
-      lapply(unname(variables), str2lang)
+      lapply(unname(variables), as.name)
     )
   )
 }
