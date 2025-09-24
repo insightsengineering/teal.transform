@@ -266,7 +266,7 @@ module_input_srv.picks <- function(id, spec, data) {
 #' @param data (`any` asserted further in `resolver`)
 #' @keywords internal
 .resolve <- function(selected, slot_idx, spec_resolved, old_spec, data) {
-  checkmate::assert_atomic_vector(selected)
+  checkmate::assert_vector(selected, null.ok = TRUE)
   checkmate::assert_integerish(slot_idx, lower = 1)
   checkmate::assert_class(spec_resolved, "reactiveVal")
   checkmate::assert_class(old_spec, "picks")
@@ -331,7 +331,6 @@ restoreValue <- function(value, default) { # nolint: object_name.
     default
   }
 }
-
 
 .intersect <- function(x, y) {
   if (is.numeric(x) && is.numeric(y)) {

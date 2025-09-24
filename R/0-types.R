@@ -42,10 +42,10 @@ picks <- function(...) {
   checkmate::assert_list(picks, types = "type")
   names(picks) <- vapply(picks, FUN = is, FUN.VALUE = character(1))
   for (i in seq_along(picks)) {
-    if (isTRUE(picks[[i]]$multiple) && i < length(picks)) {
+    if (isTRUE(attr(picks[[i]], "multiple")) && i < length(picks)) {
       stop(
         names(picks)[i], " has a property `multiple = TRUE` which is forbidden if there are any following elements",
-        "depending on its selection."
+        " depending on its selection."
       )
     }
   }
