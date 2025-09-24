@@ -28,8 +28,8 @@ variables(
 
 values(
   choices = tidyselect::everything(),
-  selected = 1,
-  multiple = !.is_tidyselect(selected) && length(selected) > 1,
+  selected = tidyselect::everything(),
+  multiple = TRUE,
   fixed = !.is_tidyselect(choices) && length(choices) == 1,
   ...
 )
