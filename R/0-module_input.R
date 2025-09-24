@@ -153,11 +153,13 @@ module_input_srv.picks <- function(id, spec, data) {
 
   shiny::moduleServer(id, function(input, output, session) {
     # todo: keep_order
-    output$selected_container <- renderUI({
-      logger::log_debug(".selected_choices_srv@1 rerender input")
-      if (isTRUE(args$fixed) || length(choices()) == 1) {
 
-      } else if (is.numeric(choices())) {
+    is_numeric <- reactive(is.numeric(choices()))
+
+    output$selected_container <- renderUI({
+      logger::log_debug(".selected_choices_srv@1 rerender {type} input")
+      if (isTRUE(args$fixed) || length(choices()) == 1) {
+      } else if (is_numeric()) {
         .selected_choices_ui_numeric(
           session$ns("range"),
           label = sprintf("Select %s range:", type),
@@ -166,7 +168,7 @@ module_input_srv.picks <- function(id, spec, data) {
           args = args
         )
       } else {
-        # todo: provide information about data class so we can provide icons in the pickerInput
+        # todo: provide information about choices() class so we can provide icons in the pickerInput
         .selected_choices_ui_categorical(
           session$ns("selected"),
           label = sprintf("Select %s:", type),
@@ -175,7 +177,7 @@ module_input_srv.picks <- function(id, spec, data) {
           args = args
         )
       }
-    })
+    }) |> bindEvent(is_numeric(), choices()) # never change on selected()
 
     # for numeric
     range_debounced <- reactive(input$range) |> debounce(1000)
@@ -270,7 +272,6 @@ module_input_srv.picks <- function(id, spec, data) {
   checkmate::assert_integerish(slot_idx, lower = 1)
   checkmate::assert_class(spec_resolved, "reactiveVal")
   checkmate::assert_class(old_spec, "picks")
-
   if (isTRUE(all.equal(selected, spec_resolved()[[slot_idx]]$selected, tolerance = 1e-15))) {
     return(NULL)
   }
