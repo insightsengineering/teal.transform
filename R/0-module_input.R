@@ -152,8 +152,6 @@ module_input_srv.picks <- function(id, spec, data) {
   checkmate::assert_list(args)
 
   shiny::moduleServer(id, function(input, output, session) {
-    # todo: keep_order
-
     is_numeric <- reactive(is.numeric(choices()))
 
     output$selected_container <- renderUI({
@@ -193,6 +191,9 @@ module_input_srv.picks <- function(id, spec, data) {
       if (!isTRUE(input$selection_open)) {
         # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
         new_selected <- if (length(input$selected) && !identical(input$selected, "")) as.vector(input$selected)
+        if (args$keep_order) {
+          new_selected <- c(intersect(selected(), new_selected), setdiff(new_selected, selected()))
+        }
         .update_rv(selected, new_selected, log = ".selected_choices_srv@1 update selected after input changed")
       }
     })

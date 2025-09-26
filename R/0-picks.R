@@ -7,6 +7,8 @@
 #'  One unquoted expression to be used to picks from choices to be selected.
 #' @param multiple <`logical(1)`> if more than one selection is possible.
 #' @param fixed <`logical(1)`> selection will be fixed and not possible to change interactively.
+#' @param keep_order <`logical(1)`> if the selected should follow the selection order. If `FALSE`
+#'   `selected` returned from `srv_module_input()` would be ordered according to order in `choices`.
 #' @param ... additional arguments delivered to `pickerInput`
 #'
 #' @returns `picks` object containing specified settings
@@ -87,12 +89,14 @@ variables <- function(choices = tidyselect::everything(),
                       selected = 1,
                       multiple = !.is_tidyselect(selected) && length(selected) > 1,
                       fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                      keep_order = FALSE,
                       ...) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = multiple,
     fixed = fixed,
+    keep_order = keep_order,
     ...
   )
   class(out) <- c("variables", class(out))
