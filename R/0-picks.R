@@ -84,12 +84,14 @@ datasets <- function(choices = tidyselect::everything(),
 }
 
 #' @describeIn types Specify variables.
+#' @param allow_empty (`logical(1)`) whether `selected = NULL` is possible.
 #' @export
 variables <- function(choices = tidyselect::everything(),
                       selected = 1,
                       multiple = !.is_tidyselect(selected) && length(selected) > 1,
                       fixed = !.is_tidyselect(choices) && length(choices) == 1,
                       keep_order = FALSE,
+                      allow_empty = !.is_tidyselect(selected) && (is.null(selected) || multiple),
                       ...) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
@@ -97,6 +99,7 @@ variables <- function(choices = tidyselect::everything(),
     multiple = multiple,
     fixed = fixed,
     keep_order = keep_order,
+    allow_empty = allow_empty,
     ...
   )
   class(out) <- c("variables", class(out))

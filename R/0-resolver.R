@@ -32,6 +32,8 @@ resolver <- function(x, data) {
       # overwrite so that next x in line receives the corresponding data and specification
       if (is.null(determined_i$x)) {
         next
+        # todo: what to do if previous is.null(selected) && allow_empty?
+        #       should we break a loop?
       }
       x[[i]] <- determined_i$x
       data_i <- determined_i$data

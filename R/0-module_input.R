@@ -153,7 +153,6 @@ module_input_srv.picks <- function(id, spec, data) {
 
   shiny::moduleServer(id, function(input, output, session) {
     is_numeric <- reactive(is.numeric(choices()))
-
     output$selected_container <- renderUI({
       logger::log_debug(".selected_choices_srv@1 rerender {type} input")
       if (isTRUE(args$fixed) || length(choices()) == 1) {
@@ -188,7 +187,7 @@ module_input_srv.picks <- function(id, spec, data) {
 
     # for non-numeric
     shiny::observeEvent(input$selected_open, {
-      if (!isTRUE(input$selection_open)) {
+      if (!isTRUE(input$selected_open)) {
         # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
         new_selected <- if (length(input$selected) && !identical(input$selected, "")) as.vector(input$selected)
         if (args$keep_order) {
@@ -234,9 +233,8 @@ module_input_srv.picks <- function(id, spec, data) {
       ),
       options = list(
         "actions-box" = args$multiple,
-        # "allow-clear" = args$multiple || args$`allow-clear`,
+        "allow-clear" = is.null(selected) || isTRUE(args$allow_empty),
         "live-search" = length(choices) > 10,
-        # "max-options" = args$`max-options`,
         "none-selected-text" = "- Nothing selected -",
         "show-subtext" = TRUE
       )
