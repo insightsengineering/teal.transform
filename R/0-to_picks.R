@@ -27,7 +27,7 @@ select_spec_to_variables <- function(x) {
     variables(
       choices = x$choices,
       selected = x$selected,
-      # keep_order = x$ordered,
+      # ordered = x$ordered,
       multiple = x$multiple,
       fixed = x$fixed
     )

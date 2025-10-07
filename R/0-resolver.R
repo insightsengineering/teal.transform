@@ -28,15 +28,14 @@ resolver <- function(x, data) {
   if (is.delayed(x)) {
     data_i <- data
     for (i in seq_along(x)) {
-      determined_i <- determine(x[[i]], data = data_i)
-      # overwrite so that next x in line receives the corresponding data and specification
-      if (is.null(determined_i$x)) {
-        next
-        # todo: what to do if previous is.null(selected) && allow_empty?
-        #       should we break a loop?
+      x[[i]] <- if (is.null(data_i)) {
+        # remove subsequent elements if nothing selected in the previous one
+        NULL
+      } else {
+        determined_i <- determine(x[[i]], data = data_i)
+        data_i <- determined_i$data
+        determined_i$x
       }
-      x[[i]] <- determined_i$x
-      data_i <- determined_i$data
     }
   }
   x
@@ -110,7 +109,17 @@ determine.variables <- function(x, data) {
 
 #' @export
 determine.values <- function(x, data) {
+  if (is.null(data) || ncol(data) == 0) {
+    return(list(x = NULL))
+  }
+  data <- if (ncol(data) > 1) { # todo: to limit number of possible columns to concat
+    apply(data, 1, toString)
+  } else {
+    data[[1]]
+  }
+
   if (is.character(data) || is.factor(data)) {
+    # todo: what to do with NA choices?
     d <- unique(data)
     x$choices <- .determine_choices(x$choices, data = setNames(d, d)) # .determine_* uses names
     x$selected <- if (length(x$choices)) {
@@ -118,6 +127,9 @@ determine.values <- function(x, data) {
     }
     list(x = x) # nothing more after this (no need to pass data further)
   } else if (is.numeric(data) || inherits(data, c("Date", "POSIXct"))) {
+    if (all(is.na(data))) {
+      return(list(x = NULL))
+    }
     x$choices <- range(data, na.rm = TRUE)
     x$selected <- if (is.numeric(x$selected) || inherits(data, c("Date", "POSIXct"))) x$selected else x$choices
     list(x = x)
@@ -160,11 +172,9 @@ determine.values <- function(x, data) {
 }
 
 .extract <- function(x, data) {
-  if (length(x$selected) == 1) {
-    if (inherits(x, "datasets")) {
-      data[[x$selected]]
-    } else if (inherits(x, "variables")) {
-      data[[x$selected]]
-    }
+  if (length(x$selected) == 1 && inherits(x, "datasets")) {
+    data[[x$selected]]
+  } else if (all(x$selected %in% names(data))) {
+    data[x$selected]
   }
 }

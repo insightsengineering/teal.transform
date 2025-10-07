@@ -395,7 +395,20 @@ calls_combine_by <- function(operator, calls) {
     if (is.numeric(x$values)) {
       call_condition_range(varname = x$variables, range = x$values)
     } else {
-      call_condition_choice(varname = x$variables, choices = x$values)
+      variable <- if (length(x$variables) > 1) {
+        as.call(
+          c(
+            list(
+              quote(paste)
+            ),
+            unname(lapply(x$variables, as.name)),
+            list(sep = ", ")
+          )
+        )
+      } else {
+        x$variables
+      }
+      call_condition_choice(varname = variable, choices = x$values)
     }
   })
   as.call(c(list(str2lang("dplyr::filter")), predicates))

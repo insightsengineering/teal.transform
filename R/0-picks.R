@@ -7,7 +7,7 @@
 #'  One unquoted expression to be used to picks from choices to be selected.
 #' @param multiple <`logical(1)`> if more than one selection is possible.
 #' @param fixed <`logical(1)`> selection will be fixed and not possible to change interactively.
-#' @param keep_order <`logical(1)`> if the selected should follow the selection order. If `FALSE`
+#' @param ordered <`logical(1)`> if the selected should follow the selection order. If `FALSE`
 #'   `selected` returned from `srv_module_input()` would be ordered according to order in `choices`.
 #' @param ... additional arguments delivered to `pickerInput`
 #'
@@ -39,18 +39,10 @@ NULL
 #' @describeIn types specify a selector.
 #' @export
 picks <- function(...) {
-  # todo: assert that datasets is on the first place?
-  picks <- list(...)
+  picks <- rlang::dots_list(..., .ignore_empty = "trailing")
   checkmate::assert_list(picks, types = "type")
+  checkmate::assert_class(picks[[1]], "datasets")
   names(picks) <- vapply(picks, FUN = is, FUN.VALUE = character(1))
-  for (i in seq_along(picks)) {
-    if (isTRUE(attr(picks[[i]], "multiple")) && i < length(picks)) {
-      stop(
-        names(picks)[i], " has a property `multiple = TRUE` which is forbidden if there are any following elements",
-        " depending on its selection."
-      )
-    }
-  }
   structure(picks, class = c("picks", "list"))
 }
 
@@ -65,13 +57,12 @@ datanames <- function(x) {
   })))
 }
 
-#' @describeIn types Specify datasets.
+#' @rdname picks
 #' @export
 datasets <- function(choices = tidyselect::everything(),
                      selected = 1,
                      fixed = !.is_tidyselect(choices) && length(choices) == 1,
                      ...) {
-  # todo: implement ... in pickerInput like `max-options`, `allow-clear`
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
@@ -83,23 +74,21 @@ datasets <- function(choices = tidyselect::everything(),
   out
 }
 
-#' @describeIn types Specify variables.
-#' @param allow_empty (`logical(1)`) whether `selected = NULL` is possible.
+#' @rdname picks
 #' @export
 variables <- function(choices = tidyselect::everything(),
                       selected = 1,
                       multiple = !.is_tidyselect(selected) && length(selected) > 1,
                       fixed = !.is_tidyselect(choices) && length(choices) == 1,
-                      keep_order = FALSE,
-                      allow_empty = !.is_tidyselect(selected) && (is.null(selected) || multiple),
+                      ordered = FALSE,
                       ...) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = multiple,
     fixed = fixed,
-    keep_order = keep_order,
-    allow_empty = allow_empty,
+    ordered = ordered,
+    `allow-clear` = !.is_tidyselect(selected) && (is.null(selected) || multiple),
     ...
   )
   class(out) <- c("variables", class(out))
@@ -181,7 +170,7 @@ print.type <- function(x, ...) {
 .selected_choices <- function(choices,
                               selected,
                               multiple = length(selected) > 1,
-                              keep_order = FALSE,
+                              ordered = FALSE,
                               fixed = FALSE,
                               ...) {
   is_choices_delayed <- inherits(choices, "quosure") ||
@@ -207,7 +196,7 @@ print.type <- function(x, ...) {
   out <- structure(
     list(choices = choices, selected = selected),
     multiple = multiple,
-    keep_order = keep_order,
+    ordered = ordered,
     fixed = fixed,
     ...,
     class = "type"

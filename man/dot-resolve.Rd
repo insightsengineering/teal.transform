@@ -4,18 +4,18 @@
 \alias{.resolve}
 \title{Resolve downstream after selected changes}
 \usage{
-.resolve(selected, slot_idx, spec_resolved, old_spec, data)
+.resolve(selected, slot_name, spec_resolved, old_spec, data)
 }
 \arguments{
 \item{selected}{(\code{vector}) rather \code{character}, or \code{factor}. \code{numeric(2)} for \code{values()} based on numeric column.}
-
-\item{slot_idx}{(\code{integer})}
 
 \item{spec_resolved}{(\code{reactiveVal})}
 
 \item{old_spec}{(\code{picks})}
 
 \item{data}{(\code{any} asserted further in \code{resolver})}
+
+\item{slot_idx}{(\code{integer})}
 }
 \description{
 @description

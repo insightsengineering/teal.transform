@@ -5,35 +5,42 @@
 
 
 #' @export
-module_input_ui <- function(id, spec) {
+module_input_ui <- function(id, spec, container = "badge_dropdown") {
   checkmate::assert_string(id)
   UseMethod("module_input_ui", spec)
 }
 
 #' @export
-module_input_ui.list <- function(id, spec) {
+module_input_ui.list <- function(id, spec, container = "badge_dropdown") {
   checkmate::assert_list(spec, names = "named")
   ns <- shiny::NS(id)
   sapply(
     Filter(length, names(spec)),
     USE.NAMES = TRUE,
-    function(name) module_input_ui(ns(name), spec[[name]])
+    function(name) module_input_ui(ns(name), spec[[name]], container = container)
   )
 }
 
 #' @export
-module_input_ui.picks <- function(id, spec) {
+module_input_ui.picks <- function(id, spec, container = "badge_dropdown") {
   if (.valid_picks(spec)) {
     stop("Unexpected object used as spec. Use `picks` to create the object.")
   }
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
-  # todo: icon or color to indicate a column class
+
   content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x))))
   htmltools::tags$div(
     # todo: spec to have a label attribute
     # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
-    teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
+    if (identical(container, "badge_dropdown")) {
+      teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
+    } else {
+      if (!any(sapply(htmltools::tags, identical, container))) {
+        stop("Container should be one of `htmltools::tags`")
+      }
+      container(content)
+    }
   )
 }
 
@@ -85,40 +92,50 @@ module_input_srv.picks <- function(id, spec, data) {
       )
     })
 
-    # todo: modify when data changes
     output$summary <- shiny::renderUI(tagList(badge()))
 
     Reduce(
-      function(data, i) {
-        choices <- reactiveVal(isolate(spec_resolved())[[i]]$choices)
-        selected <- reactiveVal(isolate(spec_resolved())[[i]]$selected)
-        all_choices <- reactive(determine(x = spec[[i]], data = data())$x$choices)
+      function(data, slot_name) {
+        choices <- reactiveVal(isolate(spec_resolved())[[slot_name]]$choices)
+        selected <- reactiveVal(isolate(spec_resolved())[[slot_name]]$selected)
+        all_choices <- reactive(determine(x = spec[[slot_name]], data = data())$x$choices)
 
         observeEvent(all_choices(), ignoreInit = TRUE, {
-          current_choices <- spec_resolved()[[i]]$choices
-          current_selected <- spec_resolved()[[i]]$selected
+          current_choices <- spec_resolved()[[slot_name]]$choices
+          current_selected <- spec_resolved()[[slot_name]]$selected
+
+          new_selected <- if (is.numeric(current_selected) && is.numeric(all_choices())) {
+            c(
+              max(current_selected[1], all_choices()[1], na.rm = TRUE),
+              min(current_selected[2], all_choices()[2], na.rm = TRUE)
+            )
+          } else {
+            intersect(current_selected, all_choices())
+          }
+
           .update_rv(
-            selected, .intersect(current_selected, all_choices()),
-            sprintf("module_input_srv@1 %s$%s$selected is outside of the possible choices", id, names(spec)[i])
+            selected, new_selected,
+            sprintf("module_input_srv@1 %s$%s$selected is outside of the possible choices", id, slot_name)
           )
           .update_rv(
             choices, all_choices(),
-            sprintf("module_input_srv@1 %s$%s$choices is outside of the possible choices", id, names(spec)[i])
+            sprintf("module_input_srv@1 %s$%s$choices is outside of the possible choices", id, slot_name)
           )
         })
 
-        observeEvent(spec_resolved()[[i]], ignoreInit = TRUE, {
-          .update_rv(choices, spec_resolved()[[i]]$choices, log = "module_input_srv@1 update input choices")
-          .update_rv(selected, spec_resolved()[[i]]$selected, log = "module_input_srv@1 update input selected")
+        observeEvent(spec_resolved()[[slot_name]], ignoreInit = TRUE, ignoreNULL = FALSE, {
+          .update_rv(choices, spec_resolved()[[slot_name]]$choices, log = "module_input_srv@1 update input choices")
+          .update_rv(selected, spec_resolved()[[slot_name]]$selected, log = "module_input_srv@1 update input selected")
         })
 
-        args <- attributes(spec[[i]])
+        args <- attributes(spec[[slot_name]])
         .selected_choices_srv(
-          id = is(spec[[i]]),
-          type = is(spec[[i]]),
+          id = is(spec[[slot_name]]),
+          type = is(spec[[slot_name]]),
           choices = choices,
           selected = selected,
-          args = args[!names(args) %in% c("names", "class")]
+          args = args[!names(args) %in% c("names", "class")],
+          data = data
         )
 
         # this works as follows:
@@ -127,12 +144,12 @@ module_input_srv.picks <- function(id, spec, data) {
           selected(),
           ignoreInit = TRUE, # because spec_resolved is already resolved and `selected()` is being set
           ignoreNULL = FALSE, # because input$selected can be empty
-          .resolve(selected(), slot_idx = i, spec_resolved = spec_resolved, old_spec = spec, data = data_r())
+          .resolve(selected(), slot_name = slot_name, spec_resolved = spec_resolved, old_spec = spec, data = data_r())
         )
 
-        reactive(.extract(x = isolate(spec_resolved()[[i]]), data()))
+        reactive(.extract(x = isolate(spec_resolved()[[slot_name]]), data()))
       },
-      x = seq_along(spec),
+      x = names(spec),
       init = data_r
     )
 
@@ -145,7 +162,7 @@ module_input_srv.picks <- function(id, spec, data) {
   uiOutput(ns("selected_container"))
 }
 
-.selected_choices_srv <- function(id, type, choices, selected, args) {
+.selected_choices_srv <- function(id, type, choices, selected, data, args) {
   checkmate::assert_string(id)
   checkmate::assert_class(choices, "reactiveVal")
   checkmate::assert_class(selected, "reactiveVal")
@@ -153,9 +170,28 @@ module_input_srv.picks <- function(id, spec, data) {
 
   shiny::moduleServer(id, function(input, output, session) {
     is_numeric <- reactive(is.numeric(choices()))
+    choices_opt_content <- reactive({
+      if (type != "values") {
+        sapply(
+          choices(),
+          function(choice) {
+            icon <- toString(icon(.picker_icon(data()[[choice]]), lib = "font-awesome"))
+            label <- attr(data()[[choice]], "label")
+            paste(
+              icon,
+              choice,
+              if (!is.null(label) && !is.na(label) && !identical(label, choice)) {
+                toString(tags$small(label, class = "text-muted"))
+              }
+            )
+          }
+        )
+      }
+    })
+
     output$selected_container <- renderUI({
       logger::log_debug(".selected_choices_srv@1 rerender {type} input")
-      if (isTRUE(args$fixed) || length(choices()) == 1) {
+      if (isTRUE(args$fixed) || length(choices()) <= 1) {
       } else if (is_numeric()) {
         .selected_choices_ui_numeric(
           session$ns("range"),
@@ -165,13 +201,14 @@ module_input_srv.picks <- function(id, spec, data) {
           args = args
         )
       } else {
-        # todo: provide information about choices() class so we can provide icons in the pickerInput
         .selected_choices_ui_categorical(
           session$ns("selected"),
           label = sprintf("Select %s:", type),
           choices = choices(),
           selected = selected(),
-          args = args
+          multiple = args$multiple,
+          choicesOpt = list(content = isolate(choices_opt_content())),
+          args = args[!names(args) %in% c("multiple")]
         )
       }
     }) |> bindEvent(is_numeric(), choices()) # never change on selected()
@@ -190,7 +227,7 @@ module_input_srv.picks <- function(id, spec, data) {
       if (!isTRUE(input$selected_open)) {
         # ↓ pickerInput returns "" when nothing selected. This can cause failure during col select (x[,""])
         new_selected <- if (length(input$selected) && !identical(input$selected, "")) as.vector(input$selected)
-        if (args$keep_order) {
+        if (args$ordered) {
           new_selected <- c(intersect(selected(), new_selected), setdiff(new_selected, selected()))
         }
         .update_rv(selected, new_selected, log = ".selected_choices_srv@1 update selected after input changed")
@@ -210,7 +247,7 @@ module_input_srv.picks <- function(id, spec, data) {
   )
 }
 
-.selected_choices_ui_categorical <- function(id, label, choices, selected, args) {
+.selected_choices_ui_categorical <- function(id, label, choices, selected, multiple, choicesOpt, args) {
   htmltools::div(
     style = "max-width: 500px;",
     shinyWidgets::pickerInput(
@@ -218,30 +255,27 @@ module_input_srv.picks <- function(id, spec, data) {
       label = label,
       choices = choices,
       selected = selected,
-      multiple = args$multiple,
-      choicesOpt = list(
-        content = ifelse(
-          # todo: add to the input choice icon = attached to choices when determine
-          names(choices) == unname(choices),
-          sprintf("<span>%s</span>", choices),
-          sprintf(
-            '<span>%s</span>&nbsp;<small class="text-muted">%s</small>',
-            unname(choices),
-            names(choices)
-          )
-        )
-      ),
-      options = list(
-        "actions-box" = args$multiple,
-        "allow-clear" = is.null(selected) || isTRUE(args$allow_empty),
-        "live-search" = length(choices) > 10,
-        "none-selected-text" = "- Nothing selected -",
-        "show-subtext" = TRUE
+      multiple = multiple,
+      choicesOpt = choicesOpt,
+      options = c(
+        list(
+          "actions-box" = !multiple,
+          "live-search" = length(choices) > 10,
+          "none-selected-text" = "- Nothing selected -",
+          "show-subtext" = TRUE
+        ),
+        args
       )
     )
   )
 }
 
+#' Update reactive values with log
+#'
+#' Update reactive values only if values differ to avoid unnecessary reactive trigger
+#' @param rv (`reactiveVal`)
+#' @param value (`vector`)
+#' @param log (`character(1)`) message to `log_debug`
 .update_rv <- function(rv, value, log) {
   if (!isTRUE(all.equal(rv(), value, tolerance = 1e-15))) { # tolerance 1e-15 is a max precision in widgets.
     logger::log_debug(log)
@@ -266,18 +300,19 @@ module_input_srv.picks <- function(id, spec, data) {
 #' @param old_spec (`picks`)
 #' @param data (`any` asserted further in `resolver`)
 #' @keywords internal
-.resolve <- function(selected, slot_idx, spec_resolved, old_spec, data) {
+.resolve <- function(selected, slot_name, spec_resolved, old_spec, data) {
   checkmate::assert_vector(selected, null.ok = TRUE)
-  checkmate::assert_integerish(slot_idx, lower = 1)
+  checkmate::assert_string(slot_name)
   checkmate::assert_class(spec_resolved, "reactiveVal")
   checkmate::assert_class(old_spec, "picks")
-  if (isTRUE(all.equal(selected, spec_resolved()[[slot_idx]]$selected, tolerance = 1e-15))) {
+  if (isTRUE(all.equal(selected, spec_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
     return(NULL)
   }
   logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
 
   new_spec_unresolved <- old_spec
   # ↓ everything after `slot_idx` is to resolve
+  slot_idx <- which(names(old_spec) == slot_name)
   new_spec_unresolved[seq_len(slot_idx - 1)] <- spec_resolved()[seq_len(slot_idx - 1)]
   new_spec_unresolved[[slot_idx]]$selected <- selected
 
@@ -332,13 +367,60 @@ restoreValue <- function(value, default) { # nolint: object_name.
   }
 }
 
-.intersect <- function(x, y) {
-  if (is.numeric(x) && is.numeric(y)) {
-    c(
-      max(x[1], y[1], na.rm = TRUE),
-      min(x[2], y[2], na.rm = TRUE)
-    )
-  } else {
-    intersect(x, y)
-  }
+#' `pickerInput` choices icons
+#'
+#' Icons describing a class of the choice
+#' @param x (`any`) object which class will determine icon
+#' @return html-tag in form of `character(1)`
+#' @keywords internal
+.picker_icon <- function(x) {
+  UseMethod(".picker_icon")
 }
+
+#' @keywords internal
+#' @export
+.picker_icon.numeric <- function(x) "arrow-up-1-9"
+
+#' @keywords internal
+#' @export
+.picker_icon.integer <- function(x) "arrow-up-1-9"
+
+#' @keywords internal
+#' @export
+.picker_icon.logical <- function(x) "pause"
+
+#' @keywords internal
+#' @export
+.picker_icon.Date <- function(x) "calendar"
+
+#' @keywords internal
+#' @export
+.picker_icon.POSIXct <- function(x) "calendar"
+
+#' @keywords internal
+#' @export
+.picker_icon.POSIXlt <- function(x) "calendar"
+
+#' @keywords internal
+#' @export
+.picker_icon.factor <- function(x) "chart-bar"
+
+#' @keywords internal
+#' @export
+.picker_icon.character <- function(x) "font"
+
+#' @keywords internal
+#' @export
+.picker_icon.primary_key <- function(x) "key"
+
+#' @keywords internal
+#' @export
+.picker_icon.data.frame <- function(x) "table"
+
+#' @keywords internal
+#' @export
+.picker_icon.MultiAssayExperiment <- function(x) "layer-group"
+
+#' @keywords internal
+#' @export
+.picker_icon.default <- function(x) "circle-question"
