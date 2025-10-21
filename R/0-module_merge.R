@@ -1,67 +1,3 @@
-#' Merge module
-#'
-#' Example module
-tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
-  module(
-    label = label,
-    ui = function(id, inputs) {
-      ns <- NS(id)
-      tags$div(
-        tags$div(
-          class = "row g-2",
-          lapply(names(inputs), function(id) {
-            tags$div(
-              class = "col-auto",
-              tags$strong(tags$label(id)),
-              teal.transform::module_input_ui(
-                id = ns(id),
-                spec = inputs[[id]]
-              )
-            )
-          })
-        ),
-        shiny::div(
-          reactable::reactableOutput(ns("table_merged")),
-          shiny::verbatimTextOutput(ns("join_keys")),
-          shiny::verbatimTextOutput(ns("mapped")),
-          shiny::verbatimTextOutput(ns("src"))
-        )
-      )
-    },
-    server = function(id, data, inputs) {
-      moduleServer(id, function(input, output, session) {
-        selectors <- module_input_srv(id, spec = inputs, data = data)
-
-        merged <- merge_srv("merge", data = data, selectors = selectors)
-
-        table_q <- reactive({
-          req(merged$data())
-          within(merged$data(), reactable::reactable(merged), selectors = selectors)
-        })
-
-        output$table_merged <- reactable::renderReactable({
-          req(table_q())
-          teal.code::get_outputs(table_q())[[1]]
-        })
-
-        output$src <- renderPrint({
-          styler::style_text(
-            teal.code::get_code(req(table_q()))
-          )
-        })
-
-        output$join_keys <- renderPrint(teal.data::join_keys(merged$data()))
-
-        output$mapped <- renderText(yaml::as.yaml(merged$merge_vars()))
-      })
-    },
-    ui_args = list(inputs = inputs),
-    server_args = list(inputs = inputs),
-    transformators = transformators
-  )
-}
-
-
 #' Merge Server Function for Dataset Integration
 #'
 #' @description
@@ -97,7 +33,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #'     - The merged dataset with all selected variables
 #'     - Complete R code to reproduce the merge operation
 #'     - Updated join keys reflecting the merged dataset structure}
-#'   \item{`merge_vars`}{A `reactive` returning a named list mapping selector names to their selected
+#'   \item{`variables`}{A `reactive` returning a named list mapping selector names to their selected
 #'     variables in the merged dataset. The structure is:
 #'     `list(selector_name_1 = c("var1", "var2"), selector_name_2 = c("var3", "var4"), ...)`.
 #'     Variable names reflect any renaming that occurred during the merge to avoid conflicts.}
@@ -113,13 +49,13 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #' 2. **Processes Selectors**: Evaluates each selector (whether static `picks` or reactive) to
 #'    determine which datasets and variables are selected
 #'
-#' 3. **Determines Merge Order**: Uses [qenv_merge_selectors()] to analyze join keys and determine
-#'    the optimal order for merging datasets (topological sort based on relationships)
+#' 3. **Determines Merge Order**: Uses topological sort based on the `join_keys` to determine
+#'    the optimal order for merging datasets.
 #'
 #' 4. **Handles Variable Conflicts**: Automatically renames variables when:
 #'    - Multiple selectors choose variables with the same name from different datasets
 #'    - Foreign key variables would conflict with existing variables
-#'    - Renaming follows the pattern `variable_datasetname`
+#'    - Renaming follows the pattern `{column-name}_{dataset-name}`
 #'
 #' 5. **Performs Merge**: Generates and executes merge code that:
 #'    - Selects only required variables from each dataset
@@ -130,8 +66,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #' 6. **Updates Join Keys**: Creates new join key relationships for the merged dataset ("anl")
 #'    relative to remaining datasets in the `teal_data` object
 #'
-#' 7. **Tracks Variables**: Uses [map_merged()] to maintain a mapping of which variables in the
-#'    merged dataset came from which selector
+#' 7. **Tracks Variables**: Keeps track of the variable names in the merged dataset
 #'
 #' @section Usage Pattern:
 #'
@@ -153,7 +88,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #' anl <- merged_data[["anl"]]   # The actual merged data.frame/tibble
 #'
 #' # Get variable mapping
-#' vars <- merged$merge_vars()
+#' vars <- merged$variables()
 #' # Returns: list(selector1 = c("VAR1", "VAR2"), selector2 = c("VAR3", "VAR4_ADSL"))
 #'
 #' # Get reproducible code
@@ -182,11 +117,11 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #'
 #' @section Integration with Selectors:
 #'
-#' `merge_srv` is designed to work with [module_input_srv()] which creates selector objects:
+#' `merge_srv` is designed to work with [picks_srv()] which creates selector objects:
 #'
 #' ```r
 #' # Create selectors in server
-#' selectors <- module_input_srv(
+#' selectors <- picks_srv(
 #'   spec = list(
 #'     adsl = picks(...),
 #'     adae = picks(...)
@@ -203,9 +138,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #' ```
 #'
 #' @seealso
-#' - [qenv_merge_selectors()] for the underlying merge logic
-#' - [map_merged()] for variable mapping functionality
-#' - [module_input_srv()] for creating selectors
+#' - [picks_srv()] for creating selectors
 #' - [teal.data::join_keys()] for defining dataset relationships
 #'
 #' @examples
@@ -225,8 +158,8 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #'
 #' # Create Shiny app
 #' ui <- fluidPage(
-#'   module_input_ui("adsl", picks(datasets("ADSL"), variables())),
-#'   module_input_ui("adae", picks(datasets("ADAE"), variables())),
+#'   picks_ui("adsl", picks(datasets("ADSL"), variables())),
+#'   picks_ui("adae", picks(datasets("ADAE"), variables())),
 #'   verbatimTextOutput("code"),
 #'   verbatimTextOutput("vars")
 #' )
@@ -234,11 +167,11 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #' server <- function(input, output, session) {
 #'   # Create selectors
 #'   selectors <- list(
-#'     adsl = module_input_srv("adsl",
+#'     adsl = picks_srv("adsl",
 #'       data = reactive(data),
 #'       spec = picks(datasets("ADSL"), variables())
 #'     ),
-#'     adae = module_input_srv("adae",
+#'     adae = picks_srv("adae",
 #'       data = reactive(data),
 #'       spec = picks(datasets("ADAE"), variables())
 #'     )
@@ -259,7 +192,7 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 #'   })
 #'
 #'   output$vars <- renderPrint({
-#'     merged$merge_vars()
+#'     merged$variables()
 #'   })
 #' }
 #'
@@ -270,8 +203,11 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
 # todo: merge_ui to display error message somewhere (at least)
 #       - if this dataset has no join_keys to anl (anl_datasets) then error saying
 #         can't merge {dataset} with merged dataset composed of {anl_datasets}
-
-merge_srv <- function(id, data, selectors, output_name = "anl", join_fun = "dplyr::inner_join") {
+merge_srv <- function(id,
+                      data,
+                      selectors,
+                      output_name = "anl",
+                      join_fun = "dplyr::inner_join") {
   checkmate::assert_list(selectors, "reactive", names = "named")
   moduleServer(id, function(input, output, session) {
     # selectors is a list of reactive picks.
@@ -279,7 +215,7 @@ merge_srv <- function(id, data, selectors, output_name = "anl", join_fun = "dply
       lapply(selectors, function(x) req(x()))
     })
 
-    merged_q <- reactive({
+    data_r <- reactive({
       req(data(), selectors_unwrapped())
       .qenv_merge(
         data(),
@@ -289,17 +225,17 @@ merge_srv <- function(id, data, selectors, output_name = "anl", join_fun = "dply
       )
     })
 
-    merge_vars <- eventReactive(
+    variables_selected <- eventReactive(
       selectors_unwrapped(),
       {
         req(selectors_unwrapped())
         lapply(
-          .merge_summary_list(selectors_unwrapped(), join_keys = join_keys(data()))$mapping,
+          .merge_summary_list(selectors_unwrapped(), join_keys = teal.data::join_keys(data()))$mapping,
           function(selector) unname(selector$variables)
         )
       }
     )
-    list(data = merged_q, merge_vars = merge_vars)
+    list(data = data_r, variables = variables_selected)
   })
 }
 

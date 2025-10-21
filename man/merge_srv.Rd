@@ -2,26 +2,15 @@
 % Please edit documentation in R/0-module_merge.R
 \name{merge_srv}
 \alias{merge_srv}
-\alias{qenv_merge_selectors}
-\alias{map_merged}
 \title{Merge Server Function for Dataset Integration}
 \usage{
 merge_srv(
   id,
   data,
   selectors,
-  output_name = "merged",
+  output_name = "anl",
   join_fun = "dplyr::inner_join"
 )
-
-qenv_merge_selectors(
-  x,
-  selectors,
-  output_name = "merged",
-  join_fun = "dplyr::left_join"
-)
-
-map_merged(selectors, join_keys)
 }
 \arguments{
 \item{id}{(\code{character(1)}) Module ID for the Shiny module namespace}
@@ -38,7 +27,7 @@ The names of this list are used as identifiers for tracking which variables come
 }}
 
 \item{output_name}{(\code{character(1)}) Name of the merged dataset that will be created in the
-returned \code{teal_data} object. Default is \code{"merged"}. This name will be used in the generated R code.}
+returned \code{teal_data} object. Default is \code{"anl"}. This name will be used in the generated R code.}
 
 \item{join_fun}{(\code{character(1)}) The joining function to use for merging datasets. Must be a
 qualified function name (e.g., \code{"dplyr::left_join"}, \code{"dplyr::inner_join"}, \code{"dplyr::full_join"}).
@@ -52,7 +41,7 @@ The merged dataset is named according to \code{output_name} parameter. The \code
 - The merged dataset with all selected variables
 - Complete R code to reproduce the merge operation
 - Updated join keys reflecting the merged dataset structure}
-\item{\code{merge_vars}}{A \code{reactive} returning a named list mapping selector names to their selected
+\item{\code{variables}}{A \code{reactive} returning a named list mapping selector names to their selected
 variables in the merged dataset. The structure is:
 \code{list(selector_name_1 = c("var1", "var2"), selector_name_2 = c("var3", "var4"), ...)}.
 Variable names reflect any renaming that occurred during the merge to avoid conflicts.}
@@ -81,13 +70,13 @@ The \code{merge_srv} function performs the following steps:
 defined join keys
 \item \strong{Processes Selectors}: Evaluates each selector (whether static \code{picks} or reactive) to
 determine which datasets and variables are selected
-\item \strong{Determines Merge Order}: Uses \code{\link[=qenv_merge_selectors]{qenv_merge_selectors()}} to analyze join keys and determine
-the optimal order for merging datasets (topological sort based on relationships)
+\item \strong{Determines Merge Order}: Uses topological sort based on the \code{join_keys} to determine
+the optimal order for merging datasets.
 \item \strong{Handles Variable Conflicts}: Automatically renames variables when:
 \itemize{
 \item Multiple selectors choose variables with the same name from different datasets
 \item Foreign key variables would conflict with existing variables
-\item Renaming follows the pattern \code{variable_datasetname}
+\item Renaming follows the pattern \verb{\{column-name\}_\{dataset-name\}}
 }
 \item \strong{Performs Merge}: Generates and executes merge code that:
 \itemize{
@@ -98,8 +87,7 @@ the optimal order for merging datasets (topological sort based on relationships)
 }
 \item \strong{Updates Join Keys}: Creates new join key relationships for the merged dataset ("anl")
 relative to remaining datasets in the \code{teal_data} object
-\item \strong{Tracks Variables}: Uses \code{\link[=map_merged]{map_merged()}} to maintain a mapping of which variables in the
-merged dataset came from which selector
+\item \strong{Tracks Variables}: Keeps track of the variable names in the merged dataset
 }
 }
 
@@ -123,7 +111,7 @@ merged_data <- merged$data()  # teal_data object with merged dataset
 anl <- merged_data[["anl"]]   # The actual merged data.frame/tibble
 
 # Get variable mapping
-vars <- merged$merge_vars()
+vars <- merged$variables()
 # Returns: list(selector1 = c("VAR1", "VAR2"), selector2 = c("VAR3", "VAR4_ADSL"))
 
 # Get reproducible code
@@ -162,10 +150,10 @@ acts as the "left" side of the join, and subsequent datasets are joined one by o
 \section{Integration with Selectors}{
 
 
-\code{merge_srv} is designed to work with \code{\link[=module_input_srv]{module_input_srv()}} which creates selector objects:
+\code{merge_srv} is designed to work with \code{\link[=picks_srv]{picks_srv()}} which creates selector objects:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create selectors in server
-selectors <- module_input_srv(
+selectors <- picks_srv(
   spec = list(
     adsl = picks(...),
     adae = picks(...)
@@ -199,8 +187,8 @@ join_keys(data) <- default_cdisc_join_keys[c("ADSL", "ADAE")]
 
 # Create Shiny app
 ui <- fluidPage(
-  module_input_ui("adsl", picks(datasets("ADSL"), variables())),
-  module_input_ui("adae", picks(datasets("ADAE"), variables())),
+  picks_ui("adsl", picks(datasets("ADSL"), variables())),
+  picks_ui("adae", picks(datasets("ADAE"), variables())),
   verbatimTextOutput("code"),
   verbatimTextOutput("vars")
 )
@@ -208,11 +196,11 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # Create selectors
   selectors <- list(
-    adsl = module_input_srv("adsl",
+    adsl = picks_srv("adsl",
       data = reactive(data),
       spec = picks(datasets("ADSL"), variables())
     ),
-    adae = module_input_srv("adae",
+    adae = picks_srv("adae",
       data = reactive(data),
       spec = picks(datasets("ADAE"), variables())
     )
@@ -233,7 +221,7 @@ server <- function(input, output, session) {
   })
 
   output$vars <- renderPrint({
-    merged$merge_vars()
+    merged$variables()
   })
 }
 
@@ -243,9 +231,7 @@ shinyApp(ui, server)
 }
 \seealso{
 \itemize{
-\item \code{\link[=qenv_merge_selectors]{qenv_merge_selectors()}} for the underlying merge logic
-\item \code{\link[=map_merged]{map_merged()}} for variable mapping functionality
-\item \code{\link[=module_input_srv]{module_input_srv()}} for creating selectors
+\item \code{\link[=picks_srv]{picks_srv()}} for creating selectors
 \item \code{\link[teal.data:join_keys]{teal.data::join_keys()}} for defining dataset relationships
 }
 }

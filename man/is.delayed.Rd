@@ -15,8 +15,4 @@ A single logical value.
 \description{
 Check that the specification is resolved against a given data source.
 }
-\examples{
-is.delayed(1)
-is.delayed(variables("df", "df"))
-is.delayed(variables("df")) # Unknown selection
-}
+\keyword{internal}

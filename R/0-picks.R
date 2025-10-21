@@ -1,71 +1,202 @@
 #' Choices/selected settings
 #'
-#' Define choices and default selection of variables from datasets.
-#' @param choices <[`tidy-select`][dplyr::dplyr_tidy_select] or `character`>
-#'  One unquoted expression to be used to picks the choices.
-#' @param selected <[`tidy-select`][dplyr::dplyr_tidy_select] or `character`>
-#'  One unquoted expression to be used to picks from choices to be selected.
-#' @param multiple <`logical(1)`> if more than one selection is possible.
-#' @param fixed <`logical(1)`> selection will be fixed and not possible to change interactively.
-#' @param ordered <`logical(1)`> if the selected should follow the selection order. If `FALSE`
+#' Define choices and default selection for variables. `picks` allows app-developer to specify
+#' `datasets`, `variables` and `values` to be selected by app-user during Shiny session.
+#' Functions are based on the idea of `choices/selected` where app-developer provides `choices`
+#' and what is `selected` by default. App-user though changes `selected` interactively in
+#' [`picks_module`]
+#'
+#' @param choices ([`tidyselect::language`] or `character`)
+#'  Available values to choose.
+#' @param selected ([`tidyselect::language`] or `character`)
+#'  Choices to be selected.
+#' @param multiple (`logical(1)`) if more than one selection is possible.
+#' @param fixed (`logical(1)`) selection will be fixed and not possible to change interactively.
+#' @param ordered (`logical(1)`) if the selected should follow the selection order. If `FALSE`
 #'   `selected` returned from `srv_module_input()` would be ordered according to order in `choices`.
 #' @param ... additional arguments delivered to `pickerInput`
 #'
-#' @returns `picks` object containing specified settings
-#' @examples
+#' @details
+#' # `tidyselect` support
 #'
-#' # Initialize selector for `iris` to select columns between `Sepal.Length` and `Petal.Width`
-#' #  with first
+#' Both `choices` and `selected` parameters support `tidyselect` syntax, enabling dynamic
+#' and flexible variable selection patterns. This allows choices to be determined at runtime
+#' based on data characteristics rather than hardcoded values.
+#'
+#' ## Using tidyselect for `choices`
+#'
+#' When `choices` uses tidyselect, the available options are determined dynamically based on
+#' the selected dataset's structure:
+#'
+#' - `tidyselect::everything()` - All variables/datasets
+#' - `tidyselect::starts_with("prefix")` - Variables starting with a prefix
+#' - `tidyselect::ends_with("suffix")` - Variables ending with a suffix
+#' - `tidyselect::contains("pattern")` - Variables containing a pattern
+#' - `tidyselect::matches("regex")` - Variables matching a regular expression
+#' - `tidyselect::where(predicate)` - Variables/datasets satisfying a predicate function
+#' - `tidyselect::all_of(vars)` - All specified variables (error if missing)
+#' - `tidyselect::any_of(vars)` - Any specified variables (silent if missing)
+#' - Range selectors like `Sepal.Length:Petal.Width` - Variables between two positions
+#'
+#' ## Using tidyselect for `selected`
+#'
+#' The `selected` parameter can use:
+#'
+#' - Numeric indices (e.g., `1`, `1:3`, `c(1, 3, 5)`) - Select by position
+#' - Character vectors (e.g., `"Species"`, `c("mpg", "cyl")`) - Select by name
+#' - `tidyselect::everything()` - Select all available choices
+#' - Other tidyselect helpers as needed
+#'
+#' **Warning:** Using explicit character values for `selected` with dynamic `choices` may
+#' cause issues if the selected values are not present in the dynamically determined choices.
+#' Prefer using numeric indices (e.g., `1` for first variable) when `choices` is dynamic.
+#'
+#' # Structure and element dependencies
+#'
+#' The `picks()` function creates a hierarchical structure where elements depend on their
+#' predecessors, enabling cascading reactive updates during Shiny sessions.
+#'
+#' ## Element hierarchy
+#'
+#' A `picks` object must follow this order:
+#'
+#' 1. **`datasets()`** - to select a dataset. Always the first element (required).
+#' 2. **`variables()`** - To select columns from the chosen dataset.
+#' 3. **`values()`** - To select specific values from the chosen variable(s).
+#'
+#' Each element's choices are evaluated within the context of its predecessor's selection.
+#'
+#' ## How dependencies work
+#'
+#' - **Single dataset**: When `datasets(choices = "iris")` specifies one dataset, the
+#'   `variables()` choices are evaluated against that dataset's columns.
+#'
+#' - **Multiple datasets**: When `datasets(choices = c("iris", "mtcars"))` allows multiple
+#'   options, `variables()` choices are re-evaluated each time the user selects a different
+#'   dataset. This creates a reactive dependency where variable choices update automatically.
+#'
+#' - **Dynamic datasets**: When using `datasets(choices = tidyselect::where(is.data.frame))`,
+#'   all available data frames are discovered at runtime, and variable choices adapt to
+#'   whichever dataset the user selects.
+#'
+#' - **Variable to values**: Similarly, `values()` choices are evaluated based on the
+#'   selected variable(s), allowing users to filter specific levels or values.
+#'
+#' ## Best practices
+#'
+#' - Always start with `datasets()` - this is enforced by validation
+#' - Use dynamic `choices` in `variables()` when working with multiple datasets to ensure
+#'   compatibility across different data structures
+#' - Prefer `tidyselect::everything()` or `tidyselect::where()` predicates for flexible
+#'   variable selection that works across datasets with different schemas
+#' - Use numeric indices for `selected` when `choices` are dynamic to avoid referencing
+#'   variables that may not exist in all datasets
+#'
+#' ## Example: Three-level hierarchy
+#'
+#' ```r
+#' picks(
+#'   datasets(choices = c("iris", "mtcars"), selected = "iris"),
+#'   variables(choices = tidyselect::where(is.numeric), selected = 1),
+#'   values(choices = tidyselect::everything(), selected = 1:10)
+#' )
+#' ```
+#'
+#' In this example:
+#' - User first selects a dataset (iris or mtcars)
+#' - Variable choices update to show only numeric columns from selected dataset
+#' - After selecting a variable, value choices show all unique values from that column
+#'
+#' @examples
+#' # Select columns from iris dataset using range selector
 #' picks(
 #'   datasets(choices = "iris"),
 #'   variables(choices = Sepal.Length:Petal.Width, selected = 1)
 #' )
+#'
+#' # Single variable selection from iris dataset
+#' picks(
+#'   datasets(choices = "iris", selected = "iris"),
+#'   variables(choices = c("Sepal.Length", "Sepal.Width"), selected = "Sepal.Length", multiple = FALSE)
+#' )
+#'
+#' # Dynamic selection: any variable from iris, first selected by default
+#' picks(
+#'   datasets(choices = "iris", selected = "iris"),
+#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+#' )
+#'
+#' # Multiple dataset choices: variable choices will update when dataset changes
 #' picks(
 #'   datasets(choices = c("iris", "mtcars"), selected = "iris"),
-#'   variables(choices = tidyselect::everything(), selected = 1)
+#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
 #' )
+#'
+#' # Select from any dataset, filter by numeric variables
 #' picks(
 #'   datasets(choices = c("iris", "mtcars"), selected = 1),
 #'   variables(choices = tidyselect::where(is.numeric), selected = 1)
 #' )
+#'
+#' # Fully dynamic: auto-discover datasets and variables
+#' picks(
+#'   datasets(choices = tidyselect::where(is.data.frame), selected = 1),
+#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+#' )
+#'
+#' # Select categorical variables with length constraints
 #' picks(
 #'   datasets(choices = tidyselect::everything(), selected = 1),
 #'   variables(choices = is_categorical(min.len = 2, max.len = 15), selected = 1:2)
 #' )
-#' @rdname types
-#' @name Types
-NULL
-
-#' @describeIn types specify a selector.
+#'
 #' @export
 picks <- function(...) {
   picks <- rlang::dots_list(..., .ignore_empty = "trailing")
   checkmate::assert_list(picks, types = "type")
-  checkmate::assert_class(picks[[1]], "datasets")
-  names(picks) <- vapply(picks, FUN = is, FUN.VALUE = character(1))
-  structure(picks, class = c("picks", "list"))
-}
-
-#' @export
-datanames <- function(x) {
-  if (inherits(x, "picks")) {
-    x <- list(x)
+  if (!inherits(picks[[1]], "datasets")) {
+    stop("picks() requires datasets() as the first element", call. = FALSE)
   }
-  checkmate::assert_list(x, c("picks", "NULL"))
-  unique(unlist(lapply(x, function(x) {
-    if (is.character(x$datasets$choices)) x$datasets$choices
-  })))
+
+  # Check if values exists and is preceded by variables
+  element_classes <- vapply(picks, FUN = is, FUN.VALUE = character(1))
+  values_idx <- which(element_classes == "values")
+
+  if (length(values_idx) > 0) {
+    variables_idx <- which(element_classes == "variables")
+    if (length(variables_idx) == 0) {
+      stop("picks() requires variables() before values()", call. = FALSE)
+    }
+    if (values_idx != variables_idx + 1) {
+      stop("values() must immediately follow variables() in picks()", call. = FALSE)
+    }
+  }
+
+  names(picks) <- element_classes
+  structure(picks, class = c("picks", "list"))
 }
 
 #' @rdname picks
 #' @export
 datasets <- function(choices = tidyselect::everything(),
                      selected = 1,
-                     fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                     fixed = NULL,
                      ...) {
+  if (is.null(fixed)) {
+    fixed <- !.is_tidyselect(choices) && length(choices) == 1
+  }
+
+  selected_q <- if (.is_tidyselect(selected)) {
+    rlang::enquo(selected)
+  } else if (is.character(selected) && length(selected) == 1) {
+    selected
+  } else {
+    stop("datasets(selected) should either be `character(>0)` or `tidyselect-select-helper`")
+  }
+
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
-    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    selected = selected_q,
     multiple = FALSE,
     fixed = fixed,
     ...
@@ -78,10 +209,17 @@ datasets <- function(choices = tidyselect::everything(),
 #' @export
 variables <- function(choices = tidyselect::everything(),
                       selected = 1,
-                      multiple = !.is_tidyselect(selected) && length(selected) > 1,
-                      fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                      multiple = NULL,
+                      fixed = NULL,
                       ordered = FALSE,
                       ...) {
+  if (is.null(multiple)) {
+    multiple <- !.is_tidyselect(selected) && length(selected) > 1
+  }
+  if (is.null(fixed)) {
+    fixed <- !.is_tidyselect(choices) && length(choices) == 1
+  }
+
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
@@ -95,13 +233,16 @@ variables <- function(choices = tidyselect::everything(),
   out
 }
 
-#' @describeIn types Specify variables.
+#' @rdname picks
 #' @export
 values <- function(choices = tidyselect::everything(),
                    selected = tidyselect::everything(),
                    multiple = TRUE,
-                   fixed = !.is_tidyselect(choices) && length(choices) == 1,
+                   fixed = NULL,
                    ...) {
+  if (is.null(fixed)) {
+    fixed <- !.is_tidyselect(choices) && length(choices) == 1
+  }
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
@@ -114,58 +255,19 @@ values <- function(choices = tidyselect::everything(),
 }
 
 
-#' @describeIn types Specify colData.
+#' @rdname picks
 #' @export
-mae_colData <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
+col_data <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = multiple
   )
-  class(out) <- c("colData", class(out))
+  class(out) <- c("col_data", class(out))
   out
 }
 
-#' @export
-anyNA.type <- function(x, recursive = FALSE) {
-  anyNA(unclass(x[c("choices", "selected")]), recursive = recursive)
-}
 
-#' @export
-is.na.type <- function(x) anyNA(x)
-
-#' @export
-print.type <- function(x, ...) {
-  cat(
-    "choices :", .toString(x$choices),
-    "\nselected:", .toString(x$selected)
-  )
-  return(x)
-}
-
-.toString <- function(x) {
-  if (inherits(x, "quosure")) {
-    rlang::as_label(x)
-  } else if (is.vector(x)) {
-    toString(x, width = 30)
-  } else if (is.null(x)) {
-    "~"
-  }
-}
-
-
-.is.picks <- function(x) {
-  inherits(x, "picks")
-}
-
-.is.tidyselect <- function(x) {
-  err <- try(force(x), silent = TRUE)
-  inherits(err, "error") && grepl("must be used within a *selecting*", err$message)
-}
-
-.is.type <- function(x) {
-  inherits(x, "type")
-}
 
 .selected_choices <- function(choices,
                               selected,
@@ -173,24 +275,28 @@ print.type <- function(x, ...) {
                               ordered = FALSE,
                               fixed = FALSE,
                               ...) {
-  is_choices_delayed <- inherits(choices, "quosure") ||
-    checkmate::test_multi_class(choices, c("variable_choices", "value_choices"))
+  is_choices_delayed <- rlang::is_quosure(choices)
+  is_choices_eager <- is.character(choices) && length(choices)
   is_selected_eager <- is.character(selected)
-
+  if (!(is_choices_delayed || is_choices_eager)) {
+    stop("`choices` should either be `character(>0)` or `tidyselect-select-helper`")
+  }
   if (is_choices_delayed && is_selected_eager) {
     warning(
       deparse(sys.call(-1)),
-      "\n - Setting explicit `selected` while `choices` are delayed (set using `tidyselect`) might lead to the", "situation where `selected` is not in dynamically obtained `choices`.",
+      "\n - Setting explicit `selected` while `choices` are delayed (set using `tidyselect`) doesn't ",
+      "guarantee that `selected` is a subset of `choices`.",
       call. = FALSE
     )
   }
 
-  if (inherits(choices, "choices_labeled")) {
-    choices <- setNames(as.vector(choices), names(choices))
-  }
-
-  if (inherits(selected, "choices_labeled")) {
-    selected <- setNames(as.vector(selected), names(selected))
+  if (is.character(choices) && is.character(selected) && any(!selected %in% choices)) {
+    not_in_choices <- setdiff(selected, choices)
+    stop(sprintf(
+      "Some `selected`:{%s}\nare not a subset of `choices`: {%s}",
+      toString(sQuote(not_in_choices)),
+      toString(sQuote(choices))
+    ))
   }
 
   out <- structure(
@@ -203,11 +309,6 @@ print.type <- function(x, ...) {
   )
 }
 
-.valid_picks <- function(x) {
-  !((.is.type(x) || .is.picks(x)))
-}
-
-
 #' Is an object created using tidyselect
 #'
 #' @description
@@ -219,6 +320,10 @@ print.type <- function(x, ...) {
 #' @return `logical(1)`
 #' @keywords internal
 .is_tidyselect <- function(x) {
-  out <- tryCatch(x, error = function(e) e)
-  !is.character(out) && !is.null(out) && !inherits(out, "delayed_data")
+  out <- suppressWarnings(tryCatch(x, error = function(e) e))
+  inherits(out, "error") && grepl("must be used within a \\*selecting\\* function", out$message) || # e.g. everything
+    inherits(out, "error") && grepl("object .+ not found", out$message) || # e.g. var:var2
+    inherits(out, "error") && grepl("operations are possible", out$message) || # e.g. where() | where()
+    is.function(out) || # e.g. where(is.numeric)
+    checkmate::test_integerish(out, min.len = 1) # e.g. 1:5
 }

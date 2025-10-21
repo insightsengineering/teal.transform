@@ -41,6 +41,36 @@ resolver <- function(x, data) {
   x
 }
 
+#' Is the specification resolved?
+#'
+#' Check that the specification is resolved against a given data source.
+#' @param x Object to be evaluated.
+#' @returns A single logical value.
+#' @keywords internal
+is.delayed <- function(x) {
+  UseMethod("is.delayed")
+}
+
+# Handling a list of transformers e1 | e2
+#' @export
+#' @method is.delayed list
+is.delayed.list <- function(x) {
+  any(vapply(x, is.delayed, logical(1L)))
+}
+
+#' @export
+#' @method is.delayed picks
+is.delayed.picks <- function(x) {
+  any(vapply(x, is.delayed, logical(1L)))
+}
+
+#' @export
+#' @method is.delayed type
+is.delayed.type <- function(x) {
+  !is.character(x$choices) || !is.character(x$selected)
+}
+
+
 #' A method that should take a type and resolve it.
 #'
 #' Generic that makes the minimal check on spec.
@@ -177,4 +207,19 @@ determine.values <- function(x, data) {
   } else if (all(x$selected %in% names(data))) {
     data[x$selected]
   }
+}
+
+.eval_select <- function(data, ...) {
+  if (is.environment(data)) {
+    # To keep the "order" of the names in the extraction: avoids suprises
+    data <- as.list(data)[names(data)]
+  } else if (length(dim(data)) == 2L) {
+    data <- as.data.frame(data)
+  }
+
+  if (is.null(names(data))) {
+    stop("Can't extract the data.")
+  }
+  pos <- tidyselect::eval_select(expr = ..., data)
+  pos
 }

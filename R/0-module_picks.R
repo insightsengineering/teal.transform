@@ -1,40 +1,70 @@
-#' Module's interactive input
+#' Interactive picks
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
 #'
+#' Creates UI and server components for interactive [picks()] in Shiny modules. The module is based on
+#' configuration provided via [picks()] and its responsibility is to determine relevant input
+#' values
+#'
+#'
+#' The module supports both single and combined specifications:
+#' - Single `picks` objects for a single input
+#' - Named lists of `picks` objects for multiple inputs
+#'
+#' @param id (`character(1)`) Shiny module ID
+#' @param spec (`picks` or `list`) Specification object created by `picks()` or a named list of such objects
+#' @param container (`character(1)` or `function`) UI container type. Default is `"badge_dropdown"`.
+#'   Can also be one of `htmltools::tags` functions
+#' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
+#'
+#' @return
+#' - `picks_ui()`: UI elements for the input controls
+#' - `picks_srv()`: Server-side reactive logic returning the processed data
+#'
+#' @details
+#' The module uses S3 method dispatch to handle different types of specifications:
+#' - `.picks` methods handle single specification
+#' - `.list` methods handle multiple specifications
+#'
+#' The UI component (`picks_ui`) creates the visual elements, while the
+#' server component (`picks_srv`) manages the reactive logic,
+#'
+#' @seealso [picks()] for creating specification objects
+#'
+#' @name picks_module
+NULL
 
-
+#' @rdname picks_module
 #' @export
-module_input_ui <- function(id, spec, container = "badge_dropdown") {
+picks_ui <- function(id, spec, container = "badge_dropdown") {
   checkmate::assert_string(id)
-  UseMethod("module_input_ui", spec)
+  UseMethod("picks_ui", spec)
 }
 
+#' @rdname picks_module
 #' @export
-module_input_ui.list <- function(id, spec, container = "badge_dropdown") {
+picks_ui.list <- function(id, spec, container = "badge_dropdown") {
   checkmate::assert_list(spec, names = "named")
   ns <- shiny::NS(id)
   sapply(
     Filter(length, names(spec)),
     USE.NAMES = TRUE,
-    function(name) module_input_ui(ns(name), spec[[name]], container = container)
+    function(name) picks_ui(ns(name), spec[[name]], container = container)
   )
 }
 
+#' @rdname picks_module
 #' @export
-module_input_ui.picks <- function(id, spec, container = "badge_dropdown") {
-  if (.valid_picks(spec)) {
-    stop("Unexpected object used as spec. Use `picks` to create the object.")
-  }
+picks_ui.picks <- function(id, spec, container = "badge_dropdown") {
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
 
   content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x))))
   htmltools::tags$div(
-    # todo: spec to have a label attribute
     # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
     if (identical(container, "badge_dropdown")) {
-      teal::badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
+      badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
     } else {
       if (!any(sapply(htmltools::tags, identical, container))) {
         stop("Container should be one of `htmltools::tags`")
@@ -44,24 +74,27 @@ module_input_ui.picks <- function(id, spec, container = "badge_dropdown") {
   )
 }
 
+#' @rdname picks_module
 #' @export
-module_input_srv <- function(id = "", spec, data) {
+picks_srv <- function(id = "", spec, data) {
   checkmate::assert_string(id)
   checkmate::assert_class(data, "reactive")
-  UseMethod("module_input_srv", spec)
+  UseMethod("picks_srv", spec)
 }
 
+#' @rdname picks_module
 #' @export
-module_input_srv.list <- function(id, spec, data) {
+picks_srv.list <- function(id, spec, data) {
   sapply(
     names(Filter(length, spec)),
     USE.NAMES = TRUE,
-    function(name) module_input_srv(name, spec[[name]], data)
+    function(name) picks_srv(name, spec[[name]], data)
   )
 }
 
+#' @rdname picks_module
 #' @export
-module_input_srv.picks <- function(id, spec, data) {
+picks_srv.picks <- function(id, spec, data) {
   moduleServer(id, function(input, output, session) {
     data_r <- shiny::reactive(if (shiny::is.reactive(data)) data() else data)
     spec_resolved <- shiny::reactiveVal(
@@ -71,7 +104,7 @@ module_input_srv.picks <- function(id, spec, data) {
       )
     )
     session$onBookmark(function(state) {
-      logger::log_debug("module_input_srv@onBookmark: storing current picks")
+      logger::log_debug("picks_srv@onBookmark: storing current picks")
       state$values$picks <- spec_resolved()
     })
 
@@ -115,17 +148,17 @@ module_input_srv.picks <- function(id, spec, data) {
 
           .update_rv(
             selected, new_selected,
-            sprintf("module_input_srv@1 %s$%s$selected is outside of the possible choices", id, slot_name)
+            sprintf("picks_srv@1 %s$%s$selected is outside of the possible choices", id, slot_name)
           )
           .update_rv(
             choices, all_choices(),
-            sprintf("module_input_srv@1 %s$%s$choices is outside of the possible choices", id, slot_name)
+            sprintf("picks_srv@1 %s$%s$choices is outside of the possible choices", id, slot_name)
           )
         })
 
         observeEvent(spec_resolved()[[slot_name]], ignoreInit = TRUE, ignoreNULL = FALSE, {
-          .update_rv(choices, spec_resolved()[[slot_name]]$choices, log = "module_input_srv@1 update input choices")
-          .update_rv(selected, spec_resolved()[[slot_name]]$selected, log = "module_input_srv@1 update input selected")
+          .update_rv(choices, spec_resolved()[[slot_name]]$choices, log = "picks_srv@1 update input choices")
+          .update_rv(selected, spec_resolved()[[slot_name]]$selected, log = "picks_srv@1 update input selected")
         })
 
         args <- attributes(spec[[slot_name]])
@@ -308,7 +341,7 @@ module_input_srv.picks <- function(id, spec, data) {
   if (isTRUE(all.equal(selected, spec_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
     return(NULL)
   }
-  logger::log_info("module_input_server@1 selected has changed. Resolving downstream...")
+  logger::log_info("picks_server@1 selected has changed. Resolving downstream...")
 
   new_spec_unresolved <- old_spec
   # ↓ everything after `slot_idx` is to resolve
