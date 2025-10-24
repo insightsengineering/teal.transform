@@ -4,14 +4,14 @@
 \alias{.resolve}
 \title{Resolve downstream after selected changes}
 \usage{
-.resolve(selected, slot_name, spec_resolved, old_spec, data)
+.resolve(selected, slot_name, picks_resolved, old_picks, data)
 }
 \arguments{
 \item{selected}{(\code{vector}) rather \code{character}, or \code{factor}. \code{numeric(2)} for \code{values()} based on numeric column.}
 
-\item{spec_resolved}{(\code{reactiveVal})}
+\item{picks_resolved}{(\code{reactiveVal})}
 
-\item{old_spec}{(\code{picks})}
+\item{old_picks}{(\code{picks})}
 
 \item{data}{(\code{any} asserted further in \code{resolver})}
 
@@ -21,12 +21,12 @@
 @description
 When i-th select input changes then
 \itemize{
-\item spec_resolved containing current state is being unresolved but only after the i-th element as
+\item picks_resolved containing current state is being unresolved but only after the i-th element as
 values are sequentially dependent. For example if variables (i=2) is selected we don't want
 to unresolve (restart) dataset.
 \item new value (selected) is replacing old value in current slot (i)
 \item we call resolve which resolves only "unresolved" (delayed) values
-\item new spec is replacing reactiveValue
+\item new picks is replacing reactiveValue
 Thanks to this design reactive values are triggered only once
 }
 }

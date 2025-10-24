@@ -456,9 +456,9 @@ On the `ui` part it is necessary to call `picks_ui` for each `picks` object.
 ui_example <- function(id, x, y, facet) {
   ns <- NS(id)
   div(
-    picks_ui(id = ns("x"), spec = x),
-    picks_ui(id = ns("y"), spec = y),
-    picks_ui(id = ns("facet"), spec = facet),
+    picks_ui(id = ns("x"), picks =  x),
+    picks_ui(id = ns("y"), picks =  y),
+    picks_ui(id = ns("facet"), picks =  facet),
     plotOutput(ns("plot"))
   )
 }
@@ -495,7 +495,7 @@ To create a merged-dataset using information from app-user selection one needs t
 ```r
 srv_example <- function(id, data, x, y, facet) {
   moduleServer(id, function(input, output, session) {
-    selectors <- picks_srv(data = data, spec = list(x = x, y = y, facet = facet))
+    selectors <- picks_srv(data = data, picks =  list(x = x, y = y, facet = facet))
 
     merged <- merge_srv("merge", data = data, selectors = selectors)
 
@@ -669,16 +669,16 @@ tm_example <- function(x, y, facet) {
 ui_example <- function(id, x, y, facet) {
   ns <- NS(id)
   div(
-    picks_ui(id = ns("x"), spec = x),
-    picks_ui(id = ns("y"), spec = y),
-    picks_ui(id = ns("facet"), spec = facet),
+    picks_ui(id = ns("x"), picks =  x),
+    picks_ui(id = ns("y"), picks =  y),
+    picks_ui(id = ns("facet"), picks =  facet),
     plotOutput(ns("plot"))
   )
 }
 
 srv_example <- function(id, data, x, y, facet) {
   moduleServer(id, function(input, output, session) {
-    selectors <- picks_srv(data = data, spec = list(x = x, y = y, facet = facet))
+    selectors <- picks_srv(data = data, picks =  list(x = x, y = y, facet = facet))
 
     merged <- merge_srv("merge", data = data, selectors = selectors)
 

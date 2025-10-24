@@ -122,7 +122,7 @@
 #' ```r
 #' # Create selectors in server
 #' selectors <- picks_srv(
-#'   spec = list(
+#'   picks =  list(
 #'     adsl = picks(...),
 #'     adae = picks(...)
 #'   ),
@@ -169,11 +169,11 @@
 #'   selectors <- list(
 #'     adsl = picks_srv("adsl",
 #'       data = reactive(data),
-#'       spec = picks(datasets("ADSL"), variables())
+#'       picks = picks(datasets("ADSL"), variables())
 #'     ),
 #'     adae = picks_srv("adae",
 #'       data = reactive(data),
-#'       spec = picks(datasets("ADAE"), variables())
+#'       picks = picks(datasets("ADAE"), variables())
 #'     )
 #'   )
 #'
@@ -517,5 +517,5 @@ merge_srv <- function(id,
   TRUE
 }
 
-#' @rdname .check_merge_keys
+#' @rdname dot-check_merge_keys
 .assert_merge_keys <- checkmate::makeAssertionFunction(.check_merge_keys)

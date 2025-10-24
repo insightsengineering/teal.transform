@@ -1,22 +1,23 @@
 #' Merge module
 #'
+#' @param picks (`list` of `picks`)
 #' Example module
-tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
+tm_merge <- function(label = "merge-module", picks, transformators = list()) {
   # todo: move to vignette
   module(
     label = label,
-    ui = function(id, inputs) {
+    ui = function(id, picks) {
       ns <- NS(id)
       tags$div(
         tags$div(
           class = "row g-2",
-          lapply(names(inputs), function(id) {
+          lapply(names(picks), function(id) {
             tags$div(
               class = "col-auto",
               tags$strong(tags$label(id)),
               teal.transform::picks_ui(
                 id = ns(id),
-                spec = inputs[[id]]
+                picks = picks[[id]]
               )
             )
           })
@@ -29,9 +30,9 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
         )
       )
     },
-    server = function(id, data, inputs) {
+    server = function(id, data, picks) {
       moduleServer(id, function(input, output, session) {
-        selectors <- picks_srv(id, spec = inputs, data = data)
+        selectors <- picks_srv(id, picks = picks, data = data)
 
         merged <- merge_srv("merge", data = data, selectors = selectors)
 
@@ -56,8 +57,8 @@ tm_merge <- function(label = "merge-module", inputs, transformators = list()) {
         output$join_keys <- renderPrint(teal.data::join_keys(merged$data()))
       })
     },
-    ui_args = list(inputs = inputs),
-    server_args = list(inputs = inputs),
+    ui_args = list(picks = picks),
+    server_args = list(picks = picks),
     transformators = transformators
   )
 }

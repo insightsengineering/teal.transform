@@ -154,7 +154,7 @@ acts as the "left" side of the join, and subsequent datasets are joined one by o
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Create selectors in server
 selectors <- picks_srv(
-  spec = list(
+  picks =  list(
     adsl = picks(...),
     adae = picks(...)
   ),
@@ -198,11 +198,11 @@ server <- function(input, output, session) {
   selectors <- list(
     adsl = picks_srv("adsl",
       data = reactive(data),
-      spec = picks(datasets("ADSL"), variables())
+      picks = picks(datasets("ADSL"), variables())
     ),
     adae = picks_srv("adae",
       data = reactive(data),
-      spec = picks(datasets("ADAE"), variables())
+      picks = picks(datasets("ADAE"), variables())
     )
   )
 

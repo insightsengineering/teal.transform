@@ -1,5 +1,5 @@
 #' @export
-print.type <- function(x, ...) {
+print.pick <- function(x, ...) {
   cat(format(x, indent = 0))
   invisible(x)
 }
@@ -21,28 +21,28 @@ format.picks <- function(x, indent = 0) {
   for (i in seq_along(x)) {
     element_name <- names(x)[i]
     out <- paste0(out, .indent(sprintf("  %s:\n", .bold(sprintf("<%s>", element_name))), indent))
-    out <- paste0(out, .format_type_content(x[[i]], indent + 4))
-    out <- paste0(out, .format_type_attributes(x[[i]], indent + 4))
+    out <- paste0(out, .format_pick_content(x[[i]], indent + 4))
+    out <- paste0(out, .format_pick_attributes(x[[i]], indent + 4))
   }
   out
 }
 
 #' @export
-format.type <- function(x, indent = 0) {
-  element_class <- setdiff(class(x), "type")[1]
+format.pick <- function(x, indent = 0) {
+  element_class <- setdiff(class(x), "pick")[1]
   out <- .indent(sprintf("%s\n", .bold(sprintf("<%s>", element_class))), indent)
-  out <- paste0(out, .format_type_content(x, indent + 2))
-  out <- paste0(out, .format_type_attributes(x, indent + 2))
+  out <- paste0(out, .format_pick_content(x, indent + 2))
+  out <- paste0(out, .format_pick_attributes(x, indent + 2))
   out
 }
 
-.format_type_content <- function(x, indent = 0) {
-  out <- .indent(sprintf("%s %s\n", "choices:", .format_type_value(x$choices)), indent)
-  out <- paste0(out, .indent(sprintf("%s %s\n", "selected:", .format_type_value(x$selected)), indent))
+.format_pick_content <- function(x, indent = 0) {
+  out <- .indent(sprintf("%s %s\n", "choices:", .format_pick_value(x$choices)), indent)
+  out <- paste0(out, .indent(sprintf("%s %s\n", "selected:", .format_pick_value(x$selected)), indent))
   out
 }
 
-.format_type_attributes <- function(x, indent = 0) {
+.format_pick_attributes <- function(x, indent = 0) {
   attrs <- attributes(x)
   attrs_to_show <- attrs[!names(attrs) %in% c("class", "names")]
   if (length(attrs_to_show) > 0) {
@@ -56,8 +56,8 @@ format.type <- function(x, indent = 0) {
   }
 }
 
-.format_type_value <- function(x) {
-  choices_str <- if (rlang::is_quosure(x)) {
+.format_pick_value <- function(x) {
+  choices_str <- if (rlang::is_quosure(x) || is.function(x)) {
     rlang::as_label(x)
   } else if (length(x) == 0) {
     "~"

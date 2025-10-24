@@ -5,10 +5,10 @@
 #' Functions are based on the idea of `choices/selected` where app-developer provides `choices`
 #' and what is `selected` by default. App-user though changes `selected` interactively in
 #' [`picks_module`]
-#'
-#' @param choices ([`tidyselect::language`] or `character`)
+#' # todo: add note that values accepts predicates only
+#' @param choices (`tidyselect::language` or `character`)
 #'  Available values to choose.
-#' @param selected ([`tidyselect::language`] or `character`)
+#' @param selected (`tidyselect::language` or `character`)
 #'  Choices to be selected.
 #' @param multiple (`logical(1)`) if more than one selection is possible.
 #' @param fixed (`logical(1)`) selection will be fixed and not possible to change interactively.
@@ -153,13 +153,13 @@
 #' @export
 picks <- function(...) {
   picks <- rlang::dots_list(..., .ignore_empty = "trailing")
-  checkmate::assert_list(picks, types = "type")
+  checkmate::assert_list(picks, types = "pick")
   if (!inherits(picks[[1]], "datasets")) {
     stop("picks() requires datasets() as the first element", call. = FALSE)
   }
 
   # Check if values exists and is preceded by variables
-  element_classes <- vapply(picks, FUN = is, FUN.VALUE = character(1))
+  element_classes <- vapply(picks, FUN = methods::is, FUN.VALUE = character(1))
   values_idx <- which(element_classes == "values")
 
   if (length(values_idx) > 0) {
@@ -172,6 +172,24 @@ picks <- function(...) {
     }
   }
 
+  previous_has_dynamic_choices <- c(
+    FALSE,
+    vapply(head(picks, -1), FUN.VALUE = logical(1), FUN = function(x) {
+      inherits(x$choices, "quosure") || length(x$choices) > 1
+    })
+  )
+  has_eager_choices <- vapply(picks, function(x) is.character(x$choices), logical(1))
+
+  if (any(previous_has_dynamic_choices & has_eager_choices)) {
+    idx_wrong <- which(previous_has_dynamic_choices & has_eager_choices)[1]
+    warning(
+      element_classes[idx_wrong], " has eager choices (character) while ",
+      element_classes[idx_wrong - 1], " has dynamic choices. ",
+      "It is not guaranteed that explicitly defined choices will be a subset of data selected in a previous element.",
+      call. = FALSE
+    )
+  }
+
   names(picks) <- element_classes
   structure(picks, class = c("picks", "list"))
 }
@@ -179,24 +197,27 @@ picks <- function(...) {
 #' @rdname picks
 #' @export
 datasets <- function(choices = tidyselect::everything(),
-                     selected = 1,
+                     selected = 1L,
                      fixed = NULL,
                      ...) {
-  if (is.null(fixed)) {
-    fixed <- !.is_tidyselect(choices) && length(choices) == 1
-  }
+  checkmate::assert(
+    .check_tidyselect(choices),
+    .check_predicate(choices),
+    checkmate::check_character(choices, min.len = 1)
+  )
+  checkmate::assert(
+    .check_tidyselect(selected),
+    .check_predicate(selected),
+    checkmate::check_character(selected, len = 1, null.ok = TRUE)
+  )
 
-  selected_q <- if (.is_tidyselect(selected)) {
-    rlang::enquo(selected)
-  } else if (is.character(selected) && length(selected) == 1) {
-    selected
-  } else {
-    stop("datasets(selected) should either be `character(>0)` or `tidyselect-select-helper`")
+  if (is.null(fixed)) {
+    fixed <- !.is_tidyselect(choices) && !.is_predicate(choices) && length(choices) == 1
   }
 
   out <- .selected_choices(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
-    selected = selected_q,
+    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = FALSE,
     fixed = fixed,
     ...
@@ -208,16 +229,26 @@ datasets <- function(choices = tidyselect::everything(),
 #' @rdname picks
 #' @export
 variables <- function(choices = tidyselect::everything(),
-                      selected = 1,
+                      selected = 1L,
                       multiple = NULL,
                       fixed = NULL,
                       ordered = FALSE,
                       ...) {
+  checkmate::assert(
+    .check_tidyselect(choices),
+    .check_predicate(choices),
+    checkmate::check_character(choices, min.len = 1)
+  )
+  checkmate::assert(
+    .check_tidyselect(selected),
+    .check_predicate(selected),
+    checkmate::check_character(selected, min.len = 1, null.ok = TRUE)
+  )
   if (is.null(multiple)) {
-    multiple <- !.is_tidyselect(selected) && length(selected) > 1
+    multiple <- !(.is_tidyselect(selected) || .is_predicate(selected)) && length(selected) > 1
   }
   if (is.null(fixed)) {
-    fixed <- !.is_tidyselect(choices) && length(choices) == 1
+    fixed <- !(.is_tidyselect(choices) || .is_predicate(choices)) && length(choices) == 1
   }
 
   out <- .selected_choices(
@@ -226,7 +257,7 @@ variables <- function(choices = tidyselect::everything(),
     multiple = multiple,
     fixed = fixed,
     ordered = ordered,
-    `allow-clear` = !.is_tidyselect(selected) && (is.null(selected) || multiple),
+    `allow-clear` = !.is_tidyselect(selected) && !.is_predicate(selected) && (is.null(selected) || multiple),
     ...
   )
   class(out) <- c("variables", class(out))
@@ -235,17 +266,34 @@ variables <- function(choices = tidyselect::everything(),
 
 #' @rdname picks
 #' @export
-values <- function(choices = tidyselect::everything(),
-                   selected = tidyselect::everything(),
+values <- function(choices = function(x) !is.na(x),
+                   selected = function(x) !is.na(x),
                    multiple = TRUE,
                    fixed = NULL,
                    ...) {
+  checkmate::assert(
+    .check_predicate(choices),
+    checkmate::check_character(choices, min.len = 1, unique = TRUE),
+    checkmate::check_numeric(choices, len = 2, sorted = TRUE, finite = TRUE),
+    checkmate::check_date(choices, len = 2), # should be sorted but determine
+    checkmate::check_posixct(choices, len = 2)
+  )
+  checkmate::assert(
+    .check_predicate(selected),
+    checkmate::check_null(selected),
+    checkmate::check_character(selected, min.len = 1, unique = TRUE),
+    checkmate::check_numeric(selected, len = 2, sorted = TRUE, finite = TRUE),
+    checkmate::check_date(selected, len = 2),
+    checkmate::check_posixct(selected, len = 2)
+  )
+
   if (is.null(fixed)) {
-    fixed <- !.is_tidyselect(choices) && length(choices) == 1
+    fixed <- !.is_predicate(choices) && length(choices) == 1
   }
+
   out <- .selected_choices(
-    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
-    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
+    choices = choices,
+    selected = selected,
     multiple = multiple,
     fixed = fixed,
     ...
@@ -255,18 +303,6 @@ values <- function(choices = tidyselect::everything(),
 }
 
 
-#' @rdname picks
-#' @export
-col_data <- function(choices = tidyselect::everything(), selected = 1, multiple = FALSE) {
-  out <- .selected_choices(
-    choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
-    selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
-    multiple = multiple
-  )
-  class(out) <- c("col_data", class(out))
-  out
-}
-
 
 
 .selected_choices <- function(choices,
@@ -275,12 +311,8 @@ col_data <- function(choices = tidyselect::everything(), selected = 1, multiple 
                               ordered = FALSE,
                               fixed = FALSE,
                               ...) {
-  is_choices_delayed <- rlang::is_quosure(choices)
-  is_choices_eager <- is.character(choices) && length(choices)
+  is_choices_delayed <- rlang::is_quosure(choices) || .is_predicate(choices)
   is_selected_eager <- is.character(selected)
-  if (!(is_choices_delayed || is_choices_eager)) {
-    stop("`choices` should either be `character(>0)` or `tidyselect-select-helper`")
-  }
   if (is_choices_delayed && is_selected_eager) {
     warning(
       deparse(sys.call(-1)),
@@ -305,7 +337,7 @@ col_data <- function(choices = tidyselect::everything(), selected = 1, multiple 
     ordered = ordered,
     fixed = fixed,
     ...,
-    class = "type"
+    class = "pick"
   )
 }
 
@@ -324,6 +356,30 @@ col_data <- function(choices = tidyselect::everything(), selected = 1, multiple 
   inherits(out, "error") && grepl("must be used within a \\*selecting\\* function", out$message) || # e.g. everything
     inherits(out, "error") && grepl("object .+ not found", out$message) || # e.g. var:var2
     inherits(out, "error") && grepl("operations are possible", out$message) || # e.g. where() | where()
-    is.function(out) || # e.g. where(is.numeric)
-    checkmate::test_integerish(out, min.len = 1) # e.g. 1:5
+    checkmate::test_integer(out, min.len = 1) # e.g. 1L:5L
+}
+
+.is_predicate <- function(x) {
+  !.is_tidyselect(x) &&
+    (
+      checkmate::test_function(x, nargs = 1) ||
+        checkmate::test_function(x) && identical(names(formals(x)), "...")
+
+    )
+}
+
+.check_tidyselect <- function(x) {
+  if (!.is_tidyselect(x)) {
+    "choices/selected has not been created using tidyselect-helper"
+  } else {
+    TRUE
+  }
+}
+
+.check_predicate <- function(x) {
+  if (!.is_predicate(x)) {
+    "choices/selected has not been created using predicate function (single arg function returning TRUE or FALSE)"
+  } else {
+    TRUE
+  }
 }

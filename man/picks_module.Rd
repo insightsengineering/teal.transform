@@ -10,25 +10,25 @@
 \alias{picks_srv.picks}
 \title{Interactive picks}
 \usage{
-picks_ui(id, spec, container = "badge_dropdown")
+picks_ui(id, picks, container = "badge_dropdown")
 
-\method{picks_ui}{list}(id, spec, container = "badge_dropdown")
+\method{picks_ui}{list}(id, picks, container)
 
-\method{picks_ui}{picks}(id, spec, container = "badge_dropdown")
+\method{picks_ui}{picks}(id, picks, container)
 
-picks_srv(id = "", spec, data)
+picks_srv(id = "", picks, data)
 
-\method{picks_srv}{list}(id, spec, data)
+\method{picks_srv}{list}(id, picks, data)
 
-\method{picks_srv}{picks}(id, spec, data)
+\method{picks_srv}{picks}(id, picks, data)
 }
 \arguments{
 \item{id}{(\code{character(1)}) Shiny module ID}
 
-\item{spec}{(\code{picks} or \code{list}) Specification object created by \code{picks()} or a named list of such objects}
+\item{picks}{(\code{picks} or \code{list}) object created by \code{picks()} or a named list of such objects}
 
-\item{container}{(\code{character(1)} or \code{function}) UI container type. Default is \code{"badge_dropdown"}.
-Can also be one of \code{htmltools::tags} functions}
+\item{container}{(\code{character(1)} or \code{function}) UI container type. Can be one of \code{htmltools::tags}
+functions. By default, elements are wrapped in a package-specific dropdown.}
 
 \item{data}{(\code{reactive}) Reactive expression returning the data object to be used for populating choices}
 }
@@ -45,22 +45,22 @@ Creates UI and server components for interactive \code{\link[=picks]{picks()}} i
 configuration provided via \code{\link[=picks]{picks()}} and its responsibility is to determine relevant input
 values
 
-The module supports both single and combined specifications:
+The module supports both single and combined \code{picks}:
 \itemize{
 \item Single \code{picks} objects for a single input
 \item Named lists of \code{picks} objects for multiple inputs
 }
 }
 \details{
-The module uses S3 method dispatch to handle different types of specifications:
+The module uses S3 method dispatch to handle different ways to provide \code{picks}:
 \itemize{
-\item \code{.picks} methods handle single specification
-\item \code{.list} methods handle multiple specifications
+\item \code{.picks} methods handle single `picks`` object
+\item \code{.list} methods handle multiple \code{picks} objects
 }
 
 The UI component (\code{picks_ui}) creates the visual elements, while the
 server component (\code{picks_srv}) manages the reactive logic,
 }
 \seealso{
-\code{\link[=picks]{picks()}} for creating specification objects
+\code{\link[=picks]{picks()}} for creating `picks`` objects
 }

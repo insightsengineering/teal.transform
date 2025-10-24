@@ -4,8 +4,12 @@
 \alias{tm_merge}
 \title{Merge module}
 \usage{
-tm_merge(label = "merge-module", inputs, transformators = list())
+tm_merge(label = "merge-module", picks, transformators = list())
+}
+\arguments{
+\item{picks}{(\code{list} of \code{picks})
+Example module}
 }
 \description{
-Example module
+Merge module
 }

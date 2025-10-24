@@ -2,34 +2,31 @@
 % Please edit documentation in R/0-resolver.R
 \name{resolver}
 \alias{resolver}
-\title{Resolve the specification}
+\title{Resolve \code{picks}}
 \usage{
 resolver(x, data)
 }
 \arguments{
-\item{data}{The qenv where the specification is evaluated.}
+\item{data}{(\code{\link[teal.data:teal_data]{teal.data::teal_data()}} \code{environment} or \code{list}) any data collection supporting object extraction with \code{[[}.
+Used to determine values of unresolved \code{picks}.}
 
-\item{spec}{A object extraction specification.}
+\item{picks}{(\code{\link[=picks]{picks()}}) settings for picks.}
 }
 \value{
-A specification but resolved: the names and selection is the name of the objects (if possible).
+resolved \code{picks}.
 }
 \description{
-Given the specification of some data to extract find if they are available or not.
-The specification for selecting a variable shouldn't depend on the data of said variable.
+Resolve iterates through each \code{picks} element and determines values .
 }
 \examples{
-dataset1 <- datasets(where(is.data.frame))
-dataset2 <- datasets(where(is.matrix))
-spec <- c(dataset1, variables("a", "a"))
-td <- within(teal.data::teal_data(), {
+# todo: fix example to use environment or a list
+x1 <- datasets(where(is.data.frame))
+x2 <- picks(x1, variables("a", "a"))
+data <- within(teal.data::teal_data(), {
   df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
   df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
   m <- matrix()
 })
-resolver(list(spec, dataset2), td)
-resolver(dataset2, td)
-resolver(spec, td)
-spec <- c(dataset1, variables("a", where(is.character)))
-resolver(spec, td)
+resolver(x = x1, data = data)
+resolver(x = x2, data = data)
 }

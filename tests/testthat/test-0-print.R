@@ -6,7 +6,7 @@ testthat::describe("format.type() for datasets", {
   })
 
   it("formats datasets with tidyselect choices by printing matched call's argument", {
-    ds <- datasets(choices = tidyselect::everything(), selected = 1)
+    ds <- datasets(choices = tidyselect::everything(), selected = 1L)
     result <- format(ds)
     testthat::expect_match(result, "<datasets>")
     testthat::expect_match(result, "choices:.*everything\\(\\)")
@@ -42,10 +42,28 @@ testthat::describe("format.picks() for picks collection", {
   it("formats picks with datasets, variables and values by showing them all explicitly", {
     p <- picks(
       datasets(choices = "iris", selected = "iris"),
-      variables(choices = c("a", "b"), selected = "a", multiple = FALSE),
+      variables(choices = "a", selected = "a", multiple = FALSE),
       values(choices = c("1", "2"), selected = "1", multiple = FALSE)
     )
-    expected <- " \033[1m<picks>\033[0m\n   \033[1m<datasets>\033[0m:\n     choices: iris\n     selected: iris\n     \033[3mmultiple=FALSE, ordered=FALSE, fixed=TRUE\033[0m\n   \033[1m<variables>\033[0m:\n     choices: a, b\n     selected: a\n     \033[3mmultiple=FALSE, ordered=FALSE, fixed=FALSE, allow-clear=FALSE\033[0m\n   \033[1m<values>\033[0m:\n     choices: 1, 2\n     selected: 1\n     \033[3mmultiple=FALSE, ordered=FALSE, fixed=FALSE\033[0m\n"
+    expected <- paste(
+      c(
+        " \033[1m<picks>\033[0m",
+        "   \033[1m<datasets>\033[0m:",
+        "     choices: iris",
+        "     selected: iris",
+        "     \033[3mmultiple=FALSE, ordered=FALSE, fixed=TRUE\033[0m",
+        "   \033[1m<variables>\033[0m:",
+        "     choices: a",
+        "     selected: a",
+        "     \033[3mmultiple=FALSE, ordered=FALSE, fixed=TRUE, allow-clear=FALSE\033[0m",
+        "   \033[1m<values>\033[0m:",
+        "     choices: 1, 2",
+        "     selected: 1",
+        "     \033[3mmultiple=FALSE, ordered=FALSE, fixed=FALSE\033[0m\n"
+      ),
+      collapse = "\n"
+    )
+
     testthat::expect_identical(format(p), expected)
   })
 })

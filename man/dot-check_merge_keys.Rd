@@ -2,9 +2,17 @@
 % Please edit documentation in R/0-module_merge.R
 \name{.check_merge_keys}
 \alias{.check_merge_keys}
+\alias{.assert_merge_keys}
 \title{Check if datasets can be merged in topological order}
 \usage{
 .check_merge_keys(datanames, join_keys)
+
+.assert_merge_keys(
+  datanames,
+  join_keys,
+  .var.name = checkmate::vname(datanames),
+  add = NULL
+)
 }
 \arguments{
 \item{datanames}{(\code{character}) Vector of dataset names to be merged}

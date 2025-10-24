@@ -8,14 +8,14 @@
 #' values
 #'
 #'
-#' The module supports both single and combined specifications:
+#' The module supports both single and combined `picks`:
 #' - Single `picks` objects for a single input
 #' - Named lists of `picks` objects for multiple inputs
 #'
 #' @param id (`character(1)`) Shiny module ID
-#' @param spec (`picks` or `list`) Specification object created by `picks()` or a named list of such objects
-#' @param container (`character(1)` or `function`) UI container type. Default is `"badge_dropdown"`.
-#'   Can also be one of `htmltools::tags` functions
+#' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
+#' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
+#' functions. By default, elements are wrapped in a package-specific dropdown.
 #' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
 #'
 #' @return
@@ -23,47 +23,47 @@
 #' - `picks_srv()`: Server-side reactive logic returning the processed data
 #'
 #' @details
-#' The module uses S3 method dispatch to handle different types of specifications:
-#' - `.picks` methods handle single specification
-#' - `.list` methods handle multiple specifications
+#' The module uses S3 method dispatch to handle different ways to provide `picks`:
+#' - `.picks` methods handle single `picks`` object
+#' - `.list` methods handle multiple `picks` objects
 #'
 #' The UI component (`picks_ui`) creates the visual elements, while the
 #' server component (`picks_srv`) manages the reactive logic,
 #'
-#' @seealso [picks()] for creating specification objects
+#' @seealso [picks()] for creating `picks`` objects
 #'
 #' @name picks_module
 NULL
 
 #' @rdname picks_module
 #' @export
-picks_ui <- function(id, spec, container = "badge_dropdown") {
+picks_ui <- function(id, picks, container = "badge_dropdown") {
   checkmate::assert_string(id)
-  UseMethod("picks_ui", spec)
+  UseMethod("picks_ui", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.list <- function(id, spec, container = "badge_dropdown") {
-  checkmate::assert_list(spec, names = "named")
+picks_ui.list <- function(id, picks, container) {
+  checkmate::assert_list(picks, names = "unique")
   ns <- shiny::NS(id)
   sapply(
-    Filter(length, names(spec)),
+    Filter(length, names(picks)),
     USE.NAMES = TRUE,
-    function(name) picks_ui(ns(name), spec[[name]], container = container)
+    function(name) picks_ui(ns(name), picks[[name]], container = container)
   )
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.picks <- function(id, spec, container = "badge_dropdown") {
+picks_ui.picks <- function(id, picks, container) {
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
 
-  content <- lapply(spec, function(x) .selected_choices_ui(id = ns(is(x))))
+  content <- lapply(picks, function(x) .selected_choices_ui(id = ns(is(x))))
   htmltools::tags$div(
     # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
-    if (identical(container, "badge_dropdown")) {
+    if (missing(container)) {
       badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
     } else {
       if (!any(sapply(htmltools::tags, identical, container))) {
@@ -76,44 +76,41 @@ picks_ui.picks <- function(id, spec, container = "badge_dropdown") {
 
 #' @rdname picks_module
 #' @export
-picks_srv <- function(id = "", spec, data) {
+picks_srv <- function(id = "", picks, data) {
   checkmate::assert_string(id)
   checkmate::assert_class(data, "reactive")
-  UseMethod("picks_srv", spec)
+  UseMethod("picks_srv", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv.list <- function(id, spec, data) {
+picks_srv.list <- function(id, picks, data) {
+  checkmate::assert_named(picks, type = "unique")
   sapply(
-    names(Filter(length, spec)),
+    names(Filter(length, picks)),
     USE.NAMES = TRUE,
-    function(name) picks_srv(name, spec[[name]], data)
+    function(name) picks_srv(name, picks[[name]], data)
   )
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv.picks <- function(id, spec, data) {
+picks_srv.picks <- function(id, picks, data) {
   moduleServer(id, function(input, output, session) {
-    data_r <- shiny::reactive(if (shiny::is.reactive(data)) data() else data)
-    spec_resolved <- shiny::reactiveVal(
+    picks_resolved <- shiny::reactiveVal(
       restoreValue(
         session$ns("picks"),
-        resolver(spec, shiny::isolate(data_r()))
+        resolver(picks, shiny::isolate(data()))
       )
     )
     session$onBookmark(function(state) {
       logger::log_debug("picks_srv@onBookmark: storing current picks")
-      state$values$picks <- spec_resolved()
+      state$values$picks <- picks_resolved()
     })
-
-    # join_keys are needed to variables after merge
-    attr(spec_resolved, "join_keys") <- teal.data::join_keys(shiny::isolate(data_r()))
 
     badge <- shiny::reactive({
       lapply(
-        spec_resolved(),
+        picks_resolved(),
         function(x) {
           label <- if (length(x$selected)) {
             toString(x$selected)
@@ -128,14 +125,14 @@ picks_srv.picks <- function(id, spec, data) {
     output$summary <- shiny::renderUI(tagList(badge()))
 
     Reduce(
-      function(data, slot_name) {
-        choices <- reactiveVal(isolate(spec_resolved())[[slot_name]]$choices)
-        selected <- reactiveVal(isolate(spec_resolved())[[slot_name]]$selected)
-        all_choices <- reactive(determine(x = spec[[slot_name]], data = data())$x$choices)
+      function(this_data, slot_name) { # this_data is a (drilled-down) data for current pick
+        choices <- reactiveVal(isolate(picks_resolved())[[slot_name]]$choices)
+        selected <- reactiveVal(isolate(picks_resolved())[[slot_name]]$selected)
+        all_choices <- reactive(determine(x = picks[[slot_name]], data = this_data())$x$choices)
 
         observeEvent(all_choices(), ignoreInit = TRUE, {
-          current_choices <- spec_resolved()[[slot_name]]$choices
-          current_selected <- spec_resolved()[[slot_name]]$selected
+          current_choices <- picks_resolved()[[slot_name]]$choices
+          current_selected <- picks_resolved()[[slot_name]]$selected
 
           new_selected <- if (is.numeric(current_selected) && is.numeric(all_choices())) {
             c(
@@ -156,37 +153,45 @@ picks_srv.picks <- function(id, spec, data) {
           )
         })
 
-        observeEvent(spec_resolved()[[slot_name]], ignoreInit = TRUE, ignoreNULL = FALSE, {
-          .update_rv(choices, spec_resolved()[[slot_name]]$choices, log = "picks_srv@1 update input choices")
-          .update_rv(selected, spec_resolved()[[slot_name]]$selected, log = "picks_srv@1 update input selected")
+        observeEvent(picks_resolved()[[slot_name]], ignoreInit = TRUE, ignoreNULL = FALSE, {
+          .update_rv(choices, picks_resolved()[[slot_name]]$choices, log = "picks_srv@1 update input choices")
+          .update_rv(selected, picks_resolved()[[slot_name]]$selected, log = "picks_srv@1 update input selected")
         })
 
-        args <- attributes(spec[[slot_name]])
+        args <- attributes(picks[[slot_name]])
         .selected_choices_srv(
-          id = is(spec[[slot_name]]),
-          type = is(spec[[slot_name]]),
+          id = slot_name,
+          pick_type = slot_name,
           choices = choices,
           selected = selected,
           args = args[!names(args) %in% c("names", "class")],
-          data = data
+          data = this_data
         )
 
         # this works as follows:
-        #  Each observer is observes input$selected of i-th element of spec ($datasets, $variables, ...)
+        #  Each observer is observes input$selected of i-th element of picks ($datasets, $variables, ...)
         shiny::observeEvent(
           selected(),
-          ignoreInit = TRUE, # because spec_resolved is already resolved and `selected()` is being set
+          ignoreInit = TRUE, # because picks_resolved is already resolved and `selected()` is being set
           ignoreNULL = FALSE, # because input$selected can be empty
-          .resolve(selected(), slot_name = slot_name, spec_resolved = spec_resolved, old_spec = spec, data = data_r())
+          {
+            .resolve(
+              selected(),
+              slot_name = slot_name,
+              picks_resolved = picks_resolved,
+              old_picks = picks,
+              data = data() # data() object needed as we resolve the WHOLE picks INSTEAD OF one picks element.
+            )
+          }
         )
 
-        reactive(.extract(x = isolate(spec_resolved()[[slot_name]]), data()))
+        reactive(.extract(x = picks_resolved()[[slot_name]], this_data()))
       },
-      x = names(spec),
-      init = data_r
+      x = names(picks),
+      init = data
     )
 
-    spec_resolved
+    picks_resolved
   })
 }
 
@@ -195,7 +200,7 @@ picks_srv.picks <- function(id, spec, data) {
   uiOutput(ns("selected_container"))
 }
 
-.selected_choices_srv <- function(id, type, choices, selected, data, args) {
+.selected_choices_srv <- function(id, pick_type, choices, selected, data, args) {
   checkmate::assert_string(id)
   checkmate::assert_class(choices, "reactiveVal")
   checkmate::assert_class(selected, "reactiveVal")
@@ -204,7 +209,7 @@ picks_srv.picks <- function(id, spec, data) {
   shiny::moduleServer(id, function(input, output, session) {
     is_numeric <- reactive(is.numeric(choices()))
     choices_opt_content <- reactive({
-      if (type != "values") {
+      if (pick_type != "values") {
         sapply(
           choices(),
           function(choice) {
@@ -223,12 +228,12 @@ picks_srv.picks <- function(id, spec, data) {
     })
 
     output$selected_container <- renderUI({
-      logger::log_debug(".selected_choices_srv@1 rerender {type} input")
+      logger::log_debug(".selected_choices_srv@1 rerender {pick_type} input")
       if (isTRUE(args$fixed) || length(choices()) <= 1) {
       } else if (is_numeric()) {
         .selected_choices_ui_numeric(
           session$ns("range"),
-          label = sprintf("Select %s range:", type),
+          label = sprintf("Select %s range:", pick_type),
           choices = choices(),
           selected = selected(),
           args = args
@@ -236,7 +241,7 @@ picks_srv.picks <- function(id, spec, data) {
       } else {
         .selected_choices_ui_categorical(
           session$ns("selected"),
-          label = sprintf("Select %s:", type),
+          label = sprintf("Select %s:", pick_type),
           choices = choices(),
           selected = selected(),
           multiple = args$multiple,
@@ -320,38 +325,38 @@ picks_srv.picks <- function(id, spec, data) {
 #'
 #'  @description
 #'  When i-th select input changes then
-#'   - spec_resolved containing current state is being unresolved but only after the i-th element as
+#'   - picks_resolved containing current state is being unresolved but only after the i-th element as
 #'     values are sequentially dependent. For example if variables (i=2) is selected we don't want
 #'     to unresolve (restart) dataset.
 #'   - new value (selected) is replacing old value in current slot (i)
 #'   - we call resolve which resolves only "unresolved" (delayed) values
-#'   - new spec is replacing reactiveValue
+#'   - new picks is replacing reactiveValue
 #' Thanks to this design reactive values are triggered only once
 #' @param selected (`vector`) rather `character`, or `factor`. `numeric(2)` for `values()` based on numeric column.
 #' @param slot_idx (`integer`)
-#' @param spec_resolved (`reactiveVal`)
-#' @param old_spec (`picks`)
+#' @param picks_resolved (`reactiveVal`)
+#' @param old_picks (`picks`)
 #' @param data (`any` asserted further in `resolver`)
 #' @keywords internal
-.resolve <- function(selected, slot_name, spec_resolved, old_spec, data) {
+.resolve <- function(selected, slot_name, picks_resolved, old_picks, data) {
   checkmate::assert_vector(selected, null.ok = TRUE)
   checkmate::assert_string(slot_name)
-  checkmate::assert_class(spec_resolved, "reactiveVal")
-  checkmate::assert_class(old_spec, "picks")
-  if (isTRUE(all.equal(selected, spec_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
+  checkmate::assert_class(picks_resolved, "reactiveVal")
+  checkmate::assert_class(old_picks, "picks")
+  if (isTRUE(all.equal(selected, picks_resolved()[[slot_name]]$selected, tolerance = 1e-15))) {
     return(NULL)
   }
   logger::log_info("picks_server@1 selected has changed. Resolving downstream...")
 
-  new_spec_unresolved <- old_spec
+  new_picks_unresolved <- old_picks
   # ↓ everything after `slot_idx` is to resolve
-  slot_idx <- which(names(old_spec) == slot_name)
-  new_spec_unresolved[seq_len(slot_idx - 1)] <- spec_resolved()[seq_len(slot_idx - 1)]
-  new_spec_unresolved[[slot_idx]]$selected <- selected
+  slot_idx <- which(names(old_picks) == slot_name)
+  new_picks_unresolved[seq_len(slot_idx - 1)] <- picks_resolved()[seq_len(slot_idx - 1)]
+  new_picks_unresolved[[slot_idx]]$selected <- selected
 
   resolver_warnings <- character(0)
-  new_spec_resolved <- withCallingHandlers(
-    resolver(new_spec_unresolved, data),
+  new_picks_resolved <- withCallingHandlers(
+    resolver(new_picks_unresolved, data),
     warning = function(w) {
       resolver_warnings <<- paste(conditionMessage(w), collapse = " ")
     }
@@ -360,7 +365,7 @@ picks_srv.picks <- function(id, spec, data) {
     showNotification(resolver_warnings, type = "error")
   }
 
-  spec_resolved(new_spec_resolved)
+  picks_resolved(new_picks_resolved)
 }
 
 #' Restore value from bookmark.
@@ -449,10 +454,6 @@ restoreValue <- function(value, default) { # nolint: object_name.
 #' @keywords internal
 #' @export
 .picker_icon.data.frame <- function(x) "table"
-
-#' @keywords internal
-#' @export
-.picker_icon.MultiAssayExperiment <- function(x) "layer-group"
 
 #' @keywords internal
 #' @export

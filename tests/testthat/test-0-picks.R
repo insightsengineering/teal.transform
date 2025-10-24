@@ -1,34 +1,3 @@
-testthat::describe("picks() basic structure", {
-  it("returns an object of class 'picks' and 'list'", {
-    result <- picks(datasets())
-    testthat::expect_s3_class(result, "picks")
-    testthat::expect_type(result, "list")
-  })
-
-  it("creates a picks object with single datasets element", {
-    result <- picks(datasets())
-    testthat::expect_length(result, 1)
-    testthat::expect_named(result, "datasets")
-  })
-
-  it("creates a picks object with datasets and variables", {
-    result <- picks(datasets(), variables())
-    testthat::expect_length(result, 2)
-    testthat::expect_named(result, c("datasets", "variables"))
-  })
-
-  it("creates a picks object with datasets, variables and values", {
-    result <- picks(datasets(), variables(), values())
-    testthat::expect_length(result, 3)
-    testthat::expect_named(result, c("datasets", "variables", "values"))
-  })
-
-  it("ignores trailing empty arguments", {
-    result <- picks(datasets(), variables())
-    testthat::expect_length(result, 2)
-  })
-})
-
 testthat::describe("picks() assertions", {
   it("fails when first element is not datasets", {
     testthat::expect_error(picks(variables()), "datasets")
@@ -76,47 +45,60 @@ testthat::describe("picks() assertions", {
       picks(datasets(), variables())
     )
   })
+
+  it("warns when element with dynamic choices is followed by element with eager choices", {
+    testthat::expect_warning(
+      picks(
+        datasets(c("iris", "mtcars")),
+        variables(c("Species"))
+      ),
+      "eager"
+    )
+  })
 })
 
-testthat::describe("picks() output is named:", {
-  it("names elements by their class", {
+testthat::describe("picks() basic structure", {
+  it("returns an object of class 'picks' and 'list'", {
+    result <- picks(datasets())
+    testthat::expect_s3_class(result, "picks")
+    testthat::expect_type(result, "list")
+  })
+
+  it("creates a picks object with single datasets element", {
+    result <- picks(datasets())
+    checkmate::expect_list(result, len = 1, types = "datasets")
+  })
+
+  it("creates a picks object with datasets and variables", {
     result <- picks(datasets(), variables())
+    checkmate::expect_list(result, len = 2, types = c("datasets", "variables"))
     testthat::expect_named(result, c("datasets", "variables"))
   })
-})
 
-testthat::describe("picks() element access", {
-  it("allows accessing datasets element", {
-    result <- picks(datasets())
-    testthat::expect_s3_class(result$datasets, "datasets")
-  })
-
-  it("allows accessing variables element", {
-    result <- picks(datasets(), variables())
-    testthat::expect_s3_class(result$variables, "variables")
-  })
-
-  it("allows accessing values element", {
+  it("creates a picks object with datasets, variables and values", {
     result <- picks(datasets(), variables(), values())
-    testthat::expect_s3_class(result$values, "values")
+    checkmate::expect_list(result, len = 3, types = c("datasets", "variables", "values"))
+    testthat::expect_named(result, c("datasets", "variables", "values"))
   })
 
-  it("preserves element attributes", {
-    result <- picks(datasets(), variables(multiple = TRUE, ordered = TRUE))
-    testthat::expect_true(attr(result$variables, "multiple"))
-    testthat::expect_true(attr(result$variables, "ordered"))
+  it("ignores trailing empty arguments", {
+    result <- picks(datasets(), variables(), )
+    checkmate::expect_list(result, len = 2, types = c("datasets", "variables"))
   })
 })
 
 testthat::describe("datasets() basic asserts:", {
-  it("datasets(choices) argument accepts character, integer and tidyselect", {
+  it("datasets(choices) argument accepts character, integer, predicate function and tidyselect", {
     testthat::expect_no_error(datasets(choices = "test"))
-    testthat::expect_no_error(datasets(choices = 1))
+    testthat::expect_no_error(datasets(choices = 1L))
     testthat::expect_no_error(datasets(choices = tidyselect::everything()))
     testthat::expect_no_error(datasets(choices = tidyselect::where(is.data.frame)))
     testthat::expect_no_error(datasets(choices = c(test:test, test)))
     testthat::expect_no_error(datasets(choices = tidyselect::starts_with("Petal") | tidyselect::ends_with("Width")))
     testthat::expect_no_error(datasets(choices = tidyselect::all_of(c("test", "test2"))))
+    testthat::expect_error(datasets(choices = c(1.2))) # double
+    testthat::expect_error(datasets(choices = c(1.0))) # integerish
+    testthat::expect_error(datasets(choices = as.Date(1))) # Date
   })
 
   it("datasets(choices) can't be empty", {
@@ -125,21 +107,14 @@ testthat::describe("datasets() basic asserts:", {
     testthat::expect_error(datasets(choices = list()))
   })
 
-  it("datasets(selected) can't be empty", {
-    testthat::expect_error(datasets(selected = character(0)))
-    testthat::expect_error(datasets(selected = NULL))
-    testthat::expect_error(datasets(selected = list()))
-  })
-
-  it("datasets(selected) argument character, integer and tidyselect", {
-    testthat::expect_no_error(datasets(selected = 1))
+  it("datasets(selected) argument character(1), integer(1), predicate and tidyselect or empty", {
+    testthat::expect_no_error(datasets(selected = 1L))
     testthat::expect_no_error(datasets(selected = tidyselect::everything()))
-    testthat::expect_error(datasets(selected = NULL))
-  })
-
-  it("fails when length(selected) > 1", {
+    testthat::expect_no_error(datasets(selected = function(x) TRUE))
+    testthat::expect_no_error(datasets(selected = NULL))
     testthat::expect_error(datasets(choices = c("iris", "mtcars"), selected = c("iris", "mtcars")))
   })
+
 
   it("datasets(selected) must be a subset of choices", {
     testthat::expect_error(datasets(choices = c("a", "b"), selected = "c"), "subset of `choices`")
@@ -147,7 +122,7 @@ testthat::describe("datasets() basic asserts:", {
 
   it("datasets(selected) warns if choices are delayed and selected eager", {
     testthat::expect_warning(datasets(choices = tidyselect::everything(), selected = "c"), "subset of `choices`")
-    testthat::expect_warning(datasets(choices = 1, selected = "c"), "subset of `choices`")
+    testthat::expect_warning(datasets(choices = 1L, selected = "c"), "subset of `choices`")
   })
 })
 
@@ -179,10 +154,10 @@ testthat::describe("datasets() returns datasets", {
     testthat::expect_equal(result$selected, "mtcars")
   })
 
-  it("stores numeric selected value as quosure", {
-    result <- datasets(choices = c("iris", "mtcars"), selected = 2)
+  it("stores integer selected value as quosure", {
+    result <- datasets(choices = c("iris", "mtcars"), selected = 2L)
     testthat::expect_s3_class(result$selected, "quosure")
-    testthat::expect_equal(rlang::quo_get_expr(result$selected), 2)
+    testthat::expect_equal(rlang::quo_get_expr(result$selected), 2L)
   })
 
   it("sets fixed to TRUE when single choice", {
@@ -196,9 +171,9 @@ testthat::describe("datasets() returns quosures for delayed evaluation", {
     testthat::expect_s3_class(result$choices, "quosure")
   })
 
-  it("stores tidyselect::where() as a quosure in $choices", {
+  it("stores tidyselect::where() as a predicate function in $choices", {
     result <- datasets(choices = tidyselect::where(is.data.frame))
-    testthat::expect_s3_class(result$choices, "quosure")
+    testthat::expect_true(is.function(result$choices))
   })
 
   it("stores symbol range (a:b) as a quosure in $choices", {
@@ -207,7 +182,7 @@ testthat::describe("datasets() returns quosures for delayed evaluation", {
   })
 
   it("stores numeric range (1:5) as a quosure in $choices", {
-    result <- datasets(choices = 1:5)
+    result <- datasets(choices = seq(1, 5))
     testthat::expect_s3_class(result$choices, "quosure")
   })
 
@@ -280,7 +255,7 @@ testthat::describe("datasets() validation and warnings", {
 
   it("does not warn when selected is numeric and choices are delayed", {
     testthat::expect_no_warning(
-      datasets(choices = tidyselect::everything(), selected = 1)
+      datasets(choices = tidyselect::everything(), selected = 1L)
     )
   })
 
@@ -406,12 +381,12 @@ testthat::describe("variables() allow-clear attribute", {
   })
 
   it("sets allow-clear to FALSE for single numeric selected", {
-    result <- variables(choices = c("a", "b", "c"), selected = 1)
+    result <- variables(choices = c("a", "b", "c"), selected = 1L)
     testthat::expect_false(attr(result, "allow-clear"))
   })
 
   it("sets allow-clear to FALSE for multiple numeric selected (tidyselect)", {
-    result <- variables(choices = c("a", "b", "c"), selected = c(1, 2))
+    result <- variables(choices = c("a", "b", "c"), selected = c(1L, 2L))
     testthat::expect_false(attr(result, "allow-clear"))
   })
 })
@@ -457,5 +432,51 @@ testthat::describe("variables() attribute interactions", {
     testthat::expect_true(attr(result, "multiple"))
     testthat::expect_true(attr(result, "ordered"))
     testthat::expect_true(attr(result, "allow-clear"))
+  })
+})
+
+testthat::describe("values() assertions", {
+  it("values() succeeds by default", {
+    testthat::expect_no_error(values())
+  })
+
+  it("values(choices) accepts predicate functions, character, numeric(2), date(2) and posixct(2). No tidyselect", {
+    testthat::expect_no_error(values(choices = "test"))
+    testthat::expect_no_error(values(choices = c("test", "test2")))
+    testthat::expect_error(values(choices = c("test", "test")))
+    testthat::expect_no_error(values(choices = c(1, 2)))
+    testthat::expect_error(values(choices = 1))
+    testthat::expect_error(values(choices = c(1, 2, 3)))
+    testthat::expect_error(values(choices = c(-Inf, Inf)))
+    testthat::expect_no_error(values(choices = as.Date(1:2)))
+    testthat::expect_error(values(choices = as.Date(1)))
+    testthat::expect_error(values(choices = as.Date(1:3)))
+    testthat::expect_no_error(values(choices = as.POSIXct(1:2)))
+    testthat::expect_error(values(choices = as.POSIXct(1)))
+    testthat::expect_error(values(choices = as.POSIXct(1:3)))
+    testthat::expect_no_error(values(choices = tidyselect::where(~ .x > 1))) # this is predicate, not tidyselect
+    testthat::expect_no_error(values(choices = function(x) !is.na(x)))
+    testthat::expect_no_error(values(choices = function(x, ...) !is.na(x)))
+    testthat::expect_error(values(choices = function(x, y, ...) x > y))
+    testthat::expect_error(values(choices = tidyselect::everything()))
+    testthat::expect_error(values(choices = c(test:test, test)))
+  })
+})
+
+testthat::describe("values() attributes", {
+  it("multiple set to TRUE by default", {
+    testthat::expect_true(attr(values(), "multiple"))
+  })
+
+  it("fixed=TRUE when single choice is provided", {
+    testthat::expect_true(attr(values(choices = "test"), "fixed"))
+  })
+
+  it("fixed=FALSE when choices is a predicate", {
+    testthat::expect_false(attr(values(choices = function(x) TRUE), "fixed"))
+  })
+
+  it("fixed=FALSE when choices length > 1", {
+    testthat::expect_false(attr(values(choices = c("test", "test2")), "fixed"))
   })
 })
