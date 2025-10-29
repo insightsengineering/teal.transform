@@ -627,6 +627,55 @@ testthat::describe("picks_srv resolves picks", {
       "`multiple` has been set to `FALSE`"
     )
   })
+
+  it("picks converted from des with variable_choices are resolved", {
+    test_picks <- as.picks(
+      data_extract_spec(
+        dataname = "iris",
+        select_spec(choices = variable_choices("iris"), selected = first_choice())
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "id", picks = test_picks, data = shiny::reactive(list(iris = iris, mtcars = mtcars))),
+      expr = {
+        suppressWarnings(
+          picks_expected <- picks(
+            datasets(choices = c(iris = "iris"), selected = "iris"),
+            variables(choices = setNames(colnames(iris), colnames(iris)), selected = "Sepal.Length")
+          )
+        )
+        testthat::expect_identical(picks_resolved(), picks_expected)
+      }
+    )
+  })
+
+  it("picks converted from variable_choices(fun) are resolved", {
+    test_picks <- as.picks(
+      data_extract_spec(
+        dataname = "iris",
+        select_spec(
+          choices = variable_choices("iris", function(data) {
+            names(Filter(is.numeric, data))
+          }),
+          selected = first_choice()
+        )
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "id", picks = test_picks, data = shiny::reactive(list(iris = iris, mtcars = mtcars))),
+      expr = {
+        suppressWarnings(
+          picks_expected <- picks(
+            datasets(choices = c(iris = "iris"), selected = "iris"),
+            variables(choices = setNames(colnames(iris)[-5], colnames(iris)[-5]), selected = "Sepal.Length")
+          )
+        )
+        testthat::expect_identical(picks_resolved(), picks_expected)
+      }
+    )
+  })
 })
 
 
@@ -667,16 +716,349 @@ testthat::describe("picks_srv resolves picks interactively", {
     )
   })
 
+  it("custom choices label set in picks is displayed in a picker input", {
+    test_picks <- picks(
+      datasets(choices = c(`mtcars dataset` = "mtcars", `iris dataset` = "iris"), selected = "iris")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        choices_label <- rvest::html_text(rvest::html_nodes(html, "option"))
+        testthat::expect_identical(choices_label, c("mtcars dataset", "iris dataset"))
+      }
+    )
+  })
 
-  it("custom label is displayed in a picker input", {
+  it("custom choices label set in data is displayed in a picker input", {
+    test_picks <- picks(
+      datasets(choices = c("mtcars", "iris"), selected = "iris")
+    )
+    attr(mtcars, "label") <- "mtcars dataset"
+    attr(iris, "label") <- "iris dataset"
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        choices_label <- rvest::html_text(rvest::html_nodes(html, "option"))
+        testthat::expect_identical(choices_label, c("mtcars dataset", "iris dataset"))
+      }
+    )
+  })
+
+  it("custom choices label set in picks has priority over data label is displayed in a picker input", {
+    test_picks <- picks(
+      datasets(choices = c(`mtcars picks` = "mtcars", `iris picks` = "iris"), selected = "iris")
+    )
+    attr(mtcars, "label") <- "mtcars label"
+    attr(iris, "label") <- "iris label"
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        choices_label <- rvest::html_text(rvest::html_nodes(html, "option"))
+        testthat::expect_identical(choices_label, c("mtcars picks", "iris picks"))
+      }
+    )
+  })
+
+  it("picker input choices produces class-specific-icons for variable", {
+    test_dataset <- data.frame(
+      col_numeric = c(1.5, 2.5, 3.5),
+      col_integer = 1L:3L,
+      col_logical = c(TRUE, FALSE, TRUE),
+      col_character = c("a", "b", "c"),
+      col_factor = factor(c("x", "y", "z")),
+      col_date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
+      col_datetime = as.POSIXct(c("2024-01-01 12:00:00", "2024-01-02 12:00:00", "2024-01-03 12:00:00"))
+    )
+
+    test_picks <- picks(
+      datasets(choices = "test", selected = "test"),
+      variables(choices = tidyselect::everything(), selected = 1L)
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(test = test_dataset))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        icons <- gsub(
+          "^.+fa-((\\w|-)+).+$", "\\1",
+          rvest::html_attr(rvest::html_nodes(html, "option"), "data-content")
+        )
+
+        testthat::expect_identical(
+          icons, c("arrow-up-1-9", "arrow-up-1-9", "pause", "font", "chart-bar", "calendar", "calendar")
+        )
+      }
+    )
+  })
+
+  it("picker input choices produces class-specific-icons for datasets", {
+    skip("todo")
   })
 
   it("switching dataset-input changes variables-input", {
+    test_picks <- picks(
+      datasets(choices = c("mtcars", "iris"), selected = "iris"),
+      variables(choices = tidyselect::everything(), selected = 1L)
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected='selected']"), "value"), "Sepal.Length"
+        )
+        session$setInputs(`datasets-selected` = "mtcars")
+        session$setInputs(`datasets-selected_open` = FALSE)
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected='selected']"), "value"), "mpg"
+        )
+      }
+    )
   })
 
-  it("changing picks_resolved changes picker input", {
+  it("Setting numeric variable resolves values to be a slider input with variable range", {
+    test_picks <- picks(
+      datasets(choices = "iris", selected = "iris"),
+      variables(choices = "Sepal.Length", selected = "Sepal.Length"),
+      values(choices = function(x) !is.na(x), selected = function(x) !is.na(x))
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["values-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "input[type='number']"), "value"),
+          as.character(range(iris$Sepal.Length))
+        )
+      }
+    )
   })
 
-  it("changing data changes picker input", {
+  it("switching variables-input changes values-input", {
+    test_picks <- picks(
+      datasets(choices = "iris", selected = "iris"),
+      variables(choices = c("Sepal.Length", "Species"), selected = "Species"),
+      values(choices = function(x) !is.na(x), selected = function(x) !is.na(x))
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["values-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected='selected']"), "value"),
+          c("setosa", "versicolor", "virginica")
+        )
+        session$setInputs(`variables-selected` = "Sepal.Length")
+        session$setInputs(`variables-selected_open` = FALSE)
+        html <- rvest::read_html(as.character(session$output[["values-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "input[type='number']"), "value"),
+          as.character(range(iris$Sepal.Length))
+        )
+      }
+    )
   })
+
+  it("changing picks_resolved doesn't change picker input", {
+    test_picks <- picks(
+      datasets(choices = c("iris", "mtcars"), selected = "iris")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        current_picks <- picks_resolved()
+        current_picks$datasets$selected <- "mtcars"
+        picks_resolved(current_picks)
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected='selected']"), "value"),
+          "iris"
+        )
+      }
+    )
+  })
+
+  it("adding a dataset to data adds new choice to dataset choices", {
+    skip("todo: tests can't trigger data()")
+    test_picks <- picks(
+      datasets(choices = tidyselect::everything(), selected = 1L),
+      variables(choices = tidyselect::everything(), selected = 1L)
+    )
+    reactive_data <- reactiveVal(
+      list(
+        iris = iris,
+        mtcars = mtcars
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = reactive_data),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        testthat::expect_identical(rvest::html_attr(rvest::html_nodes(html, "option"), "value"), c("iris", "mtcars"))
+        reactive_data(
+          list(
+            a = data.frame(a = 1:10, b = letters[1:10]),
+            iris = iris,
+            mtcars = mtcars
+          )
+        )
+
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option"), "value"),
+          c("a", "iris", "mtcars")
+        )
+      }
+    )
+  })
+
+  it("adding a column to data adds new choice to variables-choices", {
+    skip("todo: tests can't trigger data()")
+    test_picks <- picks(
+      datasets(choices = tidyselect::everything(), selected = 1L),
+      variables(choices = tidyselect::everything(), selected = 1L)
+    )
+    reactive_data <- reactiveVal(
+      list(
+        iris = iris,
+        mtcars = mtcars
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = reactive_data),
+      expr = {
+        reactive_data(
+          list(
+            iris = transform(iris, new = 1:150),
+            mtcars = mtcars
+          )
+        )
+        session$flushReact()
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option"), "value"),
+          c("a", "mtcars")
+        )
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected = 'selected']"), "value"),
+          "iris"
+        )
+      }
+    )
+  })
+
+  it("removing a (selected) dataset from data removes choice from dataset choices and from selection with warning", {
+    test_picks <- picks(
+      datasets(choices = tidyselect::everything(), selected = 1L),
+      variables(choices = tidyselect::everything(), selected = 1L)
+    )
+    reactive_data <- reactiveVal(
+      list(
+        iris = iris,
+        mtcars = mtcars
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = reactive_data),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        testthat::expect_identical(rvest::html_attr(rvest::html_nodes(html, "option"), "value"), c("iris", "mtcars"))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected = 'selected']"), "value"),
+          "iris"
+        )
+        reactive_data(
+          list(
+            a = data.frame(a = 1:10, b = letters[1:10]),
+            mtcars = mtcars
+          )
+        )
+
+        testthat::expect_warning(session$flushReact())
+        html <- rvest::read_html(as.character(session$output[["datasets-selected_container"]]$html))
+        testthat::expect_identical(rvest::html_attr(rvest::html_nodes(html, "option"), "value"), c("a", "mtcars"))
+        testthat::expect_length(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected = 'selected']"), "value"),
+          0
+        )
+      }
+    )
+  })
+
+  it("removing a (selected) variable from data removes choice from dataset choices and from selection", {
+    test_picks <- picks(
+      datasets(choices = tidyselect::everything(), selected = 1L),
+      variables(choices = tidyselect::everything(), selected = tidyselect::starts_with("Sepal"), multiple = TRUE)
+    )
+    reactive_data <- reactiveVal(
+      list(
+        iris = iris,
+        mtcars = mtcars
+      )
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = reactive_data),
+      expr = {
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected = 'selected']"), "value"),
+          c("Sepal.Length", "Sepal.Width")
+        )
+        reactive_data(
+          list(
+            iris = iris[-1],
+            mtcars = mtcars
+          )
+        )
+        session$flushReact()
+        html <- rvest::read_html(as.character(session$output[["variables-selected_container"]]$html))
+        testthat::expect_identical(rvest::html_attr(rvest::html_nodes(html, "option"), "value"), colnames(iris)[-1])
+        testthat::expect_identical(
+          rvest::html_attr(rvest::html_nodes(html, "option[selected = 'selected']"), "value"),
+          "Sepal.Width"
+        )
+      }
+    )
+  })
+
+  it("variables(ordered=TRUE) returns input following a selection-order instead of choices-order", {
+    test_picks <- picks(
+      datasets(choices = "iris", selected = "iris"),
+      variables(choices = tidyselect::everything(), selected = 3L, multiple = TRUE, ordered = TRUE)
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(list(mtcars = mtcars, iris = iris))),
+      expr = {
+        session$setInputs(`variables-selected` = colnames(iris)[c(1L, 3L)])
+        session$setInputs(`variables-selected_open` = FALSE) # close dropdown to trigger
+        session$setInputs(`variables-selected` = colnames(iris)[c(1L, 2L, 3L)])
+        session$setInputs(`variables-selected_open` = FALSE) # close dropdown to trigger
+        session$setInputs(`variables-selected` = colnames(iris)[c(1L, 2L, 3L, 4L)])
+        session$setInputs(`variables-selected_open` = FALSE) # close dropdown to trigger
+        testthat::expect_identical(picks_resolved()$variables$selected, colnames(iris)[c(3L, 1L, 2L, 4L)])
+      }
+    )
+  })
+
+  it("changing numeric range in slider input updates picks_resolved")
+  it("changing integer range in slider input updates picks_resolved")
+  it("changing date range in slider input updates picks_resolved")
+  it("changing date range in slider input updates picks_resolved")
+  it("setting picks_resolved$selected outside of range adjust to the available range")
 })

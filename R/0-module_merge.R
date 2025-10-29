@@ -209,6 +209,9 @@ merge_srv <- function(id,
                       output_name = "anl",
                       join_fun = "dplyr::inner_join") {
   checkmate::assert_list(selectors, "reactive", names = "named")
+  checkmate::assert_class(data, "reactive")
+  checkmate::assert_string(output_name)
+  checkmate::assert_string(join_fun)
   moduleServer(id, function(input, output, session) {
     # selectors is a list of reactive picks.
     selectors_unwrapped <- reactive({
@@ -235,6 +238,7 @@ merge_srv <- function(id,
         )
       }
     )
+
     list(data = data_r, variables = variables_selected)
   })
 }
@@ -251,14 +255,11 @@ merge_srv <- function(id,
   checkmate::assert_string(join_fun)
 
   # Early validation of merge keys between datasets
-  datanames <- unique(unlist(lapply(selectors, function(selector) selector$datasets$selected)))
-  .assert_merge_keys(datanames, teal.data::join_keys(x))
-
   merge_summary <- .merge_summary_list(selectors, join_keys = teal.data::join_keys(x))
 
   expr <- .merge_expr(merge_summary = merge_summary, output_name = output_name, join_fun = join_fun)
 
-  merged_q <- eval_code(x, expr)
+  merged_q <- teal.code::eval_code(x, expr)
   teal.data::join_keys(merged_q) <- merge_summary$join_keys
   merged_q
 }
@@ -286,7 +287,9 @@ merge_srv <- function(id,
   for (i in seq_along(datanames)) {
     dataname <- datanames[i]
     this_mapping <- Filter(function(x) x$datasets == dataname, mapping)
-    this_filter_mapping <- Filter(x = this_mapping, function(x) "values" %in% names(x))
+    this_filter_mapping <- Filter(
+      x = this_mapping, function(x) !is.null(x$values) && !is.null(x$variables)
+    )
     this_foreign_keys <- .fk(join_keys, dataname)
     this_primary_keys <- join_keys[dataname, dataname]
     this_variables <- c(
@@ -296,10 +299,8 @@ merge_srv <- function(id,
     this_variables <- this_variables[!duplicated(unname(this_variables))] # because unique drops names
 
     this_call <- .call_dplyr_select(dataname = dataname, variables = this_variables)
-    if (length(this_filter_mapping)) {
-      # todo: make sure filter call is not executed when setequal(selected, all_possible_choices)
-      this_call <- calls_combine_by("%>%", c(this_call, .call_dplyr_filter(this_filter_mapping)))
-    }
+    # todo: make sure filter call is not executed when setequal(selected, all_possible_choices)
+    this_call <- calls_combine_by("%>%", c(this_call, .call_dplyr_filter(this_filter_mapping)))
 
     if (i > 1) {
       anl_vs_this <- setdiff(anl_primary_keys, this_primary_keys)
@@ -338,10 +339,19 @@ merge_srv <- function(id,
 .merge_summary_list <- function(selectors, join_keys) {
   checkmate::assert_list(selectors, "picks")
   checkmate::assert_class(join_keys, "join_keys")
+
+  .validate_is_eager(selectors)
+  .validate_join_keys(selectors, join_keys)
+
   mapping <- lapply( # what has been selected in each selector
     selectors,
-    function(selector) lapply(selector, function(x) stats::setNames(x$selected, x$selected))
+    function(selector) {
+      lapply(selector, function(x) {
+        stats::setNames(x$selected, x$selected)
+      })
+    }
   )
+
   mapped_datanames <- unlist(lapply(mapping, `[[`, "datasets"), use.names = FALSE)
   mapping_by_dataset <- split(mapping, mapped_datanames)
 
@@ -392,7 +402,7 @@ merge_srv <- function(id,
               suffix = dataname
             )
             names(new_keys) <- new_key_names
-            join_key(dataset_1 = "anl", dataset_2 = dataset_2, keys = new_keys)
+            teal.data::join_key(dataset_1 = "anl", dataset_2 = dataset_2, keys = new_keys)
           }
         }
       )
@@ -451,11 +461,17 @@ merge_srv <- function(id,
 #' Determines the topological order from join_keys, then checks that each dataset
 #' can be joined with at least one of the previously accumulated datasets.
 #'
-#' @param datanames (`character`) Vector of dataset names to be merged
+#' @inheritParams merge_srv
 #' @param join_keys (`join_keys`) The join keys object
 #'
 #' @keywords internal
-.check_merge_keys <- function(datanames, join_keys) {
+.validate_join_keys <- function(selectors, join_keys) {
+  validate(need(
+    inherits(join_keys, "join_keys"),
+    "Provided data doesn't have join_keys specified"
+  ))
+
+  datanames <- unique(unlist(lapply(selectors, function(selector) selector$datasets$selected)))
   # No validation needed for single dataset
   if (length(datanames) <= 1) {
     return(TRUE)
@@ -470,18 +486,16 @@ merge_srv <- function(id,
   # Check if any dataset has no keys defined at all
   if (length(ordered_datasets) != length(datanames)) {
     datasets_without_keys <- setdiff(datanames, ordered_datasets)
-    return(
-      sprintf(
-        "Cannot merge datasets. The following dataset%s no join keys defined: %s.\n\nPlease define join keys using teal.data::join_keys().",
-        if (length(datasets_without_keys) == 1) " has" else "s have",
-        paste(sprintf("'%s'", datasets_without_keys), collapse = ", ")
+    validate(
+      need(
+        FALSE,
+        sprintf(
+          "Cannot merge datasets. The following dataset%s no join keys defined: %s.\n\nPlease define join keys using teal.data::join_keys().",
+          if (length(datasets_without_keys) == 1) " has" else "s have",
+          paste(sprintf("'%s'", datasets_without_keys), collapse = ", ")
+        )
       )
     )
-  }
-
-  # First dataset doesn't need validation
-  if (length(ordered_datasets) <= 1) {
-    return(TRUE)
   }
 
   # Iteratively check if each dataset can join with accumulated datasets
@@ -500,12 +514,15 @@ merge_srv <- function(id,
     }
 
     if (!can_join) {
-      return(
-        sprintf(
-          "Cannot merge dataset '%s'. No join keys found between '%s' and any of the accumulated datasets: %s.\n\nPlease define join keys using teal.data::join_keys().",
-          current_dataset,
-          current_dataset,
-          paste(sprintf("'%s'", accumulated), collapse = ", ")
+      validate(
+        need(
+          FALSE,
+          sprintf(
+            "Cannot merge dataset '%s'. No join keys found between '%s' and any of the accumulated datasets: %s.\n\nPlease define join keys using teal.data::join_keys().",
+            current_dataset,
+            current_dataset,
+            paste(sprintf("'%s'", accumulated), collapse = ", ")
+          )
         )
       )
     }
@@ -517,5 +534,9 @@ merge_srv <- function(id,
   TRUE
 }
 
-#' @rdname dot-check_merge_keys
-.assert_merge_keys <- checkmate::makeAssertionFunction(.check_merge_keys)
+.validate_is_eager <- function(x) {
+  validate(need(
+    !.is.delayed(x),
+    "selected values have not been resolved correctly. Please report this issue to an app-developer."
+  ))
+}

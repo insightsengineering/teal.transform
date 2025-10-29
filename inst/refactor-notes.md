@@ -785,3 +785,145 @@ shinyApp(app$ui, app$server, enableBookmarking = "server")
 ```
 
 </details>
+
+## Conversion from to data-extract-spec
+
+### Select specific variable(s) from a specific dataset
+
+```
+data_extract_spec(
+  data = "iris"
+  select = select_spec(
+    choices = c("Sepal.Length", "Species"), 
+    selected = "Species"
+  )
+)
+
+# to
+picks(
+  datasets("iris", "iris"),
+  variables(
+    choices = c("Sepal.Length", "Species"), 
+    selected = "Species"
+  )
+)
+
+```
+
+
+### Select specific variable(s) from a selected dataset
+
+```
+list(
+  data_extract_spec(
+    data = "iris"
+    select = select_spec(
+      choices = c("Sepal.Length", "Species"), 
+      selected = "Species"
+    )
+  ),
+  data_extract_spec(
+    data = "mtcars"
+    select = select_spec(
+      choices = c("mpg", "cyl"), 
+      selected = "mpg"
+    )
+  )
+)
+
+# to
+picks(
+  datasets(c("iris", "mtcars"), "iris"),
+  variables(
+    choices = c("Sepal.Length", "Species", "mpg", "cyl"), 
+    selected = c("Species", "mpg")
+  )
+)
+```
+
+### Select unknown variable(s) from a selected dataset
+
+```
+list(
+  data_extract_spec(
+    data = "iris"
+    select = select_spec(
+      choices = variable_choices("iris"), 
+      selected = first_choice()
+    )
+  ),
+  data_extract_spec(
+    data = "mtcars"
+    select = select_spec(
+      choices = variable_choices("mtcars"), 
+      selected = first_choice()
+    )
+  )
+)
+
+# to
+picks(
+  datasets(c("iris", "mtcars"), "iris"),
+  variables(
+    choices = tidyselect::everything(), 
+    selected = 1L
+  )
+)
+
+```
+### filtering by any variable
+
+`picks` provides no equivalent to `filter_spec` feature. To achieve this, please create a `teal_transform_module` with
+a filtering mechanism.
+
+```
+list(
+  data_extract_spec(
+    data = "iris"
+    select = select_spec(
+      choices = c("Sepal.Length", "Species"), 
+      selected = first_choice()
+    ),
+    filter = filter_spec(
+      vars = "Species",
+      choices = c("setosa", "versicolor", "virginica"),
+      selected = "setosa"
+    ) 
+  )
+)
+
+# to picks and transformators
+picks(
+  datasets("iris", "iris"),
+  variables(
+    choices = c("Sepal.Length", "Species"),
+    selected = 1L
+  )
+)
+
+# Apply filtering through teal_transform_module
+transformators = teal_transform_module(
+  ui = function(id) {
+    ns <- NS(id)
+    selectInput(
+      ns("species"), 
+      label = "Select species", 
+      choices = c("setosa", "versicolor", "virginica"),
+      selected = "setosa"
+    )
+  },
+  server = function(id, data) {
+    moduleServer(id, function(input, output, session) {
+      reactive({
+        req(input$species)
+        within(
+          data(), {
+            iris <- iris %>% dplyr::filter(Species %in% !!filter_values)
+          }, 
+          filter_values = input$species)
+      })
+    })
+  }
+)
+
+```

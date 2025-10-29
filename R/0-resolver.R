@@ -179,13 +179,13 @@ determine.values <- function(x, data) {
   }
 
   out <- tryCatch( # app developer might provide failing function
-    if (inherits(data, c("numeric", "Date", "POSIXct"))) {
-      data_range <- .possible_choices(data)
-      this_range <- if (inherits(x, c("numeric", "Date", "POSIXct")) && length(x) == 2) {
+    if (inherits(data, c("integer", "numeric", "Date", "POSIXct"))) {
+      data_range <- range(data, na.rm = TRUE)
+      this_range <- if (inherits(x, c("integer", "numeric", "Date", "POSIXct")) && length(x) == 2) {
         x
       } else if (is.function(x)) {
         idx_match <- unique(which(vapply(data, x, logical(1))))
-        .possible_choices(data[idx_match])
+        range(data[idx_match], na.rm = TRUE)
       } else {
         data_range
       }
@@ -201,8 +201,12 @@ determine.values <- function(x, data) {
         # don't need to evaluated eager choices - just make sure choices are subset of possible
         x[which(x %in% .possible_choices(data))]
       } else if (is.function(x)) {
-        idx_match <- unique(which(vapply(data, x, logical(1))))
-        .possible_choices(data[idx_match])
+        if (inherits(x, "des-delayed")) {
+          x(data)
+        } else {
+          idx_match <- unique(which(vapply(data, x, logical(1))))
+          .possible_choices(data[idx_match])
+        }
       } else if (rlang::is_quosure(x)) {
         # app developer might provide failing function
         idx_match <- unique(tidyselect::eval_select(expr = x, data))

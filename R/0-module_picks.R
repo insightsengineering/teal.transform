@@ -60,7 +60,7 @@ picks_ui.picks <- function(id, picks, container) {
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
 
-  content <- lapply(picks, function(x) .selected_choices_ui(id = ns(is(x))))
+  content <- lapply(picks, function(x) .pick_ui(id = ns(is(x))))
   htmltools::tags$div(
     # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
     if (missing(container)) {
@@ -133,7 +133,6 @@ picks_srv.picks <- function(id, picks, data) {
         observeEvent(all_choices(), ignoreInit = TRUE, {
           current_choices <- picks_resolved()[[slot_name]]$choices
           current_selected <- picks_resolved()[[slot_name]]$selected
-
           new_selected <- if (is.numeric(current_selected) && is.numeric(all_choices())) {
             c(
               max(current_selected[1], all_choices()[1], na.rm = TRUE),
@@ -159,7 +158,7 @@ picks_srv.picks <- function(id, picks, data) {
         })
 
         args <- attributes(picks[[slot_name]])
-        .selected_choices_srv(
+        .pick_srv(
           id = slot_name,
           pick_type = slot_name,
           choices = choices,
@@ -195,12 +194,12 @@ picks_srv.picks <- function(id, picks, data) {
   })
 }
 
-.selected_choices_ui <- function(id) {
+.pick_ui <- function(id) {
   ns <- shiny::NS(id)
   uiOutput(ns("selected_container"))
 }
 
-.selected_choices_srv <- function(id, pick_type, choices, selected, data, args) {
+.pick_srv <- function(id, pick_type, choices, selected, data, args) {
   checkmate::assert_string(id)
   checkmate::assert_class(choices, "reactiveVal")
   checkmate::assert_class(selected, "reactiveVal")
@@ -228,10 +227,12 @@ picks_srv.picks <- function(id, picks, data) {
     })
 
     output$selected_container <- renderUI({
-      logger::log_debug(".selected_choices_srv@1 rerender {pick_type} input")
+      logger::log_debug(".pick_srv@1 rerender {pick_type} input")
+      .validate_is_eager(choices())
+      .validate_is_eager(selected())
       if (isTRUE(args$fixed) || length(choices()) <= 1) {
       } else if (is_numeric()) {
-        .selected_choices_ui_numeric(
+        .pick_ui_numeric(
           session$ns("range"),
           label = sprintf("Select %s range:", pick_type),
           choices = choices(),
@@ -239,7 +240,8 @@ picks_srv.picks <- function(id, picks, data) {
           args = args
         )
       } else {
-        .selected_choices_ui_categorical(
+        # todo: create .pick_ui_categorical for date/datetime etc.
+        .pick_ui_categorical(
           session$ns("selected"),
           label = sprintf("Select %s:", pick_type),
           choices = choices(),
@@ -254,10 +256,7 @@ picks_srv.picks <- function(id, picks, data) {
     # for numeric
     range_debounced <- reactive(input$range) |> debounce(1000)
     shiny::observeEvent(range_debounced(), {
-      if (length(input$range) != 2) {
-        return(NULL)
-      }
-      .update_rv(selected, input$range, log = ".selected_choices_srv@2 update selected after input changed")
+      .update_rv(selected, input$range, log = ".pick_srv@2 update selected after input changed")
     })
 
     # for non-numeric
@@ -268,14 +267,15 @@ picks_srv.picks <- function(id, picks, data) {
         if (args$ordered) {
           new_selected <- c(intersect(selected(), new_selected), setdiff(new_selected, selected()))
         }
-        .update_rv(selected, new_selected, log = ".selected_choices_srv@1 update selected after input changed")
+        .update_rv(selected, new_selected, log = ".pick_srv@1 update selected after input changed")
       }
     })
     selected
   })
 }
 
-.selected_choices_ui_numeric <- function(id, label, choices, selected, args) {
+
+.pick_ui_numeric <- function(id, label, choices, selected, args) {
   shinyWidgets::numericRangeInput(
     inputId = id,
     label = label,
@@ -285,7 +285,7 @@ picks_srv.picks <- function(id, picks, data) {
   )
 }
 
-.selected_choices_ui_categorical <- function(id, label, choices, selected, multiple, choicesOpt, args) {
+.pick_ui_categorical <- function(id, label, choices, selected, multiple, choicesOpt, args) {
   htmltools::div(
     style = "max-width: 500px;",
     shinyWidgets::pickerInput(

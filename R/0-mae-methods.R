@@ -1,7 +1,7 @@
 #' @rdname picks
 #' @export
 mae_data <- function(choices = tidyselect::everything(), selected = 1L, multiple = FALSE) {
-  out <- .selected_choices(
+  out <- .pick(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = multiple

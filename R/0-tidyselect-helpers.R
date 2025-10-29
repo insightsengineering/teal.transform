@@ -24,23 +24,23 @@ is_categorical <- function(max.len, min.len) {
   # todo: consider making a function which can exit earlier when max.len > length(unique(x)) < min.len
   #       without a need to compute unique on the whole vector.
   if (missing(max.len) && missing(min.len)) {
-    where(function(x) is.factor(x) || is.character(x))
+    function(x) is.factor(x) || is.character(x)
   } else if (!missing(max.len) && missing(min.len)) {
     checkmate::assert_int(max.len, lower = 0)
-    where(function(x) (is.factor(x) || is.character(x)) && length(unique(x)) <= max.len)
+    function(x) (is.factor(x) || is.character(x)) && length(unique(x)) <= max.len
   } else if (!missing(min.len) && missing(max.len)) {
     checkmate::assert_int(min.len, lower = 0)
-    where(function(x) (is.factor(x) || is.character(x)) && length(unique(x)) >= min.len)
+    function(x) (is.factor(x) || is.character(x)) && length(unique(x)) >= min.len
   } else {
     checkmate::assert_int(min.len, lower = 0)
     checkmate::assert_int(max.len, lower = 0)
     checkmate::assert_true(max.len >= min.len)
-    where(function(x) {
+    function(x) {
       (is.factor(x) || is.character(x)) && {
         n <- length(unique(x))
         n >= min.len && n <= max.len
       }
-    })
+    }
   }
 }
 
@@ -49,5 +49,5 @@ is_categorical <- function(max.len, min.len) {
 no_more_choices_than <- function(max.len) {
   # todo: consider making a function which can exit earlier when max.len > length(unique(x)) < min.len
   #       without a need to compute unique on the whole vector.
-  where(function(x) length(unique(x)) <= max.len)
+  function(x) length(unique(x)) <= max.len
 }

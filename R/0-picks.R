@@ -174,11 +174,9 @@ picks <- function(...) {
 
   previous_has_dynamic_choices <- c(
     FALSE,
-    vapply(head(picks, -1), FUN.VALUE = logical(1), FUN = function(x) {
-      inherits(x$choices, "quosure") || length(x$choices) > 1
-    })
+    vapply(head(picks, -1), FUN.VALUE = logical(1), FUN = .is.delayed)
   )
-  has_eager_choices <- vapply(picks, function(x) is.character(x$choices), logical(1))
+  has_eager_choices <- vapply(picks, function(x) !.is.delayed(x$choices), logical(1))
 
   if (any(previous_has_dynamic_choices & has_eager_choices)) {
     idx_wrong <- which(previous_has_dynamic_choices & has_eager_choices)[1]
@@ -215,7 +213,7 @@ datasets <- function(choices = tidyselect::everything(),
     fixed <- !.is_tidyselect(choices) && !.is_predicate(choices) && length(choices) == 1
   }
 
-  out <- .selected_choices(
+  out <- .pick(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = FALSE,
@@ -251,7 +249,7 @@ variables <- function(choices = tidyselect::everything(),
     fixed <- !(.is_tidyselect(choices) || .is_predicate(choices)) && length(choices) == 1
   }
 
-  out <- .selected_choices(
+  out <- .pick(
     choices = if (.is_tidyselect(choices)) rlang::enquo(choices) else choices,
     selected = if (.is_tidyselect(selected)) rlang::enquo(selected) else selected,
     multiple = multiple,
@@ -274,6 +272,7 @@ values <- function(choices = function(x) !is.na(x),
   checkmate::assert(
     .check_predicate(choices),
     checkmate::check_character(choices, min.len = 1, unique = TRUE),
+    checkmate::check_logical(choices, min.len = 1, unique = TRUE),
     checkmate::check_numeric(choices, len = 2, sorted = TRUE, finite = TRUE),
     checkmate::check_date(choices, len = 2), # should be sorted but determine
     checkmate::check_posixct(choices, len = 2)
@@ -282,6 +281,7 @@ values <- function(choices = function(x) !is.na(x),
     .check_predicate(selected),
     checkmate::check_null(selected),
     checkmate::check_character(selected, min.len = 1, unique = TRUE),
+    checkmate::check_logical(selected, min.len = 1, unique = TRUE),
     checkmate::check_numeric(selected, len = 2, sorted = TRUE, finite = TRUE),
     checkmate::check_date(selected, len = 2),
     checkmate::check_posixct(selected, len = 2)
@@ -291,7 +291,7 @@ values <- function(choices = function(x) !is.na(x),
     fixed <- !.is_predicate(choices) && length(choices) == 1
   }
 
-  out <- .selected_choices(
+  out <- .pick(
     choices = choices,
     selected = selected,
     multiple = multiple,
@@ -302,15 +302,12 @@ values <- function(choices = function(x) !is.na(x),
   out
 }
 
-
-
-
-.selected_choices <- function(choices,
-                              selected,
-                              multiple = length(selected) > 1,
-                              ordered = FALSE,
-                              fixed = FALSE,
-                              ...) {
+.pick <- function(choices,
+                  selected,
+                  multiple = length(selected) > 1,
+                  ordered = FALSE,
+                  fixed = FALSE,
+                  ...) {
   is_choices_delayed <- rlang::is_quosure(choices) || .is_predicate(choices)
   is_selected_eager <- is.character(selected)
   if (is_choices_delayed && is_selected_eager) {
@@ -382,4 +379,34 @@ values <- function(choices = function(x) !is.na(x),
   } else {
     TRUE
   }
+}
+
+
+#' Is picks delayed
+#'
+#' Determine whether list of picks/picks or pick are delayed.
+#' When [pick()] is created it could be either:
+#' - `quosure` when `tidyselect` helper used (delayed)
+#' - `function` when predicate function provided (delayed)
+#' - `atomic` when vector of choices/selcted provided (eager)
+#' @param x (`list`, `list of picks`, `picks`, `pick`, `$choices`, `$selected`)
+#' @keywords internal
+.is.delayed <- function(x) {
+  UseMethod(".is.delayed")
+}
+
+#' @export
+.is.delayed.list <- function(x) {
+  any(vapply(x, .is.delayed, logical(1)))
+}
+
+#' @export
+.is.delayed.pick <- function(x) {
+  .is.delayed(x$choices) | .is.delayed(x$selected)
+}
+
+#' @export
+.is.delayed.default <- function(x) {
+  rlang::is_quosure(x) |
+    is.function(x)
 }
