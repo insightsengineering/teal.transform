@@ -230,8 +230,7 @@ picks_srv.picks <- function(id, picks, data) {
       logger::log_debug(".pick_srv@1 rerender {pick_type} input")
       .validate_is_eager(choices())
       .validate_is_eager(selected())
-      if (isTRUE(args$fixed) || length(choices()) <= 1) {
-      } else if (is_numeric()) {
+      if (isTRUE(args$fixed) || length(choices()) <= 1) {} else if (is_numeric()) {
         .pick_ui_numeric(
           session$ns("range"),
           label = sprintf("Select %s range:", pick_type),

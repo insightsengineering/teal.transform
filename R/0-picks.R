@@ -361,7 +361,6 @@ values <- function(choices = function(x) !is.na(x),
     (
       checkmate::test_function(x, nargs = 1) ||
         checkmate::test_function(x) && identical(names(formals(x)), "...")
-
     )
 }
 
