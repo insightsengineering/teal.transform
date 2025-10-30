@@ -3,25 +3,20 @@
 \name{tidyselectors}
 \alias{tidyselectors}
 \alias{is_categorical}
-\alias{no_more_choices_than}
 \title{\code{tidyselect} helpers}
 \usage{
-is_categorical(max.len, min.len)
-
-no_more_choices_than(max.len)
+is_categorical(min.len, max.len)
 }
 \arguments{
-\item{max.len}{(\code{integer(1)}) maximal number of unique values}
-
 \item{min.len}{(\code{integer(1)}) minimal number of unique values}
+
+\item{max.len}{(\code{integer(1)}) maximal number of unique values}
 }
 \description{
 \code{tidyselect} helpers
 }
 \examples{
-# select keys (primary and foreign)
-variables(choices = is_key())
-
 # select factor column but exclude foreign keys
-variables(choices = where(~ is.factor(.x) & !is_foreign_key()))
+variables(choices = is_categorical(min.len = 2, max.len = 10))
+
 }

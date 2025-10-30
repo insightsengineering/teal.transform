@@ -241,8 +241,8 @@ calls_combine_by <- function(operator, calls) {
   )
 }
 
-.call_dplyr_filter <- function(A) {
-  predicates <- lapply(unname(A), function(x) {
+.call_dplyr_filter <- function(x) {
+  predicates <- lapply(unname(x), function(x) {
     if (is.numeric(x$values)) {
       call_condition_range(varname = x$variables, range = x$values)
     } else if (inherits(x$values, "Date")) {

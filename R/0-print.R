@@ -11,12 +11,7 @@ print.picks <- function(x, ...) {
 }
 
 #' @export
-format <- function(x, indent = 0) {
-  UseMethod("format")
-}
-
-#' @export
-format.picks <- function(x, indent = 0) {
+format.picks <- function(x, indent = 0, ...) {
   out <- .indent(sprintf("%s\n", .bold("<picks>")), indent)
   for (i in seq_along(x)) {
     element_name <- names(x)[i]
@@ -28,7 +23,7 @@ format.picks <- function(x, indent = 0) {
 }
 
 #' @export
-format.pick <- function(x, indent = 0) {
+format.pick <- function(x, indent = 0, ...) {
   element_class <- setdiff(class(x), "pick")[1]
   out <- .indent(sprintf("%s\n", .bold(sprintf("<%s>", element_class))), indent)
   out <- paste0(out, .format_pick_content(x, indent + 2))

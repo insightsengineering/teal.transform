@@ -19,6 +19,8 @@
 \item{x}{(\code{character}, \code{quosure}, \verb{function(x)}) to determine \code{data} elements to extract.}
 
 \item{data}{(\code{list}, \code{data.frame}, \code{vector})}
+
+\item{multiple}{(\code{logical(1)}) whether multiple selection is possible.}
 }
 \value{
 \code{character} containing names/levels of \code{data} elements which match \code{x}, with two differences:
@@ -41,7 +43,7 @@ Function resolves \code{x} to determine \code{choices} or \code{selected}. \code
 \item \verb{x (function)}: function is executed on each element of \code{data} to determine where function returns TRUE
 }
 
-Mechnism is robust in a sense that it never fails (\code{tryCatch}) and returns \code{NULL} if no-match found. \code{NULL}
+Mechanism is robust in a sense that it never fails (\code{tryCatch}) and returns \code{NULL} if no-match found. \code{NULL}
 in \code{\link[=determine]{determine()}} is handled gracefully, by setting \code{NULL} to all following components of \code{picks}.
 
 In the examples below you can replace \code{.determine_delayed} with \code{.determine_choices} or \code{.determine_selected}.

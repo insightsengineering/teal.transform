@@ -1,7 +1,7 @@
 testthat::describe("format.type() for datasets", {
   it("formats datasets with character choices by printing them explicitly", {
     ds <- datasets(choices = c("iris", "mtcars"), selected = "iris")
-    expected <- " \033[1m<datasets>\033[0m\n   choices: iris, mtcars\n   selected: iris\n   \033[3mmultiple=FALSE, ordered=FALSE, fixed=FALSE\033[0m\n"
+    expected <- " \033[1m<datasets>\033[0m\n   choices: iris, mtcars\n   selected: iris\n   \033[3mmultiple=FALSE, ordered=FALSE, fixed=FALSE\033[0m\n" # nolint
     testthat::expect_identical(format(ds), expected)
   })
 
@@ -17,7 +17,7 @@ testthat::describe("format.type() for datasets", {
 testthat::describe("print.type() for variables", {
   it("prints variables with character choices by printing them explicitly", {
     vars <- variables(choices = c("a", "b", "c"), selected = c("a", "b"), multiple = TRUE)
-    expected <- " \033[1m<variables>\033[0m\n   choices: a, b, c\n   selected: a, b\n   \033[3mmultiple=TRUE, ordered=FALSE, fixed=FALSE, allow-clear=TRUE\033[0m\n"
+    expected <- " \033[1m<variables>\033[0m\n   choices: a, b, c\n   selected: a, b\n   \033[3mmultiple=TRUE, ordered=FALSE, fixed=FALSE, allow-clear=TRUE\033[0m\n" # nolint
     testthat::expect_identical(format(vars), expected)
   })
 
@@ -32,7 +32,7 @@ testthat::describe("print.type() for variables", {
 testthat::describe("format.type() for values", {
   it("formats values with character choices by printing them explicitly with their attributes", {
     vals <- values(choices = c("1", "2", "3"), selected = c("1", "2"), multiple = TRUE)
-    expected <- " \033[1m<values>\033[0m\n   choices: 1, 2, 3\n   selected: 1, 2\n   \033[3mmultiple=TRUE, ordered=FALSE, fixed=FALSE\033[0m\n"
+    expected <- " \033[1m<values>\033[0m\n   choices: 1, 2, 3\n   selected: 1, 2\n   \033[3mmultiple=TRUE, ordered=FALSE, fixed=FALSE\033[0m\n" # nolint
     testthat::expect_identical(format(vals), expected)
   })
 })

@@ -35,16 +35,18 @@ Default is \code{"dplyr::inner_join"}. The function must accept \code{by} and \c
 }
 \value{
 A \code{list} with two reactive elements:
-\describe{
-\item{\code{data}}{A \code{reactive} returning a \link[teal.data:teal_data]{teal.data::teal_data} object containing the merged dataset.
+\itemize{
+\item \code{data}A \code{reactive} returning a \link[teal.data:teal_data]{teal.data::teal_data} object containing the merged dataset.
 The merged dataset is named according to \code{output_name} parameter. The \code{teal_data} object includes:
-- The merged dataset with all selected variables
-- Complete R code to reproduce the merge operation
-- Updated join keys reflecting the merged dataset structure}
-\item{\code{variables}}{A \code{reactive} returning a named list mapping selector names to their selected
+\itemize{
+\item The merged dataset with all selected variables
+\item Complete R code to reproduce the merge operation
+\item Updated join keys reflecting the merged dataset structure
+}
+\item \code{variables} A \code{reactive} returning a named list mapping selector names to their selected
 variables in the merged dataset. The structure is:
 \code{list(selector_name_1 = c("var1", "var2"), selector_name_2 = c("var3", "var4"), ...)}.
-Variable names reflect any renaming that occurred during the merge to avoid conflicts.}
+Variable names reflect any renaming that occurred during the merge to avoid conflicts.
 }
 }
 \description{
@@ -85,7 +87,7 @@ the optimal order for merging datasets.
 \item Joins datasets using specified join function and join keys
 \item Maintains reproducibility through generated R code
 }
-\item \strong{Updates Join Keys}: Creates new join key relationships for the merged dataset ("anl")
+\item \strong{Updates Join Keys}: Creates new join key relationships for the merged dataset (\code{"anl"})
 relative to remaining datasets in the \code{teal_data} object
 \item \strong{Tracks Variables}: Keeps track of the variable names in the merged dataset
 }
@@ -171,7 +173,6 @@ merged <- merge_srv(
 }
 
 \examples{
-\dontrun{
 # Complete example with CDISC data
 library(teal.transform)
 library(teal.data)
@@ -224,8 +225,8 @@ server <- function(input, output, session) {
     merged$variables()
   })
 }
-
-shinyApp(ui, server)
+if (interactive()) {
+  shinyApp(ui, server)
 }
 
 }

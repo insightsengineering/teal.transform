@@ -5,12 +5,14 @@
 \alias{teal_transform_filter}
 \title{Convert data_extract_spec to picks}
 \usage{
-as.picks(x, ...)
+as.picks(x)
 
 teal_transform_filter(x, label = "Filter")
 }
 \arguments{
 \item{x}{(\code{data_extract_spec}, \code{select_spec}, \code{filter_spec}) object to convert to \code{\link{picks}}}
+
+\item{label}{(\code{character(1)}) Label of the module.}
 }
 \description{
 Helper functions to ease transition between \code{\link[=data_extract_spec]{data_extract_spec()}} and \code{\link[=picks]{picks()}}.

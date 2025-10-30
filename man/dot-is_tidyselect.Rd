@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-picks.R
 \name{.is_tidyselect}
 \alias{.is_tidyselect}
-\title{Is an object created using tidyselect}
+\title{Is an object created using \code{tidyselect}}
 \usage{
 .is_tidyselect(x)
 }

@@ -1,13 +1,48 @@
 #' Merge module
 #'
+#' Example [`teal::module`] containing interactive inputs and displaying results of merge.
+#'
+#' @inheritParams teal::module
 #' @param picks (`list` of `picks`)
-#' Example module
+#' @examples
+#' library(teal)
+#'
+#' data <- within(teal.data::teal_data(), {
+#'   iris <- iris
+#'   mtcars <- mtcars
+#' })
+#'
+#' app <- init(
+#'   data = data,
+#'   modules = modules(
+#'     modules(
+#'       label = "Testing modules",
+#'       tm_merge(
+#'         label = "non adam",
+#'         picks = list(
+#'           a = picks(
+#'             datasets("iris", "iris"),
+#'             variables(
+#'               choices = c("Sepal.Length", "Species"),
+#'               selected =
+#'               ),
+#'             values()
+#'           )
+#'         )
+#'       )
+#'     )
+#'   )
+#' )
+#' if (interactive()) {
+#'   shinyApp(app$ui, app$server, enableBookmarking = "server")
+#' }
+#'
+#' @export
 tm_merge <- function(label = "merge-module", picks, transformators = list()) {
-  # todo: move to vignette
-  module(
+  teal::module(
     label = label,
     ui = function(id, picks) {
-      ns <- NS(id)
+      ns <- shiny::NS(id)
       tags$div(
         tags$div(
           class = "row g-2",
@@ -23,7 +58,7 @@ tm_merge <- function(label = "merge-module", picks, transformators = list()) {
           })
         ),
         shiny::div(
-          reactable::reactableOutput(ns("table_merged")),
+          shiny::tableOutput(ns("table_merged")),
           shiny::verbatimTextOutput(ns("join_keys")),
           shiny::verbatimTextOutput(ns("mapped")),
           shiny::verbatimTextOutput(ns("src"))
@@ -38,18 +73,16 @@ tm_merge <- function(label = "merge-module", picks, transformators = list()) {
 
         table_q <- reactive({
           req(merged$data())
-          within(merged$data(), reactable::reactable(anl), selectors = selectors)
+          within(merged$data(), anl, selectors = selectors)
         })
 
-        output$table_merged <- reactable::renderReactable({
+        output$table_merged <- shiny::tableOutput({
           req(table_q())
           teal.code::get_outputs(table_q())[[1]]
         })
 
         output$src <- renderPrint({
-          styler::style_text(
-            teal.code::get_code(req(table_q()))
-          )
+          cat(teal.code::get_code(req(table_q())))
         })
 
         output$mapped <- renderText(yaml::as.yaml(merged$variables()))

@@ -27,17 +27,15 @@
 #'   Default is `"dplyr::inner_join"`. The function must accept `by` and `suffix` parameters.
 #'
 #' @return A `list` with two reactive elements:
-#' \describe{
-#'   \item{`data`}{A `reactive` returning a [teal.data::teal_data] object containing the merged dataset.
+#'  - `data`A `reactive` returning a [teal.data::teal_data] object containing the merged dataset.
 #'     The merged dataset is named according to `output_name` parameter. The `teal_data` object includes:
 #'     - The merged dataset with all selected variables
 #'     - Complete R code to reproduce the merge operation
-#'     - Updated join keys reflecting the merged dataset structure}
-#'   \item{`variables`}{A `reactive` returning a named list mapping selector names to their selected
+#'     - Updated join keys reflecting the merged dataset structure
+#'  - `variables` A `reactive` returning a named list mapping selector names to their selected
 #'     variables in the merged dataset. The structure is:
 #'     `list(selector_name_1 = c("var1", "var2"), selector_name_2 = c("var3", "var4"), ...)`.
-#'     Variable names reflect any renaming that occurred during the merge to avoid conflicts.}
-#' }
+#'     Variable names reflect any renaming that occurred during the merge to avoid conflicts.
 #'
 #' @section How It Works:
 #'
@@ -63,7 +61,7 @@
 #'    - Joins datasets using specified join function and join keys
 #'    - Maintains reproducibility through generated R code
 #'
-#' 6. **Updates Join Keys**: Creates new join key relationships for the merged dataset ("anl")
+#' 6. **Updates Join Keys**: Creates new join key relationships for the merged dataset (`"anl"`)
 #'    relative to remaining datasets in the `teal_data` object
 #'
 #' 7. **Tracks Variables**: Keeps track of the variable names in the merged dataset
@@ -142,7 +140,6 @@
 #' - [teal.data::join_keys()] for defining dataset relationships
 #'
 #' @examples
-#' \dontrun{
 #' # Complete example with CDISC data
 #' library(teal.transform)
 #' library(teal.data)
@@ -195,14 +192,11 @@
 #'     merged$variables()
 #'   })
 #' }
-#'
-#' shinyApp(ui, server)
+#' if (interactive()) {
+#'   shinyApp(ui, server)
 #' }
 #'
 #' @export
-# todo: merge_ui to display error message somewhere (at least)
-#       - if this dataset has no join_keys to anl (anl_datasets) then error saying
-#         can't merge {dataset} with merged dataset composed of {anl_datasets}
 merge_srv <- function(id,
                       data,
                       selectors,
@@ -298,14 +292,13 @@ merge_srv <- function(id,
     this_variables <- this_variables[!duplicated(unname(this_variables))] # because unique drops names
 
     this_call <- .call_dplyr_select(dataname = dataname, variables = this_variables)
-    # todo: make sure filter call is not executed when setequal(selected, all_possible_choices)
     this_call <- calls_combine_by("%>%", c(this_call, .call_dplyr_filter(this_filter_mapping)))
 
     if (i > 1) {
       anl_vs_this <- setdiff(anl_primary_keys, this_primary_keys)
       this_vs_anl <- setdiff(this_primary_keys, anl_primary_keys)
       if (length(anl_vs_this) && length(this_vs_anl)) {
-        # validate(need(FALSE, "cartesian join")) # todo: add more info
+        warning("cartesian join - happens when primary keys A is not a subset of B and B is not a subset of A")
       }
       this_call <- as.call(
         list(
@@ -489,7 +482,7 @@ merge_srv <- function(id,
       need(
         FALSE,
         sprintf(
-          "Cannot merge datasets. The following dataset%s no join keys defined: %s.\n\nPlease define join keys using teal.data::join_keys().",
+          "Cannot merge datasets. The following dataset%s no join keys defined: %s.\n\nPlease define `join_keys`.",
           if (length(datasets_without_keys) == 1) " has" else "s have",
           paste(sprintf("'%s'", datasets_without_keys), collapse = ", ")
         )
@@ -517,7 +510,10 @@ merge_srv <- function(id,
         need(
           FALSE,
           sprintf(
-            "Cannot merge dataset '%s'. No join keys found between '%s' and any of the accumulated datasets: %s.\n\nPlease define join keys using teal.data::join_keys().",
+            paste(
+              "Cannot merge dataset '%s'. No join keys found between '%s' and any of the accumulated datasets:",
+              "%s.\n\nPlease define join keys using teal.data::join_keys()."
+            ),
             current_dataset,
             current_dataset,
             paste(sprintf("'%s'", accumulated), collapse = ", ")
@@ -535,7 +531,7 @@ merge_srv <- function(id,
 
 .validate_is_eager <- function(x) {
   validate(need(
-    !.is.delayed(x),
+    !.is_delayed(x),
     "selected values have not been resolved correctly. Please report this issue to an app-developer."
   ))
 }

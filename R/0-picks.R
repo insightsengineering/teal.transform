@@ -3,9 +3,8 @@
 #' Define choices and default selection for variables. `picks` allows app-developer to specify
 #' `datasets`, `variables` and `values` to be selected by app-user during Shiny session.
 #' Functions are based on the idea of `choices/selected` where app-developer provides `choices`
-#' and what is `selected` by default. App-user though changes `selected` interactively in
-#' [`picks_module`]
-#' # todo: add note that values accepts predicates only
+#' and what is `selected` by default. App-user changes `selected` interactively (see [`picks_module`]).
+#'
 #' @param choices (`tidyselect::language` or `character`)
 #'  Available values to choose.
 #' @param selected (`tidyselect::language` or `character`)
@@ -21,12 +20,12 @@
 #'
 #' Both `choices` and `selected` parameters support `tidyselect` syntax, enabling dynamic
 #' and flexible variable selection patterns. This allows choices to be determined at runtime
-#' based on data characteristics rather than hardcoded values.
+#' based on data characteristics rather than hard-coded values.
 #'
-#' ## Using tidyselect for `choices`
+#' ## Using `tidyselect` for `choices` and `selected`
 #'
-#' When `choices` uses tidyselect, the available options are determined dynamically based on
-#' the selected dataset's structure:
+#' When `choices` uses `tidyselect`, the available options are determined dynamically based on actually
+#' selected data:
 #'
 #' - `tidyselect::everything()` - All variables/datasets
 #' - `tidyselect::starts_with("prefix")` - Variables starting with a prefix
@@ -37,15 +36,11 @@
 #' - `tidyselect::all_of(vars)` - All specified variables (error if missing)
 #' - `tidyselect::any_of(vars)` - Any specified variables (silent if missing)
 #' - Range selectors like `Sepal.Length:Petal.Width` - Variables between two positions
+#' - Integer indices (e.g., `1L`, `1L:3L`, `c(1L, 3L, 5L)`) - Select by position. Be careful, must be integer!
 #'
-#' ## Using tidyselect for `selected`
-#'
-#' The `selected` parameter can use:
-#'
-#' - Numeric indices (e.g., `1`, `1:3`, `c(1, 3, 5)`) - Select by position
-#' - Character vectors (e.g., `"Species"`, `c("mpg", "cyl")`) - Select by name
-#' - `tidyselect::everything()` - Select all available choices
-#' - Other tidyselect helpers as needed
+#' The `selected` parameter can use the same syntax but it will be applied to the subset defined in choices. This
+#' means that `choices = is.numeric, selected = is.factor` or `choices = c("a", "b", "c"), selected = c("d", "e")`
+#' will imply en empty `selected`.
 #'
 #' **Warning:** Using explicit character values for `selected` with dynamic `choices` may
 #' cause issues if the selected values are not present in the dynamically determined choices.
@@ -68,19 +63,20 @@
 #'
 #' ## How dependencies work
 #'
-#' - **Single dataset**: When `datasets(choices = "iris")` specifies one dataset, the
-#'   `variables()` choices are evaluated against that dataset's columns.
+#' - **Fixed dataset**: When `datasets(choices = "iris")` specifies one dataset, the
+#'   `variables()` choices are evaluated against that dataset columns.
 #'
-#' - **Multiple datasets**: When `datasets(choices = c("iris", "mtcars"))` allows multiple
+#' - **Multiple dataset choices**: When `datasets(choices = c("iris", "mtcars"))` allows multiple
 #'   options, `variables()` choices are re-evaluated each time the user selects a different
 #'   dataset. This creates a reactive dependency where variable choices update automatically.
 #'
-#' - **Dynamic datasets**: When using `datasets(choices = tidyselect::where(is.data.frame))`,
+#' - **Dynamic dataset choices**: When using `datasets(choices = tidyselect::where(is.data.frame))`,
 #'   all available data frames are discovered at runtime, and variable choices adapt to
 #'   whichever dataset the user selects.
 #'
 #' - **Variable to values**: Similarly, `values()` choices are evaluated based on the
-#'   selected variable(s), allowing users to filter specific levels or values.
+#'   selected variable(s), allowing users to filter specific levels or values. When multiple
+#'   variables are selected, then values will be a concatenation of the columns.
 #'
 #' ## Best practices
 #'
@@ -92,18 +88,98 @@
 #' - Use numeric indices for `selected` when `choices` are dynamic to avoid referencing
 #'   variables that may not exist in all datasets
 #'
+#' ## Important: `values()` requires type-aware configuration
+#'
+#' ### Why `values()` is different from `datasets()` and `variables()`
+#'
+#' `datasets()` and `variables()` operate on named lists of objects, meaning they work with character-based
+#' identifiers. This allows you to use text-based selectors like `starts_with("S")` or `contains("prefix")`
+#' consistently for both datasets and variable names.
+#'
+#' `values()` is fundamentally different because it operates on the **actual data content** within a
+#' selected variable (column). The type of data in the column determines what kind of filtering makes sense:
+#'
+#' - **`numeric` columns** (e.g., `age`, `height`, `price`) contain numbers
+#' - **`character`/`factor` columns** (e.g., `country`, `category`, `status`) contain categorical values
+#' - **`Date`/`POSIXct` columns** contain temporal data
+#' - **`logical` columns** contain TRUE/FALSE values
+#'
+#' ### Type-specific UI controls
+#'
+#' The `values()` function automatically renders different UI controls based on data type:
+#'
+#' - **`numeric` data**: Creates a `sliderInput` for range selection
+#'   - `choices` must be a numeric vector of length 2: `c(min, max)`
+#'   - `selected` must be a numeric vector of length 2: `c(selected_min, selected_max)`
+#'
+#' - **Categorical data** (`character`/`factor`): Creates a `pickerInput` for discrete selection
+#'   - `choices` can be a character vector or predicate function
+#'   - `selected` can be specific values or a predicate function
+#'
+#' - **`Date`/`POSIXct` data**: Creates date/datetime range selectors
+#'   - `choices` must be a Date or `POSIXct` vector of length 2
+#'
+#' - **`logical` data**: Creates a checkbox or picker for TRUE/FALSE selection
+#'
+#' ### Developer responsibility
+#'
+#' **App developers must ensure `values()` configuration matches the variable type:**
+#'
+#' 1. **Know your data**: Understand what type of variable(s) users might select
+#' 2. **Configure appropriately**: Set `choices` and `selected` to match expected data types
+#' 3. **Use predicates for flexibility**: When variable type is dynamic, use predicate functions
+#'    like `function(x) !is.na(x)` (the default) to handle multiple types safely
+#'
+#' ### Examples of correct usage
+#'
+#' ```r
+#' # For a numeric variable (e.g., age)
+#' picks(
+#'   datasets(choices = "demographic"),
+#'   variables(choices = "age", multiple = FALSE),
+#'   values(choices = c(0, 100), selected = c(18, 65))
+#' )
+#'
+#' # For a categorical variable (e.g., country)
+#' picks(
+#'   datasets(choices = "demographic"),
+#'   variables(choices = "country", multiple = FALSE),
+#'   values(choices = c("USA", "Canada", "Mexico"), selected = "USA")
+#' )
+#'
+#' # Safe approach when variable type is unknown - use predicates
+#' picks(
+#'   datasets(choices = "demographic"),
+#'   variables(choices = tidyselect::everything(), selected = 1L),
+#'   values(choices = function(x) !is.na(x), selected = function(x) !is.na(x))
+#' )
+#' ```
+#'
+#' ### Common mistakes to avoid
+#'
+#' ```r
+#' # WRONG: Using string selectors for numeric data
+#' values(choices = starts_with("5"))  # Doesn't make sense for numeric data!
+#'
+#' # WRONG: Providing categorical choices for a numeric variable
+#' values(choices = c("low", "medium", "high"))  # Won't work if variable is numeric!
+#'
+#' # WRONG: Providing numeric range for categorical variable
+#' values(choices = c(0, 100))  # Won't work if variable is factor/character!
+#' ```
+#'
 #' ## Example: Three-level hierarchy
 #'
 #' ```r
 #' picks(
 #'   datasets(choices = c("iris", "mtcars"), selected = "iris"),
-#'   variables(choices = tidyselect::where(is.numeric), selected = 1),
-#'   values(choices = tidyselect::everything(), selected = 1:10)
+#'   variables(choices = tidyselect::where(is.numeric), selected = 1L),
+#'   values(choices = tidyselect::everything(), selected = seq_len(10))
 #' )
 #' ```
 #'
 #' In this example:
-#' - User first selects a dataset (iris or mtcars)
+#' - User first selects a dataset (`iris` or `mtcars`)
 #' - Variable choices update to show only numeric columns from selected dataset
 #' - After selecting a variable, value choices show all unique values from that column
 #'
@@ -111,7 +187,7 @@
 #' # Select columns from iris dataset using range selector
 #' picks(
 #'   datasets(choices = "iris"),
-#'   variables(choices = Sepal.Length:Petal.Width, selected = 1)
+#'   variables(choices = Sepal.Length:Petal.Width, selected = 1L)
 #' )
 #'
 #' # Single variable selection from iris dataset
@@ -123,31 +199,31 @@
 #' # Dynamic selection: any variable from iris, first selected by default
 #' picks(
 #'   datasets(choices = "iris", selected = "iris"),
-#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+#'   variables(choices = tidyselect::everything(), selected = 1L, multiple = FALSE)
 #' )
 #'
 #' # Multiple dataset choices: variable choices will update when dataset changes
 #' picks(
 #'   datasets(choices = c("iris", "mtcars"), selected = "iris"),
-#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+#'   variables(choices = tidyselect::everything(), selected = 1L, multiple = FALSE)
 #' )
 #'
 #' # Select from any dataset, filter by numeric variables
 #' picks(
-#'   datasets(choices = c("iris", "mtcars"), selected = 1),
-#'   variables(choices = tidyselect::where(is.numeric), selected = 1)
+#'   datasets(choices = c("iris", "mtcars"), selected = 1L),
+#'   variables(choices = tidyselect::where(is.numeric), selected = 1L)
 #' )
 #'
 #' # Fully dynamic: auto-discover datasets and variables
 #' picks(
-#'   datasets(choices = tidyselect::where(is.data.frame), selected = 1),
-#'   variables(choices = tidyselect::everything(), selected = 1, multiple = FALSE)
+#'   datasets(choices = tidyselect::where(is.data.frame), selected = 1L),
+#'   variables(choices = tidyselect::everything(), selected = 1L, multiple = FALSE)
 #' )
 #'
 #' # Select categorical variables with length constraints
 #' picks(
-#'   datasets(choices = tidyselect::everything(), selected = 1),
-#'   variables(choices = is_categorical(min.len = 2, max.len = 15), selected = 1:2)
+#'   datasets(choices = tidyselect::everything(), selected = 1L),
+#'   variables(choices = is_categorical(min.len = 2, max.len = 15), selected = seq_len(2))
 #' )
 #'
 #' @export
@@ -174,9 +250,9 @@ picks <- function(...) {
 
   previous_has_dynamic_choices <- c(
     FALSE,
-    vapply(head(picks, -1), FUN.VALUE = logical(1), FUN = .is.delayed)
+    vapply(utils::head(picks, -1), FUN.VALUE = logical(1), FUN = .is_delayed)
   )
-  has_eager_choices <- vapply(picks, function(x) !.is.delayed(x$choices), logical(1))
+  has_eager_choices <- vapply(picks, function(x) !.is_delayed(x$choices), logical(1))
 
   if (any(previous_has_dynamic_choices & has_eager_choices)) {
     idx_wrong <- which(previous_has_dynamic_choices & has_eager_choices)[1]
@@ -338,7 +414,7 @@ values <- function(choices = function(x) !is.na(x),
   )
 }
 
-#' Is an object created using tidyselect
+#' Is an object created using `tidyselect`
 #'
 #' @description
 #' `choices` and `selected` can be provided using `tidyselect`, (e.g. [tidyselect::everything()]
@@ -387,25 +463,25 @@ values <- function(choices = function(x) !is.na(x),
 #' When [pick()] is created it could be either:
 #' - `quosure` when `tidyselect` helper used (delayed)
 #' - `function` when predicate function provided (delayed)
-#' - `atomic` when vector of choices/selcted provided (eager)
+#' - `atomic` when vector of choices/selected provided (eager)
 #' @param x (`list`, `list of picks`, `picks`, `pick`, `$choices`, `$selected`)
 #' @keywords internal
-.is.delayed <- function(x) {
-  UseMethod(".is.delayed")
+.is_delayed <- function(x) {
+  UseMethod(".is_delayed")
 }
 
 #' @export
-.is.delayed.list <- function(x) {
-  any(vapply(x, .is.delayed, logical(1)))
+.is_delayed.list <- function(x) {
+  any(vapply(x, .is_delayed, logical(1)))
 }
 
 #' @export
-.is.delayed.pick <- function(x) {
-  .is.delayed(x$choices) | .is.delayed(x$selected)
+.is_delayed.pick <- function(x) {
+  .is_delayed(x$choices) | .is_delayed(x$selected)
 }
 
 #' @export
-.is.delayed.default <- function(x) {
+.is_delayed.default <- function(x) {
   rlang::is_quosure(x) |
     is.function(x)
 }

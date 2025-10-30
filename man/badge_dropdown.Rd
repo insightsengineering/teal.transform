@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-badge_dropdown.R
 \name{badge_dropdown}
 \alias{badge_dropdown}
-\title{Dropdown badge}
+\title{Drop-down badge}
 \usage{
 badge_dropdown(id, label, content)
 }
@@ -11,12 +11,12 @@ badge_dropdown(id, label, content)
 
 \item{label}{(\code{shiny.tag}) Label displayed on a badge.}
 
-\item{...}{(\code{shiny.tag}) Content of a dropdown.}
+\item{content}{(\code{shiny.tag}) Content of a drop-down.}
 }
 \description{
-Dropdown button in a form of a badge with \code{bg-primary} as default style
-Clicking badge shows a dropdown containing any \code{HTML} element. Folded dropdown
+Drop-down button in a form of a badge with \code{bg-primary} as default style
+Clicking badge shows a drop-down containing any \code{HTML} element. Folded drop-down
 doesn't trigger display output which means that items rendered using \verb{render*}
-will be recomputed only when dropdown is show.
+will be recomputed only when drop-down is show.
 }
 \keyword{internal}

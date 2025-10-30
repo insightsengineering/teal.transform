@@ -7,10 +7,10 @@
 resolver(x, data)
 }
 \arguments{
+\item{x}{(\code{\link[=picks]{picks()}}) settings for picks.}
+
 \item{data}{(\code{\link[teal.data:teal_data]{teal.data::teal_data()}} \code{environment} or \code{list}) any data collection supporting object extraction with \code{[[}.
 Used to determine values of unresolved \code{picks}.}
-
-\item{picks}{(\code{\link[=picks]{picks()}}) settings for picks.}
 }
 \value{
 resolved \code{picks}.
@@ -19,14 +19,11 @@ resolved \code{picks}.
 Resolve iterates through each \code{picks} element and determines values .
 }
 \examples{
-# todo: fix example to use environment or a list
-x1 <- datasets(where(is.data.frame))
-x2 <- picks(x1, variables("a", "a"))
-data <- within(teal.data::teal_data(), {
-  df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
-  df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
-  m <- matrix()
-})
-resolver(x = x1, data = data)
-resolver(x = x2, data = data)
+x <- picks(datasets(tidyselect::where(is.data.frame)), variables("a", "a"))
+data <- list(
+  df1 = data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5]),
+  df2 = data.frame(a = LETTERS[1:5], b = 1:5),
+  m = matrix()
+)
+resolver(x = x, data = data)
 }

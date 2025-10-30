@@ -28,7 +28,7 @@ picks_srv(id = "", picks, data)
 \item{picks}{(\code{picks} or \code{list}) object created by \code{picks()} or a named list of such objects}
 
 \item{container}{(\code{character(1)} or \code{function}) UI container type. Can be one of \code{htmltools::tags}
-functions. By default, elements are wrapped in a package-specific dropdown.}
+functions. By default, elements are wrapped in a package-specific drop-down.}
 
 \item{data}{(\code{reactive}) Reactive expression returning the data object to be used for populating choices}
 }

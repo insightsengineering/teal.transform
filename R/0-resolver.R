@@ -1,7 +1,7 @@
 #' Resolve `picks`
 #'
 #' Resolve iterates through each `picks` element and determines values .
-#' @param picks ([picks()]) settings for picks.
+#' @param x ([picks()]) settings for picks.
 #' @param data ([teal_data()] `environment` or `list`) any data collection supporting object extraction with `[[`.
 #' Used to determine values of unresolved `picks`.
 #'
@@ -9,16 +9,13 @@
 #' @export
 #'
 #' @examples
-#' # todo: fix example to use environment or a list
-#' x1 <- datasets(where(is.data.frame))
-#' x2 <- picks(x1, variables("a", "a"))
-#' data <- within(teal.data::teal_data(), {
-#'   df <- data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5])
-#'   df2 <- data.frame(a = LETTERS[1:5], b = 1:5)
-#'   m <- matrix()
-#' })
-#' resolver(x = x1, data = data)
-#' resolver(x = x2, data = data)
+#' x <- picks(datasets(tidyselect::where(is.data.frame)), variables("a", "a"))
+#' data <- list(
+#'   df1 = data.frame(a = as.factor(LETTERS[1:5]), b = letters[1:5]),
+#'   df2 = data.frame(a = LETTERS[1:5], b = 1:5),
+#'   m = matrix()
+#' )
+#' resolver(x = x, data = data)
 resolver <- function(x, data) {
   checkmate::assert_class(x, "picks")
   checkmate::assert(
@@ -34,7 +31,6 @@ resolver <- function(x, data) {
   x
 }
 
-
 #' A method that should take a type and resolve it.
 #'
 #' Generic that makes the minimal check on spec.
@@ -43,7 +39,7 @@ resolver <- function(x, data) {
 #' @param data The minimal data required.
 #' @return A list with two elements, the `type` resolved and the data extracted.
 #' @keywords internal
-determine <- function(x, data, ...) {
+determine <- function(x, data) {
   if (is.null(data)) { # this happens when <previous>$selected=NULL
     return(list(x = .nullify_pick(x)))
   }
@@ -82,16 +78,15 @@ determine.variables <- function(x, data) {
 
 #' @export
 determine.values <- function(x, data) {
-  data <- if (ncol(data) > 1) { # todo: to limit number of possible columns to concat
+  data <- if (ncol(data) > 1) {
     apply(data, 1, toString)
   } else {
     data[[1]]
   }
 
-  # todo: what to do with NA choices?
   x$choices <- .determine_choices(x$choices, data = data) # .determine_* uses names
   x$selected <- if (length(x$choices)) {
-    .determine_selected(x$selected, data = setNames(x$choices, x$choices), multiple = attr(x, "multiple"))
+    .determine_selected(x$selected, data = stats::setNames(x$choices, x$choices), multiple = attr(x, "multiple"))
   }
   list(x = x) # no picks element possible after picks(..., values) (no need to pass data further)
 }
@@ -101,6 +96,7 @@ determine.values <- function(x, data) {
 #'
 #' @param data (`list`, `data.frame`, `vector`)
 #' @param x (`character`, `quosure`, `function(x)`) to determine `data` elements to extract.
+#' @param multiple (`logical(1)`) whether multiple selection is possible.
 #'
 #' @details
 #'
@@ -112,7 +108,7 @@ determine.values <- function(x, data) {
 #' - `x (tidyselect-helper)`: using [tidyselect::eval_select]
 #' - `x (function)`: function is executed on each element of `data` to determine where function returns TRUE
 #'
-#' Mechnism is robust in a sense that it never fails (`tryCatch`) and returns `NULL` if no-match found. `NULL`
+#' Mechanism is robust in a sense that it never fails (`tryCatch`) and returns `NULL` if no-match found. `NULL`
 #' in [determine()] is handled gracefully, by setting `NULL` to all following components of `picks`.
 #'
 #' In the examples below you can replace `.determine_delayed` with `.determine_choices` or `.determine_selected`.
@@ -144,14 +140,15 @@ determine.values <- function(x, data) {
 #' @keywords internal
 .determine_choices <- function(x, data) {
   out <- .determine_delayed(data = data, x = x)
-  if (!is.null(names(data)) && !is.atomic(data) && # only named non-atomic can have label
-    is.character(out) && is.null(names(out))) { # don't rename if names provided by app dev
+  if (!is.null(names(data)) && !is.atomic(data) && is.character(out) && is.null(names(out))) {
+    # only named non-atomic can have label
+    # don't rename if names provided by app dev
     labels <- vapply(
       out,
       FUN = function(choice) c(attr(data[[choice]], "label"), choice)[1],
       FUN.VALUE = character(1)
     )
-    setNames(out, labels)
+    stats::setNames(out, labels)
   } else {
     out
   }

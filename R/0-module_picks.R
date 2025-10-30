@@ -15,7 +15,7 @@
 #' @param id (`character(1)`) Shiny module ID
 #' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
 #' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
-#' functions. By default, elements are wrapped in a package-specific dropdown.
+#' functions. By default, elements are wrapped in a package-specific drop-down.
 #' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
 #'
 #' @return
@@ -60,9 +60,8 @@ picks_ui.picks <- function(id, picks, container) {
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
 
-  content <- lapply(picks, function(x) .pick_ui(id = ns(is(x))))
+  content <- lapply(picks, function(x) .pick_ui(id = ns(methods::is(x))))
   htmltools::tags$div(
-    # todo: badge to have css attribute to control the size - make CSS rule - can be controlled globally and module-ly
     if (missing(container)) {
       badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
     } else {
@@ -112,7 +111,11 @@ picks_srv.picks <- function(id, picks, data) {
       lapply(
         picks_resolved(),
         function(x) {
-          label <- if (length(x$selected)) {
+          label <- if (inherits(x, "values")) {
+            if (!setequal(x$choices, x$selected)) {
+              bsicons::bs_icon("funnel")
+            }
+          } else if (length(x$selected)) {
             toString(x$selected)
           } else {
             "~"
@@ -239,7 +242,6 @@ picks_srv.picks <- function(id, picks, data) {
           args = args
         )
       } else {
-        # todo: create .pick_ui_categorical for date/datetime etc.
         .pick_ui_categorical(
           session$ns("selected"),
           label = sprintf("Select %s:", pick_type),
@@ -279,12 +281,12 @@ picks_srv.picks <- function(id, picks, data) {
     inputId = id,
     label = label,
     min = unname(choices[1]),
-    max = unname(tail(choices, 1)),
+    max = unname(utils::tail(choices, 1)),
     value = unname(selected)
   )
 }
 
-.pick_ui_categorical <- function(id, label, choices, selected, multiple, choicesOpt, args) {
+.pick_ui_categorical <- function(id, label, choices, selected, multiple, choicesOpt, args) { # nolint
   htmltools::div(
     style = "max-width: 500px;",
     shinyWidgets::pickerInput(
@@ -329,10 +331,10 @@ picks_srv.picks <- function(id, picks, data) {
 #'     to unresolve (restart) dataset.
 #'   - new value (selected) is replacing old value in current slot (i)
 #'   - we call resolve which resolves only "unresolved" (delayed) values
-#'   - new picks is replacing reactiveValue
+#'   - new picks is replacing `reactiveValue`
 #' Thanks to this design reactive values are triggered only once
 #' @param selected (`vector`) rather `character`, or `factor`. `numeric(2)` for `values()` based on numeric column.
-#' @param slot_idx (`integer`)
+#' @param slot_name (`character(1)`) one of `c("datasets", "variables", "values")`
 #' @param picks_resolved (`reactiveVal`)
 #' @param old_picks (`picks`)
 #' @param data (`any` asserted further in `resolver`)

@@ -2,25 +2,15 @@
 #'
 #'
 #' @examples
-#' # select keys (primary and foreign)
-#' variables(choices = is_key())
-#'
 #' # select factor column but exclude foreign keys
-#' variables(choices = where(~ is.factor(.x) & !is_foreign_key()))
+#' variables(choices = is_categorical(min.len = 2, max.len = 10))
+#'
 #' @name tidyselectors
-
-# developer notes:
-#  in determine join_keys are handed over and in determine.variables attributes are assigned to
-#  the data columns. It is internally controlled process and it is designed like this because:
-#   - tidyselect functions don't accept arguments from outside so we can't add join_keys of selected dataset
-#     during eval_select.
-#   - having predicates to be utilized by `tidyselect::where` is `tidyselect` compatible and more predictable
-
 #' @rdname tidyselectors
 #' @param min.len (`integer(1)`) minimal number of unique values
 #' @param max.len (`integer(1)`) maximal number of unique values
 #' @export
-is_categorical <- function(max.len, min.len) {
+is_categorical <- function(min.len, max.len) {
   # todo: consider making a function which can exit earlier when max.len > length(unique(x)) < min.len
   #       without a need to compute unique on the whole vector.
   if (missing(max.len) && missing(min.len)) {
@@ -42,12 +32,4 @@ is_categorical <- function(max.len, min.len) {
       }
     }
   }
-}
-
-#' @rdname tidyselectors
-#' @export
-no_more_choices_than <- function(max.len) {
-  # todo: consider making a function which can exit earlier when max.len > length(unique(x)) < min.len
-  #       without a need to compute unique on the whole vector.
-  function(x) length(unique(x)) <= max.len
 }

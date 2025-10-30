@@ -9,13 +9,13 @@
 \arguments{
 \item{selected}{(\code{vector}) rather \code{character}, or \code{factor}. \code{numeric(2)} for \code{values()} based on numeric column.}
 
+\item{slot_name}{(\code{character(1)}) one of \code{c("datasets", "variables", "values")}}
+
 \item{picks_resolved}{(\code{reactiveVal})}
 
 \item{old_picks}{(\code{picks})}
 
 \item{data}{(\code{any} asserted further in \code{resolver})}
-
-\item{slot_idx}{(\code{integer})}
 }
 \description{
 @description
@@ -26,7 +26,7 @@ values are sequentially dependent. For example if variables (i=2) is selected we
 to unresolve (restart) dataset.
 \item new value (selected) is replacing old value in current slot (i)
 \item we call resolve which resolves only "unresolved" (delayed) values
-\item new picks is replacing reactiveValue
+\item new picks is replacing \code{reactiveValue}
 Thanks to this design reactive values are triggered only once
 }
 }

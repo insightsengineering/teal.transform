@@ -1,8 +1,8 @@
 #' Convert data_extract_spec to picks
 #'
 #' Helper functions to ease transition between [data_extract_spec()] and [picks()].
+#' @inheritParams teal::teal_transform_module
 #' @param x (`data_extract_spec`, `select_spec`, `filter_spec`) object to convert to [`picks`]
-#'
 #' @details
 #' With introduction of [`picks`], [`data_extract_spec`] will no longer serve a primary tool to
 #' define variable choices and default selection in teal-modules and eventually [`data_extract_spec`]
@@ -51,18 +51,18 @@
 #' )
 #'
 #' @export
-as.picks <- function(x, ...) {
+as.picks <- function(x) { # nolint
   if (inherits(x, c("picks", "pick"))) {
     x
   } else if (checkmate::test_list(x, c("data_extract_spec", "filter_spec"))) {
-    Filter(length, lapply(x, as.picks, ...))
+    Filter(length, lapply(x, as.picks))
   } else if (inherits(x, "data_extract_spec")) {
     args <- Filter(
       length,
       list(
         datasets(choices = x$dataname, fixed = TRUE),
         as.picks(x$select),
-        as.picks(x$filter, dataname = x$dataname)
+        as.picks(x$filter)
         # filter_spec as they are not necessary linked with `select` (selected variables)
         #  as filter_spec can be specified on the variable(s) different than select_spec for example:
         #  for example: #pseudocode select = select_spec(AVAL); filter = filter_spec(PARAMCD))
@@ -72,7 +72,6 @@ as.picks <- function(x, ...) {
   } else if (inherits(x, "select_spec")) {
     .select_spec_to_variables(x)
   } else if (inherits(x, "filter_spec")) {
-    dataname <- list(...)$dataname
     # warning
     warning(
       "`filter_spec` are not convertible to picks - please use `transformers` argument",
@@ -113,7 +112,7 @@ as.picks <- function(x, ...) {
 teal_transform_filter <- function(x, label = "Filter") {
   checkmate::assert_multi_class(x, c("data_extract_spec", "picks"))
   if (inherits(x, "data_extract_spec")) {
-    lapply(as.picks.filter(x), teal_transform_filter, label = label)
+    lapply(.as.picks.filter(x), teal_transform_filter, label = label)
   } else {
     checkmate::assert_true("values" %in% names(x))
     teal::teal_transform_module(
@@ -123,11 +122,10 @@ teal_transform_filter <- function(x, label = "Filter") {
         picks_ui(ns("transformer"), picks = x, container = div)
       },
       server <- function(id, data) {
-        moduleServer(id, function(input, output, session) {
+        shiny::moduleServer(id, function(input, output, session) {
           selector <- picks_srv("transformer", picks = x, data = data)
           reactive({
             req(data(), selector())
-            # todo: make sure filter call is not executed when setequal(selected, all_possible_choices)
             filter_call <- .make_filter_call(
               datasets = selector()$datasets$selected,
               variables = selector()$variables$selected,
@@ -141,7 +139,7 @@ teal_transform_filter <- function(x, label = "Filter") {
   }
 }
 
-as.picks.filter <- function(x, dataname) {
+.as.picks.filter <- function(x, dataname) { # nolint
   if (inherits(x, "filter_spec")) {
     if (inherits(x$choices, "delayed_data")) {
       warning(
@@ -163,12 +161,12 @@ as.picks.filter <- function(x, dataname) {
       values(choices = x$choices, selected = x$selected, multiple = x$multiple)
     )
   } else if (checkmate::test_list(x, "filter_spec")) {
-    lapply(x, as.picks.filter, dataname = dataname)
+    lapply(x, .as.picks.filter, dataname = dataname)
   } else if (inherits(x, "data_extract_spec")) {
-    as.picks.filter(x$filter, dataname = x$dataname)
+    .as.picks.filter(x$filter, dataname = x$dataname)
   } else if (checkmate::test_list(x, c("data_extract_spec", "list", "NULL"))) {
     unlist(
-      lapply(Filter(length, x), as.picks.filter),
+      lapply(Filter(length, x), .as.picks.filter),
       recursive = FALSE
     )
   }

@@ -1,14 +1,32 @@
----
-title: "Refactor Notes"
-author: "Development Team"
-date: "`r Sys.Date()`"
-output: html_document
----
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Motivation](#motivation)
+  - [Merging relational data](#merging-relational-data)
+    - [Handling ambiguous variables](#handling-ambiguous-variables)
+  - [Merging interactively](#merging-interactively)
+- [Configure possible selection](#configure-possible-selection)
+  - [picks and choices/selected](#picks-and-choicesselected)
+  - [Relationship between `picks` elements](#relationship-between-picks-elements)
+  - [Example settings](#example-settings)
+    - [Strict variables picks](#strict-variables-picks)
+    - [Dynamic variables choices](#dynamic-variables-choices)
+    - [Dynamic variables from multiple datasets](#dynamic-variables-from-multiple-datasets)
+    - [Dynamic everything](#dynamic-everything)
+  - [Implementation in `teal_module`](#implementation-in-teal_module)
+    - [App example](#app-example)
+    - [Select specific variable(s) from a specific dataset](#select-specific-variables-from-a-specific-dataset)
+    - [Select specific variable(s) from a selected dataset](#select-specific-variables-from-a-selected-dataset)
+    - [Select unknown variable(s) from a selected dataset](#select-unknown-variables-from-a-selected-dataset)
+    - [filtering by any variable](#filtering-by-any-variable)
+  - [Conversion from to data-extract-spec](#conversion-from-to-data-extract-spec)
+    - [Issues with `data_extract_spec`](#issues-with-data_extract_spec)
+      - [Bad encapsulation](#bad-encapsulation)
+      - [Hard to extend](#hard-to-extend)
 
 # Motivation
 
 ## Merging relational data
-
 
 Consider following tables `orders`, `order_items`, `products`, `customers` connected with join keys
 following sql convention `{child}.{$parent}_id = {$parent+"s"}.id`, for example
@@ -220,13 +238,15 @@ Developing system which can interactively handle merge is a challenging task not
 but also due to additional layers which need to control described operation. These layers include:
 
 1. Providing an API for app-developer to enable and set specific merge configuration.
-2. Providing robust, easy to use merge-modules which can handle weirdest app-developer needs (1) and provide meaningful information to the app-user about consequences of the data/variable selections.
+2. Handling reactive relationship between all inputs (dataset -> variable -> value) and avoid unnecessary triggers.
+3. Providing robust, easy to use merge-modules which can handle weirdest app-developer needs (1) and provide meaningful information to the app-user about consequences of the data/variable selections.
 
-# 1. Configure possible selection
+# Configure possible selection
 
 ## picks and choices/selected
 
-We came with an idea of `picks` which allows app-developer to specify `datasets`, `variables` and `values` to be selected by app-user during an app run. Each of them is based on the idea of `choices/selected` where app-developer
+We came with an idea of `picks` which allows app-developer to specify `datasets`, `variables` and `values` to be 
+selected by app-user during an app run. Each of them is based on the idea of `choices/selected` where app-developer
 provides `choices` and what is `selected` by default. App-user though changes `selected` interactively.
 
 ```mermaid
@@ -267,12 +287,12 @@ graph TB
 New design bases on an idea that a module can consume its arguments referring to any variable in any dataset. Consider following example, where: 
 - a module uses `x`, `y` and `facet` arguments to create an interactive inputs,
 - user can select a variable from any dataset for `x`, `y`, `facet` 
-- visualization will be build on a merged dataset containing these three variables
+- visualization will be build on a merged dataset containing these three variables.
 
 ```r
 # pseudocode
 tm_example <- function(x, y, facet) {
-  ui = function(id, x, y, facet) ...., # creates placeholders for inputs
+  ui = function(id, x, y, facet) ...., # inputs will be here
   server = function(id, x, y, facet) {
     moduleServer(id, function(input, output, session) {
       output$plot <- renderPlot({
@@ -292,7 +312,7 @@ tm_example <- function(x, y, facet) {
 To provide choices and default selection for `x`, `y` and `facet` we propose following api:
 
 <details>
-<summary>Proposed API using picks() for variable selection</summary>
+<summary>Proposed API using <code>picks()</code> for variable selection</summary>
 
 ```r
 # pseudocode
@@ -315,9 +335,9 @@ tm_example(
 </details>
 
 Where each function creates an object which holds the information consumed by the framework. `choices` and `selected` can be either:
-- explicit character denoting the name of the objects
-- Natural number denoting index of column
 - `tidyselect` selection_helpers (`?tidyselect::language`)
+- Integer denoting index of column(s)
+- explicit character denoting the name of the objects/columns/level
  
 ## Relationship between `picks` elements
 
@@ -356,8 +376,6 @@ graph TB
     style DS_Selected stroke-width:3px
     style VAR_Choices stroke-width:3px
 ```
-
-
 
 ## Example settings
 
@@ -426,6 +444,7 @@ picks(
 ```
 
 </details>
+
 
 ## Implementation in `teal_module`
 
@@ -523,7 +542,7 @@ srv_example <- function(id, data, x, y, facet) {
 
 </details>
 
-## App example
+### App example
 
 <details>
 <summary>Complete working app example with relational data and dynamic merging</summary>
@@ -786,8 +805,6 @@ shinyApp(app$ui, app$server, enableBookmarking = "server")
 
 </details>
 
-## Conversion from to data-extract-spec
-
 ### Select specific variable(s) from a specific dataset
 
 ```
@@ -926,4 +943,108 @@ transformators = teal_transform_module(
   }
 )
 
+```
+
+## Conversion from to data-extract-spec
+
+`picks` will completelly replace `data_extract_spec` (des) and will be the only tool to select-and-merge 
+in `teal` framework. So far des will be supported as soft deprecated. `help("as.picks")`
+contains the information how to convert des into picks but in a limited scope.
+- `data_extract_spec` (or a list of des) containing only `select_spec` are convertible 1:1 to the `picks`
+- `filter_spec` is not convertible to `picks` as it variables used in filter can be different than variables selected in `select_spec`, thus hierarchical form of `picks` can't handle this case.
+- `filter_spec` can be converted to `teal_transform_module` and used in `transformators` argument instead and we recommend to do so. `teal.transform::teal_transform_filter` provides a simplified way to create such `transformator`.
+
+
+### Issues with `data_extract_spec`
+
+API of `data_extract_spec` is bad encapsulation, hard to extend, confusing and easy to break.
+
+#### Bad encapsulation
+
+In `filter_spec` one can specify `choices = value_choices(dataname, subset = function(data))`, this is vulnerable
+for multiple failures:
+
+- `value_choices("dataname")` can be completelly different than `data_extract_spec(dataname)`, guess what happens? ;]
+- `subset = function(data)` is a function of a dataset, it means that even if `vars = "Species"` has been provideed one still have to do `levels(data$Species)` instead of `levels(column)`
+
+As you can see, there are few places where scope of the classes is not well separated which leads to:
+
+- repeating same information on multiple levels of the hierarchy `data_extract_spec(dataname)` and `value_choices(dataname)`, `vars = "Species"`, `levels(data$Species)`
+- Repeating the same information also requires to be cautious to have both places correctly specified, otherwise error will occur
+
+```r
+data_extract_spec(
+  dataname = "iris",
+  select = select_spec(
+    choices = variable_choices(subset = function(data) names(data))
+    selected = "Sepal.Length"
+  ),
+  filter = filter_spec(
+    vars = "Species",
+    choices = value_choices("iris, subset = function(data) levels(data$Species)),
+    selected = first_choice()
+  )
+)
+```
+
+Conclusion: 
+
+- `value_choices(data)` shouldn't have an argument `data` as it is "given" by the `data_extract_spec`. Same applies to `variable_choices(data)`.
+- `value_choices(subset = function(data))` should be a function of column which is set in `filter_spec(vars)`
+
+#### Hard to extend
+
+Recently one user asked to make `data_extract_spec(datanames)` delayed, so that it will adjust automatically to the existing datasets when resolved. Problem is API allow to have des for multiple datasets only when one knows their names. It is just done by making a list-of-des. Following code will produce dropdown with "iris" and "mtcars" and app-user will be able to switch between datasets (switching between des)
+
+```r
+# pseudocode
+list(
+  data_extract_spec(dataname = "iris", ...),
+  data_extract_spec(dataname = "mtcars", ...)
+)
+```
+
+Proposition was that `dataname = dataset_choices()`, similar to the `filter_spec(vars = variable_choices())`. Let's consider how would it look like:
+
+```r
+data_extract_spec(
+  dataname = dataset_choices(choices = all_datasets(), selected = first_choice()),
+  select = select_spec(
+    choices = variable_choices(dataname = ??, choices = function(x) names(data))
+  )
+  filter = filter_spec(
+    vars = variable_choices(dataname = ??, choices = function(x) names(data)), # how to obtain delayed `dataname`
+    choices = value_choices(dataname = ??, choices = function(x) data$?? |> levels()) # how to obtain delayed `vars`
+  )
+)
+```
+
+To achive this, package would have to be seriously refactored, to be able to do following:
+
+```r
+data_extract_spec(
+  dataname = dataset_choices(choices = all_datasets(), selected = first_choice()),
+  select = select_spec(
+    choices = variable_choices(choices = function(x) names(data))
+  ),
+  filter = filter_spec(
+    vars = variable_choices(choices = function(data) names(data)),
+    choices = value_choices(choices = function(column) column |> levels())
+  )
+)
+```
+
+Let's just use above example and change function names:
+
+```
+picks(
+  datanames(choices = all_datasets(), selected = first_choice()),
+  variables(
+    choices = variable_choices(choices = function(x) names(data))
+  ),
+  values(
+    vars = variable_choices(choices = function(data) names(data)),
+    choices = value_choices(choices = function(column) column |> levels())
+  )
+)
 ```

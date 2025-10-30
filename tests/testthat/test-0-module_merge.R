@@ -823,7 +823,10 @@ testthat::describe("merge_srv returns list with data (teal_data with anl) and va
     data <- teal.data::teal_data()
     data <- within(data, {
       test_data <- data.frame(
-        posixct_var = as.POSIXct(c("2024-01-01 10:00:00", "2024-02-01 11:00:00", "2024-03-01 12:00:00", "2024-04-01 13:00:00", "2024-05-01 14:00:00")),
+        posixct_var = as.POSIXct(c(
+          "2024-01-01 10:00:00", "2024-02-01 11:00:00", "2024-03-01 12:00:00",
+          "2024-04-01 13:00:00", "2024-05-01 14:00:00"
+        )),
         id = 1:5
       )
     })
@@ -832,7 +835,10 @@ testthat::describe("merge_srv returns list with data (teal_data with anl) and va
       a = shiny::reactive(picks(
         datasets(choices = "test_data", selected = "test_data"),
         variables(choices = colnames(data$test_data), selected = "posixct_var"),
-        values(choices = range(data$test_data$posixct_var), selected = as.POSIXct(c("2024-01-15 00:00:00", "2024-04-15 00:00:00")))
+        values(
+          choices = range(data$test_data$posixct_var),
+          selected = as.POSIXct(c("2024-01-15 00:00:00", "2024-04-15 00:00:00"))
+        )
       ))
     )
 

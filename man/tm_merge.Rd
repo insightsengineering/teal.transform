@@ -7,9 +7,48 @@
 tm_merge(label = "merge-module", picks, transformators = list())
 }
 \arguments{
-\item{picks}{(\code{list} of \code{picks})
-Example module}
+\item{label}{(\code{character(1)}) Label shown in the navigation item for the module or module group.
+For \code{modules()} defaults to \code{"root"}. See \code{Details}.}
+
+\item{picks}{(\code{list} of \code{picks})}
+
+\item{transformators}{(\code{list} of \code{teal_transform_module}) that will be applied to transform module's data input.
+To learn more check \code{vignette("transform-input-data", package = "teal")}.}
 }
 \description{
-Merge module
+Example \code{\link[teal:teal_modules]{teal::module}} containing interactive inputs and displaying results of merge.
+}
+\examples{
+library(teal)
+
+data <- within(teal.data::teal_data(), {
+  iris <- iris
+  mtcars <- mtcars
+})
+
+app <- init(
+  data = data,
+  modules = modules(
+    modules(
+      label = "Testing modules",
+      tm_merge(
+        label = "non adam",
+        picks = list(
+          a = picks(
+            datasets("iris", "iris"),
+            variables(
+              choices = c("Sepal.Length", "Species"),
+              selected =
+              ),
+            values()
+          )
+        )
+      )
+    )
+  )
+)
+if (interactive()) {
+  shinyApp(app$ui, app$server, enableBookmarking = "server")
+}
+
 }
