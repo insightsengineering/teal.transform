@@ -39,8 +39,6 @@ functions. By default, elements are wrapped in a package-specific drop-down.}
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 Creates UI and server components for interactive \code{\link[=picks]{picks()}} in Shiny modules. The module is based on
 configuration provided via \code{\link[=picks]{picks()}} and its responsibility is to determine relevant input
 values

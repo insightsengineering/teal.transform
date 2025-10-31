@@ -1,5 +1,7 @@
 #' Convert data_extract_spec to picks
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #' Helper functions to ease transition between [data_extract_spec()] and [picks()].
 #' @inheritParams teal::teal_transform_module
 #' @param x (`data_extract_spec`, `select_spec`, `filter_spec`) object to convert to [`picks`]

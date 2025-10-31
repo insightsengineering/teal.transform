@@ -15,6 +15,7 @@ teal_transform_filter(x, label = "Filter")
 \item{label}{(\code{character(1)}) Label of the module.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Helper functions to ease transition between \code{\link[=data_extract_spec]{data_extract_spec()}} and \code{\link[=picks]{picks()}}.
 }
 \details{

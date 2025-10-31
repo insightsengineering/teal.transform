@@ -13,7 +13,8 @@ is_categorical(min.len, max.len)
 \item{max.len}{(\code{integer(1)}) maximal number of unique values}
 }
 \description{
-\code{tidyselect} helpers
+#' \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Predicate functions simplifying \code{picks} specification.
 }
 \examples{
 # select factor column but exclude foreign keys

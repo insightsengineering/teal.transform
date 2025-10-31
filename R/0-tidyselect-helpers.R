@@ -1,6 +1,8 @@
 #' `tidyselect` helpers
 #'
-#'
+#' @description
+#' #' `r lifecycle::badge("experimental")`
+#' Predicate functions simplifying `picks` specification.
 #' @examples
 #' # select factor column but exclude foreign keys
 #' variables(choices = is_categorical(min.len = 2, max.len = 10))

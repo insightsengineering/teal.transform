@@ -1,7 +1,6 @@
 #' Interactive picks
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
 #'
 #' Creates UI and server components for interactive [picks()] in Shiny modules. The module is based on
 #' configuration provided via [picks()] and its responsibility is to determine relevant input
@@ -315,6 +314,7 @@ picks_srv.picks <- function(id, picks, data) {
 #' @param rv (`reactiveVal`)
 #' @param value (`vector`)
 #' @param log (`character(1)`) message to `log_debug`
+#' @keywords internal
 .update_rv <- function(rv, value, log) {
   if (!isTRUE(all.equal(rv(), value, tolerance = 1e-15))) { # tolerance 1e-15 is a max precision in widgets.
     logger::log_debug(log)
