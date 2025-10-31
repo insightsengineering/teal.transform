@@ -119,11 +119,11 @@ choices_selected(choices = letters, selected = letters)
 choices_selected(choices = letters, selected = all_choices())
 
 choices_selected(
-  choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+  choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
   selected = "E"
 )
 choices_selected(
-  choices = setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
+  choices = stats::setNames(LETTERS[1:5], paste("Letter", LETTERS[1:5])),
   selected = last_choice()
 )
 

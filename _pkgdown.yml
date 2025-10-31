@@ -65,3 +65,28 @@ reference:
   - title: Human-readable formatting of a data extract object
     contents:
       - format_data_extract
+  - title: Picks
+    desc: >-
+      Picks contructors
+    contents:
+      - picks
+      - datasets
+      - variables
+      - values
+  - title: Shiny modules
+    desc: >-
+      Modules to interactively select-and-merge
+    contents:
+      - merge_srv
+      - picks_srv
+      - picks_ui
+      - tm_merge
+  - title: Picks utilities
+    desc: >-
+      Additional tools to help working with picks 
+    contents:
+      - as.picks
+      - is_categorical
+      - resolver
+      - teal_transform_filter
+

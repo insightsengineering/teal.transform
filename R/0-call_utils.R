@@ -71,11 +71,11 @@ call_condition_choice <- function(varname, choices) {
 
 
   if (length(choices) == 1) {
-    call("==", varname, choices)
+    call("==", varname, unname(choices))
   } else {
     c_call <- do.call(
       "call",
-      append(list("c"), choices)
+      append(list("c"), unname(choices))
     )
     # c_call needed because it needs to be vector call
     # instead of vector. SummarizedExperiment.subset
@@ -104,8 +104,8 @@ call_condition_range <- function(varname, range) {
   varname <- call_check_parse_varname(varname)
   call(
     "&",
-    call(">=", varname, range[1]),
-    call("<=", varname, range[2])
+    call(">=", varname, unname(range[1])),
+    call("<=", varname, unname(range[2]))
   )
 }
 
@@ -162,8 +162,8 @@ call_condition_range_posixct <- function(varname, range, timezone = Sys.timezone
   range[1] <- trunc(range[1], units = c("secs"))
   range[2] <- trunc(range[2] + 1, units = c("secs"))
 
-  range <- format(
-    range,
+  range <- format.POSIXct(
+    unname(range),
     format = "%Y-%m-%d %H:%M:%S",
     tz = timezone
   )
@@ -198,154 +198,6 @@ call_condition_range_date <- function(varname, range) {
   )
 }
 
-#' Get call to subset and select array
-#'
-#' @param dataname (`character(1)` or `name`).
-#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional
-#' name of the `row` or condition.
-#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional
-#' name of the `column` or condition.
-#' @param aisle (`name` or `call` or `logical` or `integer` or `character`) optional
-#' name of the `row` or condition.
-#'
-#' @return [Extract()] `call` for 3-dimensional array in `x[i, j, k]` notation.
-#'
-#' @keywords internal
-#'
-call_extract_array <- function(dataname = ".", row = NULL, column = NULL, aisle = NULL) {
-  checkmate::assert(
-    checkmate::check_string(dataname),
-    checkmate::check_class(dataname, "call"),
-    checkmate::check_class(dataname, "name")
-  )
-  stopifnot(is.null(row) || is.call(row) || is.character(row) || is.logical(row) || is.integer(row) || is.name(row))
-  stopifnot(is.null(column) || is.call(column) || is.vector(column) || is.name(column))
-  stopifnot(is.null(aisle) || is.call(aisle) || is.vector(aisle) || is.name(aisle))
-
-  if (is.language(dataname)) {
-    dataname <- paste(trimws(deparse(dataname, width.cutoff = 500L)), collapse = "\n")
-  }
-
-  row <- if (is.null(row)) {
-    ""
-  } else {
-    paste(trimws(deparse(row, width.cutoff = 500L)), collapse = "\n")
-  }
-  column <- if (is.null(column)) {
-    ""
-  } else {
-    paste(trimws(deparse(column, width.cutoff = 500L)), collapse = "\n")
-  }
-  aisle <- if (is.null(aisle)) {
-    ""
-  } else {
-    paste(trimws(deparse(aisle, width.cutoff = 500L)), collapse = "\n")
-  }
-
-  parse(
-    text = sprintf("%s[%s, %s, %s]", dataname, row, column, aisle),
-    keep.source = FALSE
-  )[[1]]
-}
-
-#' Get call to subset and select matrix
-#'
-#' @param dataname (`character(1)` or `name`).
-#' @param row (`name` or `call` or `logical` or `integer` or `character`) optional
-#' name of the `row` or condition.
-#' @param column (`name` or `call` or `logical` or `integer` or `character`) optional
-#' name of the `column` or condition.
-#'
-#' @return [Extract()] `call` for matrix in `x[i, j]` notation.
-#'
-#' @keywords internal
-#'
-call_extract_matrix <- function(dataname = ".", row = NULL, column = NULL) {
-  checkmate::assert(
-    checkmate::check_string(dataname),
-    checkmate::check_class(dataname, "call"),
-    checkmate::check_class(dataname, "name")
-  )
-  stopifnot(is.null(row) || is.call(row) || is.character(row) || is.logical(row) || is.integer(row) || is.name(row))
-  stopifnot(is.null(column) || is.call(column) || is.vector(column) || is.name(column))
-
-  if (is.language(dataname)) {
-    dataname <- paste(trimws(deparse(dataname, width.cutoff = 500L)), collapse = "\n")
-  }
-
-  row <- if (is.null(row)) {
-    ""
-  } else {
-    paste(trimws(deparse(row, width.cutoff = 500L)), collapse = "\n")
-  }
-  column <- if (is.null(column)) {
-    ""
-  } else {
-    paste(trimws(deparse(column, width.cutoff = 500L)), collapse = "\n")
-  }
-
-  parse(
-    text = sprintf("%s[%s, %s]", dataname, row, column),
-    keep.source = FALSE
-  )[[1]]
-}
-
-
-#' Compose extract call with `$` operator
-#'
-#' @param dataname (`character(1)` or `name`) name of the object.
-#' @param varname (`character(1)` or `name`) name of the slot in data.
-#' @param dollar (`logical(1)`) whether returned call should use `$` or `[[` operator.
-#'
-#' @return [Extract()] `call` in `$` or `[[` notation (depending on parameters).
-#'
-#' @keywords internal
-#'
-call_extract_list <- function(dataname, varname, dollar = TRUE) {
-  checkmate::assert_flag(dollar)
-  checkmate::assert(
-    checkmate::check_string(varname),
-    checkmate::check_class(varname, "name"),
-    checkmate::assert(
-      combine = "and",
-      checkmate::check_class(varname, "call"),
-      checkmate::check_false(dollar)
-    )
-  )
-
-  dataname <- call_check_parse_varname(dataname)
-
-  if (dollar) {
-    call("$", dataname, varname)
-  } else {
-    call("[[", dataname, varname)
-  }
-}
-
-#' Create a call using a function in a given namespace
-#'
-#' The dot arguments in `...` need to be quoted because they will be evaluated otherwise.
-#'
-#' @param name `character` function name, possibly using namespace colon `::`, also
-#' works with `:::` (sometimes needed, but strongly discouraged).
-#' @param ... arguments to pass to function with name `name`.
-#' @param unlist_args `list` extra arguments passed in a single list,
-#' avoids the use of `do.call` with this function.
-#'
-#' @return `call`.
-#'
-#' @keywords internal
-#'
-call_with_colon <- function(name, ..., unlist_args = list()) {
-  checkmate::assert_string(name)
-  checkmate::assert_list(unlist_args)
-  as.call(c(
-    parse(text = name, keep.source = FALSE)[[1]],
-    c(list(...), unlist_args)
-  ))
-}
-
-
 #' Combine calls by operator
 #'
 #' Combine list of calls by specific operator.
@@ -368,9 +220,58 @@ calls_combine_by <- function(operator, calls) {
       )
     )
   )
-
   Reduce(
     x = calls,
     f = function(x, y) call(operator, x, y)
+  )
+}
+
+#' @param variables (`list` of `character`) variables to select. If list is named then
+#'  variables will be renamed if their name is different than its value
+#'  (this produces a call `select(..., <name> = <value>)`).
+.call_dplyr_select <- function(dataname, variables) {
+  as.call(
+    c(
+      list(
+        str2lang("dplyr::select"),
+        str2lang(dataname)
+      ),
+      lapply(unname(variables), as.name)
+    )
+  )
+}
+
+.call_dplyr_filter <- function(x) {
+  predicates <- lapply(unname(x), function(x) {
+    if (is.numeric(x$values)) {
+      call_condition_range(varname = x$variables, range = x$values)
+    } else if (inherits(x$values, "Date")) {
+      call_condition_range_date(varname = x$variables, range = x$values)
+    } else if (inherits(x$values, "POSIXct")) {
+      call_condition_range_posixct(varname = x$variables, range = x$values)
+    } else if (is.logical(x$values)) {
+      call_condition_logical(varname = x$variables, choice = x$values)
+    } else if (length(x$variables)) {
+      variable <- if (length(x$variables) > 1) {
+        as.call(
+          c(
+            list(
+              quote(paste)
+            ),
+            unname(lapply(x$variables, as.name)),
+            list(sep = ", ")
+          )
+        )
+      } else {
+        x$variables
+      }
+      call_condition_choice(varname = variable, choices = x$values)
+    }
+  })
+  as.call(
+    c(
+      list(str2lang("dplyr::filter")),
+      Filter(length, predicates)
+    )
   )
 }
