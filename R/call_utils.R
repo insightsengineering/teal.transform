@@ -374,3 +374,45 @@ calls_combine_by <- function(operator, calls) {
     f = function(x, y) call(operator, x, y)
   )
 }
+
+#' Check if a call or list of calls uses the pipe operator (%>%)
+#'
+#' Recursively searches through a call or list of calls to determine
+#' if the pipe operator `%>%` is used anywhere.
+#'
+#' @param x (`call`, `name`, or `list` of calls) The call(s) to check.
+#'
+#' @return `logical(1)` `TRUE` if `%>%` is found, `FALSE` otherwise.
+#'
+#' @keywords internal
+#'
+call_uses_pipe <- function(x) {
+  if (is.null(x)) {
+    return(FALSE)
+  }
+
+  if (is.call(x)) {
+    # Check if this call is the pipe operator
+    # Handle both quote(`%>%`) and as.name("%>%") cases
+    pipe_symbol <- quote(`%>%`)
+    pipe_name <- as.name("%>%")
+    if (identical(x[[1]], pipe_symbol) || identical(x[[1]], pipe_name)) {
+      return(TRUE)
+    }
+    # Recursively check all arguments (skip first element which is the function name)
+    if (length(x) > 1) {
+      return(any(vapply(x[-1], call_uses_pipe, logical(1), USE.NAMES = FALSE)))
+    }
+    return(FALSE)
+  }
+
+  if (is.list(x)) {
+    # Check all elements in the list
+    if (length(x) > 0) {
+      return(any(vapply(x, call_uses_pipe, logical(1), USE.NAMES = FALSE)))
+    }
+    return(FALSE)
+  }
+
+  FALSE
+}
