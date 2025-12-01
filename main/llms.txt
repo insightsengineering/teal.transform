@@ -1,0 +1,257 @@
+# teal.transform
+
+[![CRAN
+Version](https://www.r-pkg.org/badges/version/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Total
+Downloads](http://cranlogs.r-pkg.org/badges/grand-total/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Last Month
+Downloads](http://cranlogs.r-pkg.org/badges/last-month/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+[![Last Week
+Downloads](http://cranlogs.r-pkg.org/badges/last-week/teal.transform?color=green)](https://cran.r-project.org/package=teal.transform)
+
+[![Check
+🛠](https://github.com/insightsengineering/teal.transform/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/main/unit-test-report/)
+[![Docs
+📚](https://github.com/insightsengineering/teal.transform/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.transform/latest-tag/)
+[![Code Coverage
+📔](https://raw.githubusercontent.com/insightsengineering/teal.transform/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/teal.transform/main/coverage-report/)
+
+![GitHub
+forks](https://img.shields.io/github/forks/insightsengineering/teal.transform?style=social)![GitHub
+repo
+stars](https://img.shields.io/github/stars/insightsengineering/teal.transform?style=social)
+
+![GitHub commit
+activity](https://img.shields.io/github/commit-activity/m/insightsengineering/teal.transform)![GitHub
+contributors](https://img.shields.io/github/contributors/insightsengineering/teal.transform)![GitHub
+last
+commit](https://img.shields.io/github/last-commit/insightsengineering/teal.transform)![GitHub
+pull
+requests](https://img.shields.io/github/issues-pr/insightsengineering/teal.transform)![GitHub
+repo
+size](https://img.shields.io/github/repo-size/insightsengineering/teal.transform)![GitHub
+language
+count](https://img.shields.io/github/languages/count/insightsengineering/teal.transform)[![Project
+Status: Active – The project has reached a stable, usable state and is
+being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Current
+Version](https://img.shields.io/github/r-package/v/insightsengineering/teal.transform/main?color=purple&label=package%20version)](https://github.com/insightsengineering/teal.transform/tree/main)
+[![Open
+Issues](https://img.shields.io/github/issues-raw/insightsengineering/teal.transform?color=red&label=open%20issues)](https://github.com/insightsengineering/teal.transform/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+
+This package contains functions and shiny modules for extracting and
+merging data within the `teal` framework.
+
+## Installation
+
+``` r
+install.packages('teal.transform')
+```
+
+Alternatively, you might want to use the development version.
+
+``` r
+# install.packages("pak")
+pak::pak("insightsengineering/teal.transform")
+```
+
+## Usage
+
+To understand how to use this package, please refer to the [Getting
+Started](https://insightsengineering.github.io/teal.transform/latest-tag/articles/teal-transform.html)
+article, which provides multiple examples of code implementation.
+
+Below is a small example usage:
+
+``` r
+library(teal.transform)
+ADSL <- teal.data::rADSL
+
+adsl_extract <- data_extract_spec(
+  dataname = "ADSL",
+  filter = filter_spec(vars = "SEX", choices = c("F", "M")),
+  select = select_spec(choices = c("BMRKR1", "AGE"))
+)
+
+ui <- data_extract_ui(
+  id = "adsl_ui",
+  label = "ADSL UI",
+  data_extract_spec = adsl_extract
+)
+
+library(shiny)
+ui <- fluidPage(ui)
+server <- function(input, output, session) {}
+shinyApp(ui, server)
+```
+
+![Showcase](https://github.com/insightsengineering/teal.transform/blob/main/assets/img/showcase.jpg)
+
+Showcase
+
+## Getting help
+
+If you encounter a bug or have a feature request, please file an issue.
+For questions, discussions, and staying up to date, please use the
+`teal` channel in the [`pharmaverse` slack
+workspace](https://pharmaverse.slack.com).
+
+## Stargazers and Forkers
+
+### Stargazers over time
+
+[![Stargazers over
+time](https://starchart.cc/insightsengineering/teal.transform.svg)](https://starchart.cc/insightsengineering/teal.transform)
+
+### Stargazers
+
+[![Stargazers repo roster for
+@insightsengineering/teal.transform](http://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
+
+### Forkers
+
+[![Forkers repo roster for
+@insightsengineering/teal.transform](http://reporoster.com/forks/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/network/members)
+
+# Package index
+
+## Data extract constructors
+
+Functions used to create transform instructions for `teal` applications.
+
+- [`add_no_selected_choices()`](https://insightsengineering.github.io/teal.transform/reference/add_no_selected_choices.md)
+  : Add empty choice to choices selected
+
+- [`all_choices()`](https://insightsengineering.github.io/teal.transform/reference/delayed_choices.md)
+  [`first_choice()`](https://insightsengineering.github.io/teal.transform/reference/delayed_choices.md)
+  [`last_choice()`](https://insightsengineering.github.io/teal.transform/reference/delayed_choices.md)
+  [`first_choices()`](https://insightsengineering.github.io/teal.transform/reference/delayed_choices.md)
+  [`last_choices()`](https://insightsengineering.github.io/teal.transform/reference/delayed_choices.md)
+  :
+
+  Bare constructor for `delayed_choices` object
+
+- [`check_no_multiple_selection()`](https://insightsengineering.github.io/teal.transform/reference/check_no_multiple_selection.md)
+  :
+
+  Checks that the `extract_input` specification does not allow multiple
+  selection
+
+- [`choices_labeled()`](https://insightsengineering.github.io/teal.transform/reference/choices_labeled.md)
+  [`print(`*`<choices_labeled>`*`)`](https://insightsengineering.github.io/teal.transform/reference/choices_labeled.md)
+  :
+
+  Set "`<choice>:<label>`" type of names
+
+- [`choices_selected()`](https://insightsengineering.github.io/teal.transform/reference/choices_selected.md)
+  [`is.choices_selected()`](https://insightsengineering.github.io/teal.transform/reference/choices_selected.md)
+  : Choices selected
+
+- [`data_extract_spec()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_spec.md)
+  :
+
+  Data extract input for `teal` modules
+
+- [`filter_spec()`](https://insightsengineering.github.io/teal.transform/reference/filter_spec.md)
+  : Data extract filter specification
+
+- [`get_extract_datanames()`](https://insightsengineering.github.io/teal.transform/reference/get_extract_datanames.md)
+  :
+
+  Gets names of the datasets from a list of `data_extract_spec` objects
+
+- [`no_selected_as_NULL()`](https://insightsengineering.github.io/teal.transform/reference/no_selected_as_NULL.md)
+  : Check select choices for no choice made
+
+- [`select_spec()`](https://insightsengineering.github.io/teal.transform/reference/select_spec.md)
+  [`select_spec.delayed_data()`](https://insightsengineering.github.io/teal.transform/reference/select_spec.md)
+  [`select_spec.default()`](https://insightsengineering.github.io/teal.transform/reference/select_spec.md)
+  : Column selection input specification
+
+- [`split_by_sep()`](https://insightsengineering.github.io/teal.transform/reference/split_by_sep.md)
+  : Split by separator (matched exactly)
+
+- [`value_choices()`](https://insightsengineering.github.io/teal.transform/reference/value_choices.md)
+  : Value labeling and filtering based on variable relationship
+
+- [`variable_choices()`](https://insightsengineering.github.io/teal.transform/reference/variable_choices.md)
+  : Variable label extraction and custom selection from data
+
+- [`resolve()`](https://insightsengineering.github.io/teal.transform/reference/resolve.md)
+  : Resolve delayed inputs by evaluating the code within the provided
+  datasets
+
+- [`resolve_delayed()`](https://insightsengineering.github.io/teal.transform/reference/resolve_delayed.md)
+  : Resolve delayed inputs by evaluating the code within the provided
+  datasets
+
+## Data extract modules
+
+`teal` modules to generate transform expressions
+
+- [`data_extract_multiple_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_multiple_srv.md)
+  :
+
+  Creates a named list of `data_extract_srv` output
+
+- [`data_extract_ui()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_ui.md)
+  :
+
+  `teal` data extraction module user-interface
+
+- [`data_extract_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_srv.md)
+  : Extraction of the selector(s) details
+
+- [`datanames_input()`](https://insightsengineering.github.io/teal.transform/reference/datanames_input.md)
+  : Help text with available datasets input
+
+- [`merge_expression_module()`](https://insightsengineering.github.io/teal.transform/reference/merge_expression_module.md)
+  : Merge expression module
+
+- [`merge_expression_srv()`](https://insightsengineering.github.io/teal.transform/reference/merge_expression_srv.md)
+  : Data merge module server
+
+- [`get_dataset_prefixed_col_names()`](https://insightsengineering.github.io/teal.transform/reference/get_dataset_prefixed_col_names.md)
+  : Returns non-key column names from data
+
+- [`get_anl_relabel_call()`](https://insightsengineering.github.io/teal.transform/reference/get_anl_relabel_call.md)
+  : Gets the relabel call
+
+- [`get_merge_call()`](https://insightsengineering.github.io/teal.transform/reference/get_merge_call.md)
+  : Get merge call from a list of selectors
+
+- [`get_relabel_call()`](https://insightsengineering.github.io/teal.transform/reference/get_relabel_call.md)
+  : Create relabel call from named character
+
+- [`is_single_dataset()`](https://insightsengineering.github.io/teal.transform/reference/is_single_dataset.md)
+  : Verify uniform dataset source across data extract specification
+
+- [`list_extract_spec()`](https://insightsengineering.github.io/teal.transform/reference/list_extract_spec.md)
+  : Make sure that the extract specification is in list format
+
+- [`merge_datasets()`](https://insightsengineering.github.io/teal.transform/reference/merge_datasets.md)
+  : Merge the datasets on the keys
+
+- [`compose_and_enable_validators()`](https://insightsengineering.github.io/teal.transform/reference/compose_and_enable_validators.md)
+  :
+
+  Function to compose `validators` from `data_extract_multiple_srv`
+
+## Human-readable formatting of a data extract object
+
+- [`format_data_extract()`](https://insightsengineering.github.io/teal.transform/reference/format_data_extract.md)
+  : Formatting data extracts
+
+# Articles
+
+### All vignettes
+
+- [Combining Data Extract with Data
+  Merge](https://insightsengineering.github.io/teal.transform/articles/combining-data-extract-with-data-merge.md):
+- [Data
+  Extract](https://insightsengineering.github.io/teal.transform/articles/data-extract.md):
+- [Data
+  Merge](https://insightsengineering.github.io/teal.transform/articles/data-merge.md):
+- [Getting Started with
+  teal.transform](https://insightsengineering.github.io/teal.transform/articles/teal-transform.md):
