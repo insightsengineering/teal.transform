@@ -208,9 +208,10 @@ testthat::test_that("merge_expression_srv returns merge expression when passing 
     args = list(selector_list = selector_list, datasets = data_list, join_keys = join_keys),
     expr = {
       testthat::expect_true(inherits(session$returned()$expr, "list"))
-      testthat::expect_true(inherits(session$returned()$expr[[1]], "<-"))
+      testthat::expect_true(inherits(session$returned()$expr[[2]], "<-"))
       testthat::expect_identical(
         c(
+          "library(magrittr)",
           "ANL_1 <- ADSL %>% dplyr::select(STUDYID, USUBJID, AGE)",
           "ANL_2 <- ADLB %>% dplyr::select(STUDYID, USUBJID, AVAL, CHG)",
           "ANL <- ANL_1",

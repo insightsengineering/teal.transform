@@ -3372,6 +3372,7 @@ testthat::test_that("Universal example", {
     paste(merged_datasets$expr),
     paste(
       c(
+        "library(magrittr)",
         "ANL_1 <- X %>% dplyr::select(A, B, D, E)",
         "ANL_2 <- Y %>% dplyr::select(A, B, C, G) %>% dplyr::rename(y.G = G)",
         "ANL_3 <- Z %>% dplyr::select(D, C, F, G) %>% dplyr::rename(z.G = G)",
