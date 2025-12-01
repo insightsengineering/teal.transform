@@ -155,7 +155,7 @@ merge_datasets <- function(selector_list, datasets, join_keys, merge_function = 
   all_calls_expression <- c(dplyr_calls, anl_merge_calls, anl_relabel_call)
 
   # Ensure dplyr is loaded if any of the generated calls use the pipe operator
-  if (call_uses_pipe(all_calls_expression)) {
+  if (call_uses_magrittr_pipe(all_calls_expression)) {
     library_dplyr_call <- call("library", as.name("magrittr"))
     all_calls_expression <- c(list(library_dplyr_call), all_calls_expression)
   }

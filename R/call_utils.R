@@ -386,7 +386,7 @@ calls_combine_by <- function(operator, calls) {
 #'
 #' @keywords internal
 #'
-call_uses_pipe <- function(x) {
+call_uses_magrittr_pipe <- function(x) {
 
   if (is.call(x)) {
     # Check if there is the pipe operator
@@ -397,7 +397,7 @@ call_uses_pipe <- function(x) {
   if (is.list(x) && length(x)) {
     # Check all elements in the list
     for (call_x in x) {
-      if (call_uses_pipe(call_x)) {
+      if (Recall(call_x)) {
         return(TRUE)
       }
     }
