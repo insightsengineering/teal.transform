@@ -387,7 +387,6 @@ calls_combine_by <- function(operator, calls) {
 #' @keywords internal
 #'
 call_uses_pipe <- function(x) {
-
   if (is.call(x)) {
     # Check if there is the pipe operator
     # Handle both quote(`%>%`) and as.name("%>%") cases
