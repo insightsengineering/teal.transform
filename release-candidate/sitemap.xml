@@ -24,6 +24,7 @@
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/call_extract_array.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/call_extract_list.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/call_extract_matrix.html</loc></url>
+<url><loc>https://insightsengineering.github.io/teal.transform/reference/call_uses_magrittr_pipe.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/call_with_colon.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/calls_combine_by.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/check_data_extract_spec.html</loc></url>
@@ -80,7 +81,6 @@
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/get_reshape_unite_vals.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/get_select_call.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/id_for_dataset.html</loc></url>
-<url><loc>https://insightsengineering.github.io/teal.transform/reference/include_css_files.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/index.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/is_single_dataset.html</loc></url>
 <url><loc>https://insightsengineering.github.io/teal.transform/reference/list_extract_spec.html</loc></url>
