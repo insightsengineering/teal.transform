@@ -367,7 +367,7 @@ choices_selected(variable_choices("ADSL", subset = function(data) {
 #>     idx <- vapply(data, is.factor, logical(1))
 #>     names(data)[idx]
 #> }
-#> <environment: 0x561de1623a80>
+#> <environment: 0x55eb7610e318>
 #>   $ key
 #>   NULL
 #> $ selected

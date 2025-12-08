@@ -111,7 +111,7 @@ bslib::layout_sidebar(
 #>     <div class="main bslib-gap-spacing html-fill-container">
 #>       <div id="table" class="shiny-html-output shiny-table-output"></div>
 #>     </div>
-#>     <aside id="bslib-sidebar-7844" class="sidebar" hidden>
+#>     <aside id="bslib-sidebar-2686" class="sidebar" hidden>
 #>       <div class="sidebar-content bslib-gap-spacing">
 #>         <div>
 #>           <div>
@@ -208,7 +208,7 @@ bslib::layout_sidebar(
 #>         </div>
 #>       </div>
 #>     </aside>
-#>     <button class="collapse-toggle" type="button" title="Toggle sidebar" aria-expanded="true" aria-controls="bslib-sidebar-7844"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-chevron-left collapse-icon" style="height:;width:;fill:currentColor;vertical-align:-0.125em;" aria-hidden="true" role="img" ><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path></svg></button>
+#>     <button class="collapse-toggle" type="button" title="Toggle sidebar" aria-expanded="true" aria-controls="bslib-sidebar-2686"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="bi bi-chevron-left collapse-icon" style="height:;width:;fill:currentColor;vertical-align:-0.125em;" aria-hidden="true" role="img" ><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path></svg></button>
 #>     <script data-bslib-sidebar-init>bslib.Sidebar.initCollapsibleAll()</script>
 #>   </div>
 #> </div>
