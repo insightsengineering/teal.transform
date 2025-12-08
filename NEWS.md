@@ -1,4 +1,8 @@
-# teal.transform 0.7.0.9001
+# teal.transform 0.7.1
+
+### Miscellaneous
+
+* Fixed the pipe behavior by adding `magrittr` library call when the generated expression is using `%>%` operator.
 
 # teal.transform 0.7.0
 
