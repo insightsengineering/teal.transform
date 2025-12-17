@@ -83,3 +83,31 @@ testthat::test_that("get_extract_datanames returns unique dataname when data_ext
   testthat::expect_identical(ged_output, "ADSL")
   testthat::expect_equal(length(ged_output), 1)
 })
+
+testthat::test_that("datanames_input gets the data names provided to module", {
+  adtte_filters <- filter_spec(
+    vars = c("PARAMCD", "CNSR"),
+    sep = "-",
+    choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
+    selected = "OS-1",
+    multiple = FALSE,
+    label = "Choose endpoint and Censor"
+  )
+
+  response_spec <- data_extract_spec(
+    dataname = "ADTTE",
+    filter = adtte_filters,
+    select = select_spec(
+      choices = c("AVAL", "BMRKR1", "AGE"),
+      selected = c("AVAL", "BMRKR1"),
+      multiple = TRUE,
+      fixed = FALSE,
+      label = "Column"
+    )
+  )
+
+  input_names <- datanames_input(response_spec)
+
+  testthat::expect_s3_class(input_names, "shiny.tag")
+  testthat::expect_true(grepl("ADTTE", as.character(input_names)))
+})
