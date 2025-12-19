@@ -111,3 +111,67 @@ testthat::test_that("datanames_input gets the data names provided to module", {
   testthat::expect_s3_class(input_names, "shiny.tag")
   testthat::expect_true(grepl("ADTTE", as.character(input_names)))
 })
+
+testthat::test_that("data_extract_datanames returns TRUE in single dataset", {
+  adtte_filters <- filter_spec(
+    vars = c("PARAMCD", "CNSR"),
+    sep = "-",
+    choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
+    selected = "OS-1",
+    multiple = FALSE,
+    label = "Choose endpoint and Censor"
+  )
+
+  data_spec <- data_extract_spec(
+    dataname = "ADTTE",
+    filter = adtte_filters,
+    select = select_spec(
+      choices = c("AVAL", "BMRKR1", "AGE"),
+      selected = c("AVAL", "BMRKR1"),
+      multiple = TRUE,
+      fixed = FALSE,
+      label = "Column"
+    )
+  )
+
+  testthat::expect_true(is_single_dataset((data_spec)))
+
+})
+
+testthat::test_that("data_extract_datanames returns FALSE in multiple datasets", {
+  adtte_filters <- filter_spec(
+    vars = c("PARAMCD", "CNSR"),
+    sep = "-",
+    choices = c("OS-1" = "OS-1", "OS-0" = "OS-0", "PFS-1" = "PFS-1"),
+    selected = "OS-1",
+    multiple = FALSE,
+    label = "Choose endpoint and Censor"
+  )
+
+  data_spec_1 <- data_extract_spec(
+    dataname = "ADTTE",
+    filter = adtte_filters,
+    select = select_spec(
+      choices = c("AVAL", "BMRKR1", "AGE"),
+      selected = c("AVAL", "BMRKR1"),
+      multiple = TRUE,
+      fixed = FALSE,
+      label = "Column"
+    )
+  )
+
+
+  data_spec_2 <- data_extract_spec(
+    dataname = "ADTTE2",
+    filter = adtte_filters,
+    select = select_spec(
+      choices = c("AVAL", "BMRKR1", "AGE"),
+      selected = c("AVAL", "BMRKR1"),
+      multiple = TRUE,
+      fixed = FALSE,
+      label = "Column"
+    )
+  )
+
+  testthat::expect_false(is_single_dataset(data_spec_1, data_spec_2))
+})
