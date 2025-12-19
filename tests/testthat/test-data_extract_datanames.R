@@ -135,7 +135,6 @@ testthat::test_that("data_extract_datanames returns TRUE in single dataset", {
   )
 
   testthat::expect_true(is_single_dataset((data_spec)))
-
 })
 
 testthat::test_that("data_extract_datanames returns FALSE in multiple datasets", {
