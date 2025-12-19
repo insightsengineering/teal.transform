@@ -213,4 +213,3 @@ testthat::test_that("no_selected_as_NULL returns NULL if word is within no selec
   testthat::expect_null(no_selected_as_NULL(no_select_keyword))
   testthat::expect_true(!is.null(no_selected_as_NULL("random")))
 })
-
