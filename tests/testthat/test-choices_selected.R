@@ -197,3 +197,20 @@ testthat::test_that("delayed version of choices_selected - resolve_delayed", {
   res_obj <- isolate(resolve_delayed(obj, datasets = data_list, keys = key_list))
   testthat::expect_equal(res_obj, exp_obj)
 })
+
+testthat::test_that("add_no_selected_choices actually does not add any selection", {
+  choices_list <- choices_selected(
+    choices = c("a", "b", "c"),
+    selected = "a"
+  )
+  testthat::expect_false(any(grepl("no selection", choices_list$choices)))
+  choices_list <- add_no_selected_choices(choices_list)
+  testthat::expect_true(any(grepl("no selection", choices_list$choices)))
+})
+
+testthat::test_that("no_selected_as_NULL returns NULL only if word is NULL or equals `no_select_keyword`", {
+  testthat::expect_null(no_selected_as_NULL(NULL))
+  testthat::expect_null(no_selected_as_NULL(""))
+  testthat::expect_null(no_selected_as_NULL(no_select_keyword))
+  testthat::expect_failure(testthat::expect_null(no_selected_as_NULL("random")))
+})
