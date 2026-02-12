@@ -198,7 +198,7 @@ testthat::test_that("delayed version of choices_selected - resolve_delayed", {
   testthat::expect_equal(res_obj, exp_obj)
 })
 
-testthat::test_that("if we call add_no_selected_choices we add no selection", {
+testthat::test_that("add_no_selected_choices actually does not add any selection", {
   choices_list <- choices_selected(
     choices = c("a", "b", "c"),
     selected = "a"
