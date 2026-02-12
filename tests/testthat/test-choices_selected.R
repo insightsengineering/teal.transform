@@ -212,5 +212,5 @@ testthat::test_that("no_selected_as_returns NULL only if word is NULL or equals 
   testthat::expect_null(no_selected_as_NULL(NULL))
   testthat::expect_null(no_selected_as_NULL(""))
   testthat::expect_null(no_selected_as_NULL(no_select_keyword))
-  testthat::expect_true(!is.null(no_selected_as_NULL("random")))
+  testthat::expect_failure(testthat::expect_null(no_selected_as_NULL("random")))
 })
