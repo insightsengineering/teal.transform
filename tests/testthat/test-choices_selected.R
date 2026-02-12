@@ -208,7 +208,7 @@ testthat::test_that("add_no_selected_choices actually does not add any selection
   testthat::expect_true(any(grepl("no selection", choices_list$choices)))
 })
 
-testthat::test_that("no_selected_as_NULL returns NULL if word is within no selected", {
+testthat::test_that("no_selected_as_will return NULL only if provided word is NULL or part of `no_select_keyword` vector", {
   testthat::expect_null(no_selected_as_NULL(NULL))
   testthat::expect_null(no_selected_as_NULL(no_select_keyword))
   testthat::expect_true(!is.null(no_selected_as_NULL("random")))
