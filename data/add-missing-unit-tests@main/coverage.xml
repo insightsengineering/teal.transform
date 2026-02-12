@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.819197352089367" branch-rate="0" lines-covered="1980" lines-valid="2417" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-12 10:53:06.360443">
+<coverage line-rate="0.819197352089367" branch-rate="0" lines-covered="1980" lines-valid="2417" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-12 12:56:49.273481">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
@@ -902,8 +902,8 @@
             </method>
             <method name="no_selected_as_NULL" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="234" hits="3" branch="false"/>
-                <line number="235" hits="2" branch="false"/>
+                <line number="234" hits="4" branch="false"/>
+                <line number="235" hits="3" branch="false"/>
                 <line number="237" hits="1" branch="false"/>
               </lines>
             </method>
@@ -999,8 +999,8 @@
             <line number="217" hits="1" branch="false"/>
             <line number="218" hits="0" branch="false"/>
             <line number="221" hits="1" branch="false"/>
-            <line number="234" hits="3" branch="false"/>
-            <line number="235" hits="2" branch="false"/>
+            <line number="234" hits="4" branch="false"/>
+            <line number="235" hits="3" branch="false"/>
             <line number="237" hits="1" branch="false"/>
             <line number="247" hits="25" branch="false"/>
             <line number="248" hits="25" branch="false"/>
