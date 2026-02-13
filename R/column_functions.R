@@ -13,7 +13,7 @@
 #'
 get_dataset_prefixed_col_names <- function(data) {
   if (!is.null(attr(data, "filter_and_columns", exact = TRUE)$columns) &&
-        all(attr(data, "filter_and_columns", exact = TRUE)$columns != "")) {
+    all(attr(data, "filter_and_columns", exact = TRUE)$columns != "")) {
     paste(attr(data, "dataname"), attr(data, "filter_and_columns")$columns, sep = ".")
   } else {
     NULL
