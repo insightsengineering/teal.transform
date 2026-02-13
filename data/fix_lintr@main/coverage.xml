@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.819122516556292" branch-rate="0" lines-covered="1979" lines-valid="2416" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-13 11:03:31.908726">
+<coverage line-rate="0.819272125723739" branch-rate="0" lines-covered="1981" lines-valid="2418" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-13 11:18:05.437891">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
   <packages>
-    <package name="teal.transform" line-rate="0.819122516556292" branch-rate="0" complexity="0">
+    <package name="teal.transform" line-rate="0.819272125723739" branch-rate="0" complexity="0">
       <classes>
         <class name="call_utils.R" filename="R/call_utils.R" line-rate="0.233128834355828" branch-rate="0" complexity="0">
           <methods>
@@ -1035,22 +1035,26 @@
             <line number="307" hits="1" branch="false"/>
           </lines>
         </class>
-        <class name="column_functions.R" filename="R/column_functions.R" line-rate="0.75" branch-rate="0" complexity="0">
+        <class name="column_functions.R" filename="R/column_functions.R" line-rate="0.833333333333333" branch-rate="0" complexity="0">
           <methods>
-            <method name="get_dataset_prefixed_col_names" signature="" line-rate="0.75" branch-rate="0" complexity="0">
+            <method name="get_dataset_prefixed_col_names" signature="" line-rate="0.833333333333333" branch-rate="0" complexity="0">
               <lines>
-                <line number="15" hits="2" branch="false"/>
                 <line number="16" hits="2" branch="false"/>
                 <line number="17" hits="2" branch="false"/>
-                <line number="19" hits="0" branch="false"/>
+                <line number="18" hits="2" branch="false"/>
+                <line number="19" hits="2" branch="false"/>
+                <line number="21" hits="2" branch="false"/>
+                <line number="23" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="15" hits="2" branch="false"/>
             <line number="16" hits="2" branch="false"/>
             <line number="17" hits="2" branch="false"/>
-            <line number="19" hits="0" branch="false"/>
+            <line number="18" hits="2" branch="false"/>
+            <line number="19" hits="2" branch="false"/>
+            <line number="21" hits="2" branch="false"/>
+            <line number="23" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="data_extract_datanames.R" filename="R/data_extract_datanames.R" line-rate="1" branch-rate="0" complexity="0">
