@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.819197352089367" branch-rate="0" lines-covered="1980" lines-valid="2417" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-12 14:50:28.363778">
+<coverage line-rate="0.819122516556292" branch-rate="0" lines-covered="1979" lines-valid="2416" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-02-17 14:25:43.518963">
   <sources>
     <source>/__w/teal.transform/teal.transform/teal.transform</source>
   </sources>
   <packages>
-    <package name="teal.transform" line-rate="0.819197352089367" branch-rate="0" complexity="0">
+    <package name="teal.transform" line-rate="0.819122516556292" branch-rate="0" complexity="0">
       <classes>
         <class name="call_utils.R" filename="R/call_utils.R" line-rate="0.233128834355828" branch-rate="0" complexity="0">
           <methods>
@@ -1035,20 +1035,22 @@
             <line number="307" hits="1" branch="false"/>
           </lines>
         </class>
-        <class name="column_functions.R" filename="R/column_functions.R" line-rate="0.666666666666667" branch-rate="0" complexity="0">
+        <class name="column_functions.R" filename="R/column_functions.R" line-rate="0.75" branch-rate="0" complexity="0">
           <methods>
-            <method name="get_dataset_prefixed_col_names" signature="" line-rate="0.666666666666667" branch-rate="0" complexity="0">
+            <method name="get_dataset_prefixed_col_names" signature="" line-rate="0.75" branch-rate="0" complexity="0">
               <lines>
                 <line number="15" hits="2" branch="false"/>
                 <line number="16" hits="2" branch="false"/>
-                <line number="18" hits="0" branch="false"/>
+                <line number="17" hits="2" branch="false"/>
+                <line number="19" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
             <line number="15" hits="2" branch="false"/>
             <line number="16" hits="2" branch="false"/>
-            <line number="18" hits="0" branch="false"/>
+            <line number="17" hits="2" branch="false"/>
+            <line number="19" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="data_extract_datanames.R" filename="R/data_extract_datanames.R" line-rate="1" branch-rate="0" complexity="0">
@@ -3765,7 +3767,7 @@
             <line number="491" hits="9" branch="false"/>
           </lines>
         </class>
-        <class name="get_merge_call.R" filename="R/get_merge_call.R" line-rate="0.89568345323741" branch-rate="0" complexity="0">
+        <class name="get_merge_call.R" filename="R/get_merge_call.R" line-rate="0.894927536231884" branch-rate="0" complexity="0">
           <methods>
             <method name="get_merge_call" signature="" line-rate="0.896103896103896" branch-rate="0" complexity="0">
               <lines>
@@ -3995,7 +3997,7 @@
                 <line number="348" hits="460" branch="false"/>
               </lines>
             </method>
-            <method name="get_anl_relabel_call" signature="" line-rate="0.74468085106383" branch-rate="0" complexity="0">
+            <method name="get_anl_relabel_call" signature="" line-rate="0.733333333333333" branch-rate="0" complexity="0">
               <lines>
                 <line number="362" hits="6" branch="false"/>
                 <line number="363" hits="6" branch="false"/>
@@ -4019,8 +4021,8 @@
                 <line number="382" hits="6" branch="false"/>
                 <line number="383" hits="6" branch="false"/>
                 <line number="386" hits="6" branch="false"/>
-                <line number="387" hits="6" branch="false"/>
-                <line number="388" hits="0" branch="false"/>
+                <line number="387" hits="0" branch="false"/>
+                <line number="388" hits="6" branch="false"/>
                 <line number="389" hits="6" branch="false"/>
                 <line number="390" hits="6" branch="false"/>
                 <line number="391" hits="6" branch="false"/>
@@ -4029,40 +4031,40 @@
                 <line number="394" hits="6" branch="false"/>
                 <line number="395" hits="6" branch="false"/>
                 <line number="396" hits="6" branch="false"/>
-                <line number="397" hits="6" branch="false"/>
                 <line number="398" hits="6" branch="false"/>
-                <line number="400" hits="6" branch="false"/>
-                <line number="401" hits="6" branch="false"/>
+                <line number="399" hits="6" branch="false"/>
+                <line number="402" hits="0" branch="false"/>
+                <line number="403" hits="0" branch="false"/>
                 <line number="404" hits="0" branch="false"/>
                 <line number="405" hits="0" branch="false"/>
                 <line number="406" hits="0" branch="false"/>
-                <line number="407" hits="0" branch="false"/>
                 <line number="408" hits="0" branch="false"/>
+                <line number="409" hits="0" branch="false"/>
                 <line number="410" hits="0" branch="false"/>
                 <line number="411" hits="0" branch="false"/>
                 <line number="412" hits="0" branch="false"/>
-                <line number="413" hits="0" branch="false"/>
                 <line number="414" hits="0" branch="false"/>
-                <line number="416" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="get_relabel_call" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="446" hits="3" branch="false"/>
-                <line number="447" hits="3" branch="false"/>
-                <line number="448" hits="2" branch="false"/>
-                <line number="450" hits="1" branch="false"/>
+                <line number="444" hits="3" branch="false"/>
+                <line number="445" hits="3" branch="false"/>
+                <line number="446" hits="2" branch="false"/>
+                <line number="448" hits="1" branch="false"/>
+                <line number="449" hits="1" branch="false"/>
                 <line number="451" hits="1" branch="false"/>
+                <line number="452" hits="1" branch="false"/>
                 <line number="453" hits="1" branch="false"/>
                 <line number="454" hits="1" branch="false"/>
                 <line number="455" hits="1" branch="false"/>
                 <line number="456" hits="1" branch="false"/>
-                <line number="457" hits="1" branch="false"/>
-                <line number="458" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="get_relabel_cols" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="471" hits="6" branch="false"/>
+                <line number="472" hits="6" branch="false"/>
                 <line number="473" hits="6" branch="false"/>
                 <line number="474" hits="6" branch="false"/>
                 <line number="475" hits="6" branch="false"/>
@@ -4071,14 +4073,12 @@
                 <line number="478" hits="6" branch="false"/>
                 <line number="479" hits="6" branch="false"/>
                 <line number="480" hits="6" branch="false"/>
-                <line number="481" hits="6" branch="false"/>
+                <line number="481" hits="2" branch="false"/>
                 <line number="482" hits="6" branch="false"/>
-                <line number="483" hits="2" branch="false"/>
+                <line number="483" hits="6" branch="false"/>
                 <line number="484" hits="6" branch="false"/>
                 <line number="485" hits="6" branch="false"/>
                 <line number="486" hits="6" branch="false"/>
-                <line number="487" hits="6" branch="false"/>
-                <line number="488" hits="6" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -4309,8 +4309,8 @@
             <line number="382" hits="6" branch="false"/>
             <line number="383" hits="6" branch="false"/>
             <line number="386" hits="6" branch="false"/>
-            <line number="387" hits="6" branch="false"/>
-            <line number="388" hits="0" branch="false"/>
+            <line number="387" hits="0" branch="false"/>
+            <line number="388" hits="6" branch="false"/>
             <line number="389" hits="6" branch="false"/>
             <line number="390" hits="6" branch="false"/>
             <line number="391" hits="6" branch="false"/>
@@ -4319,32 +4319,32 @@
             <line number="394" hits="6" branch="false"/>
             <line number="395" hits="6" branch="false"/>
             <line number="396" hits="6" branch="false"/>
-            <line number="397" hits="6" branch="false"/>
             <line number="398" hits="6" branch="false"/>
-            <line number="400" hits="6" branch="false"/>
-            <line number="401" hits="6" branch="false"/>
+            <line number="399" hits="6" branch="false"/>
+            <line number="402" hits="0" branch="false"/>
+            <line number="403" hits="0" branch="false"/>
             <line number="404" hits="0" branch="false"/>
             <line number="405" hits="0" branch="false"/>
             <line number="406" hits="0" branch="false"/>
-            <line number="407" hits="0" branch="false"/>
             <line number="408" hits="0" branch="false"/>
+            <line number="409" hits="0" branch="false"/>
             <line number="410" hits="0" branch="false"/>
             <line number="411" hits="0" branch="false"/>
             <line number="412" hits="0" branch="false"/>
-            <line number="413" hits="0" branch="false"/>
             <line number="414" hits="0" branch="false"/>
-            <line number="416" hits="0" branch="false"/>
-            <line number="446" hits="3" branch="false"/>
-            <line number="447" hits="3" branch="false"/>
-            <line number="448" hits="2" branch="false"/>
-            <line number="450" hits="1" branch="false"/>
+            <line number="444" hits="3" branch="false"/>
+            <line number="445" hits="3" branch="false"/>
+            <line number="446" hits="2" branch="false"/>
+            <line number="448" hits="1" branch="false"/>
+            <line number="449" hits="1" branch="false"/>
             <line number="451" hits="1" branch="false"/>
+            <line number="452" hits="1" branch="false"/>
             <line number="453" hits="1" branch="false"/>
             <line number="454" hits="1" branch="false"/>
             <line number="455" hits="1" branch="false"/>
             <line number="456" hits="1" branch="false"/>
-            <line number="457" hits="1" branch="false"/>
-            <line number="458" hits="1" branch="false"/>
+            <line number="471" hits="6" branch="false"/>
+            <line number="472" hits="6" branch="false"/>
             <line number="473" hits="6" branch="false"/>
             <line number="474" hits="6" branch="false"/>
             <line number="475" hits="6" branch="false"/>
@@ -4353,14 +4353,12 @@
             <line number="478" hits="6" branch="false"/>
             <line number="479" hits="6" branch="false"/>
             <line number="480" hits="6" branch="false"/>
-            <line number="481" hits="6" branch="false"/>
+            <line number="481" hits="2" branch="false"/>
             <line number="482" hits="6" branch="false"/>
-            <line number="483" hits="2" branch="false"/>
+            <line number="483" hits="6" branch="false"/>
             <line number="484" hits="6" branch="false"/>
             <line number="485" hits="6" branch="false"/>
             <line number="486" hits="6" branch="false"/>
-            <line number="487" hits="6" branch="false"/>
-            <line number="488" hits="6" branch="false"/>
           </lines>
         </class>
         <class name="input_checks.R" filename="R/input_checks.R" line-rate="0.818181818181818" branch-rate="0" complexity="0">
