@@ -429,7 +429,7 @@ values <- function(choices = function(x) !is.na(x),
   inherits(out, "error") && grepl("must be used within a \\*selecting\\* function", out$message) || # e.g. everything
     inherits(out, "error") && grepl("object .+ not found", out$message) || # e.g. var:var2
     inherits(out, "error") && grepl("operations are possible", out$message) || # e.g. where() | where()
-    checkmate::test_integer(out, min.len = 1) # e.g. 1L:5L
+    checkmate::test_integerish(out, min.len = 1) # e.g. 1L:5L
 }
 
 .is_predicate <- function(x) {

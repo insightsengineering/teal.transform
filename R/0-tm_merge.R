@@ -76,7 +76,7 @@ tm_merge <- function(label = "merge-module", picks, transformators = list()) {
           within(merged$data(), anl, selectors = selectors)
         })
 
-        output$table_merged <- shiny::tableOutput({
+        output$table_merged <- shiny::renderTable({
           req(table_q())
           teal.code::get_outputs(table_q())[[1]]
         })
