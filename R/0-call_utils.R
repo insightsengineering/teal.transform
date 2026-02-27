@@ -282,7 +282,7 @@ calls_combine_by <- function(operator, calls) {
   select_tmp <- unname(unlist(operators[select_new]))
   select_call <- .call_dplyr_select(
     dataname = dataname,
-    variables = c(variables[!operators_ix], select_tmp)
+    variables = unique(c(variables[!operators_ix], select_tmp))
   )
 
   mutate_args <- lapply(select_new, function(new_var) {

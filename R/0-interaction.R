@@ -21,7 +21,7 @@ interaction_vars <- function(var1, var2, vars = tidyselect::peek_vars(fn = "inte
     new_var,
     class = "interaction",
     var_name = sprintf("%s:%s", new_var[[1]], new_var[[2]])
-  ) # Option 2
+  )
   select_env$operators <- select_env$operators %||% list()
   select_env$operators[[length(select_env$operators) + 1]] <- new_operator
   result
@@ -39,7 +39,7 @@ interaction_vars <- function(var1, var2, vars = tidyselect::peek_vars(fn = "inte
   checkmate::assert_data_frame(data)
   dplyr::mutate(
     data,
-    !!new_choice := paste(.data[[x[[1]]]], .data[[x[[2]]]], sep = ":")
+    !!new_choice := rlang::eval_bare(.operator_mutate_args(x))
   )
 }
 
@@ -61,37 +61,3 @@ interaction_vars <- function(var1, var2, vars = tidyselect::peek_vars(fn = "inte
 # The resolver will look for this information in the environment to know which variables are
 # meant to interact and need to be combined in the data.
 select_env <- new.env(parent = emptyenv())
-
-#' Find all `interactive_vars` calls in an expression
-#'
-#' Traverses an expression tree using a breadth-first search and collects the
-#' arguments of every `interactive_vars()` call found.
-#'
-#' @param expr An R expression or quosure to search.
-#'
-#' @return A list of argument lists, one element per `interactive_vars()` call
-#'   found. Each element is a list of the unevaluated arguments passed to
-#'   `interactive_vars()`.
-#'
-#' @noRd
-.find_interactive_vars <- function(expr) {
-  expr <- if (rlang::is_quosure(expr)) rlang::quo_get_expr(expr) else expr
-
-  queue <- list(expr)
-  results <- list()
-
-  while (length(queue) > 0) {
-    node <- queue[[1]]
-    queue <- queue[-1]
-
-    if (rlang::is_call(node, "interaction_vars")) {
-      results <- c(results, list(as.list(node)[-1]))
-    } else if (is.call(node)) {
-      # Add all child nodes to the queue
-      queue <- c(queue, as.list(node)[-1])
-    }
-  }
-
-  results
-
-}
