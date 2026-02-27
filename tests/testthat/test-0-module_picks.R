@@ -588,6 +588,11 @@ testthat::describe("picks_srv resolves picks", {
             )
           )
         )
+        picks_expected$variables$operators <- list(
+          structure(
+            c("Species", "Petal.Length"), class = "interaction", var_name = "Species:Petal.Length"
+          )
+        )
         testthat::expect_identical(picks_resolved(), picks_expected)
       }
     )
