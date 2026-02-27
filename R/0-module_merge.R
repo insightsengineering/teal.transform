@@ -291,7 +291,13 @@ merge_srv <- function(id,
     )
     this_variables <- this_variables[!duplicated(unname(this_variables))] # because unique drops names
 
-    this_call <- .call_dplyr_select(dataname = dataname, variables = this_variables)
+    interaction_ix <- grepl(":", this_variables)
+    this_call <- if (any(interaction_ix)) {
+      .call_interaction_var(this_variables, interaction_ix, dataname)
+    } else {
+      .call_dplyr_select(dataname = dataname, variables = this_variables)
+    }
+
     this_call <- calls_combine_by("%>%", c(this_call, .call_dplyr_filter(this_filter_mapping)))
 
     if (i > 1) {
@@ -401,7 +407,6 @@ merge_srv <- function(id,
     )
     join_keys <- c(this_join_keys, join_keys)
 
-
     mapping_ds <- mapping_by_dataset[[dataname]]
     mapping_ds <- lapply(mapping_ds, function(x) {
       new_vars <- .suffix_duplicated_vars(
@@ -428,7 +433,6 @@ merge_srv <- function(id,
 
     anl_colnames <- union(anl_colnames, .fk(join_keys, "anl"))
   }
-
 
   list(mapping = mapping, join_keys = join_keys)
 }

@@ -567,6 +567,32 @@ testthat::describe("picks_srv resolves picks", {
     )
   })
 
+  it("picks with delayed interaction_vars are resolved", {
+    test_picks <- suppressWarnings(
+      picks(
+        datasets(choices = "iris", selected = "iris"),
+        variables(choices = interaction_vars("Species", "Petal.Length"), selected = "Species:Petal.Length")
+      )
+    )
+
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "id", picks = test_picks, data = shiny::reactive(list(iris = iris))),
+      expr = {
+        suppressWarnings(
+          picks_expected <- picks(
+            datasets(choices = c(iris = "iris"), selected = "iris"),
+            variables(
+              choices = rlang::set_names(c("Species", "Petal.Length", "Species:Petal.Length")),
+              selected = "Species:Petal.Length"
+            )
+          )
+        )
+        testthat::expect_identical(picks_resolved(), picks_expected)
+      }
+    )
+  })
+
   it("pick elements are resolved sequentially", {
     test_picks <- picks(
       datasets(choices = tidyselect::where(is.data.frame), selected = 1L),

@@ -18,7 +18,7 @@ call_check_parse_varname <- function(varname) {
   if (is.character(varname)) {
     parsed <- parse(text = varname, keep.source = FALSE)
     if (length(parsed) == 1) {
-      varname <- parsed[[1]]
+      varname <- as.name(varname)
     } else {
       stop(
         sprintf(
@@ -80,7 +80,7 @@ call_condition_choice <- function(varname, choices) {
     # c_call needed because it needs to be vector call
     # instead of vector. SummarizedExperiment.subset
     # handles only vector calls
-    call("%in%", varname, c_call)
+    call("%in%", as.name(varname), c_call)
   }
 }
 
@@ -272,6 +272,30 @@ calls_combine_by <- function(operator, calls) {
     c(
       list(str2lang("dplyr::filter")),
       Filter(length, predicates)
+    )
+  )
+}
+
+.call_interaction_var <- function(variables, interactive_ix, dataname, sep = ":") {
+  select_new <- variables[interactive_ix]
+  select_tmp <- unique(unlist(strsplit(select_new, sep)))
+  select_call <- .call_dplyr_select(dataname = dataname, variables = c(variables[!interactive_ix], select_tmp))
+
+  mutate_args <- lapply(rlang::set_names(select_new), function(new_var) {
+    vars_to_interact <- strsplit(new_var, sep)[[1]]
+    as.call(
+      c(list(quote(paste)), lapply(vars_to_interact, as.name), list(sep = ":"))
+    )
+  })
+  calls_combine_by(
+    "%>%",
+    c(
+      select_call,
+      as.call(rlang::list2(str2lang("dplyr::mutate"), !!!mutate_args)),
+      as.call(rlang::list2(
+        str2lang("dplyr::select"),
+        substitute(!all_of(vars), env = list(vars = select_tmp))
+      ))
     )
   )
 }
