@@ -290,10 +290,12 @@ merge_srv <- function(id,
       unlist(lapply(unname(this_mapping), `[[`, "variables"))
     )
     this_variables <- this_variables[!duplicated(unname(this_variables))] # because unique drops names
+    operators <- unlist(lapply(unname(this_mapping), "[[", i = "operators"), recursive = FALSE)
+    operators_ix <- this_variables %in%
+      vapply(operators, attr, which = "var_name", FUN.VALUE = character(1))
 
-    interaction_ix <- grepl(":", this_variables)
-    this_call <- if (any(interaction_ix)) {
-      .call_interaction_var(this_variables, interaction_ix, dataname)
+    this_call <- if (any(operators_ix)) {
+      .call_mutate_operators(this_variables, operators_ix, dataname, operators)
     } else {
       .call_dplyr_select(dataname = dataname, variables = this_variables)
     }
@@ -344,9 +346,11 @@ merge_srv <- function(id,
   mapping <- lapply( # what has been selected in each selector
     selectors,
     function(selector) {
-      lapply(selector, function(x) {
+      result <- lapply(selector, function(x) {
         stats::setNames(x$selected, x$selected)
       })
+      result$operators <- selector$variables$operators
+      result
     }
   )
 

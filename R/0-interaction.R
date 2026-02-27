@@ -14,12 +14,46 @@
 #'   `var2` in `vars`, or `NA` where a variable is not found.
 #'
 #' @export
-interaction_vars <- function(var1, var2, vars = tidyselect::peek_vars(fn = "my_helper")) {
-  interaction_vars <- c(as.character(substitute(var1)), as.character(substitute(var2)))
-  result <- vctrs::vec_match(interaction_vars, vars)
-  select_env$interaction_vars <- c(select_env$interaction_vars %||% list(), list(interaction_vars)) # Option 2
+interaction_vars <- function(var1, var2, vars = tidyselect::peek_vars(fn = "interaction_vars")) {
+  new_var <- c(as.character(substitute(var1)), as.character(substitute(var2)))
+  result <- vctrs::vec_match(new_var, vars)
+  new_operator <- structure(
+    new_var,
+    class = "interaction",
+    var_name = sprintf("%s:%s", new_var[[1]], new_var[[2]])
+  ) # Option 2
+  select_env$operators <- select_env$operators %||% list()
+  select_env$operators[[length(select_env$operators) + 1]] <- new_operator
   result
 }
+
+.operator_mutate <- function(x, new_choice, data) {
+  UseMethod(".operator_mutate")
+}
+
+#' @method .operator_mutate interaction
+#' @keywords internal
+.operator_mutate.interaction <- function(x, new_choice, data) {
+  checkmate::assert_character(x, len = 2)
+  checkmate::assert_string(new_choice)
+  checkmate::assert_data_frame(data)
+  dplyr::mutate(
+    data,
+    !!new_choice := paste(.data[[x[[1]]]], .data[[x[[2]]]], sep = ":")
+  )
+}
+
+.operator_mutate_args <- function(x) {
+  UseMethod(".operator_mutate_args")
+}
+
+#' @method .operator_mutate interaction
+#' @keywords internal
+.operator_mutate_args.interaction <- function(x) {
+  checkmate::assert_character(x, len = 2)
+  as.call(c(list(quote(paste)), lapply(x, as.name), list(sep = ":")))
+}
+
 
 # Environment to store interaction variable pairs during tidyselect evaluation
 # This is used to communicate between the `interaction_vars()` function and the resolver that

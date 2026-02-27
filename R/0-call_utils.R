@@ -276,17 +276,19 @@ calls_combine_by <- function(operator, calls) {
   )
 }
 
-.call_interaction_var <- function(variables, interactive_ix, dataname, sep = ":") {
-  select_new <- variables[interactive_ix]
-  select_tmp <- unique(unlist(strsplit(select_new, sep)))
-  select_call <- .call_dplyr_select(dataname = dataname, variables = c(variables[!interactive_ix], select_tmp))
+.call_mutate_operators <- function(variables, operators_ix, dataname, operators) {
+  operators <- rlang::set_names(operators, vapply(operators, attr, which = "var_name", FUN.VALUE = character(1)))
+  select_new <- variables[operators_ix]
+  select_tmp <- unname(unlist(operators[select_new]))
+  select_call <- .call_dplyr_select(
+    dataname = dataname,
+    variables = c(variables[!operators_ix], select_tmp)
+  )
 
-  mutate_args <- lapply(rlang::set_names(select_new), function(new_var) {
-    vars_to_interact <- strsplit(new_var, sep)[[1]]
-    as.call(
-      c(list(quote(paste)), lapply(vars_to_interact, as.name), list(sep = ":"))
-    )
+  mutate_args <- lapply(select_new, function(new_var) {
+    .operator_mutate_args(operators[[new_var]])
   })
+
   calls_combine_by(
     "%>%",
     c(
@@ -294,7 +296,7 @@ calls_combine_by <- function(operator, calls) {
       as.call(rlang::list2(str2lang("dplyr::mutate"), !!!mutate_args)),
       as.call(rlang::list2(
         str2lang("dplyr::select"),
-        substitute(!all_of(vars), env = list(vars = select_tmp))
+        substitute(!all_of(vars), env = list(vars = select_tmp[!select_tmp %in% variables]))
       ))
     )
   )
