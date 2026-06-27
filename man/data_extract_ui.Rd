@@ -18,7 +18,7 @@ This is the outcome of listing \code{\link[=data_extract_spec]{data_extract_spec
 }
 \value{
 Shiny \code{\link[shiny:selectInput]{shiny::selectInput}}\code{s} that allow to define how to extract data from
-a specific dataset. The input elements will be returned inside a \link[shiny:reexports]{shiny::div} container.
+a specific dataset. The input elements will be returned inside a \link[shiny:div]{shiny::div} container.
 }
 \description{
 Data extraction module.
