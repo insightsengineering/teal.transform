@@ -1,0 +1,217 @@
+# Data merge module server
+
+When additional processing of the `data_extract` list input is required,
+`merge_expression_srv()` can be combined with
+[`data_extract_multiple_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_multiple_srv.md)
+or
+[`data_extract_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_srv.md)
+to influence the `selector_list` input. Compare the example below with
+that found in
+[`merge_expression_module()`](https://insightsengineering.github.io/teal.transform/reference/merge_expression_module.md).
+
+## Usage
+
+``` r
+merge_expression_srv(
+  id = "merge_id",
+  selector_list,
+  datasets,
+  join_keys,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL"
+)
+
+# S3 method for class 'reactive'
+merge_expression_srv(
+  id = "merge_id",
+  selector_list,
+  datasets,
+  join_keys,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL"
+)
+
+# S3 method for class 'list'
+merge_expression_srv(
+  id = "merge_id",
+  selector_list,
+  datasets,
+  join_keys,
+  merge_function = "dplyr::full_join",
+  anl_name = "ANL"
+)
+```
+
+## Arguments
+
+- id:
+
+  An ID string that corresponds with the ID used to call the module's UI
+  function.
+
+- selector_list:
+
+  (`reactive`) output from
+  [`data_extract_multiple_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_multiple_srv.md)
+  or a reactive named list of outputs from
+  [`data_extract_srv()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_srv.md).
+  When using a reactive named list, the names must be identical to the
+  shiny ids of the respective
+  [`data_extract_ui()`](https://insightsengineering.github.io/teal.transform/reference/data_extract_ui.md).
+
+- datasets:
+
+  (named `list` of `reactive` or non-`reactive` `data.frame`) object
+  containing data as a list of `data.frame`. When passing a list of
+  non-reactive `data.frame` objects, they are converted to reactive
+  `data.frame` objects internally.
+
+- join_keys:
+
+  (`join_keys`) of variables used as join keys for each of the datasets
+  in `datasets`. This will be used to extract the `keys` of every
+  dataset.
+
+- merge_function:
+
+  (`character(1)` or `reactive`) A character string of a function that
+  accepts the arguments `x`, `y` and `by` to perform the merging of
+  datasets.
+
+- anl_name:
+
+  (`character(1)`) Name of the analysis dataset.
+
+## Value
+
+Reactive expression with output from `merge_expression_srv()`.
+
+## See also
+
+[`merge_expression_module()`](https://insightsengineering.github.io/teal.transform/reference/merge_expression_module.md)
+
+## Examples
+
+``` r
+library(shiny)
+library(teal.data)
+library(teal.widgets)
+
+ADSL <- data.frame(
+  STUDYID = "A",
+  USUBJID = LETTERS[1:10],
+  SEX = rep(c("F", "M"), 5),
+  AGE = rpois(10, 30),
+  BMRKR1 = rlnorm(10)
+)
+
+ADLB <- expand.grid(
+  STUDYID = "A",
+  USUBJID = LETTERS[1:10],
+  PARAMCD = c("ALT", "CRP", "IGA"),
+  AVISIT = c("SCREENING", "BASELINE", "WEEK 1 DAY 8", "WEEK 2 DAY 15")
+)
+ADLB$AVAL <- rlnorm(120)
+ADLB$CHG <- rlnorm(120)
+
+data_list <- list(
+  ADSL = reactive(ADSL),
+  ADLB = reactive(ADLB)
+)
+
+join_keys <- join_keys(
+  join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+  join_key("ADSL", "ADLB", c("STUDYID", "USUBJID")),
+  join_key("ADLB", "ADLB", c("STUDYID", "USUBJID", "PARAMCD", "AVISIT"))
+)
+
+adsl_extract <- data_extract_spec(
+  dataname = "ADSL",
+  select = select_spec(
+    label = "Select variable:",
+    choices = c("AGE", "BMRKR1"),
+    selected = "AGE",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+adlb_extract <- data_extract_spec(
+  dataname = "ADLB",
+  filter = filter_spec(vars = "PARAMCD", choices = c("ALT", "CRP", "IGA"), selected = "ALT"),
+  select = select_spec(
+    label = "Select variable:",
+    choices = c("AVAL", "CHG"),
+    selected = "AVAL",
+    multiple = TRUE,
+    fixed = FALSE
+  )
+)
+
+ui <- bslib::page_fluid(
+  bslib::layout_sidebar(
+    tags$div(
+      verbatimTextOutput("expr"),
+      dataTableOutput("data")
+    ),
+    sidebar = tagList(
+      data_extract_ui("adsl_var", label = "ADSL selection", adsl_extract),
+      data_extract_ui("adlb_var", label = "ADLB selection", adlb_extract)
+    )
+  )
+)
+#> `shiny::dataTableOutput()` is deprecated as of shiny 1.8.1.
+#> Please use `DT::DTOutput()` instead.
+#> Since you have a suitable version of DT (>= v0.32.1), shiny::dataTableOutput() will automatically use DT::DTOutput() under-the-hood.
+#> If this happens to break your app, set `options(shiny.legacy.datatable = TRUE)` to get the legacy datatable implementation (or `FALSE` to squelch this message).
+#> See <https://rstudio.github.io/DT/shiny.html> for more information.
+
+server <- function(input, output, session) {
+  data_q <- qenv()
+
+  data_q <- eval_code(
+    data_q,
+    "ADSL <- data.frame(
+        STUDYID = 'A',
+        USUBJID = LETTERS[1:10],
+        SEX = rep(c('F', 'M'), 5),
+        AGE = rpois(10, 30),
+        BMRKR1 = rlnorm(10)
+      )"
+  )
+
+  data_q <- eval_code(
+    data_q,
+    "ADLB <- expand.grid(
+        STUDYID = 'A',
+        USUBJID = LETTERS[1:10],
+        PARAMCD = c('ALT', 'CRP', 'IGA'),
+        AVISIT = c('SCREENING', 'BASELINE', 'WEEK 1 DAY 8', 'WEEK 2 DAY 15'),
+        AVAL = rlnorm(120),
+        CHG = rlnorm(120)
+      )"
+  )
+
+  selector_list <- data_extract_multiple_srv(
+    list(adsl_var = adsl_extract, adlb_var = adlb_extract),
+    datasets = data_list
+  )
+  merged_data <- merge_expression_srv(
+    selector_list = selector_list,
+    datasets = data_list,
+    join_keys = join_keys,
+    merge_function = "dplyr::left_join"
+  )
+
+  code_merge <- reactive({
+    for (exp in merged_data()$expr) data_q <- eval_code(data_q, exp)
+    data_q
+  })
+
+  output$expr <- renderText(paste(merged_data()$expr, collapse = "\n"))
+  output$data <- renderDataTable(code_merge()[["ANL"]])
+}
+
+if (interactive()) {
+  shinyApp(ui, server)
+}
+```
