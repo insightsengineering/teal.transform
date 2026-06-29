@@ -31,6 +31,7 @@ corresponding to each `data.frame` object.
 #### Step 1/5 - Preparing the Data
 
 ``` r
+
 library(teal.transform)
 library(teal.data)
 #> Loading required package: teal.code
@@ -57,6 +58,7 @@ join_keys <- join_keys(
 #### Step 2/5 - Creating the Data Extracts
 
 ``` r
+
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -84,6 +86,7 @@ data_extracts <- list(adsl_extract = adsl_extract, adtte_extract = adtte_extract
 #### Step 3/5 - Creating the UI
 
 ``` r
+
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
   sidebarLayout(
@@ -114,6 +117,7 @@ merge_ui <- function(id, data_extracts) {
 #### Step 4/5 - Creating the Server Logic
 
 ``` r
+
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     merged_data <- merge_expression_module(
@@ -136,6 +140,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 #### Step 5/5 - Creating the `shiny` App
 
 ``` r
+
 shinyApp(
   ui = bslib::page_fluid(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {
@@ -163,6 +168,7 @@ the selector_list input when no `ADTTE` variable is selected. The
 #### Modifying the Server Logic
 
 ``` r
+
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
@@ -194,6 +200,7 @@ merge_srv <- function(id, datasets, data_extracts, join_keys) {
 #### Updating the `shiny` app
 
 ``` r
+
 shinyApp(
   ui = bslib::page_fluid(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {

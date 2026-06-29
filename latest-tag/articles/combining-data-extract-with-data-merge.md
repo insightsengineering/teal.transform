@@ -22,6 +22,7 @@ operations in a `shiny` app using `teal.transform`.
 #### Step 1/5 - Preparing the Data
 
 ``` r
+
 library(teal.transform)
 library(teal.data)
 #> Loading required package: teal.code
@@ -69,6 +70,7 @@ function which takes in four arguments:
     `FALSE`.
 
 ``` r
+
 adsl_extract <- data_extract_spec(
   dataname = "ADSL",
   select = select_spec(
@@ -107,6 +109,7 @@ Note that we take in the list of `data_extract` objects as input, and
 make use of the `data_extract_ui` function to create our UI.
 
 ``` r
+
 merge_ui <- function(id, data_extracts) {
   ns <- NS(id)
   sidebarLayout(
@@ -151,6 +154,7 @@ print this expression in the UI and also evaluate it to get the final
 `ANL` dataset which is also displayed as a table in the UI.
 
 ``` r
+
 merge_srv <- function(id, datasets, data_extracts, join_keys) {
   moduleServer(id, function(input, output, session) {
     selector_list <- data_extract_multiple_srv(data_extracts, datasets, join_keys)
@@ -178,6 +182,7 @@ components of the `shinyApp`, respectively, using the `data_extract`s
 defined in the first code block and the `datasets` object:
 
 ``` r
+
 shinyApp(
   ui = bslib::page_fluid(merge_ui("data_merge", data_extracts)),
   server = function(input, output, session) {

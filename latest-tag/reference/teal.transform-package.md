@@ -16,9 +16,11 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Dawid Kaledkowski <dawid.kaledkowski@roche.com>
+**Maintainer**: Dony Unardi <unardid@gene.com> \[reviewer\]
 
 Authors:
+
+- Dawid Kaledkowski <dawid.kaledkowski@roche.com>
 
 - Pawel Rucki <pawel.rucki@roche.com>
 

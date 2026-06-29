@@ -19,6 +19,7 @@ into how it fulfills both of these responsibilities.
 #### Step 1/4 - Preparing the Data
 
 ``` r
+
 library(teal.transform)
 library(teal.data)
 #> Loading required package: teal.code
@@ -50,6 +51,7 @@ is handed over to the `shiny` app and gives instructions to generate UI
 components.
 
 ``` r
+
 simple_des <- data_extract_spec(
   dataname = "ADSL",
   filter = filter_spec(vars = "SEX", choices = c("F", "M")),
@@ -68,6 +70,7 @@ information about `data_extract_ui` and `data_extract_srv`, please refer
 to the package documentation.
 
 ``` r
+
 extract_ui <- function(id, data_extract) {
   ns <- NS(id)
   sidebarLayout(
@@ -101,6 +104,7 @@ Finally, we include `extract_ui` in the UI of the `shinyApp`, and
 utilize `extract_srv` in the server function of the `shinyApp`:
 
 ``` r
+
 shinyApp(
   ui = bslib::page_fluid(extract_ui("data_extract", simple_des)),
   server = function(input, output, session) {

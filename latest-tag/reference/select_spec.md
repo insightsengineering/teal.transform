@@ -257,7 +257,7 @@ select_spec(
 #>   function(data) {
 #>           fun(original_fun(data))
 #>         }
-#> <environment: 0x55af6b2e39d0>
+#> <environment: 0x5641aff604f0>
 #>   $ key
 #>   NULL
 #> $ multiple

@@ -2,7 +2,9 @@
 
 ## Authors
 
-- **Dawid Kaledkowski**. Author, maintainer.
+- **Dawid Kaledkowski**. Author.
+
+- **Dony Unardi**. Reviewer, maintainer.
 
 - **Pawel Rucki**. Author.
 
@@ -21,17 +23,17 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/insightsengineering/teal.transform/blob/v0.7.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/insightsengineering/teal.transform/blob/v0.7.2/DESCRIPTION)
 
 Kaledkowski D, Rucki P, Hallal M, Burkoff N, Nasinski M, Pagacz K, Zhao
-J (2025). *teal.transform: Functions for Extracting and Merging Data in
-the 'teal' Framework*. R package version 0.7.1,
+J (2026). *teal.transform: Functions for Extracting and Merging Data in
+the 'teal' Framework*. R package version 0.7.2,
 <https://insightsengineering.github.io/teal.transform/>.
 
     @Manual{,
       title = {teal.transform: Functions for Extracting and Merging Data in the 'teal' Framework},
       author = {Dawid Kaledkowski and Pawel Rucki and Mahmoud Hallal and Nikolas Burkoff and Maciej Nasinski and Konrad Pagacz and Junlue Zhao},
-      year = {2025},
-      note = {R package version 0.7.1},
+      year = {2026},
+      note = {R package version 0.7.2},
       url = {https://insightsengineering.github.io/teal.transform/},
     }

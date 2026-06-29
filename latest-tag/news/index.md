@@ -1,5 +1,13 @@
 # Changelog
 
+## teal.transform 0.7.2
+
+CRAN release: 2026-06-29
+
+#### Miscellaneous
+
+- Update maintainer.
+
 ## teal.transform 0.7.1
 
 CRAN release: 2025-12-03

@@ -31,7 +31,7 @@ Elements are returned in the same order that they were added.
 
 ------------------------------------------------------------------------
 
-### Method `push()`
+### `Queue$push()`
 
 Adds element(s) to `Queue`.
 
@@ -51,7 +51,7 @@ Adds element(s) to `Queue`.
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `Queue$get()`
 
 Returns all contents of the `Queue` object.
 
@@ -65,7 +65,7 @@ Single vector containing all `Queue` contents.
 
 ------------------------------------------------------------------------
 
-### Method `pop()`
+### `Queue$pop()`
 
 Returns the first (oldest) element of the `Queue` and removes it.
 
@@ -80,7 +80,7 @@ vector of length 1 containing the first element of `Queue` or `NULL` if
 
 ------------------------------------------------------------------------
 
-### Method [`remove()`](https://rdrr.io/r/base/rm.html)
+### `Queue$remove()`
 
 Removes the oldest occurrence of specified element(s) from `Queue`.
 Relies on implicit type conversions of R identify elements to remove.
@@ -101,7 +101,7 @@ Relies on implicit type conversions of R identify elements to remove.
 
 ------------------------------------------------------------------------
 
-### Method `empty()`
+### `Queue$empty()`
 
 Removes all elements from `Queue`.
 
@@ -115,7 +115,7 @@ Removes all elements from `Queue`.
 
 ------------------------------------------------------------------------
 
-### Method `size()`
+### `Queue$size()`
 
 Returns the number of elements in `Queue`.
 
@@ -129,7 +129,7 @@ Returns the number of elements in `Queue`.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `Queue$print()`
 
 Prints this `Queue`.
 
@@ -149,7 +149,7 @@ Prints this `Queue`.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Queue$clone()`
 
 The objects of this class are cloneable with this method.
 

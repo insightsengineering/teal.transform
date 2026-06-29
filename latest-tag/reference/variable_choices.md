@@ -177,7 +177,7 @@ variable_choices("ADRS", subset = function(data) {
 #>     idx <- vapply(data, is.factor, logical(1))
 #>     names(data)[idx]
 #> }
-#> <environment: 0x55af68834168>
+#> <environment: 0x5641aed9a9f8>
 #> $ key
 #> NULL
 ```
