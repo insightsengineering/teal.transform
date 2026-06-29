@@ -16,146 +16,162 @@ Elements are returned in the same order that they were added.
 \keyword{internal}
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Queue-push}{\code{Queue$push()}}
-\item \href{#method-Queue-get}{\code{Queue$get()}}
-\item \href{#method-Queue-pop}{\code{Queue$pop()}}
-\item \href{#method-Queue-remove}{\code{Queue$remove()}}
-\item \href{#method-Queue-empty}{\code{Queue$empty()}}
-\item \href{#method-Queue-size}{\code{Queue$size()}}
-\item \href{#method-Queue-print}{\code{Queue$print()}}
-\item \href{#method-Queue-clone}{\code{Queue$clone()}}
-}
+  \itemize{
+    \item \href{#method-Queue-push}{\code{Queue$push()}}
+    \item \href{#method-Queue-get}{\code{Queue$get()}}
+    \item \href{#method-Queue-pop}{\code{Queue$pop()}}
+    \item \href{#method-Queue-remove}{\code{Queue$remove()}}
+    \item \href{#method-Queue-empty}{\code{Queue$empty()}}
+    \item \href{#method-Queue-size}{\code{Queue$size()}}
+    \item \href{#method-Queue-print}{\code{Queue$print()}}
+    \item \href{#method-Queue-clone}{\code{Queue$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-push"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-push}{}}}
-\subsection{Method \code{push()}}{
-Adds element(s) to \code{Queue}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$push(new_elements)}\if{html}{\out{</div>}}
+\subsection{\code{Queue$push()}}{
+  Adds element(s) to \code{Queue}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$push(new_elements)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{new_elements}}{vector of elements to add.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{self}, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{new_elements}}{vector of elements to add.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{self}, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-get}{}}}
-\subsection{Method \code{get()}}{
-Returns all contents of the \code{Queue} object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$get()}\if{html}{\out{</div>}}
+\subsection{\code{Queue$get()}}{
+  Returns all contents of the \code{Queue} object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$get()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Single vector containing all \code{Queue} contents.
+  }
 }
 
-\subsection{Returns}{
-Single vector containing all \code{Queue} contents.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-pop"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-pop}{}}}
-\subsection{Method \code{pop()}}{
-Returns the first (oldest) element of the \code{Queue} and removes it.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$pop()}\if{html}{\out{</div>}}
+\subsection{\code{Queue$pop()}}{
+  Returns the first (oldest) element of the \code{Queue} and removes it.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$pop()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    vector of length 1 containing the first element of \code{Queue}
+or \code{NULL} if \code{Queue} is empty.
+  }
 }
 
-\subsection{Returns}{
-vector of length 1 containing the first element of \code{Queue}
-or \code{NULL} if \code{Queue} is empty.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-remove"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-remove}{}}}
-\subsection{Method \code{remove()}}{
-Removes the oldest occurrence of specified element(s) from \code{Queue}.
+\subsection{\code{Queue$remove()}}{
+  Removes the oldest occurrence of specified element(s) from \code{Queue}.
 Relies on implicit type conversions of R identify elements to remove.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$remove(elements)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$remove(elements)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{elements}}{vector of elements to remove from \code{Queue}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{self}, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{elements}}{vector of elements to remove from \code{Queue}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{self}, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-empty"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-empty}{}}}
-\subsection{Method \code{empty()}}{
-Removes all elements from \code{Queue}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$empty()}\if{html}{\out{</div>}}
+\subsection{\code{Queue$empty()}}{
+  Removes all elements from \code{Queue}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$empty()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{self}, invisibly.
+  }
 }
 
-\subsection{Returns}{
-\code{self}, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-size"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-size}{}}}
-\subsection{Method \code{size()}}{
-Returns the number of elements in \code{Queue}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$size()}\if{html}{\out{</div>}}
+\subsection{\code{Queue$size()}}{
+  Returns the number of elements in \code{Queue}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$size()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{integer(1)}.
+  }
 }
 
-\subsection{Returns}{
-\code{integer(1)}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-print}{}}}
-\subsection{Method \code{print()}}{
-Prints this \code{Queue}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{Queue$print()}}{
+  Prints this \code{Queue}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Additional arguments to this method, ignored.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{self}, invisibly.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Additional arguments to this method, ignored.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{self}, invisibly.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Queue-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Queue-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Queue$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Queue$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Queue$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

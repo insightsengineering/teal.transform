@@ -1,4 +1,10 @@
-# teal.transform 0.7.1.9003
+# teal.transform 0.7.2
+
+### Miscellaneous
+
+* Update maintainer.
+
+# teal.transform 0.7.1
 
 ### Miscellaneous
 

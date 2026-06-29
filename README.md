@@ -72,17 +72,3 @@ shinyApp(ui, server)
 ## Getting help
 
 If you encounter a bug or have a feature request, please file an issue. For questions, discussions, and staying up to date, please use the `teal` channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
-
-## Stargazers and Forkers
-
-### Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/insightsengineering/teal.transform.svg)](https://starchart.cc/insightsengineering/teal.transform)
-
-### Stargazers
-
-[![Stargazers repo roster for @insightsengineering/teal.transform](http://reporoster.com/stars/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/stargazers)
-
-### Forkers
-
-[![Forkers repo roster for @insightsengineering/teal.transform](http://reporoster.com/forks/insightsengineering/teal.transform)](https://github.com/insightsengineering/teal.transform/network/members)
